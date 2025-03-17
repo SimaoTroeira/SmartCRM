@@ -2,7 +2,7 @@
     <div class="dashboard">
       <h1>Painel de Controlo</h1>
       <p>Bem-vindo ao seu painel de controlo. Aqui pode aceder a funcionalidades exclusivas para utilizadores logados.</p>
-      <!-- Adicione mais conteúdo ou funcionalidades específicas do painel aqui -->
+      <!-- Adicionar mais conteúdo aqui -->
     </div>
   </template>
   

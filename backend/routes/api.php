@@ -21,9 +21,6 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/change-password', [UserController::class, 'changePassword']);
-
-    
-    Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+    Route::get('/users', [UserController::class, 'index']);
     Route::get('/user', [UserController::class, 'getUserProfile']);
-
 });

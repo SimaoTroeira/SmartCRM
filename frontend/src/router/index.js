@@ -4,8 +4,8 @@ import Register from '../components/auth/Register.vue';
 import Home from '../components/Home.vue';
 import Dashboard from '../components/Dashboard.vue';
 import Profile from '../components/Profile.vue';
-import { useAuthStore } from '../stores/auth';
 import ChangePassword from '../components/auth/ChangePassword.vue';
+import { useAuthStore } from '../stores/auth';
 
 const routes = [
   {
@@ -13,7 +13,7 @@ const routes = [
     name: 'Home',
     component: Home,
   },
-  {  
+  {
     path: '/login',
     name: 'Login',
     component: Login,
@@ -27,21 +27,18 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    meta: { requiresAuth: true }, // Meta campo para indicar que a rota requer autenticação
   },
   {
     path: '/profile',
     name: 'Profile',
     component: Profile,
-    meta: { requiresAuth: true }, // Meta campo para indicar que a rota requer autenticação
   },
   {
     path: '/change-password',
     name: 'ChangePassword',
     component: ChangePassword,
-    meta: { requiresAuth: true },
   },
-  // Adicione outras rotas conforme necessário
+  // Adicionar outras rotas aqui
 ];
 
 const router = createRouter({
@@ -49,12 +46,14 @@ const router = createRouter({
   routes,
 });
 
-
-// Guardião de navegação global
+// Navigation Guard
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    // Se a rota requer autenticação e o usuário não está autenticado, redireciona para a página inicial
+  const publicPages = ['Home', 'Login', 'Register'];
+  const authRequired = !publicPages.includes(to.name);
+
+  if (authRequired && !authStore.isAuthenticated) {
+    // Se a rota requer autenticação e o utilizador não está autenticado, redireciona para a página inicial
     next({ name: 'Home' });
   } else {
     next(); // Caso contrário, permite a navegação
