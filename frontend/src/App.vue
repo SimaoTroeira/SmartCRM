@@ -27,6 +27,11 @@
                 Login
               </router-link>
             </li>
+            <li v-if="authStore.isAuthenticated" class="nav-item">
+              <a class="nav-link" href="#" @click.prevent="redirectToImport">
+                <i class="bi bi-upload"></i> Importar Dados
+              </a>
+            </li>
             <li v-if="authStore.isAuthenticated" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle"></i> Conta
@@ -60,7 +65,11 @@ const router = useRouter();
 
 const handleLogout = () => {
   authStore.logout();
-  router.push({ name: 'Home' }); // Redirecionar para a página inicial após o logout
+  router.push({ name: 'Home' });
+};
+
+const redirectToImport = () => {
+  router.push({ name: 'ImportData' });
 };
 </script>
 

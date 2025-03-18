@@ -6,6 +6,7 @@ import Dashboard from '../components/Dashboard.vue';
 import Profile from '../components/Profile.vue';
 import ChangePassword from '../components/auth/ChangePassword.vue';
 import { useAuthStore } from '../stores/auth';
+import ImportData from '../components/ImportData.vue';
 
 const routes = [
   {
@@ -38,6 +39,11 @@ const routes = [
     name: 'ChangePassword',
     component: ChangePassword,
   },
+  {
+  path: '/import-data',
+  name: 'ImportData',
+  component: ImportData,
+},
   // Adicionar outras rotas aqui
 ];
 
