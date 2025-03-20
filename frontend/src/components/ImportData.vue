@@ -220,11 +220,13 @@ export default {
     },
 
     convertExcelDate(excelDate, columnName = '') {
-      // Verifica se o valor é um número e está dentro do intervalo típico de datas do Excel
-      // e se o nome da coluna sugere que é uma data
       if (typeof excelDate === 'number' && excelDate > 25569 && excelDate < 2958465 && columnName.toLowerCase().includes('date')) {
-        const date = new Date((excelDate - 25567 - 2) * 86400 * 1000); // Ajuste de -1 para corrigir o bug do Excel
-        const dateString = date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        const correctedDate = (excelDate - 25568.5) * 86400 * 1000; // Ajuste refinado de meio dia
+        const date = new Date(correctedDate);
+
+        // Formata a data corretamente no formato YYYY-MM-DD
+        const dateString = date.toISOString().split('T')[0];
+
         return dateString;
       }
       return excelDate;
