@@ -36,7 +36,7 @@
     <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-start">
       <button @click="resetSorting"
         class="px-2 py-1 bg-red-600 rounded-lg text-black font-semibold hover:bg-red-700 text-sm">
-        Remover Ordenação
+        Repor Ordem
       </button>
     </div>
     <!-- Barra de rolagem horizontal acima da tabela -->
@@ -283,4 +283,13 @@ table {
 button {
   cursor: pointer;
 }
+
+tbody tr:nth-child(even) {
+  background-color: #ffffff; /* Branco */
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #e7e7e7; /* Cinza claro - equivalente ao bg-gray-100 */
+}
+
 </style>
