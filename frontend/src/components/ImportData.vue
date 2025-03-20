@@ -8,7 +8,15 @@
         class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 font-semibold text-center shadow-md transition duration-200">
         <span class="btn btn-primary">Do meu Computador</span>
       </label>
-      <input type="file" id="fileInput" class="hidden" @change="handleFileUpload" accept=".csv, .xls, .xlsx">
+      <input type="file" id="fileInput" class="hidden" @change="handleFileUpload" accept=".csv, .xls, .xlsx, .zip">
+    </div>
+
+    <!-- Dropdown para selecionar ficheiro dentro do ZIP -->
+    <div v-if="zipFiles.length > 0" class="mb-4">
+      <label for="fileSelect">Selecione um ficheiro:</label>
+      <select id="fileSelect" v-model="selectedZipFile" @change="loadZipFile" class="ml-2 border p-2 rounded">
+        <option v-for="file in zipFiles" :key="file" :value="file">{{ file }}</option>
+      </select>
     </div>
 
     <!-- Mensagem de carregamento -->
@@ -58,41 +66,43 @@
       </table>
     </div>
 
-<!-- Paginação -->
-<div v-if="tableData.length && !isLoading" class="mt-4 flex justify-center gap-4 fixed bottom-0 left-0 right-0 bg-white z-10 p-4">
-  <!-- Botão para a primeira página -->
-  <button :disabled="currentPage === 1" @click="currentPage = 1"
-    class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-    Primeira
-  </button>
+    <!-- Paginação -->
+    <div v-if="tableData.length && !isLoading"
+      class="mt-4 flex justify-center gap-4 fixed bottom-0 left-0 right-0 bg-white z-10 p-4">
+      <!-- Botão para a primeira página -->
+      <button :disabled="currentPage === 1" @click="currentPage = 1"
+        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+        Primeira
+      </button>
 
-  <!-- Botão para a página anterior -->
-  <button :disabled="currentPage === 1" @click="currentPage--"
-    class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-    Anterior
-  </button>
+      <!-- Botão para a página anterior -->
+      <button :disabled="currentPage === 1" @click="currentPage--"
+        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+        Anterior
+      </button>
 
-  <!-- Texto de página atual -->
-  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <!-- Texto de página atual -->
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
 
-  <!-- Botão para a página próxima -->
-  <button :disabled="currentPage === totalPages" @click="currentPage++"
-    class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-    Próxima
-  </button>
+      <!-- Botão para a página próxima -->
+      <button :disabled="currentPage === totalPages" @click="currentPage++"
+        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+        Próxima
+      </button>
 
-  <!-- Botão para a última página -->
-  <button :disabled="currentPage === totalPages" @click="currentPage = totalPages"
-    class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-    Última
-  </button>
-</div>
+      <!-- Botão para a última página -->
+      <button :disabled="currentPage === totalPages" @click="currentPage = totalPages"
+        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+        Última
+      </button>
+    </div>
 
   </div>
 </template>
 
 <script>
 import * as XLSX from "xlsx";
+import JSZip from "jszip";
 
 export default {
   data() {
@@ -108,6 +118,9 @@ export default {
       currentPage: 1, // Página atual
       sortColumnIndex: null, // Índice da coluna que está sendo ordenada
       sortOrder: 'asc', // Ordem de ordenação ('asc' ou 'desc')
+      zipFiles: [],
+      selectedZipFile: "",
+      zipFileData: {},
     };
   },
   computed: {
@@ -147,40 +160,74 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      this.fileName = file.name; // Armazena o nome do ficheiro
+      this.fileName = file.name;
+      this.isLoading = true;
 
-      this.isLoading = true; // Inicia o estado de carregamento
+      if (file.name.endsWith(".zip")) {
+        const zip = new JSZip();
+        const loadedZip = await zip.loadAsync(file);
+        this.zipFiles = Object.keys(loadedZip.files).filter(
+          (fileName) => !loadedZip.files[fileName].dir
+        );
+        this.zipFileData = loadedZip;
+        this.isLoading = false;
+      } else {
+        this.processFile(file);
+      }
+    },
+
+    async loadZipFile() {
+      if (!this.selectedZipFile) return;
+
+      const fileData = await this.zipFileData.files[this.selectedZipFile].async("arraybuffer");
+      const fileBlob = new Blob([fileData]);
+      this.processFile(fileBlob, this.selectedZipFile);
+    },
+
+    processFile(file, fileName = "") {
+      this.isLoading = true;
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        setTimeout(() => { // Simula um tempo de processamento
+        setTimeout(() => {
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: "array" });
           const sheetName = workbook.SheetNames[0];
           const sheet = workbook.Sheets[sheetName];
-
-          // Aqui ajustamos para pegar corretamente os dados e os cabeçalhos
           const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
           if (jsonData.length) {
-            // Agora, a primeira linha é o cabeçalho e as demais são os dados
-            this.tableData = jsonData.slice(1); // Remover a primeira linha (cabeçalho duplicado)
-            this.originalData = [...this.tableData]; // Armazena os dados originais
-            this.tableName = sheetName; // Atribui o nome da planilha
-            this.rowCount = this.tableData.length; // Agora contamos as linhas corretamente
-            this.columnCount = jsonData[0].length; // Mantemos o número correto de colunas
-
-            // Adicionamos a primeira linha como cabeçalhos
-            this.headers = jsonData[0]; // A primeira linha será tratada como cabeçalhos
-          } else {
-            console.error("Erro ao processar o ficheiro");
+            this.headers = jsonData[0];
+            this.tableData = jsonData.slice(1).map(row =>
+              row.map((cell, index) => this.convertExcelDate(cell, this.headers[index]))
+            );
+            this.originalData = [...this.tableData];
+            this.rowCount = this.tableData.length;
+            this.columnCount = jsonData[0].length;
+            if (fileName) {
+              const cleanFileName = fileName.split('/').pop().replace(/\.[^/.]+$/, "");
+              this.tableName = cleanFileName;
+            } else {
+              this.tableName = sheetName !== "Sheet1" ? sheetName : this.fileName.replace(/\.[^/.]+$/, "");
+            }
           }
 
-          this.isLoading = false; // Finaliza o carregamento
-        }, 1000); // Simula um atraso de 1 segundo
+          this.isLoading = false;
+        }, 1000);
       };
 
       reader.readAsArrayBuffer(file);
+    },
+
+    convertExcelDate(excelDate, columnName = '') {
+      // Verifica se o valor é um número e está dentro do intervalo típico de datas do Excel
+      // e se o nome da coluna sugere que é uma data
+      if (typeof excelDate === 'number' && excelDate > 25569 && excelDate < 2958465 && columnName.toLowerCase().includes('date')) {
+        const date = new Date((excelDate - 25567 - 2) * 86400 * 1000); // Ajuste de -1 para corrigir o bug do Excel
+        const dateString = date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        return dateString;
+      }
+      return excelDate;
     },
 
     sortTable(index) {
