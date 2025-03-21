@@ -8,7 +8,7 @@
         class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 font-semibold text-center shadow-md transition duration-200">
         <span class="btn btn-primary">Do meu Computador</span>
       </label>
-      <input type="file" id="fileInput" class="hidden" @change="handleFileUpload" accept=".csv, .xls, .xlsx, .zip">
+      <input type="file" id="fileInput" class="hidden" @change="handleFileUpload" accept=".csv, .xls, .xlsx, .zip, .json">
     </div>
 
     <!-- Dropdown para selecionar ficheiro dentro do ZIP -->
@@ -39,6 +39,7 @@
         Repor Ordem
       </button>
     </div>
+
     <!-- Barra de rolagem horizontal acima da tabela -->
     <div v-if="tableData.length && !isLoading" class="mt-6 overflow-x-auto mb-4">
       <table class="min-w-full border-collapse border border-gray-300">
@@ -171,6 +172,9 @@ export default {
         );
         this.zipFileData = loadedZip;
         this.isLoading = false;
+      }
+      else if (file.name.endsWith(".json")) {
+        this.processJSONFile(file);
       } else {
         this.processFile(file);
       }
@@ -201,7 +205,7 @@ export default {
             this.tableData = jsonData.slice(1).map(row =>
               row.map((cell, index) => this.convertExcelDate(cell, this.headers[index]))
             );
-            this.originalData = [...this.tableData];
+            this.originalData = JSON.parse(JSON.stringify(this.tableData)); // Faz uma cópia profunda
             this.rowCount = this.tableData.length;
             this.columnCount = jsonData[0].length;
             if (fileName) {
@@ -217,6 +221,46 @@ export default {
       };
 
       reader.readAsArrayBuffer(file);
+    },
+
+    processJSONFile(file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        try {
+          let jsonString = e.target.result.trim(); // Remove espaços extras
+
+          console.log("JSON recebido:", jsonString);
+
+          // Verifica se o JSON está em formato JSON Lines (JSONL) e converte para um array
+          if (!jsonString.startsWith("[") && !jsonString.endsWith("]")) {
+            jsonString = "[" + jsonString.replace(/}\s*{/g, "},{") + "]";
+          }
+
+          const jsonData = JSON.parse(jsonString);
+
+          console.log("JSON convertido com sucesso:", jsonData);
+
+          // Se for um array, processa normalmente
+          if (Array.isArray(jsonData) && jsonData.length > 0) {
+            this.headers = Object.keys(jsonData[0]); // Obtém as colunas
+            this.tableData = jsonData.map(obj => Object.values(obj)); // Obtém as linhas
+            this.originalData = JSON.parse(JSON.stringify(this.tableData)); // Faz uma cópia profunda
+            this.rowCount = this.tableData.length;
+            this.columnCount = this.headers.length;
+            this.tableName = file.name.replace(/\.[^/.]+$/, ""); // Usa o nome do ficheiro sem a extensão
+          } else {
+            throw new Error("Formato JSON inválido ou estrutura inesperada.");
+          }
+        } catch (error) {
+          console.error("Erro ao processar JSON:", error.message);
+          alert(`Erro ao processar JSON: ${error.message}`);
+        } finally {
+          this.isLoading = false;
+        }
+      };
+
+      reader.readAsText(file);
     },
 
     convertExcelDate(excelDate, columnName = '') {
@@ -244,9 +288,10 @@ export default {
 
     resetSorting() {
       // Restaura os dados originais e reseta a ordenação
-      this.tableData = [...this.originalData];
+      this.tableData = JSON.parse(JSON.stringify(this.originalData)); // Faz uma cópia profunda
       this.sortColumnIndex = null;
       this.sortOrder = 'asc';
+      this.currentPage = 1; // Reseta para a primeira página
     },
   },
 };
@@ -285,11 +330,12 @@ button {
 }
 
 tbody tr:nth-child(even) {
-  background-color: #ffffff; /* Branco */
+  background-color: #ffffff;
+  /* Branco */
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #e7e7e7; /* Cinza claro - equivalente ao bg-gray-100 */
+  background-color: #e7e7e7;
+  /* Cinza claro - equivalente ao bg-gray-100 */
 }
-
 </style>
