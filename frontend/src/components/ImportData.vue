@@ -1,113 +1,138 @@
-<template>
-  <div class="p-6">
-    <h2 class="mb-4">Escolha o local de onde quer importar os dados</h2>
+  <template>
+    <div class="p-6">
+      <h2 class="mb-4">Escolha o local de onde quer importar os dados</h2>
 
-    <!-- Botão para importar do computador -->
-    <div class="mb-4">
-      <label for="fileInput"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 font-semibold text-center shadow-md transition duration-200">
-        <span class="btn btn-primary">Do meu Computador</span>
-      </label>
-      <input type="file" id="fileInput" class="hidden" @change="handleFileUpload" accept=".csv, .xls, .xlsx, .zip, .json">
+      <!-- Botão para importar do computador -->
+      <div class="mb-4">
+        <label for="fileInput"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 font-semibold text-center shadow-md transition duration-200">
+          <span class="btn btn-primary">Do meu Computador</span>
+        </label>
+        <input type="file" id="fileInput" class="hidden" @change="handleFileUpload"
+          accept=".csv, .xls, .xlsx, .zip, .json">
+      </div>
+
+      <!-- Dropdown para selecionar ficheiro dentro do ZIP -->
+      <div v-if="zipFiles.length > 0" class="mb-4">
+        <label for="fileSelect">Selecione um ficheiro:</label>
+        <select id="fileSelect" v-model="selectedZipFile" @change="loadZipFile" class="ml-2 border p-2 rounded">
+          <option v-for="file in zipFiles" :key="file" :value="file">{{ file }}</option>
+        </select>
+      </div>
+
+      <!-- Mensagem de carregamento -->
+      <div v-if="isLoading" class="p-3 border border-yellow-500 rounded bg-yellow-100 text-yellow-700">
+        <p>A carregar os dados...</p>
+      </div>
+
+      <!-- Mensagem de sucesso com nome da tabela e nome do arquivo -->
+      <div v-if="tableData.length > 0 && !isLoading"
+        class="alert alert-success p-3 border border-green-500 rounded bg-green-100 text-green-700">
+        <p>O ficheiro "{{ fileName }}" foi importado!</p>
+        <p>A tabela "{{ tableName }}" foi importada!</p>
+        <p>Esta tabela contém {{ rowCount }} linhas e {{ columnCount }} colunas.</p>
+      </div>
+
+      <!-- Botões de Reset e Mapear no topo esquerdo -->
+      <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-start gap-2">
+        <button @click="resetSorting"
+          class="px-2 py-1 bg-red-600 rounded-lg text-black font-semibold hover:bg-red-700 text-sm">
+          Repor Ordem
+        </button>
+        <button @click="openMapDialog"
+          class="px-2 py-1 bg-blue-600 rounded-lg text-black font-semibold hover:bg-blue-700 text-sm">
+          Importar esta Tabela
+        </button>
+      </div>
+
+      <!-- Barra de rolagem horizontal acima da tabela -->
+      <div v-if="tableData.length && !isLoading" class="mt-6 overflow-x-auto mb-4">
+        <table class="min-w-full border-collapse border border-gray-300">
+          <thead>
+            <tr class="bg-gray-200">
+              <th v-for="(header, index) in headers" :key="'header-' + index" @click="sortTable(index)"
+                class="cursor-pointer border border-gray-300 px-4 py-2 whitespace-nowrap">
+                {{ header }}
+                <!-- Exibe a seta de ordenação -->
+                <span v-if="sortColumnIndex === index">
+                  <span v-if="sortOrder === 'asc'">↑</span>
+                  <span v-if="sortOrder === 'desc'">↓</span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, rowIndex) in visibleRows" :key="'row-' + rowIndex">
+              <td v-for="(cell, cellIndex) in row" :key="'cell-' + rowIndex + '-' + cellIndex"
+                class="border border-gray-300 px-4 py-2 whitespace-nowrap">
+                {{ cell }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginação -->
+      <div v-if="tableData.length && !isLoading"
+        class="mt-4 flex justify-center gap-4 fixed bottom-0 left-0 right-0 bg-white z-10 p-4">
+        <!-- Botão para a primeira página -->
+        <button :disabled="currentPage === 1" @click="currentPage = 1"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          Primeira
+        </button>
+
+        <!-- Botão para a página anterior -->
+        <button :disabled="currentPage === 1" @click="currentPage--"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          Anterior
+        </button>
+
+        <!-- Texto de página atual -->
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+
+        <!-- Botão para a página próxima -->
+        <button :disabled="currentPage === totalPages" @click="currentPage++"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          Próxima
+        </button>
+
+        <!-- Botão para a última página -->
+        <button :disabled="currentPage === totalPages" @click="currentPage = totalPages"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          Última
+        </button>
+      </div>
+      <!-- Diálogo de Mapeamento - Versão Corrigida -->
+      <div v-if="showMapDialog" class="map-dialog-overlay">
+        <div class="map-dialog-wrapper">
+          <div class="map-dialog">
+            <div class="dialog-header">
+              <h3>Para importar a tabela tem de mapear os dados</h3>
+              <button @click="closeMapDialog" class="close-btn">&times;</button>
+            </div>
+            <div class="dialog-content">
+              <MapData :headers="headers" :tableData="tableData" :tableName="tableName" @close="closeMapDialog"
+                @save="handleMapSave" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Dropdown para selecionar ficheiro dentro do ZIP -->
-    <div v-if="zipFiles.length > 0" class="mb-4">
-      <label for="fileSelect">Selecione um ficheiro:</label>
-      <select id="fileSelect" v-model="selectedZipFile" @change="loadZipFile" class="ml-2 border p-2 rounded">
-        <option v-for="file in zipFiles" :key="file" :value="file">{{ file }}</option>
-      </select>
-    </div>
-
-    <!-- Mensagem de carregamento -->
-    <div v-if="isLoading" class="p-3 border border-yellow-500 rounded bg-yellow-100 text-yellow-700">
-      <p>A carregar os dados...</p>
-    </div>
-
-    <!-- Mensagem de sucesso com nome da tabela e nome do arquivo -->
-    <div v-if="tableData.length > 0 && !isLoading"
-      class="alert alert-success p-3 border border-green-500 rounded bg-green-100 text-green-700">
-      <p>O ficheiro "{{ fileName }}" foi importado!</p>
-      <p>A tabela "{{ tableName }}" foi importada!</p>
-      <p>Esta tabela contém {{ rowCount }} linhas e {{ columnCount }} colunas.</p>
-    </div>
-
-    <!-- Botão de Reset no topo esquerdo -->
-    <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-start">
-      <button @click="resetSorting"
-        class="px-2 py-1 bg-red-600 rounded-lg text-black font-semibold hover:bg-red-700 text-sm">
-        Repor Ordem
-      </button>
-    </div>
-
-    <!-- Barra de rolagem horizontal acima da tabela -->
-    <div v-if="tableData.length && !isLoading" class="mt-6 overflow-x-auto mb-4">
-      <table class="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr class="bg-gray-200">
-            <th v-for="(header, index) in headers" :key="'header-' + index" @click="sortTable(index)"
-              class="cursor-pointer border border-gray-300 px-4 py-2 whitespace-nowrap">
-              {{ header }}
-              <!-- Exibe a seta de ordenação -->
-              <span v-if="sortColumnIndex === index">
-                <span v-if="sortOrder === 'asc'">↑</span>
-                <span v-if="sortOrder === 'desc'">↓</span>
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(row, rowIndex) in visibleRows" :key="'row-' + rowIndex">
-            <td v-for="(cell, cellIndex) in row" :key="'cell-' + rowIndex + '-' + cellIndex"
-              class="border border-gray-300 px-4 py-2 whitespace-nowrap">
-              {{ cell }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Paginação -->
-    <div v-if="tableData.length && !isLoading"
-      class="mt-4 flex justify-center gap-4 fixed bottom-0 left-0 right-0 bg-white z-10 p-4">
-      <!-- Botão para a primeira página -->
-      <button :disabled="currentPage === 1" @click="currentPage = 1"
-        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-        Primeira
-      </button>
-
-      <!-- Botão para a página anterior -->
-      <button :disabled="currentPage === 1" @click="currentPage--"
-        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-        Anterior
-      </button>
-
-      <!-- Texto de página atual -->
-      <span>Página {{ currentPage }} de {{ totalPages }}</span>
-
-      <!-- Botão para a página próxima -->
-      <button :disabled="currentPage === totalPages" @click="currentPage++"
-        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-        Próxima
-      </button>
-
-      <!-- Botão para a última página -->
-      <button :disabled="currentPage === totalPages" @click="currentPage = totalPages"
-        class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
-        Última
-      </button>
-    </div>
-
-  </div>
-</template>
+  </template>
 
 <script>
 import * as XLSX from "xlsx";
 import JSZip from "jszip";
+import MapData from './MapData.vue';
+
 
 export default {
+  components: {
+    MapData
+  },
   data() {
     return {
+      showMapDialog: false,
       tableData: [], // Armazena os dados da tabela importada
       originalData: [], // Armazena os dados originais para reset
       isLoading: false, // Estado de carregamento
@@ -293,11 +318,25 @@ export default {
       this.sortOrder = 'asc';
       this.currentPage = 1; // Reseta para a primeira página
     },
+    openMapDialog() {
+      this.showMapDialog = true;
+    },
+
+    closeMapDialog() {
+      this.showMapDialog = false;
+    },
+    handleMapSave(mappedData) {
+      // Aqui você pode processar os dados mapeados
+      console.log("Dados mapeados:", mappedData);
+      this.closeMapDialog();
+      // Adicione qualquer lógica adicional para salvar os dados mapeados
+    },
   },
 };
 </script>
 
 <style scoped>
+
 .hidden {
   display: none;
 }
@@ -308,10 +347,8 @@ export default {
 }
 
 .p-6 {
-  position: absolute;
-  padding: 20px;
-  text-align: center;
-  width: 65%;
+  padding: 1.5rem;
+  width: 80%;
 }
 
 table {
@@ -321,7 +358,6 @@ table {
 
 .overflow-x-auto {
   overflow-x: auto;
-  /* Ativa a rolagem horizontal para as colunas */
   max-width: 100%;
 }
 
@@ -331,11 +367,87 @@ button {
 
 tbody tr:nth-child(even) {
   background-color: #ffffff;
-  /* Branco */
 }
 
 tbody tr:nth-child(odd) {
   background-color: #e7e7e7;
-  /* Cinza claro - equivalente ao bg-gray-100 */
+}
+
+/* Adicione ESTES novos estilos para o diálogo (no final) */
+.map-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-dialog-wrapper {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+}
+
+.map-dialog {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: dialog-enter 0.3s ease-out;
+}
+
+@keyframes dialog-enter {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dialog-header {
+  padding: 16px 24px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.dialog-content {
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6c757d;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #495057;
+}
+
+/* Garante que a paginação não interfira */
+.fixed {
+  z-index: 100; /* Menor que o do diálogo */
 }
 </style>

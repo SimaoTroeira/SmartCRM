@@ -14,7 +14,7 @@ const app = createApp(App);
 
 const serverBaseUrl = 'http://127.0.0.1:8000/api';
 axios.defaults.baseURL = serverBaseUrl;
-axios.defaults.headers.common['Content-type'] = 'application/json';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
