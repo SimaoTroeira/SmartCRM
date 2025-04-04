@@ -13,26 +13,26 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-            <li v-if="!authStore.isAuthenticated" class="nav-item">
+            <li v-if="!isAuthenticated" class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'Register' }"
                             :to="{ name: 'Register' }">
                 <i class="bi bi-person-check-fill"></i>
                 Register
               </router-link>
             </li>
-            <li v-if="!authStore.isAuthenticated" class="nav-item">
+            <li v-if="!isAuthenticated" class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'Login' }"
                             :to="{ name: 'Login' }">
                 <i class="bi bi-box-arrow-in-right"></i>
                 Login
               </router-link>
             </li>
-            <li v-if="authStore.isAuthenticated" class="nav-item">
+            <li v-if="isAuthenticated" class="nav-item">
               <a class="nav-link" href="#" @click.prevent="redirectToImport">
                 <i class="bi bi-upload"></i> Importar Dados
               </a>
             </li>
-            <li v-if="authStore.isAuthenticated" class="nav-item dropdown">
+            <li v-if="isAuthenticated" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle"></i> Conta
               </a>
@@ -59,9 +59,13 @@
 <script setup>
 import { useAuthStore } from './stores/auth';
 import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
+const { isAuthenticated } = storeToRefs(authStore); // <- Torna reativo
 const router = useRouter();
+
+
 
 const handleLogout = () => {
   authStore.logout();
@@ -72,6 +76,7 @@ const redirectToImport = () => {
   router.push({ name: 'ImportData' });
 };
 </script>
+
 
 <style>
 @import "./assets/dashboard.css";

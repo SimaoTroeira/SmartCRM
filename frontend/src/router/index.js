@@ -53,17 +53,30 @@ const router = createRouter({
 });
 
 // Navigation Guard
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
   const publicPages = ['Home', 'Login', 'Register'];
   const authRequired = !publicPages.includes(to.name);
 
-  if (authRequired && !authStore.isAuthenticated) {
-    // Se a rota requer autenticação e o utilizador não está autenticado, redireciona para a página inicial
-    next({ name: 'Home' });
-  } else {
-    next(); // Caso contrário, permite a navegação
+  if (authStore.isAuthenticated) {
+    try {
+      // Verifica se o utilizador ainda existe na BD
+      await axios.get('/api/user'); // ou '/user' se for essa a tua rota
+    } catch (error) {
+      // Se for 401, 403, ou 404, é porque o token está inválido ou o user foi apagado
+      if ([401, 403, 404].includes(error.response?.status)) {
+        authStore.logout();
+        return next({ name: 'Home' });
+      }
+    }
   }
+
+  // Se a rota requer login e o user não está autenticado, redireciona
+  if (authRequired && !authStore.isAuthenticated) {
+    return next({ name: 'Home' });
+  }
+
+  next();
 });
 
 export default router;

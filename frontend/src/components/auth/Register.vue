@@ -5,18 +5,31 @@
     <div class="mb-3">
       <label for="inputName" class="form-label">Name</label>
       <input type="text" class="form-control" id="inputName" required v-model="user.name">
+      <div v-if="errors.name && errors.name.length" class="text-danger">
+        {{ errors.name[0] }}
+      </div>
     </div>
     <div class="mb-3">
       <label for="inputEmail" class="form-label">Email</label>
       <input type="email" class="form-control" id="inputEmail" required v-model="user.email">
+      <div v-if="errors.email && errors.email.length" class="text-danger">
+        {{ errors.email[0] }}
+      </div>
     </div>
     <div class="mb-3">
       <label for="inputPassword" class="form-label">Password</label>
       <input type="password" class="form-control" id="inputPassword" required v-model="user.password">
+      <div v-if="errors.password && errors.password.length" class="text-danger">
+        {{ errors.password[0] }}
+      </div>
     </div>
     <div class="mb-3">
       <label for="inputPasswordConfirmation" class="form-label">Confirm Password</label>
-      <input type="password" class="form-control" id="inputPasswordConfirmation" required v-model="user.password_confirmation">
+      <input type="password" class="form-control" id="inputPasswordConfirmation" required
+        v-model="user.password_confirmation">
+      <div v-if="errors.password_confirmation && errors.password_confirmation.length" class="text-danger">
+        {{ errors.password_confirmation[0] }}
+      </div>
     </div>
     <div class="mb-3 d-flex justify-content-center">
       <button type="submit" class="btn btn-primary px-5">Register</button>
@@ -42,16 +55,57 @@ const user = ref({
   password_confirmation: '',
 });
 
+const errors = ref({});
+
 const register = async () => {
+  // Limpa erros anteriores
+  errors.value = {};
+
+  // Validações frontend
+  if (!user.value.name) {
+    errors.value.name = ['O nome é obrigatório.'];
+  }
+
+  if (!user.value.email) {
+    errors.value.email = ['O email é obrigatório.'];
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.value.email)) {
+    errors.value.email = ['O email não é válido.'];
+  }
+
+  if (!user.value.password) {
+    errors.value.password = ['A password é obrigatória.'];
+  } else if (user.value.password.length < 8) {
+    errors.value.password = ['A password deve ter pelo menos 8 caracteres.'];
+  } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(user.value.password)) {
+    errors.value.password = ['A password deve conter pelo menos um caractere especial.'];
+  }
+
+  if (user.value.password !== user.value.password_confirmation) {
+    errors.value.password_confirmation = ['As passwords não coincidem.'];
+  }
+
+  // Se houver erros, para aqui
+  if (Object.keys(errors.value).length > 0) {
+    return;
+  }
+
+  // Envia o pedido ao backend
   try {
     const response = await axios.post('/register', user.value);
     const token = response.data.token;
-    authStore.login(token); // Atualizar o estado de autenticação
+
+    authStore.login(token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
     toast.success('Registro bem-sucedido!');
-    router.push({ name: 'Dashboard' }); // Redirecionar para o Dashboard
+    router.push({ name: 'Dashboard' });
   } catch (error) {
-    console.error('Erro ao registrar:', error);
-    toast.error('Erro ao registrar. Verifique suas informações.');
+    if (error.response && error.response.status === 422) {
+      errors.value = error.response.data || {};
+    } else {
+      toast.error('Erro ao registrar. Verifique suas informações.');
+    }
   }
+
 };
 </script>
