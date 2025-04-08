@@ -7,6 +7,8 @@ import Profile from '../components/Profile.vue';
 import ChangePassword from '../components/auth/ChangePassword.vue';
 import { useAuthStore } from '../stores/auth';
 import ImportData from '../components/ImportData.vue';
+import Company from '../components/Company.vue';
+import Campaign from '../components/Campaign.vue';
 
 const routes = [
   {
@@ -40,10 +42,20 @@ const routes = [
     component: ChangePassword,
   },
   {
-  path: '/import-data',
-  name: 'ImportData',
-  component: ImportData,
-},
+    path: '/import-data',
+    name: 'ImportData',
+    component: ImportData,
+  },
+  {
+    path: '/companies',
+    name: 'Companies',
+    component: Company,
+  },
+  {
+    path: '/campaigns',
+    name: 'Campaigns',
+    component: Campaign,
+  },
   // Adicionar outras rotas aqui
 ];
 

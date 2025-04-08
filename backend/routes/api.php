@@ -1,11 +1,15 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\FileUploadController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +35,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/available-tables', [DataImportController::class, 'getAvailableTables']);
     Route::get('/table-columns/{table}', [DataImportController::class, 'getTableColumns']);
     
+    //data mapping
     Route::post('/import/mapped-data', [DataImportController::class, 'storeMappedData']);
     Route::get('/tables/{tableName}/data', [DataImportController::class, 'getUserData']);
+
+    //companies
+    Route::get('/companies', [CompanyController::class, 'index']);
+    Route::post('/companies', [CompanyController::class, 'store']);
+    Route::put('/companies/{id}', [CompanyController::class, 'update']);
+    Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
+
+    //campaigns
+    Route::get('/campaigns', [CampaignController::class, 'index']);
+    Route::post('/campaigns', [CampaignController::class, 'store']);
+    Route::get('/campaigns/{campaign}', [CampaignController::class, 'show']);
+    Route::put('/campaigns/{campaign}', [CampaignController::class, 'update']);
+    Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy']);
 });

@@ -31,6 +31,8 @@ class DataImportController extends Controller
                 'failed_jobs',
                 'migrations',
                 'password_reset_tokens',
+                'companies',
+                'campaigns',
             ];
 
             $filteredTables = array_filter($tables, function ($table) use ($keyName, $excludedTables) {
@@ -111,7 +113,10 @@ class DataImportController extends Controller
     
                 // Insere os dados para a tabela com o user_id do usuário logado
                 DB::table($request->target_table)->insert(
-                    array_merge($filteredData, ['user_id' => $user->id])
+                    array_merge($filteredData, [
+                        'user_id' => $user->id,
+                        'campaign_id' => $request->campaign_id, // <- adiciona esta linha
+                    ])
                 );
     
                 $successCount++;

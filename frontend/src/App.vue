@@ -6,23 +6,37 @@
           <img src="@/assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
           Smart CRM
         </router-link>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav w-100 d-flex align-items-center">
+            <!-- "Empresas" à esquerda -->
+            <li v-if="isAuthenticated" class="nav-item">
+              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToCompany">
+                <i class="bi bi-building me-2"></i> Empresas
+              </a>
+            </li>
+            <li v-if="isAuthenticated" class="nav-item">
+              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToCampaign">
+                <i class="bi bi-megaphone me-2"></i> Campanhas
+              </a>
+            </li>
+
+            <!-- Separador flexível entre esquerda e direita -->
+            <li class="flex-grow-1"></li>
+
+            <!-- Itens à direita -->
             <li v-if="!isAuthenticated" class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Register' }"
-                            :to="{ name: 'Register' }">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
                 <i class="bi bi-person-check-fill"></i>
                 Register
               </router-link>
             </li>
             <li v-if="!isAuthenticated" class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Login' }"
-                            :to="{ name: 'Login' }">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Login' }" :to="{ name: 'Login' }">
                 <i class="bi bi-box-arrow-in-right"></i>
                 Login
               </router-link>
@@ -33,7 +47,8 @@
               </a>
             </li>
             <li v-if="isAuthenticated" class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="bi bi-person-circle"></i> Conta
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -42,6 +57,7 @@
               </ul>
             </li>
           </ul>
+
         </div>
       </div>
     </nav>
@@ -74,6 +90,12 @@ const handleLogout = () => {
 
 const redirectToImport = () => {
   router.push({ name: 'ImportData' });
+};
+const redirectToCompany = () => {
+  router.push({ name: 'Companies' });
+};
+const redirectToCampaign = () => {
+  router.push({ name: 'Campaigns' });
 };
 </script>
 

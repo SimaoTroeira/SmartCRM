@@ -24,10 +24,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(header, index) in headers" :key="index" :class="{'underline text-red-500': rejectedColumns[index]}">
+          <tr v-for="(header, index) in headers" :key="index"
+            :class="{ 'underline text-red-500': rejectedColumns[index] }">
             <td class="border border-gray-300 px-4 py-2">{{ header }}</td>
             <td class="border border-gray-300 px-4 py-2">
-              <select v-model="mappedColumns[index]" class="border p-1 rounded w-full" :disabled="!selectedTable || rejectedColumns[index]">
+              <select v-model="mappedColumns[index]" class="border p-1 rounded w-full"
+                :disabled="!selectedTable || rejectedColumns[index]">
                 <option value="">Selecione a coluna</option>
                 <option v-for="column in tableColumns" :key="column" :value="column">
                   {{ column }}
@@ -43,8 +45,7 @@
               </select>
             </td>
             <td class="border border-gray-300 px-4 py-2">
-              <button @click.stop="previewColumn(index)"
-                class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+              <button @click.stop="previewColumn(index)" class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
                 Pré-visualizar
               </button>
               <button @click.stop="toggleColumnState(index)"
@@ -63,16 +64,14 @@
         <table class="min-w-full border-collapse border border-gray-300">
           <thead>
             <tr class="bg-gray-200">
-              <th v-for="(header, index) in previewHeaders" :key="index"
-                class="border border-gray-300 px-4 py-2">
+              <th v-for="(header, index) in previewHeaders" :key="index" class="border border-gray-300 px-4 py-2">
                 {{ header }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, rowIndex) in previewData.slice(0, 5)" :key="rowIndex">
-              <td v-for="(cell, cellIndex) in row" :key="cellIndex"
-                class="border border-gray-300 px-4 py-2">
+              <td v-for="(cell, cellIndex) in row" :key="cellIndex" class="border border-gray-300 px-4 py-2">
                 {{ cell }}
               </td>
             </tr>
@@ -80,6 +79,16 @@
         </table>
       </div>
       <p class="text-sm text-gray-500 mt-2">Amostra de 5 de {{ previewData.length }} linhas</p>
+    </div>
+
+    <div class="flex items-center gap-2 mb-2 p-4 rounded bg-white shadow">
+      <span class="font-semibold whitespace-nowrap">Os dados serão importados para a campanha</span>
+      <select v-model="campaign_id" class="border p-2 rounded min-w-[200px]">
+        <option value="">Selecione uma campanha</option>
+        <option v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
+          {{ campaign.name }}
+        </option>
+      </select>
     </div>
 
     <div class="mt-6 flex justify-end gap-2">
@@ -110,11 +119,14 @@ export default {
     columnTypes: [],
     rejectedColumns: [],
     previewData: [],
-    previewHeaders: []
+    previewHeaders: [],
+    campaign_id: "",
+    campaigns: []
   }),
   async created() {
     this.initMappings();
     await this.loadAvailableTables();
+    await this.loadCampaigns();
   },
   methods: {
     initMappings() {
@@ -138,11 +150,17 @@ export default {
         throw error;
       }
     },
-
+    async loadCampaigns() {
+      try {
+        this.campaigns = await this.apiRequest({ url: '/campaigns' });
+      } catch (error) {
+        console.error("Erro ao carregar campanhas:", error);
+      }
+    },
     async loadAvailableTables() {
       try {
         const tables = await this.apiRequest({ url: '/available-tables' });
-        this.availableTables = tables.filter(table => 
+        this.availableTables = tables.filter(table =>
           !['users', 'password_resets', 'migrations'].includes(table) &&
           !table.startsWith('oauth_')
         );
@@ -153,8 +171,8 @@ export default {
 
     async loadTableColumns(tableName) {
       try {
-        this.tableColumns = await this.apiRequest({ 
-          url: `/table-columns/${tableName}` 
+        this.tableColumns = await this.apiRequest({
+          url: `/table-columns/${tableName}`
         });
       } catch (error) {
         this.tableColumns = [];
@@ -167,7 +185,7 @@ export default {
         this.mappedColumns[index] || '(Não mapeado)',
         this.columnTypes[index]
       ];
-      
+
       this.previewData = this.tableData.map(row => [
         row[index],
         this.mappedColumns[index] ? `[${this.mappedColumns[index]}]` : '',
@@ -192,6 +210,7 @@ export default {
     async applyMapping() {
       const mappedData = {
         target_table: this.selectedTable,
+        campaign_id: this.campaign_id,
         mappings: this.headers.map((header, index) => ({
           csv_column: header,
           db_column: this.mappedColumns[index],
