@@ -18,10 +18,28 @@ class CampaignController extends Controller
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
     
-        // Obter todas as campanhas
-        $campaigns = Campaign::with('company')->get(); // 'company' assume que você tem a relação no modelo Campaign
+        // Verificar se o usuário é um SuperAdmin (SA)
+        if ($user->hasRole('SA')) {
+            // Se for SuperAdmin, retorna todas as campanhas
+            $campaigns = Campaign::with('company')->get();
+        } else {
+            // Obter os IDs das empresas associadas ao usuário
+            $userCompanies = $user->companyRoles()->pluck('company_id')->toArray();
+    
+            // Se o usuário não tem empresas associadas, retorna um erro
+            if (empty($userCompanies)) {
+                return response()->json(['error' => 'Você não tem empresas associadas.'], 403);
+            }
+    
+            // Obter todas as campanhas das empresas associadas ao usuário
+            $campaigns = Campaign::with('company')
+                ->whereIn('company_id', $userCompanies)
+                ->get();
+        }
+    
         return response()->json($campaigns);
     }
+    
     
     
     public function store(Request $request)

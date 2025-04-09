@@ -144,6 +144,7 @@ const registerCompany = async () => {
     fetchCompanies(); // Recarrega a lista de empresas após o registro
   } catch (error) {
     toast.error('Erro ao registrar empresa.');
+    console.log('Detalhe do erro:', error.response?.data);
   }
 };
 

@@ -33,6 +33,8 @@ class DataImportController extends Controller
                 'password_reset_tokens',
                 'companies',
                 'campaigns',
+                'roles',
+                'user_company_roles',
             ];
 
             $filteredTables = array_filter($tables, function ($table) use ($keyName, $excludedTables) {

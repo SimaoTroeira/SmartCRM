@@ -10,8 +10,15 @@ class Company extends Model
     use HasFactory;
 
 
-        protected $fillable = [
-            'name',
-            'sector',
-        ];
+    protected $fillable = [
+        'name',
+        'sector',
+    ];
+
+
+    public function userCompanyRoles()
+    {   
+        return $this->hasMany(UserCompanyRole::class);
+    }
+    
 }
