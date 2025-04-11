@@ -1,51 +1,76 @@
 <template>
-  <div>
-    <h2 class="text-xl font-semibold mb-4">As minhas empresas</h2>
+  <div class="company">
+    <!-- Título -->
+    <div v-if="roleLoaded">
+      <h2 v-if="roleLoaded" class="text-xl font-semibold mb-4">
+        {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'As Minhas Empresas:' }}
+      </h2>
 
-    <!-- Botão sempre visível, alinhado à direita -->
-    <div class="mb-4">
-      <button @click="showDialog = true" class="btn btn-primary">
-        Registar nova empresa
-      </button>
+      <!-- Botão de registrar empresa -->
+      <div v-if="roleLoaded && userRole !== 'SA'" class="mb-4">
+        <button @click="showDialog = true" class="btn btn-primary">
+          Registar nova empresa
+        </button>
+      </div>
+
+      <div v-if="roleLoaded && companies.length === 0" class="text-gray-500 mb-4">
+        Ainda não há empresas registradas.
+      </div>
+
+      <div v-else class="overflow-x-auto">
+        <table class="min-w-full table-auto border border-gray-200">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2 border">Nome</th>
+              <th class="px-4 py-2 border">Setor</th>
+              <th class="px-4 py-2 border">Rascunho</th>
+              <th class="px-4 py-2 border">Ações</th>
+              <th class="px-4 py-2 border">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="company in companies" :key="company.id" class="hover:bg-gray-50">
+              <td class="px-4 py-2 border">{{ company.name }}</td>
+              <td class="px-4 py-2 border">{{ company.sector }}</td>
+              <td class="px-4 py-2 border text-center">
+                <span :class="company.draft ? 'text-yellow-600' : 'text-green-600'">
+                  {{ company.draft ? 'Por terminar' : 'Terminado' }}
+                </span>
+              </td>
+              <td class="px-4 py-2 border text-center">
+                <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal(company.id)"
+                  class="btn-success text-white px-4 py-2 rounded mr-2">
+                  Aceitar
+                </button>
+                <button v-if="userRole === 'CA' && company.status === 'Inativo'" @click="openEditModal(company)"
+                  class="btn-edit text-white px-4 py-2 rounded mr-2">
+                  Editar
+                </button>
+                <button v-if="userRole === 'CA' && company.status === 'Inativo'" @click="openDeleteModal(company.id)"
+                  class="btn-remove text-white px-4 py-2 rounded">
+                  Apagar
+                </button>
+                <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openEditModal(company)"
+                  class="btn-edit text-white px-4 py-2 rounded mr-2">
+                  Editar
+                </button>
+                <button v-if="userRole === 'SA'" @click="openDeleteModal(company.id)"
+                  class="btn-remove text-white px-4 py-2 rounded">
+                  Apagar
+                </button>
+              </td>
+              <td class="px-4 py-2 border">
+                <span :class="company.status === 'Ativo' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'">
+                  {{ company.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Se não houver empresas -->
-    <div v-if="companies.length === 0" class="text-gray-500 mb-4">
-      Você não tem empresas ainda.
-    </div>
-
-    <!-- Se houver empresas -->
-    <div v-else class="overflow-x-auto">
-      <table class="min-w-full table-auto border border-gray-200">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 border">Nome</th>
-            <th class="px-4 py-2 border">Setor</th>
-            <th class="px-4 py-2 border">Ações</th> <!-- Coluna de ações -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="company in companies" :key="company.id" class="hover:bg-gray-50">
-            <td class="px-4 py-2 border">{{ company.name }}</td>
-            <td class="px-4 py-2 border">{{ company.sector }}</td>
-            <td class="px-4 py-2 border text-center">
-              <!-- Botão Editar com margem direita -->
-              <button @click="openEditModal(company)" class="btn-edit text-white px-4 py-2 rounded mr-4">
-                Editar
-              </button>
-              <!-- Botão Remover -->
-              <button @click="openDeleteModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
-                Apagar
-              </button>
-            </td>
-
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Dialog de registro -->
-    <div v-if="showDialog"
+    <div v-if="showDialog && userRole !== 'SA'"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
         :class="{ 'scale-100 opacity-100': showDialog, 'scale-95 opacity-0': !showDialog }">
@@ -59,6 +84,10 @@
             <label class="block font-medium">Setor</label>
             <input v-model="companyForm.sector" class="form-control" required />
           </div>
+          <div class="mb-3 flex items-center">
+            <input type="checkbox" id="draft" v-model="companyForm.draft" class="mr-2" />
+            <label for="draft" class="font-medium">Guardar como rascunho</label>
+          </div>
           <div class="flex justify-end gap-2">
             <button type="button" @click="showDialog = false" class="btn btn-secondary text-white">Cancelar</button>
             <button type="submit" class="btn btn-success text-white">Registar</button>
@@ -67,7 +96,6 @@
       </div>
     </div>
 
-    <!-- Modal de Edição -->
     <div v-if="showEditModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -82,6 +110,10 @@
             <label class="block font-medium">Setor</label>
             <input v-model="editCompany.sector" class="form-control" required />
           </div>
+          <div class="mb-3 flex items-center">
+            <input type="checkbox" id="edit-draft" v-model="editCompany.draft" class="mr-2" />
+            <label for="edit-draft" class="font-medium">Guardar como rascunho</label>
+          </div>
           <div class="flex justify-end gap-2">
             <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
             <button type="submit" class="btn btn-success">Guardar alterações</button>
@@ -90,7 +122,6 @@
       </div>
     </div>
 
-    <!-- Modal de Exclução -->
     <div v-if="showDeleteModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -99,6 +130,18 @@
         <div class="flex justify-end gap-2">
           <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
           <button type="button" @click="deleteCompany" class="btn btn-danger">Apagar</button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de Aceitação -->
+    <div v-if="showAcceptModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
+      <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
+        :class="{ 'scale-100 opacity-100': showAcceptModal, 'scale-95 opacity-0': !showAcceptModal }">
+        <h3 class="text-lg font-bold mb-4">Tem certeza que deseja aceitar o registo desta empresa?</h3>
+        <div class="flex justify-end gap-2">
+          <button type="button" @click="closeAcceptModal" class="btn btn-secondary">Cancelar</button>
+          <button type="button" @click="acceptCompany" class="btn btn-success">Aceitar</button>
         </div>
       </div>
     </div>
@@ -114,15 +157,40 @@ const toast = useToast();
 const showDialog = ref(false);
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
+const showAcceptModal = ref(false);
+const companyToAccept = ref(null);
 const companies = ref([]);
-const companyForm = ref({
-  name: '',
-  sector: ''
-});
+const companyForm = ref({ name: '', sector: '' });
 const editCompany = ref({});
 const companyToDelete = ref(null);
+const userRole = ref('');
+const roleLoaded = ref(false);
 
-// Função para carregar as empresas do backend
+// Atualiza empresas e papel do usuário
+const refreshAll = async () => {
+  await fetchCompanies();
+  await fetchUserRole();
+};
+
+const fetchUserRole = async () => {
+  try {
+    const res = await axios.get('http://127.0.0.1:8000/api/user');
+    const email = res.data.email;
+
+    if (email === 'admin@admin.com') {
+      userRole.value = 'SA';
+    } else {
+      const companiesRes = await axios.get('http://127.0.0.1:8000/api/companies');
+      const myCompanies = companiesRes.data;
+      userRole.value = myCompanies.length > 0 ? 'CA' : '';
+    }
+  } catch (error) {
+    console.error('Erro ao obter o papel do usuário:', error);
+  } finally {
+    roleLoaded.value = true; // <- só aqui mostramos os elementos baseados no papel
+  }
+};
+
 const fetchCompanies = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/companies');
@@ -134,70 +202,90 @@ const fetchCompanies = async () => {
   }
 };
 
-// Função para registrar uma nova empresa
 const registerCompany = async () => {
   try {
-    await axios.post('http://127.0.0.1:8000/api/companies', companyForm.value);
+    await axios.post('http://127.0.0.1:8000/api/companies', {
+      ...companyForm.value,
+      draft: companyForm.value.draft ? 1 : 0,
+    });
     toast.success('Empresa registrada com sucesso!');
     showDialog.value = false;
-    companyForm.value = { name: '', sector: '' };
-    fetchCompanies(); // Recarrega a lista de empresas após o registro
+    companyForm.value = { name: '', sector: '', draft: false };
+    await refreshAll();
   } catch (error) {
     toast.error('Erro ao registrar empresa.');
     console.log('Detalhe do erro:', error.response?.data);
   }
 };
 
-// Função para abrir o modal de edição
+const acceptCompany = async () => {
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/companies/${companyToAccept.value}/approve`);
+    toast.success('Empresa aceita com sucesso!');
+    await refreshAll();
+    closeAcceptModal();
+  } catch (error) {
+    toast.error('Erro ao aceitar empresa.');
+    console.error('Erro ao aceitar empresa:', error);
+  }
+};
+
 const openEditModal = (company) => {
   editCompany.value = { ...company };
   showEditModal.value = true;
 };
 
-// Função para fechar o modal de edição
 const closeEditModal = () => {
   showEditModal.value = false;
   editCompany.value = {};
 };
 
-// Função para atualizar a empresa
 const updateCompany = async () => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, editCompany.value);
+    await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, {
+      ...editCompany.value,
+      draft: editCompany.value.draft ? 1 : 0,
+    });
     toast.success('Empresa atualizada com sucesso!');
-    fetchCompanies(); // Recarrega a lista de empresas após a atualização
-    closeEditModal(); // Fecha o modal
+    await refreshAll();
+    closeEditModal();
   } catch (error) {
     toast.error('Erro ao atualizar empresa.');
   }
 };
 
-// Função para abrir o modal de exclusão
 const openDeleteModal = (companyId) => {
   companyToDelete.value = companyId;
   showDeleteModal.value = true;
 };
 
-// Função para fechar o modal de exclusão
 const closeDeleteModal = () => {
   showDeleteModal.value = false;
   companyToDelete.value = null;
 };
 
-// Função para excluir a empresa
 const deleteCompany = async () => {
   try {
     await axios.delete(`http://127.0.0.1:8000/api/companies/${companyToDelete.value}`);
     toast.success('Empresa excluída com sucesso!');
-    fetchCompanies(); // Recarrega a lista de empresas após a exclusão
-    closeDeleteModal(); // Fecha o modal
+    await refreshAll();
+    closeDeleteModal();
   } catch (error) {
     toast.error('Erro ao excluir empresa.');
   }
 };
 
-// Carrega as empresas no momento em que o componente é montado
-onMounted(fetchCompanies);
+const openAcceptModal = (companyId) => {
+  companyToAccept.value = companyId;
+  showAcceptModal.value = true;
+};
+
+const closeAcceptModal = () => {
+  companyToAccept.value = null;
+  showAcceptModal.value = false;
+};
+
+onMounted(refreshAll);
 </script>
 
 <style scoped>
@@ -347,5 +435,9 @@ onMounted(fetchCompanies);
 
 .transition-all {
   transition: all 0.3s ease-in-out;
+}
+
+.company {
+  padding: 20px;
 }
 </style>

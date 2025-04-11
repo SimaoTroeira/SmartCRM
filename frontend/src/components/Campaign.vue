@@ -132,6 +132,8 @@ const form = ref({
 const campaignToDelete = ref(null); // Para armazenar a campanha a ser excluída
 const selectedCampaignId = ref(null); // Variável para armazenar o ID da campanha selecionada
 
+const STATUS_ATIVO = 'ativo';
+
 
 // Carregar campanhas
 const fetchCampaigns = async () => {
@@ -158,6 +160,12 @@ const fetchCompanies = async () => {
 // Criar campanha
 const createCampaign = async () => {
   try {
+    const selectedCompany = companies.value.find(c => c.id === form.value.company_id);
+    if (!selectedCompany || selectedCompany.status !== STATUS_ATIVO) {
+      toast.error('Apenas empresas ativas podem ter campanhas.');
+      return;
+    }
+
     await axios.post('http://127.0.0.1:8000/api/campaigns', form.value);
     toast.success('Campanha criada com sucesso!');
     showDialog.value = false;
@@ -168,6 +176,7 @@ const createCampaign = async () => {
     console.error(error);
   }
 };
+
 
 // Editar campanha
 const editCampaign = (campaign) => {
@@ -235,23 +244,29 @@ onMounted(() => {
   background-color: #1470ea;
   color: white;
 }
+
 .btn-primary:hover {
   background-color: #004add;
 }
+
 .btn-success {
   background-color: #28a745;
   color: white;
 }
+
 .btn-success:hover {
   background-color: #218838;
 }
+
 .btn-secondary {
   background-color: #3659f4;
   color: white;
 }
+
 .btn-secondary:hover {
   background-color: #357be5;
 }
+
 .form-control {
   width: 100%;
   padding: 8px 12px;
@@ -264,43 +279,57 @@ onMounted(() => {
 .fixed {
   position: fixed;
 }
+
 .inset-0 {
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
+
 .bg-black {
-  background-color: rgba(0, 0, 0, 0.5); /* 50% de opacidade */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 50% de opacidade */
 }
+
 .flex {
   display: flex;
 }
+
 .items-center {
   align-items: center;
 }
+
 .justify-center {
   justify-content: center;
 }
+
 .z-50 {
   z-index: 50;
 }
+
 .transition-all {
   transition: all 0.3s ease-in-out;
 }
+
 .duration-300 {
   transition-duration: 300ms;
 }
+
 .ease-in-out {
   transition-timing-function: ease-in-out;
 }
+
 .max-w-lg {
-  max-width: 32rem; /* 512px */
+  max-width: 32rem;
+  /* 512px */
 }
 
 /* Garantir borda arredondada e visível nas modais */
 .bg-white {
-  border-radius: 12px; /* Aumentando o arredondamento */
-  border: 30px solid rgb(255, 255, 255); /* Borda de 9px */
+  border-radius: 12px;
+  /* Aumentando o arredondamento */
+  border: 30px solid rgb(255, 255, 255);
+  /* Borda de 9px */
 }
 </style>

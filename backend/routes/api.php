@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/available-tables', [DataImportController::class, 'getAvailableTables']);
     Route::get('/table-columns/{table}', [DataImportController::class, 'getTableColumns']);
-    
+
     //data mapping
     Route::post('/import/mapped-data', [DataImportController::class, 'storeMappedData']);
     Route::get('/tables/{tableName}/data', [DataImportController::class, 'getUserData']);
@@ -44,6 +44,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/companies', [CompanyController::class, 'store']);
     Route::put('/companies/{id}', [CompanyController::class, 'update']);
     Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
+    Route::middleware(['auth:sanctum', 'is_superadmin'])->group(function () {
+        Route::post('/companies/{id}/approve', [CompanyController::class, 'approveCompany']);
+        Route::delete('/companies/{id}/reject', [CompanyController::class, 'rejectCompany']);
+    });
+    
+
 
     //campaigns
     Route::get('/campaigns', [CampaignController::class, 'index']);

@@ -12,70 +12,66 @@ class CompanyController extends Controller
     public function index()
     {
         try {
-            // Recupera o usuário logado
             $user = Auth::user();
-    
-            // Verifica se o usuário é um SuperAdmin (SA)
+
             if ($user->hasRole('SA')) {
-                // Se for SuperAdmin, retorna todas as empresas
                 $companies = Company::all();
             } else {
-                // Caso contrário, retorna apenas as empresas associadas ao usuário
                 $companies = Company::whereHas('userCompanyRoles', function ($query) use ($user) {
                     $query->where('user_id', $user->id)
-                          ->whereNotNull('company_id'); // Ignora registros com company_id NULL
+                        ->whereNotNull('company_id');
                 })->get();
             }
-    
-            // Retorna a resposta com as empresas
+
             return response()->json($companies);
         } catch (\Exception $e) {
-            // Caso ocorra um erro, retorna a mensagem de erro
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
 
     public function store(Request $request)
     {
-        // Validação
+        // Bloqueia Super Admin de registar empresas
+        if (Auth::user()->hasRole('SA')) {
+            return response()->json(['error' => 'Super Admin não pode criar empresas.'], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sector' => 'required|string|max:255',
+            'draft' => 'nullable|boolean',
         ]);
 
-        // Verifica se não existem empresas
         if (Company::count() === 0) {
-            // Resetar o AUTO_INCREMENT para 1
             DB::statement('ALTER TABLE companies AUTO_INCREMENT = 1');
         }
 
-        DB::beginTransaction(); // Inicia a transação
+        DB::beginTransaction();
 
         try {
-            // Criação da empresa
             $company = Company::create([
                 'name' => $validated['name'],
                 'sector' => $validated['sector'],
+                'draft' => $validated['draft'] ?? 0,
+                'status' => 'Inativo',
             ]);
 
-            // Regista a relação do usuário com a empresa (role CA)
             DB::table('user_company_roles')->insert([
                 'user_id' => Auth::id(),
                 'company_id' => $company->id,
-                'role_id' => $this->getRoleId('CA'), // Método para obter o ID da role CA
+                'role_id' => $this->getRoleId('CA'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            DB::commit(); // Confirma a transação
+            DB::commit();
 
             return response()->json([
                 'message' => 'Empresa criada com sucesso.',
                 'company' => $company
             ], 201);
         } catch (\Exception $e) {
-            DB::rollBack(); // Reverte a transação em caso de erro
+            DB::rollBack();
             return response()->json(['error' => 'Erro ao criar empresa: ' . $e->getMessage()], 500);
         }
     }
@@ -86,14 +82,32 @@ class CompanyController extends Controller
         return $role ? $role->id : null;
     }
 
-
     public function update(Request $request, $id)
     {
-        $company = Company::findOrFail($id); // sem filtrar por Auth
+        $user = Auth::user();
+        $company = Company::findOrFail($id);
+
+        if ($company->status === 'Ativo') {
+            if (!$user->hasRole('SA')) {
+                return response()->json(['error' => 'Apenas o SuperAdmin pode editar empresas ativas.'], 403);
+            }
+        } else {
+            // empresa inativa
+            $hasAccess = DB::table('user_company_roles')
+                ->where('user_id', $user->id)
+                ->where('company_id', $id)
+                ->where('role_id', $this->getRoleId('CA'))
+                ->exists();
+
+            if (!$hasAccess) {
+                return response()->json(['error' => 'Apenas o Company Admin pode editar empresas inativas.'], 403);
+            }
+        }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sector' => 'required|string|max:255',
+            'draft' => 'nullable|boolean',
         ]);
 
         $company->update($validated);
@@ -103,9 +117,113 @@ class CompanyController extends Controller
 
     public function destroy($id)
     {
-        $company = Company::findOrFail($id); // sem filtrar por Auth
-        $company->delete();
+        $user = Auth::user();
+        $company = Company::findOrFail($id);
 
-        return response()->json(['message' => 'Empresa removida com sucesso.']);
+        // Se for SA, tem acesso total, mas depende do estado da empresa
+        if ($user->hasRole('SA')) {
+            if ($company->status === 'Ativo') {
+                // Soft delete
+                $company->delete();
+                return response()->json(['message' => 'Empresa desativada (soft delete).']);
+            } else {
+                // Hard delete - remove relações também
+                DB::table('user_company_roles')
+                    ->where('company_id', $id)
+                    ->delete();
+
+                $company->forceDelete();
+                return response()->json(['message' => 'Empresa removida permanentemente (hard delete).']);
+            }
+        }
+
+        // Se não for SA, só pode apagar se for CA e a empresa estiver inativa
+        if ($company->status !== 'Inativo') {
+            return response()->json(['error' => 'Apenas empresas inativas podem ser apagadas por Company Admin.'], 403);
+        }
+
+        $hasAccess = DB::table('user_company_roles')
+            ->where('user_id', $user->id)
+            ->where('company_id', $id)
+            ->where('role_id', $this->getRoleId('CA'))
+            ->exists();
+
+        if (!$hasAccess) {
+            return response()->json(['error' => 'Apenas o Company Admin pode apagar empresas inativas.'], 403);
+        }
+
+        // Hard delete e remoção da linha de relação
+        DB::table('user_company_roles')
+            ->where('company_id', $id)
+            ->delete();
+
+        $company->forceDelete();
+        return response()->json(['message' => 'Empresa removida permanentemente (hard delete).']);
+    }
+
+    public function approveCompany($id)
+    {
+        $company = Company::findOrFail($id);
+    
+        $company->status = 'Ativo';
+        $company->save();
+    
+        // Verifica se já existe um user com role CA associado a esta empresa
+        $existingCA = DB::table('user_company_roles')
+            ->where('company_id', $company->id)
+            ->where('role_id', $this->getRoleId('CA'))
+            ->first();
+    
+        // Se não existir, busca o primeiro user ligado à empresa (quem criou) e atribui a role CA
+        if (!$existingCA) {
+            $creator = DB::table('user_company_roles')
+                ->where('company_id', $company->id)
+                ->first();
+    
+            if ($creator) {
+                DB::table('user_company_roles')->updateOrInsert(
+                    [
+                        'user_id' => $creator->user_id,
+                        'company_id' => $company->id,
+                    ],
+                    [
+                        'role_id' => $this->getRoleId('CA'),
+                        'updated_at' => now(),
+                        'created_at' => now(),
+                    ]
+                );
+            }
+        }
+    
+        return response()->json(['message' => 'Empresa aprovada com sucesso.']);
+    }
+    
+
+    public function rejectCompany($id)
+    {
+        $company = Company::findOrFail($id);
+        $company->delete();
+        return response()->json(['message' => 'Empresa rejeitada e removida.']);
+    }
+
+    public function getUserRole(Request $request, $companyId)
+    {
+        try {
+            $user = Auth::user();
+
+            $userRole = DB::table('user_company_roles')
+                ->where('user_id', $user->id)
+                ->where('company_id', $companyId)
+                ->first();
+
+            if ($userRole) {
+                $role = \App\Models\Role::find($userRole->role_id);
+                return response()->json(['role' => $role->code]);
+            } else {
+                return response()->json(['error' => 'Nenhum papel encontrado'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
