@@ -60,7 +60,8 @@
                 </button>
               </td>
               <td class="px-4 py-2 border">
-                <span :class="company.status === 'Ativo' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'">
+                <span
+                  :class="company.status === 'Ativo' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'">
                   {{ company.status }}
                 </span>
               </td>
@@ -231,9 +232,13 @@ const acceptCompany = async () => {
 };
 
 const openEditModal = (company) => {
-  editCompany.value = { ...company };
+  editCompany.value = {
+    ...company,
+    draft: !!company.draft  // força a ser booleano
+  };
   showEditModal.value = true;
 };
+
 
 const closeEditModal = () => {
   showEditModal.value = false;
@@ -243,8 +248,9 @@ const closeEditModal = () => {
 const updateCompany = async () => {
   try {
     await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, {
-      ...editCompany.value,
-      draft: editCompany.value.draft ? 1 : 0,
+      name: editCompany.value.name,
+      sector: editCompany.value.sector,
+      draft: editCompany.value.draft ? 1 : 0, // sempre enviado
     });
     toast.success('Empresa atualizada com sucesso!');
     await refreshAll();

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="campaign">
     <h2 class="text-xl font-semibold mb-4">As minhas campanhas</h2>
 
     <!-- Botão de criar campanha -->
     <div class="mb-4">
-      <button @click="showDialog = true" class="btn btn-primary" :disabled="companies.length === 0"
-        :class="{ 'opacity-50 cursor-not-allowed': companies.length === 0 }">
+      <button @click="showDialog = true" class="btn btn-primary" :disabled="!hasActiveCompanies"
+        :class="{ 'opacity-50 cursor-not-allowed': !hasActiveCompanies }">
         Criar nova campanha
       </button>
     </div>
@@ -57,7 +57,8 @@
             <label class="block font-medium">Empresa</label>
             <select v-model="form.company_id" class="form-control" required>
               <option disabled value="">Selecione uma empresa</option>
-              <option v-for="company in companies" :key="company.id" :value="company.id">
+              <option v-for="company in companies.filter(c => c.status === 'Ativo')" :key="company.id"
+                :value="company.id">
                 {{ company.name }}
               </option>
             </select>
@@ -114,7 +115,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
 
@@ -132,7 +133,11 @@ const form = ref({
 const campaignToDelete = ref(null); // Para armazenar a campanha a ser excluída
 const selectedCampaignId = ref(null); // Variável para armazenar o ID da campanha selecionada
 
-const STATUS_ATIVO = 'ativo';
+const STATUS_ATIVO = 'Ativo';
+
+const hasActiveCompanies = computed(() => {
+  return companies.value.some(company => company.status === 'Ativo');
+});
 
 
 // Carregar campanhas
@@ -331,5 +336,8 @@ onMounted(() => {
   /* Aumentando o arredondamento */
   border: 30px solid rgb(255, 255, 255);
   /* Borda de 9px */
+}
+.campaign {
+  padding: 20px;
 }
 </style>
