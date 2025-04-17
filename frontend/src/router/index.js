@@ -9,6 +9,7 @@ import { useAuthStore } from '../stores/auth';
 import ImportData from '../components/ImportData.vue';
 import Company from '../components/Company.vue';
 import Campaign from '../components/Campaign.vue';
+import CompanyDetails from '../components/CompanyDetails.vue';
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     name: 'Campaigns',
     component: Campaign,
   },
+  {
+    path: '/companies/:id',
+    name: 'CompanyDetails',
+    component: CompanyDetails,
+  },  
   // Adicionar outras rotas aqui
 ];
 

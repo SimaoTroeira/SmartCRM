@@ -24,20 +24,26 @@
               <th class="px-4 py-2 border">Nome</th>
               <th class="px-4 py-2 border">Setor</th>
               <th class="px-4 py-2 border">Rascunho</th>
-              <th class="px-4 py-2 border">Ações</th>
+              <!-- <th class="px-4 py-2 border">Ações</th> -->
               <th class="px-4 py-2 border">Estado</th>
+              <th v-if="userRole === 'SA'" class="px-4 py-2 border">Ações</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="company in companies" :key="company.id" class="hover:bg-gray-50">
-              <td class="px-4 py-2 border">{{ company.name }}</td>
+              <td class="px-4 py-2 border">
+                <router-link :to="{ name: 'CompanyDetails', params: { id: company.id } }"
+                  class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
+                  {{ company.name }}
+                </router-link>
+              </td>
               <td class="px-4 py-2 border">{{ company.sector }}</td>
               <td class="px-4 py-2 border text-center">
                 <span :class="company.draft ? 'text-yellow-600' : 'text-green-600'">
                   {{ company.draft ? 'Por terminar' : 'Terminado' }}
                 </span>
               </td>
-              <td class="px-4 py-2 border text-center">
+              <!-- <td class="px-4 py-2 border text-center">
                 <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal(company.id)"
                   class="btn-success text-white px-4 py-2 rounded mr-2">
                   Aceitar
@@ -58,12 +64,22 @@
                   class="btn-remove text-white px-4 py-2 rounded">
                   Apagar
                 </button>
-              </td>
+              </td> -->
+
               <td class="px-4 py-2 border">
                 <span
                   :class="company.status === 'Ativo' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'">
                   {{ company.status }}
                 </span>
+              </td>
+              <td v-if="userRole === 'SA'" class="px-4 py-2 border text-center">
+                <button v-if="company.status === 'Inativo'" @click="openAcceptModal(company.id)"
+                  class="btn-success text-white px-4 py-2 rounded mr-2">
+                  Aceitar
+                </button>
+                <button @click="openDeleteModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
+                  Apagar
+                </button>
               </td>
             </tr>
           </tbody>

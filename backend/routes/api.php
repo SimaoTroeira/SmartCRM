@@ -48,8 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/companies/{id}/approve', [CompanyController::class, 'approveCompany']);
         Route::delete('/companies/{id}/reject', [CompanyController::class, 'rejectCompany']);
     });
-    
-
+    Route::get('/companies/{id}', [CompanyController::class, 'show']);
 
     //campaigns
     Route::get('/campaigns', [CampaignController::class, 'index']);

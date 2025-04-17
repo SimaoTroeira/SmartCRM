@@ -21,4 +21,9 @@ class Company extends Model
     {
         return $this->hasMany(UserCompanyRole::class);
     }
+
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
 }

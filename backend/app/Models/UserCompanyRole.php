@@ -10,19 +10,18 @@ class UserCompanyRole extends Model
     use HasFactory;
 
     public function company()
-{
-    return $this->belongsTo(Company::class);
-}
 
-public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    {
+        return $this->belongsTo(Company::class);
+    }
 
-public function role()
-{
-    return $this->belongsTo(Role::class, 'role_id');
-}
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

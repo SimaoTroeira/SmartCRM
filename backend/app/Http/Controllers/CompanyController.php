@@ -164,22 +164,24 @@ class CompanyController extends Controller
     public function approveCompany($id)
     {
         $company = Company::findOrFail($id);
+
     
         $company->status = 'Ativo';
         $company->save();
     
+
         // Verifica se já existe um user com role CA associado a esta empresa
         $existingCA = DB::table('user_company_roles')
             ->where('company_id', $company->id)
             ->where('role_id', $this->getRoleId('CA'))
             ->first();
-    
+
         // Se não existir, busca o primeiro user ligado à empresa (quem criou) e atribui a role CA
         if (!$existingCA) {
             $creator = DB::table('user_company_roles')
                 ->where('company_id', $company->id)
                 ->first();
-    
+
             if ($creator) {
                 DB::table('user_company_roles')->updateOrInsert(
                     [
@@ -225,5 +227,16 @@ class CompanyController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function show($id)
+    {
+        $company = Company::with([
+            'campaigns',
+            'userCompanyRoles.user',
+            'userCompanyRoles.role'
+        ])->findOrFail($id);
+
+        return response()->json($company);
     }
 }
