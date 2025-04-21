@@ -9,8 +9,14 @@ class UserCompanyRole extends Model
 {
     use HasFactory;
 
-    public function company()
+    // Permitir atribuição em massa
+    protected $fillable = [
+        'user_id',
+        'company_id',
+        'role_id',
+    ];
 
+    public function company()
     {
         return $this->belongsTo(Company::class);
     }
