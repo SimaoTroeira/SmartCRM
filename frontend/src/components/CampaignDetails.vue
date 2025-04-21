@@ -1,5 +1,10 @@
 <template>
-    <div class="campaign p-4">
+    <div class="campaign p-4 relative">
+        <!-- Botão fechar -->
+        <button @click="goBack" class="close-button text-gray-600 hover:text-red-600">
+            ×
+        </button>
+
         <h2 class="text-2xl font-bold mb-4 text-left">
             {{ campaign?.name || 'Detalhes da Campanha' }}
         </h2>
@@ -23,45 +28,40 @@
                 <button @click="openEditModal" class="btn-edit">Editar</button>
                 <button @click="openDeleteModal" class="btn-remove">Apagar</button>
             </div>
-
         </div>
 
         <div v-else>
             <p>A carregar detalhes da campanha...</p>
         </div>
 
-        <!-- Modal de Edição -->
-        <div v-if="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-lg shadow-md w-96">
-                <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
-                <form @submit.prevent="updateCampaign">
-                    <div class="mb-3">
-                        <label class="block font-medium">Título</label>
-                        <input v-model="form.name" class="form-control w-full border px-2 py-1" required />
-                    </div>
-                    <div class="mb-3">
-                        <label class="block font-medium">Descrição</label>
-                        <textarea v-model="form.description" class="form-control w-full border px-2 py-1"
-                            required></textarea>
-                    </div>
-                    <div class="flex justify-end gap-2">
-                        <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar alterações</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal de Exclusão -->
-        <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-lg shadow-md w-96">
-                <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
-                <div class="flex justify-end gap-2">
-                    <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
-                    <button type="button" @click="deleteCampaign" class="btn btn-danger">Apagar</button>
+        <!-- Dialog de Edição -->
+        <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+            <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
+            <form @submit.prevent="updateCampaign">
+                <div class="mb-3">
+                    <label class="block font-medium">Título</label>
+                    <input v-model="form.name" class="form-control w-full border px-2 py-1" required />
                 </div>
+                <div class="mb-3">
+                    <label class="block font-medium">Descrição</label>
+                    <textarea v-model="form.description" class="form-control w-full border px-2 py-1"
+                        required></textarea>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar alterações</button>
+                </div>
+            </form>
+        </dialog>
+
+        <!-- Dialog de Exclução -->
+        <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+            <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
+            <div class="flex justify-end gap-2">
+                <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
+                <button type="button" @click="confirmDelete" class="btn btn-danger">Apagar</button>
             </div>
-        </div>
+        </dialog>
     </div>
 </template>
 
@@ -76,57 +76,51 @@ const router = useRouter();
 const toast = useToast();
 
 const campaign = ref(null);
-const showEditModal = ref(false);
-const showDeleteModal = ref(false);
 const form = ref({ name: '', description: '' });
+const editDialog = ref(null);
+const deleteDialog = ref(null);
 
-const formatDate = (date) => {
-    return date ? new Date(date).toLocaleDateString() : 'Sem data';
+const goBack = () => {
+    router.push('/campaigns');
 };
+
+const formatDate = date => date
+    ? new Date(date).toLocaleDateString()
+    : 'Sem data';
 
 const fetchCampaign = async () => {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/campaigns/${route.params.id}`);
-        campaign.value = response.data;
-        form.value = { name: campaign.value.name, description: campaign.value.description };
-    } catch (error) {
+        const { data } = await axios.get(`http://127.0.0.1:8000/api/campaigns/${route.params.id}`);
+        campaign.value = data;
+        form.value = { name: data.name, description: data.description };
+    } catch {
         toast.error('Erro ao carregar campanha.');
     }
 };
 
-const openEditModal = () => {
-    showEditModal.value = true;
-};
-
-const closeEditModal = () => {
-    showEditModal.value = false;
-};
+const openEditModal = () => editDialog.value.showModal();
+const closeEditModal = () => editDialog.value.close();
+const openDeleteModal = () => deleteDialog.value.showModal();
+const closeDeleteModal = () => deleteDialog.value.close();
 
 const updateCampaign = async () => {
     try {
         await axios.put(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}`, form.value);
         toast.success('Campanha atualizada com sucesso!');
-        showEditModal.value = false;
+        closeEditModal();
         await fetchCampaign();
-    } catch (error) {
+    } catch {
         toast.error('Erro ao atualizar campanha.');
     }
 };
 
-const openDeleteModal = () => {
-    showDeleteModal.value = true;
-};
-
-const closeDeleteModal = () => {
-    showDeleteModal.value = false;
-};
-
-const deleteCampaign = async () => {
+const confirmDelete = async () => {
     try {
         await axios.delete(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}`);
         toast.success('Campanha excluída com sucesso!');
-        router.push({ name: 'CampaignList' });
-    } catch (error) {
+        closeDeleteModal();
+        router.push('/campaigns'); 
+    } catch {
         toast.error('Erro ao excluir campanha.');
     }
 };
@@ -139,6 +133,23 @@ onMounted(fetchCampaign);
     padding: 20px;
     max-width: 800px;
     margin-left: 0;
+}
+
+.close-button {
+    position: absolute;
+    top: 2rem;
+    right: 15rem;
+    font-size: 4rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit,
+.btn-remove {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
 }
 
 .btn-edit {
@@ -157,5 +168,14 @@ onMounted(fetchCampaign);
 
 .btn-remove:hover {
     background-color: #c82333;
+}
+
+dialog {
+  border-radius: 12px;
+  border: 8px solid #ffffff;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
 }
 </style>

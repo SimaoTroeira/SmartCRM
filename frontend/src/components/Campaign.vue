@@ -1,118 +1,123 @@
 <template>
   <div class="campaign">
-    <h2 class="text-xl font-semibold mb-4">As minhas campanhas</h2>
+    <!-- Só mostramos título / botão / mensagem quando já soubermos o papel -->
+    <div v-if="roleLoaded">
+      <!-- Título dinâmico -->
+      <h2 class="text-xl font-semibold mb-4">
+        {{ userRole === 'SA' ? 'Painel de Administração de Campanhas:' : 'As Minhas Campanhas:' }}
+      </h2>
 
-    <!-- Botão de criar campanha -->
-    <div class="mb-4">
-      <button @click="showDialog = true" class="btn btn-primary" :disabled="!hasActiveCompanies"
-        :class="{ 'opacity-50 cursor-not-allowed': !hasActiveCompanies }">
-        Criar nova campanha
-      </button>
-    </div>
+      <!-- Botão de criar campanha (só para não-SA) -->
+      <div v-if="userRole !== 'SA'" class="mb-4">
+        <button @click="showDialog = true" class="btn btn-primary" :disabled="!hasActiveCompanies"
+          :class="{ 'opacity-50 cursor-not-allowed': !hasActiveCompanies }">
+          Criar nova campanha
+        </button>
+      </div>
 
-    <!-- Mensagem caso não haja campanhas -->
-    <div v-if="campaigns.length === 0" class="text-gray-500 mb-4">
-      Você não tem campanhas ainda.
-    </div>
+      <!-- Mensagem caso não haja campanhas -->
+      <div v-if="roleLoaded && campaigns.length === 0" class="text-gray-500 mb-4">
+        Ainda não há campanhas registradas.
+      </div>
 
-    <!-- Tabela de campanhas -->
-    <div v-else class="overflow-x-auto">
-      <table class="min-w-full table-auto border border-gray-200">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 border">Título</th>
-            <th class="px-4 py-2 border">Descrição</th>
-            <th class="px-4 py-2 border">Empresa</th>
-            <!-- <th class="px-4 py-2 border">Ações</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="campaign in campaigns" :key="campaign.id" class="hover:bg-gray-50">
-            <td class="px-4 py-2 border">
-              <router-link :to="{ name: 'CampaignDetails', params: { id: campaign.id } }"
-                class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
-                {{ campaign.name }}
-              </router-link>
-            </td>
-            <td class="px-4 py-2 border">{{ campaign.description }}</td>
-            <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
-            <!-- <td class="px-4 py-2 border text-center">
+      <!-- Tabela de campanhas (aparece quando há campanhas) -->
+      <div v-else-if="campaigns.length > 0" class="overflow-x-auto">
+        <table class="min-w-full table-auto border border-gray-200">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2 border">Título</th>
+              <th class="px-4 py-2 border">Descrição</th>
+              <th class="px-4 py-2 border">Empresa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="campaign in campaigns" :key="campaign.id" class="hover:bg-gray-50">
+              <td class="px-4 py-2 border">
+                <router-link :to="{ name: 'CampaignDetails', params: { id: campaign.id } }"
+                  class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
+                  {{ campaign.name }}
+                </router-link>
+              </td>
+              <td class="px-4 py-2 border">{{ campaign.description }}</td>
+              <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
+              <!-- <td class="px-4 py-2 border text-center">
               <button @click="editCampaign(campaign)" class="btn btn-secondary">Editar</button>
               <button @click="confirmDeleteCampaign(campaign.id)" class="btn btn-danger">Apagar</button>
             </td> -->
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Modal de criar campanha -->
-    <div v-if="showDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
-        <h3 class="text-lg font-bold mb-4">Criar nova campanha</h3>
-        <form @submit.prevent="createCampaign">
-          <div class="mb-3">
-            <label class="block font-medium">Título</label>
-            <input v-model="form.name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label class="block font-medium">Descrição</label>
-            <textarea v-model="form.description" class="form-control" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label class="block font-medium">Empresa</label>
-            <select v-model="form.company_id" class="form-control" required>
-              <option disabled value="">Selecione uma empresa</option>
-              <option v-for="company in companies.filter(c => c.status === 'Ativo')" :key="company.id"
-                :value="company.id">
-                {{ company.name }}
-              </option>
-            </select>
-          </div>
-          <div class="flex justify-end gap-2">
-            <button type="button" @click="showDialog = false" class="btn btn-secondary">Cancelar</button>
-            <button type="submit" class="btn btn-success">Criar</button>
-          </div>
-        </form>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
 
-    <!-- Modal de Edição -->
-    <div v-if="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
-        <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
-        <form @submit.prevent="updateCampaign">
-          <div class="mb-3">
-            <label class="block font-medium">Título</label>
-            <input v-model="form.name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label class="block font-medium">Descrição</label>
-            <textarea v-model="form.description" class="form-control" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label class="block font-medium">Empresa</label>
-            <select v-model="form.company_id" class="form-control" required>
-              <option disabled value="">Selecione uma empresa</option>
-              <option v-for="company in companies" :key="company.id" :value="company.id">
-                {{ company.name }}
-              </option>
-            </select>
-          </div>
-          <div class="flex justify-end gap-2">
-            <button type="button" @click="showEditModal = false" class="btn btn-secondary">Cancelar</button>
-            <button type="submit" class="btn btn-success">Salvar alterações</button>
-          </div>
-        </form>
+      <!-- Modal de criar campanha -->
+      <div v-if="showDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+          <h3 class="text-lg font-bold mb-4">Criar nova campanha</h3>
+          <form @submit.prevent="createCampaign">
+            <div class="mb-3">
+              <label class="block font-medium">Título</label>
+              <input v-model="form.name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label class="block font-medium">Descrição</label>
+              <textarea v-model="form.description" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="block font-medium">Empresa</label>
+              <select v-model="form.company_id" class="form-control" required>
+                <option disabled value="">Selecione uma empresa</option>
+                <option v-for="company in companies.filter(c => c.status === 'Ativo')" :key="company.id"
+                  :value="company.id">
+                  {{ company.name }}
+                </option>
+              </select>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button type="button" @click="showDialog = false" class="btn btn-secondary">Cancelar</button>
+              <button type="submit" class="btn btn-success">Criar</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
 
-    <!-- Modal de Exclusão -->
-    <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
-        <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
-        <div class="flex justify-end gap-2">
-          <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
-          <button type="button" @click="deleteCampaign" class="btn btn-danger">Apagar</button>
+      <!-- Modal de Edição -->
+      <div v-if="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
+          <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
+          <form @submit.prevent="updateCampaign">
+            <div class="mb-3">
+              <label class="block font-medium">Título</label>
+              <input v-model="form.name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label class="block font-medium">Descrição</label>
+              <textarea v-model="form.description" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="block font-medium">Empresa</label>
+              <select v-model="form.company_id" class="form-control" required>
+                <option disabled value="">Selecione uma empresa</option>
+                <option v-for="company in companies" :key="company.id" :value="company.id">
+                  {{ company.name }}
+                </option>
+              </select>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button type="button" @click="showEditModal = false" class="btn btn-secondary">Cancelar</button>
+              <button type="submit" class="btn btn-success">Salvar alterações</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal de Exclusão -->
+      <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
+          <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
+          <div class="flex justify-end gap-2">
+            <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
+            <button type="button" @click="deleteCampaign" class="btn btn-danger">Apagar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -131,6 +136,8 @@ const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const campaigns = ref([]);
 const companies = ref([]);
+const userRole = ref('');
+const roleLoaded = ref(false);
 const form = ref({
   name: '',
   description: '',
@@ -145,6 +152,16 @@ const hasActiveCompanies = computed(() => {
   return companies.value.some(company => company.status === 'Ativo');
 });
 
+async function fetchUserRole() {
+  try {
+    const res = await axios.get('http://127.0.0.1:8000/api/user');
+    userRole.value = res.data.email === 'admin@admin.com' ? 'SA' : 'CA';
+  } catch {
+    toast.error('Erro ao obter papel do usuário.');
+  } finally {
+    roleLoaded.value = true;
+  }
+}
 
 // Carregar campanhas
 const fetchCampaigns = async () => {
@@ -246,6 +263,7 @@ const closeDeleteModal = () => {
 onMounted(() => {
   fetchCompanies();
   fetchCampaigns();
+  fetchUserRole();
 });
 </script>
 
@@ -343,6 +361,7 @@ onMounted(() => {
   border: 30px solid rgb(255, 255, 255);
   /* Borda de 9px */
 }
+
 .campaign {
   padding: 20px;
 }

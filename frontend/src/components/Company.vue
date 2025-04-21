@@ -5,15 +5,34 @@
       <h2 v-if="roleLoaded" class="text-xl font-semibold mb-4">
         {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'As Minhas Empresas:' }}
       </h2>
+      <!-- Filtros para o SuperAdmin -->
+      <div v-if="userRole === 'SA'" class="filters-container mb-4 flex gap-4">
+        <div>
+          <label class="block font-medium mb-1">Filtrar por estado</label>
+          <select v-model="filterState" class="form-control">
+            <option value="Todos">Todos</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-medium mb-1">Filtrar por rascunho</label>
+          <select v-model="filterDraft" class="form-control">
+            <option value="Todos">Todos</option>
+            <option value="Terminado">Terminado</option>
+            <option value="Por terminar">Por terminar</option>
+          </select>
+        </div>
+      </div>
 
       <!-- Botão de registrar empresa -->
-      <div v-if="roleLoaded && userRole !== 'SA'" class="mb-4">
+      <div v-if="roleLoaded && userRole !== 'SA'" class="mb-4 ">
         <button @click="showDialog = true" class="btn btn-primary">
           Registar nova empresa
         </button>
       </div>
 
-      <div v-if="roleLoaded && companies.length === 0" class="text-gray-500 mb-4">
+      <div v-if="roleLoaded && filteredCompanies.length === 0" class="text-gray-500 mb-4">
         Ainda não há empresas registradas.
       </div>
 
@@ -24,13 +43,12 @@
               <th class="px-4 py-2 border">Nome</th>
               <th class="px-4 py-2 border">Setor</th>
               <th class="px-4 py-2 border">Rascunho</th>
-              <!-- <th class="px-4 py-2 border">Ações</th> -->
               <th class="px-4 py-2 border">Estado</th>
               <th v-if="userRole === 'SA'" class="px-4 py-2 border">Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="company in companies" :key="company.id" class="hover:bg-gray-50">
+            <tr v-for="company in filteredCompanies" :key="company.id" class="hover:bg-gray-50">
               <td class="px-4 py-2 border">
                 <router-link :to="{ name: 'CompanyDetails', params: { id: company.id } }"
                   class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
@@ -43,29 +61,6 @@
                   {{ company.draft ? 'Por terminar' : 'Terminado' }}
                 </span>
               </td>
-              <!-- <td class="px-4 py-2 border text-center">
-                <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal(company.id)"
-                  class="btn-success text-white px-4 py-2 rounded mr-2">
-                  Aceitar
-                </button>
-                <button v-if="userRole === 'CA' && company.status === 'Inativo'" @click="openEditModal(company)"
-                  class="btn-edit text-white px-4 py-2 rounded mr-2">
-                  Editar
-                </button>
-                <button v-if="userRole === 'CA' && company.status === 'Inativo'" @click="openDeleteModal(company.id)"
-                  class="btn-remove text-white px-4 py-2 rounded">
-                  Apagar
-                </button>
-                <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openEditModal(company)"
-                  class="btn-edit text-white px-4 py-2 rounded mr-2">
-                  Editar
-                </button>
-                <button v-if="userRole === 'SA'" @click="openDeleteModal(company.id)"
-                  class="btn-remove text-white px-4 py-2 rounded">
-                  Apagar
-                </button>
-              </td> -->
-
               <td class="px-4 py-2 border">
                 <span
                   :class="company.status === 'Ativo' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'">
@@ -166,7 +161,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
 
@@ -182,12 +177,22 @@ const editCompany = ref({});
 const companyToDelete = ref(null);
 const userRole = ref('');
 const roleLoaded = ref(false);
+const filterState = ref(localStorage.getItem('filterState') || 'Todos');
+const filterDraft = ref(localStorage.getItem('filterDraft') || 'Todos');
 
 // Atualiza empresas e papel do usuário
 const refreshAll = async () => {
   await fetchCompanies();
   await fetchUserRole();
 };
+
+watch(filterState, (newVal) => {
+  localStorage.setItem('filterState', newVal);
+});
+
+watch(filterDraft, (newVal) => {
+  localStorage.setItem('filterDraft', newVal);
+});
 
 const fetchUserRole = async () => {
   try {
@@ -306,6 +311,18 @@ const closeAcceptModal = () => {
   companyToAccept.value = null;
   showAcceptModal.value = false;
 };
+
+const filteredCompanies = computed(() => {
+  return companies.value.filter(company => {
+    const matchState =
+      filterState.value === 'Todos' || company.status === filterState.value;
+    const matchDraft =
+      filterDraft.value === 'Todos' ||
+      (filterDraft.value === 'Terminado' && company.draft === 0) ||
+      (filterDraft.value === 'Por terminar' && company.draft === 1);
+    return matchState && matchDraft;
+  });
+});
 
 onMounted(refreshAll);
 </script>
@@ -462,4 +479,11 @@ onMounted(refreshAll);
 .company {
   padding: 20px;
 }
+
+.filters-container {
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: 0;
+}
+
 </style>
