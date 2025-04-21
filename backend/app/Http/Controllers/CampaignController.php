@@ -74,8 +74,10 @@ class CampaignController extends Controller
 
     public function show(Campaign $campaign)
     {
+        $campaign->load('company'); //pag campanhas
         return response()->json($campaign);
     }
+
 
     public function update(Request $request, Campaign $campaign)
     {

@@ -10,6 +10,7 @@ import ImportData from '../components/ImportData.vue';
 import Company from '../components/Company.vue';
 import Campaign from '../components/Campaign.vue';
 import CompanyDetails from '../components/CompanyDetails.vue';
+import CampaignDetails from '../components/CampaignDetails.vue';
 
 const routes = [
   {
@@ -62,6 +63,12 @@ const routes = [
     name: 'CompanyDetails',
     component: CompanyDetails,
   },  
+  {
+    path: '/campaigns/:id',
+    name: 'CampaignDetails',
+    component: CampaignDetails,
+  },
+  
   // Adicionar outras rotas aqui
 ];
 

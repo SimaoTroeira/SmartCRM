@@ -23,18 +23,23 @@
             <th class="px-4 py-2 border">Título</th>
             <th class="px-4 py-2 border">Descrição</th>
             <th class="px-4 py-2 border">Empresa</th>
-            <th class="px-4 py-2 border">Ações</th>
+            <!-- <th class="px-4 py-2 border">Ações</th> -->
           </tr>
         </thead>
         <tbody>
           <tr v-for="campaign in campaigns" :key="campaign.id" class="hover:bg-gray-50">
-            <td class="px-4 py-2 border">{{ campaign.name }}</td>
+            <td class="px-4 py-2 border">
+              <router-link :to="{ name: 'CampaignDetails', params: { id: campaign.id } }"
+                class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
+                {{ campaign.name }}
+              </router-link>
+            </td>
             <td class="px-4 py-2 border">{{ campaign.description }}</td>
             <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
-            <td class="px-4 py-2 border text-center">
+            <!-- <td class="px-4 py-2 border text-center">
               <button @click="editCampaign(campaign)" class="btn btn-secondary">Editar</button>
               <button @click="confirmDeleteCampaign(campaign.id)" class="btn btn-danger">Apagar</button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -101,7 +106,7 @@
       </div>
     </div>
 
-    <!-- Modal de Exclução -->
+    <!-- Modal de Exclusão -->
     <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
         <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
@@ -113,6 +118,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
