@@ -9,6 +9,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\CompanyInviteController;
 
 
 /*
@@ -56,4 +57,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/campaigns/{campaign}', [CampaignController::class, 'show']);
     Route::put('/campaigns/{campaign}', [CampaignController::class, 'update']);
     Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy']);
+
+    //invites
+    Route::post('/companies/{company}/invite', [CompanyInviteController::class, 'invite']);
+    Route::get('/invites/accept/{token}', [CompanyInviteController::class, 'accept']);
 });

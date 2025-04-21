@@ -35,6 +35,15 @@
         </ul>
       </div>
 
+      <!-- Formulário de convite -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold">Convidar Utilizador</h3>
+        <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
+          <input v-model="inviteEmail" type="email" class="form-control w-full sm:w-auto"
+            placeholder="Email do utilizador" required />
+          <button type="submit" class="btn btn-success">Enviar Convite</button>
+        </form>
+      </div>
 
       <!-- Utilizadores -->
       <div class="mb-6">
@@ -70,14 +79,6 @@
           Aceitar
         </button>
       </div>
-
-      <!-- Mensagem de bloqueio -->
-      <!-- <p
-          v-if="company?.status === 'Ativo' && userRole !== 'SA'"
-          class="mt-4 p-2 text-sm text-yellow-800 bg-yellow-100 border border-yellow-400 rounded"
-        >
-          Estado "Ativo" não permite. Contacte o administrador.
-        </p> -->
     </div>
 
     <!-- Modal Editar -->
@@ -134,6 +135,7 @@ const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const editCompany = ref({});
 const companyToDelete = ref(null);
+const inviteEmail = ref('');
 
 const fetchUserRole = async () => {
   try {
@@ -156,6 +158,29 @@ const fetchCompany = async () => {
     toast.error('Erro ao carregar empresa.');
   }
 };
+
+const sendInvite = async () => {
+  try {
+    const response = await axios.post(
+      `http://127.0.0.1:8000/api/companies/${company.value.id}/invite`,
+      { email: inviteEmail.value }
+    );
+
+    toast.success('Convite enviado com sucesso!');
+
+    //Mostra o link na consola (para testar sem email)
+    console.log(
+      `Link de aceitação: http://localhost:5174/accept-invite/${response.data.token}`
+    );
+
+
+    inviteEmail.value = '';
+  } catch (error) {
+    toast.error('Erro ao enviar convite.');
+    console.error(error);
+  }
+};
+
 
 const openEditModal = (companyData) => {
   if (companyData.status === 'Ativo' && userRole.value !== 'SA') {

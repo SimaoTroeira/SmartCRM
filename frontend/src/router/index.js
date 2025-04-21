@@ -68,7 +68,12 @@ const routes = [
     name: 'CampaignDetails',
     component: CampaignDetails,
   },
-  
+  {
+    path: '/accept-invite/:token',
+    name: 'AcceptInvite',
+    component: () => import('@/components/AcceptInvite.vue'),
+    meta: { requiresAuth: true } // garantir que o utilizador esteja autenticado
+  }
   // Adicionar outras rotas aqui
 ];
 
