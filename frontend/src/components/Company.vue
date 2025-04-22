@@ -48,7 +48,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="company in filteredCompanies" :key="company.id" class="hover:bg-gray-50">
+            <tr v-for="company in paginatedCompanies" :key="company.id" class="hover:bg-gray-50">
               <td class="px-4 py-2 border">
                 <router-link :to="{ name: 'CompanyDetails', params: { id: company.id } }"
                   class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
@@ -80,8 +80,16 @@
           </tbody>
         </table>
       </div>
+      <div class="pagination-left mt-4 gap-4">
+        <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
+        <span>Página {{ currentPage }}</span>
+        <button @click="currentPage++" :disabled="currentPage >= Math.ceil(filteredCompanies.length / itemsPerPage)"
+          class="btn btn-secondary">
+          Próxima
+        </button>
+      </div>
     </div>
-
+    
     <div v-if="showDialog && userRole !== 'SA'"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -179,6 +187,8 @@ const userRole = ref('');
 const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
 const filterDraft = ref(localStorage.getItem('filterDraft') || 'Todos');
+const currentPage = ref(1);
+const itemsPerPage = ref(5); // número de empresas por página
 
 // Atualiza empresas e papel do usuário
 const refreshAll = async () => {
@@ -324,12 +334,17 @@ const filteredCompanies = computed(() => {
   });
 });
 
+const paginatedCompanies = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredCompanies.value.slice(start, end);
+});
+
+
 onMounted(refreshAll);
 </script>
 
 <style scoped>
-/* Estilo para o botão */
-
 /* Estilo para o botão */
 .btn-primary {
   background-color: #4CAF50;
@@ -486,4 +501,10 @@ onMounted(refreshAll);
   margin-left: 0;
 }
 
+.pagination-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 0;
+}
 </style>

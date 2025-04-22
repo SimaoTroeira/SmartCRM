@@ -31,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="campaign in campaigns" :key="campaign.id" class="hover:bg-gray-50">
+            <tr v-for="campaign in paginatedCampaigns" :key="campaign.id" class="hover:bg-gray-50">
               <td class="px-4 py-2 border">
                 <router-link :to="{ name: 'CampaignDetails', params: { id: campaign.id } }"
                   class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
@@ -40,13 +40,16 @@
               </td>
               <td class="px-4 py-2 border">{{ campaign.description }}</td>
               <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
-              <!-- <td class="px-4 py-2 border text-center">
-              <button @click="editCampaign(campaign)" class="btn btn-secondary">Editar</button>
-              <button @click="confirmDeleteCampaign(campaign.id)" class="btn btn-danger">Apagar</button>
-            </td> -->
             </tr>
           </tbody>
         </table>
+
+        <!-- Paginação -->
+        <div v-if="paginatedCampaigns.length > 0" class="pagination-controls mt-4 flex items-center gap-4">
+          <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
+          <span class="font-medium">Página {{ currentPage }}</span>
+          <button @click="nextPage" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
+        </div>
       </div>
 
       <!-- Modal de criar campanha -->
@@ -124,7 +127,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
@@ -138,19 +140,33 @@ const campaigns = ref([]);
 const companies = ref([]);
 const userRole = ref('');
 const roleLoaded = ref(false);
-const form = ref({
-  name: '',
-  description: '',
-  company_id: ''
-});
-const campaignToDelete = ref(null); // Para armazenar a campanha a ser excluída
-const selectedCampaignId = ref(null); // Variável para armazenar o ID da campanha selecionada
-
+const form = ref({ name: '', description: '', company_id: '' });
+const campaignToDelete = ref(null);
+const selectedCampaignId = ref(null);
 const STATUS_ATIVO = 'Ativo';
+const currentPage = ref(1);
+const pageSize = 5;
 
 const hasActiveCompanies = computed(() => {
-  return companies.value.some(company => company.status === 'Ativo');
+  return companies.value.some(company => company.status === STATUS_ATIVO);
 });
+
+const paginatedCampaigns = computed(() => {
+  const start = (currentPage.value - 1) * pageSize;
+  return campaigns.value.slice(start, start + pageSize);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(campaigns.value.length / pageSize);
+});
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) currentPage.value++;
+};
+
+const prevPage = () => {
+  if (currentPage.value > 1) currentPage.value--;
+};
 
 async function fetchUserRole() {
   try {
@@ -163,7 +179,6 @@ async function fetchUserRole() {
   }
 }
 
-// Carregar campanhas
 const fetchCampaigns = async () => {
   try {
     const res = await axios.get('http://127.0.0.1:8000/api/campaigns');
@@ -174,7 +189,6 @@ const fetchCampaigns = async () => {
   }
 };
 
-// Carregar empresas
 const fetchCompanies = async () => {
   try {
     const res = await axios.get('http://127.0.0.1:8000/api/companies');
@@ -185,7 +199,6 @@ const fetchCompanies = async () => {
   }
 };
 
-// Criar campanha
 const createCampaign = async () => {
   try {
     const selectedCompany = companies.value.find(c => c.id === form.value.company_id);
@@ -197,33 +210,28 @@ const createCampaign = async () => {
     await axios.post('http://127.0.0.1:8000/api/campaigns', form.value);
     toast.success('Campanha criada com sucesso!');
     showDialog.value = false;
-    form.value = { name: '', description: '', company_id: '' }; // Limpar o formulário
-    fetchCampaigns(); // Atualiza as campanhas na lista
+    form.value = { name: '', description: '', company_id: '' };
+    fetchCampaigns();
   } catch (error) {
     toast.error('Erro ao criar campanha.');
     console.error(error);
   }
 };
 
-
-// Editar campanha
 const editCampaign = (campaign) => {
-  selectedCampaignId.value = campaign.id; // Definir o ID da campanha selecionada
+  selectedCampaignId.value = campaign.id;
   form.value = { name: campaign.name, description: campaign.description, company_id: campaign.company.id };
-  showEditModal.value = true; // Mostrar o modal de edição
+  showEditModal.value = true;
 };
 
-
-// Atualizar campanha
 const updateCampaign = async () => {
   try {
     if (selectedCampaignId.value) {
-      // Envia os dados da campanha para o backend com o ID correto
       await axios.put(`http://127.0.0.1:8000/api/campaigns/${selectedCampaignId.value}`, form.value);
       toast.success('Campanha atualizada com sucesso!');
-      showEditModal.value = false; // Fechar o modal de edição
-      form.value = { name: '', description: '', company_id: '' }; // Limpar o formulário
-      fetchCampaigns(); // Atualiza as campanhas na lista
+      showEditModal.value = false;
+      form.value = { name: '', description: '', company_id: '' };
+      fetchCampaigns();
     } else {
       toast.error('ID da campanha não encontrado.');
     }
@@ -233,31 +241,26 @@ const updateCampaign = async () => {
   }
 };
 
-
-
-// Confirmar exclusão de campanha
 const confirmDeleteCampaign = (campaignId) => {
   campaignToDelete.value = campaignId;
-  showDeleteModal.value = true; // Mostrar o modal de exclusão
+  showDeleteModal.value = true;
 };
 
-// Excluir campanha
 const deleteCampaign = async () => {
   try {
     await axios.delete(`http://127.0.0.1:8000/api/campaigns/${campaignToDelete.value}`);
     toast.success('Campanha excluída com sucesso!');
     showDeleteModal.value = false;
-    fetchCampaigns(); // Atualiza as campanhas na lista
+    fetchCampaigns();
   } catch (error) {
     toast.error('Erro ao excluir campanha.');
     console.error(error);
   }
 };
 
-// Fechar modal de exclusão
 const closeDeleteModal = () => {
   showDeleteModal.value = false;
-  campaignToDelete.value = null; // Limpar a campanha selecionada
+  campaignToDelete.value = null;
 };
 
 onMounted(() => {
@@ -268,7 +271,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Reaproveita os estilos de Company.vue */
 .btn-primary {
   background-color: #1470ea;
   color: white;
@@ -304,7 +306,6 @@ onMounted(() => {
   border: 1px solid #ddd;
 }
 
-/* Estilos para o modal */
 .fixed {
   position: fixed;
 }
@@ -318,7 +319,6 @@ onMounted(() => {
 
 .bg-black {
   background-color: rgba(0, 0, 0, 0.5);
-  /* 50% de opacidade */
 }
 
 .flex {
@@ -351,18 +351,27 @@ onMounted(() => {
 
 .max-w-lg {
   max-width: 32rem;
-  /* 512px */
 }
 
-/* Garantir borda arredondada e visível nas modais */
 .bg-white {
   border-radius: 12px;
-  /* Aumentando o arredondamento */
   border: 30px solid rgb(255, 255, 255);
-  /* Borda de 9px */
 }
 
 .campaign {
   padding: 20px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+.pagination-controls {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 </style>
