@@ -1,10 +1,18 @@
 <template>
   <div class="company">
-    <!-- Título -->
-    <div v-if="roleLoaded">
-      <h2 v-if="roleLoaded" class="text-xl font-semibold mb-4">
-        {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'As Minhas Empresas:' }}
+    <!-- Enquanto carrega -->
+    <div v-if="!roleLoaded || companies.length === 0 && !companiesLoaded">
+      <h3 class="text-xl font-semibold mb-4 text-gray-600">
+        A carregar empresas<span class="dot-anim"></span>
+      </h3>
+    </div>
+
+    <!-- Conteúdo completo -->
+    <div v-else>
+      <h2 class="text-xl font-semibold mb-4">
+        {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'Lista de Empresas:' }}
       </h2>
+
       <!-- Filtros para o SuperAdmin -->
       <div v-if="userRole === 'SA'" class="filters-container mb-4 flex gap-4">
         <div>
@@ -26,13 +34,13 @@
       </div>
 
       <!-- Botão de registrar empresa -->
-      <div v-if="roleLoaded && userRole !== 'SA'" class="mb-4 ">
+      <div v-if="userRole !== 'SA'" class="mb-4 ">
         <button @click="showDialog = true" class="btn btn-primary">
           Registar nova empresa
         </button>
       </div>
 
-      <div v-if="roleLoaded && filteredCompanies.length === 0" class="text-gray-500 mb-4">
+      <div v-if="filteredCompanies.length === 0" class="text-gray-500 mb-4">
         Ainda não há empresas registradas.
       </div>
 
@@ -40,10 +48,10 @@
         <table class="min-w-full table-auto border border-gray-200">
           <thead class="bg-gray-100">
             <tr>
-              <th class="px-4 py-2 border">Nome</th>
+              <th class="px-4 py-2 border">Empresa</th>
               <th class="px-4 py-2 border">Setor</th>
-              <th class="px-4 py-2 border">Rascunho</th>
-              <th class="px-4 py-2 border">Estado</th>
+              <th class="px-4 py-2 border">Preenchimento de dados</th>
+              <th class="px-4 py-2 border">Estado Atual</th>
               <th v-if="userRole === 'SA'" class="px-4 py-2 border">Ações</th>
             </tr>
           </thead>
@@ -70,7 +78,7 @@
               <td v-if="userRole === 'SA'" class="px-4 py-2 border text-center">
                 <button v-if="company.status === 'Inativo'" @click="openAcceptModal(company.id)"
                   class="btn-success text-white px-4 py-2 rounded mr-2">
-                  Aceitar
+                  Ativar
                 </button>
                 <button @click="openDeleteModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
                   Apagar
@@ -80,16 +88,29 @@
           </tbody>
         </table>
       </div>
-      <div class="pagination-left mt-4 gap-4">
+
+      <!-- Paginação -->
+      <div class="pagination-left mt-4 gap-4 items-center">
         <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
-        <span>Página {{ currentPage }}</span>
-        <button @click="currentPage++" :disabled="currentPage >= Math.ceil(filteredCompanies.length / itemsPerPage)"
-          class="btn btn-secondary">
-          Próxima
-        </button>
+
+        <span class="mx-2">
+          Página {{ currentPage }} de {{ totalPages }}
+        </span>
+
+        <button @click="currentPage++" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
+        <div class="ml-6">
+          <label class="mr-2 font-medium">Ver por página:</label>
+          <select v-model="itemsPerPage" class="form-control w-24 inline-block">
+            <option :value="25">25</option>
+            <option :value="50">50</option>
+            <option :value="100">100</option>
+            <option :value="250">250</option>
+            <option :value="500">500</option>
+          </select>
+        </div>
       </div>
     </div>
-    
+
     <div v-if="showDialog && userRole !== 'SA'"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -188,7 +209,7 @@ const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
 const filterDraft = ref(localStorage.getItem('filterDraft') || 'Todos');
 const currentPage = ref(1);
-const itemsPerPage = ref(5); // número de empresas por página
+const itemsPerPage = ref(25); // número de empresas por página
 
 // Atualiza empresas e papel do usuário
 const refreshAll = async () => {
@@ -203,6 +224,11 @@ watch(filterState, (newVal) => {
 watch(filterDraft, (newVal) => {
   localStorage.setItem('filterDraft', newVal);
 });
+
+watch(itemsPerPage, () => {
+  currentPage.value = 1;
+});
+
 
 const fetchUserRole = async () => {
   try {
@@ -339,6 +365,11 @@ const paginatedCompanies = computed(() => {
   const end = start + itemsPerPage.value;
   return filteredCompanies.value.slice(start, end);
 });
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredCompanies.value.length / itemsPerPage.value)
+});
+
 
 
 onMounted(refreshAll);
@@ -507,4 +538,25 @@ onMounted(refreshAll);
   align-items: center;
   margin-left: 0;
 }
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+.dot-anim::after {
+  content: ".";
+  animation: dots 1.2s steps(3, end) infinite;
+}
+
 </style>

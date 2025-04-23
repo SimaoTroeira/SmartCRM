@@ -5,33 +5,39 @@
             ×
         </button>
 
-        <h2 class="text-2xl font-bold mb-4 text-left">
+        <h3 class="text-2xl font-bold mb-4 text-left">
             {{ campaign?.name || 'Detalhes da Campanha' }}
-        </h2>
+        </h3>
 
-        <div v-if="campaign">
-            <p><strong>Descrição:</strong> {{ campaign.description }}</p>
-            <p><strong>Início:</strong> {{ formatDate(campaign.start_date || campaign.created_at) }}</p>
-            <p><strong>Fim:</strong> {{ formatDate(campaign.end_date) }}</p>
-            <p><strong>Status:</strong> {{ campaign.status }}</p>
-
-            <div class="mb-4">
-                <strong>Empresa:</strong>
-                <router-link :to="{ name: 'CompanyDetails', params: { id: campaign.company.id } }"
-                    class="text-blue-600 underline hover:text-blue-800">
-                    {{ campaign.company.name }}
-                </router-link>
+        <div v-if="campaign" class="space-y-6">
+            <!-- Secção de Informações da Campanha -->
+            <div class="border rounded-lg p-4 shadow-sm bg-white">
+                <h3 class="text-lg font-semibold mb-2">Informações da Campanha</h3>
+                <div class="space-y-1">
+                    <p><strong>Descrição:</strong> {{ campaign.description }}</p>
+                    <p><strong>Início:</strong> {{ formatDate(campaign.start_date || campaign.created_at) }}</p>
+                    <p><strong>Fim:</strong> {{ formatDate(campaign.end_date) }}</p>
+                    <p><strong>Status:</strong> {{ campaign.status }}</p>
+                </div>
             </div>
 
-            <!-- Botões de ação -->
+            <!-- Secção da Empresa -->
+            <div class="border rounded-lg p-4 shadow-sm bg-white">
+                <h3 class="text-lg font-semibold mb-2">Empresa Associada</h3>
+                <p>
+                    <strong>Nome:</strong>
+                    <router-link :to="{ name: 'CompanyDetails', params: { id: campaign.company.id } }"
+                        class="text-blue-600 underline hover:text-blue-800">
+                        {{ campaign.company.name }}
+                    </router-link>
+                </p>
+            </div>
+
+            <!-- Ações -->
             <div class="flex gap-4">
                 <button @click="openEditModal" class="btn-edit">Editar</button>
                 <button @click="openDeleteModal" class="btn-remove">Apagar</button>
             </div>
-        </div>
-
-        <div v-else>
-            <p>A carregar detalhes da campanha...</p>
         </div>
 
         <!-- Dialog de Edição -->
@@ -81,8 +87,9 @@ const editDialog = ref(null);
 const deleteDialog = ref(null);
 
 const goBack = () => {
-    router.push('/campaigns');
+    router.back();
 };
+
 
 const formatDate = date => date
     ? new Date(date).toLocaleDateString()
@@ -119,7 +126,7 @@ const confirmDelete = async () => {
         await axios.delete(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}`);
         toast.success('Campanha excluída com sucesso!');
         closeDeleteModal();
-        router.push('/campaigns'); 
+        router.push('/campaigns');
     } catch {
         toast.error('Erro ao excluir campanha.');
     }
@@ -137,15 +144,28 @@ onMounted(fetchCampaign);
 
 .close-button {
     position: absolute;
-    top: 2rem;
-    right: 15rem;
-    font-size: 4rem;
+    top: 1.5rem;
+    right: 1rem;
+    font-size: 2.5rem;
     background: transparent;
     border: none;
     cursor: pointer;
+    z-index: 10;
 }
 
-.btn-edit,
+@media (min-width: 1024px) {
+    .close-button {
+        right: 15rem;
+        font-size: 4rem;
+    }
+}
+
+.btn-edit {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
 .btn-remove {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
@@ -153,12 +173,12 @@ onMounted(fetchCampaign);
 }
 
 .btn-edit {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
 }
 
 .btn-edit:hover {
-    background-color: #45a049;
+    background-color: #0069d9;
 }
 
 .btn-remove {
@@ -171,11 +191,22 @@ onMounted(fetchCampaign);
 }
 
 dialog {
-  border-radius: 12px;
-  border: 8px solid #ffffff;
+    border-radius: 12px;
+    border: 8px solid #ffffff;
 }
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
+}
+
+h3.text-lg::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 1.2em;
+    background-color: #007bff;
+    margin-right: 8px;
+    border-radius: 2px;
+    vertical-align: middle;
 }
 </style>

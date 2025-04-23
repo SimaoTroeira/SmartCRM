@@ -1,10 +1,15 @@
 <template>
   <div class="campaign">
-    <!-- Só mostramos título / botão / mensagem quando já soubermos o papel -->
-    <div v-if="roleLoaded">
+    <div v-if="!roleLoaded || campaigns.length === 0 && !campaignsLoaded" class="mb-4">
+      <h3 class="text-xl font-semibold mb-4 text-gray-600">
+        A carregar campanhas<span class="dot-anim"></span>
+      </h3>
+    </div>
+
+    <div v-else>
       <!-- Título dinâmico -->
       <h2 class="text-xl font-semibold mb-4">
-        {{ userRole === 'SA' ? 'Painel de Administração de Campanhas:' : 'As Minhas Campanhas:' }}
+        {{ userRole === 'SA' ? 'Painel de Administração de Campanhas:' : 'Lista de Campanhas:' }}
       </h2>
 
       <!-- Botão de criar campanha (só para não-SA) -->
@@ -16,12 +21,12 @@
       </div>
 
       <!-- Mensagem caso não haja campanhas -->
-      <div v-if="roleLoaded && campaigns.length === 0" class="text-gray-500 mb-4">
+      <div v-if="campaigns.length === 0" class="text-gray-500 mb-4">
         Ainda não há campanhas registradas.
       </div>
 
-      <!-- Tabela de campanhas (aparece quando há campanhas) -->
-      <div v-else-if="campaigns.length > 0" class="overflow-x-auto">
+      <!-- Tabela de campanhas -->
+      <div v-else class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200">
           <thead class="bg-gray-100">
             <tr>
@@ -45,10 +50,23 @@
         </table>
 
         <!-- Paginação -->
-        <div v-if="paginatedCampaigns.length > 0" class="pagination-controls mt-4 flex items-center gap-4">
+        <div class="pagination-controls mt-4 flex items-center gap-4">
           <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
-          <span class="font-medium">Página {{ currentPage }}</span>
+
+          <span class="font-medium">Página {{ currentPage }} de {{ totalPages }}</span>
+
           <button @click="nextPage" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
+
+          <div class="ml-6 flex items-center gap-2">
+            <label for="perPageSelect" class="font-medium">Ver por página:</label>
+            <select id="perPageSelect" v-model="itemsPerPage" class="form-control w-24">
+              <option :value="25">25</option>
+              <option :value="50">50</option>
+              <option :value="100">100</option>
+              <option :value="250">250</option>
+              <option :value="500">500</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -68,7 +86,7 @@
             <div class="mb-3">
               <label class="block font-medium">Empresa</label>
               <select v-model="form.company_id" class="form-control" required>
-                <option disabled value="">Selecione uma empresa</option>
+                <option disabled value="">Selecione uma empresa válida</option>
                 <option v-for="company in companies.filter(c => c.status === 'Ativo')" :key="company.id"
                   :value="company.id">
                   {{ company.name }}
@@ -128,7 +146,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
 
@@ -145,19 +163,23 @@ const campaignToDelete = ref(null);
 const selectedCampaignId = ref(null);
 const STATUS_ATIVO = 'Ativo';
 const currentPage = ref(1);
-const pageSize = 5;
+const itemsPerPage = ref(25); // quantidade por página (antes era constante `pageSize`)
 
 const hasActiveCompanies = computed(() => {
   return companies.value.some(company => company.status === STATUS_ATIVO);
 });
 
-const paginatedCampaigns = computed(() => {
-  const start = (currentPage.value - 1) * pageSize;
-  return campaigns.value.slice(start, start + pageSize);
+const totalPages = computed(() => {
+  return Math.ceil(campaigns.value.length / itemsPerPage.value);
 });
 
-const totalPages = computed(() => {
-  return Math.ceil(campaigns.value.length / pageSize);
+const paginatedCampaigns = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  return campaigns.value.slice(start, start + itemsPerPage.value);
+});
+
+watch(itemsPerPage, () => {
+  currentPage.value = 1;
 });
 
 const nextPage = () => {
@@ -373,5 +395,25 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+.dot-anim::after {
+  content: ".";
+  animation: dots 1.2s steps(3, end) infinite;
 }
 </style>

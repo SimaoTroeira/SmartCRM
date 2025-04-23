@@ -49,7 +49,7 @@
             <li v-if="isAuthenticated" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                <i class="bi bi-person-circle"></i> Conta
+                <i class="bi bi-person-circle"></i> {{ user.name || 'Conta' }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><router-link class="dropdown-item" :to="{ name: 'Profile' }">Perfil</router-link></li>
@@ -76,11 +76,31 @@
 import { useAuthStore } from './stores/auth';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
 
 const authStore = useAuthStore();
 const { isAuthenticated } = storeToRefs(authStore); // <- Torna reativo
 const router = useRouter();
 
+const user = ref({})
+
+const loadUser = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/user')
+    user.value = response.data
+  } catch (error) {
+    user.value = {}
+  }
+}
+
+onMounted(() => {
+  loadUser()
+})
+
+router.afterEach(() => {
+  loadUser()
+})
 
 
 const handleLogout = () => {

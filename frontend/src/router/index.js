@@ -3,14 +3,14 @@ import Login from '../components/auth/Login.vue';
 import Register from '../components/auth/Register.vue';
 import Home from '../components/Home.vue';
 import Dashboard from '../components/Dashboard.vue';
-import Profile from '../components/Profile.vue';
-import ChangePassword from '../components/auth/ChangePassword.vue';
+import Profile from '../components/users/Profile.vue';
+import ChangePassword from '../components/users/ChangePassword.vue';
 import { useAuthStore } from '../stores/auth';
 import ImportData from '../components/ImportData.vue';
-import Company from '../components/Company.vue';
-import Campaign from '../components/Campaign.vue';
-import CompanyDetails from '../components/CompanyDetails.vue';
-import CampaignDetails from '../components/CampaignDetails.vue';
+import Company from '../components/companies/Company.vue';
+import Campaign from '../components/campaigns/Campaign.vue';
+import CompanyDetails from '../components/companies/CompanyDetails.vue';
+import CampaignDetails from '../components/campaigns/CampaignDetails.vue';
 
 const routes = [
   {

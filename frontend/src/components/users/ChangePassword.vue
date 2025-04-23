@@ -1,33 +1,38 @@
 <template>
   <div class="change-password">
-    <h1>Alterar Senha</h1>
+    <h1>Alterar Password</h1>
     <form @submit.prevent="changePassword">
       <div class="mb-3">
-        <label for="currentPassword" class="form-label">Senha Atual</label>
+        <label for="currentPassword" class="form-label">Password Atual</label>
         <input type="password" class="form-control" id="currentPassword" v-model="currentPassword" required>
       </div>
       <div class="mb-3">
-        <label for="newPassword" class="form-label">Nova Senha</label>
+        <label for="newPassword" class="form-label">Nova Password</label>
         <input type="password" class="form-control" id="newPassword" v-model="newPassword" required>
       </div>
       <div class="mb-3">
-        <label for="confirmNewPassword" class="form-label">Confirmar Nova Senha</label>
+        <label for="confirmNewPassword" class="form-label">Confirmar Nova Password</label>
         <input type="password" class="form-control" id="confirmNewPassword" v-model="confirmNewPassword" required>
       </div>
       <div class="button-group">
-        <button type="submit" class="btn btn-primary">Alterar Senha</button>
-        <button type="button" class="btn btn-secondary" @click="showConfirmationDialog = true">Descartar Alterações</button>
+        <button type="submit" class="btn btn-primary">Registar Nova Password</button>
+        <button type="button" class="btn btn-secondary" @click="handleDiscardClick">
+          Descartar Alterações
+        </button>
       </div>
     </form>
 
-    <ConfirmationDialog
-      v-if="showConfirmationDialog"
-      :visible="showConfirmationDialog"
-      title="Descartar Alterações"
-      message="Tem certeza de que deseja descartar as alterações?"
-      @confirm="discardChanges"
-      @cancel="showConfirmationDialog = false"
-    />
+    <!-- Modal de confirmação -->
+    <div v-if="showConfirmationDialog" class="confirmation-dialog">
+      <div class="dialog-content">
+        <h2>Descartar Alterações</h2>
+        <p>Tem certeza de que deseja descartar as alterações?</p>
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" @click="showConfirmationDialog = false">Cancelar</button>
+          <button class="btn btn-primary" @click="discardChanges">Descartar alterações</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,7 +41,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
-import ConfirmationDialog from '../global/ConfirmationDialog.vue';
 
 const toast = useToast();
 const router = useRouter();
@@ -60,7 +64,7 @@ const changePassword = async () => {
 
     if (response.status === 200) {
       toast.success(response.data.message || 'Senha alterada com sucesso!');
-      router.push({ name: 'Profile' }); // Redirecionar para a página de perfil
+      router.push({ name: 'Profile' });
     } else {
       toast.error('Erro ao alterar a senha. Verifique suas informações.');
     }
@@ -76,8 +80,23 @@ const discardChanges = () => {
   confirmNewPassword.value = '';
   showConfirmationDialog.value = false;
   toast.info('Alterações descartadas.');
-  router.push({ name: 'Profile' }); // Redirecionar para a página de perfil
+  router.push({ name: 'Profile' });
 };
+
+const handleDiscardClick = () => {
+  if (
+    currentPassword.value ||
+    newPassword.value ||
+    confirmNewPassword.value
+  ) {
+    // Se houver alguma alteração, mostrar a modal
+    showConfirmationDialog.value = true;
+  } else {
+    // Se nenhum campo tiver sido alterado, descartar direto
+    discardChanges();
+  }
+};
+
 </script>
 
 <style scoped>
@@ -91,6 +110,35 @@ h1 {
 
 .button-group {
   display: flex;
-  gap: 10px; /* Adiciona espaço entre os botões */
+  gap: 10px;
+}
+
+/* Modal de confirmação inline */
+.confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.dialog-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  width: 400px;
+}
+
+.dialog-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 </style>
