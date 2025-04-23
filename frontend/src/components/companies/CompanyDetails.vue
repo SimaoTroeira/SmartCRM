@@ -75,7 +75,7 @@
             <span v-else>Pendente</span>
 
             <!-- Botões apenas se for CA e o convite estiver pendente -->
-            <template v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at">
+            <template v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
               <button @click="resendInvite(invite.id)" class="text-blue-600 ml-2 hover:underline text-sm">
                 Reenviar
               </button>
