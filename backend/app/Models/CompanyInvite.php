@@ -36,5 +36,9 @@ class CompanyInvite extends Model
     {
         return $this->accepted_at !== null;
     }
-}
 
+    public function isCancelled()
+    {
+        return $this->cancelled_at !== null;
+    }
+}

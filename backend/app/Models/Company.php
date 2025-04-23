@@ -26,4 +26,9 @@ class Company extends Model
     {
         return $this->hasMany(Campaign::class);
     }
+
+    public function invites()
+    {
+        return $this->hasMany(CompanyInvite::class);
+    }
 }
