@@ -86,21 +86,33 @@ const router = useRouter();
 const user = ref({})
 
 const loadUser = async () => {
+  if (!authStore.isAuthenticated) return; // <- evita chamada sem autenticação
+
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user')
-    user.value = response.data
+    const response = await axios.get('http://127.0.0.1:8000/api/user');
+    user.value = response.data;
   } catch (error) {
-    user.value = {}
+    user.value = {};
+    // Podes opcionalmente deslogar se o token for inválido
+    if (error.response?.status === 401) {
+      authStore.logout();
+      router.push({ name: 'Login' });
+    }
   }
-}
+};
+
 
 onMounted(() => {
   loadUser()
 })
 
 router.afterEach(() => {
-  loadUser()
-})
+  if (authStore.isAuthenticated) {
+    loadUser();
+  } else {
+    user.value = {}; // limpa se não autenticado
+  }
+});
 
 
 const handleLogout = () => {
