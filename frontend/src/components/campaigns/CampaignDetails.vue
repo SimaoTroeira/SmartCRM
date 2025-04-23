@@ -2,23 +2,25 @@
     <div class="campaign p-4 relative">
         <button @click="goBack" class="close-button text-gray-600 hover:text-red-600">×</button>
 
-        <h2 class="text-2xl font-bold mb-4 text-left">
-            {{ campaign?.name || 'Detalhes da Campanha' }}
-        </h2>
+        <h3 v-if="loading" class="text-2xl font-bold mb-4 text-left">
+            Detalhes da Campanha<span class="dot-anim ml-1"></span>
+        </h3>
 
-        <div v-if="campaign">
+        <div v-else>
+            <h2 class="text-2xl font-bold mb-4 text-left">{{ campaign.name }}</h2>
             <p><strong>Descrição:</strong> {{ campaign.description }}</p>
             <p><strong>Início:</strong> {{ formatDate(campaign.start_date || campaign.created_at) }}</p>
             <p><strong>Fim:</strong> {{ formatDate(campaign.end_date) }}</p>
             <p><strong>Status:</strong> {{ campaign.status }}</p>
 
-            <div class="mb-4">
+            <div class="mb-4" v-if="campaign.company">
                 <strong>Empresa:</strong>
                 <router-link :to="{ name: 'CompanyDetails', params: { id: campaign.company.id } }"
                     class="text-blue-600 underline hover:text-blue-800">
                     {{ campaign.company.name }}
                 </router-link>
             </div>
+
 
             <div class="flex gap-4" v-if="canEdit">
                 <button @click="openEditModal" class="btn-edit">Editar</button>
@@ -42,21 +44,14 @@
                 <ul>
                     <li v-for="user in campaignUsers" :key="user.id" class="flex justify-between items-center mb-2">
                         <span>{{ user.name }} – {{ user.role }}</span>
-                        <button
-                            v-if="canRemoveUser(user)"
-                            @click="removeUser(user.id)"
-                            class="text-red-600 hover:underline text-sm"
-                        >
+                        <button v-if="canRemoveUser(user)" @click="removeUser(user.id)"
+                            class="text-red-600 hover:underline text-sm">
                             Remover
                         </button>
                     </li>
                 </ul>
             </div>
 
-        </div>
-
-        <div v-else>
-            <p>A carregar detalhes da campanha...</p>
         </div>
 
         <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
@@ -111,20 +106,31 @@ const campaignUsers = ref([]);
 const userId = ref(null);
 const userRole = ref(null);
 
-const goBack = () => router.push('/campaigns');
+const loading = ref(true);
+
+const goBack = () => {
+    router.back();
+};
 
 const formatDate = date => date ? new Date(date).toLocaleDateString() : 'Sem data';
 
 const fetchCampaign = async () => {
+    loading.value = true;
+
     try {
         const { data } = await axios.get(`http://127.0.0.1:8000/api/campaigns/${route.params.id}`);
         campaign.value = data;
         form.value = { name: data.name, description: data.description };
-        await fetchUserDataAndPermissions(data.company.id);
-        await fetchCompanyUsers(data.company.id);
-        await fetchCampaignUsers(route.params.id);
-    } catch {
+
+        await Promise.all([
+            fetchUserDataAndPermissions(data.company.id),
+            fetchCompanyUsers(data.company.id),
+            fetchCampaignUsers(route.params.id)
+        ]);
+    } catch (error) {
         toast.error('Erro ao carregar campanha.');
+    } finally {
+        loading.value = false;
     }
 };
 
@@ -286,4 +292,30 @@ dialog {
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
 }
+
+@keyframes dots {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '';
+  }
+}
+
+.dot-anim::after {
+  display: inline-block;
+  animation: dots 1.5s steps(4, end) infinite;
+  content: '';
+  white-space: pre;
+}
+
 </style>

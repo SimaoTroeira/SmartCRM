@@ -5,22 +5,29 @@
       ×
     </button>
 
+    <!-- Enquanto carrega -->
     <div v-if="!roleLoaded || !company.name">
-      <h3 class="text-2xl font-bold mb-4 text-left">Detalhes da Empresa</h3>
+      <h3 class="text-2xl font-bold mb-4 text-left">
+        Detalhes da Empresa<span class="dot-anim ml-1"></span>
+      </h3>
     </div>
 
-    <!-- Quando já carregou role e company, mostra tudo -->
-    <div v-if="roleLoaded && company">
-      <!-- Detalhes da empresa -->
-      <div class="mb-6">
-        <p><strong>Nome:</strong> {{ company.name }}</p>
+    <!-- Conteúdo principal -->
+    <div v-else>
+      <!-- Título -->
+      <h2 class="text-2xl font-bold mb-4 text-left">{{ company.name }}</h2>
+
+      <!-- Descrição -->
+      <div class="pb-4">
         <p><strong>Setor:</strong> {{ company.sector }}</p>
         <p><strong>Status:</strong> {{ company.status }}</p>
         <p><strong>Rascunho:</strong> {{ company.draft ? 'Sim' : 'Não' }}</p>
       </div>
 
-      <!-- Secção: Campanhas -->
-      <div class="mb-6 border rounded-lg p-4 bg-gray-50">
+      <hr class="border-t border-gray-300 my-6" />
+
+      <!-- Campanhas -->
+      <div>
         <h4 class="text-lg font-semibold mb-2">Campanhas Associadas:</h4>
         <ul>
           <li v-for="camp in company.campaigns" :key="camp.id" class="mb-2">
@@ -38,9 +45,11 @@
         </ul>
       </div>
 
+      <hr class="border-t border-gray-300 my-6" />
+
       <!-- Utilizadores -->
-      <div class="mb-6">
-        <h3 class="text-lg font-semibold">Utilizadores</h3>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Utilizadores:</h4>
         <ul>
           <li v-for="ucr in company.user_company_roles" :key="ucr.id">
             {{ ucr.user.name }} – {{ ucr.role.code }}
@@ -53,9 +62,11 @@
         </ul>
       </div>
 
-      <!-- Formulário de convite apenas para CA -->
-      <div v-if="userRole === 'CA'" class="mb-6">
-        <h3 class="text-lg font-semibold">Convidar Utilizador</h3>
+      <hr class="border-t border-gray-300 my-6" />
+
+      <!-- Convidar Utilizador -->
+      <div v-if="userRole === 'CA'">
+        <h4 class="text-lg font-semibold mb-2">Convidar Utilizador</h4>
         <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
           <input v-model="inviteEmail" type="email" class="form-control w-full sm:w-auto"
             placeholder="Email do utilizador" required />
@@ -63,9 +74,11 @@
         </form>
       </div>
 
-      <!-- Lista de convites -->
-      <div v-if="company.invites?.length" class="mb-6">
-        <h3 class="text-lg font-semibold">Convites Enviados</h3>
+      <hr v-if="userRole === 'CA'" class="border-t border-gray-300 my-6" />
+
+      <!-- Convites Enviados -->
+      <div v-if="company.invites?.length">
+        <h4 class="text-lg font-semibold mb-2">Convites Enviados</h4>
         <ul>
           <li v-for="invite in company.invites" :key="invite.id">
             {{ invite.email }} –
@@ -74,8 +87,8 @@
             <span v-else-if="new Date(invite.expires_at) < new Date()">Expirado</span>
             <span v-else>Pendente</span>
 
-            <!-- Botões apenas se for CA e o convite estiver pendente -->
-            <template v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
+            <template
+              v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
               <button @click="resendInvite(invite.id)" class="text-blue-600 ml-2 hover:underline text-sm">
                 Reenviar
               </button>
@@ -87,63 +100,61 @@
         </ul>
       </div>
 
-      <!-- Botões de ação -->
+      <hr class="border-t border-gray-300 my-6" />
+
+      <!-- Botões -->
       <div class="flex gap-4 mt-4">
         <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
-          class="btn-edit text-white px-4 py-2 rounded">
-          Editar
-        </button>
+          class="btn-edit text-white px-4 py-2 rounded">Editar</button>
         <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
-          class="btn-remove text-white px-4 py-2 rounded">
-          Apagar
-        </button>
-        <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="acceptCompany(company.id)"
-          class="btn-accept text-white px-4 py-2 rounded">
-          Aceitar
-        </button>
+          class="btn-remove text-white px-4 py-2 rounded">Apagar</button>
+        <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
+          class="btn-accept text-white px-4 py-2 rounded">Validar</button>
       </div>
     </div>
 
-    <!-- Mensagem de loading -->
-    <div v-else>
-      <p>A carregar detalhes da empresa...</p>
-    </div>
+    <!-- Modal de Aceitação -->
+    <dialog ref="acceptDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja aceitar o registo desta empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeAcceptModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmAcceptCompany" class="btn btn-success">Aceitar</button>
+      </div>
+    </dialog>
 
     <!-- Dialog de Edição -->
-<dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-  <h3 class="text-lg font-bold mb-4">Editar Empresa</h3>
-  <form @submit.prevent="updateCompany">
-    <div class="mb-3">
-      <label class="block font-medium">Nome da Empresa</label>
-      <input v-model="editCompany.name" class="form-control w-full border px-2 py-1" required />
-    </div>
-    <div class="mb-3">
-      <label class="block font-medium">Setor</label>
-      <input v-model="editCompany.sector" class="form-control w-full border px-2 py-1" required />
-    </div>
-    <div class="mb-3 flex items-center">
-      <input type="checkbox" id="edit-draft" v-model="editCompany.draft" class="mr-2" />
-      <label for="edit-draft" class="font-medium">Guardar como rascunho</label>
-    </div>
-    <div class="flex justify-end gap-2">
-      <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
-      <button type="submit" class="btn btn-success">Guardar alterações</button>
-    </div>
-  </form>
-</dialog>
+    <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Editar Empresa</h3>
+      <form @submit.prevent="updateCompany">
+        <div class="mb-3">
+          <label class="block font-medium">Nome da Empresa</label>
+          <input v-model="editCompany.name" class="form-control w-full border px-2 py-1" required />
+        </div>
+        <div class="mb-3">
+          <label class="block font-medium">Setor</label>
+          <input v-model="editCompany.sector" class="form-control w-full border px-2 py-1" required />
+        </div>
+        <div class="mb-3 flex items-center">
+          <input type="checkbox" id="edit-draft" v-model="editCompany.draft" class="mr-2" />
+          <label for="edit-draft" class="font-medium">Guardar como rascunho</label>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-success">Guardar alterações</button>
+        </div>
+      </form>
+    </dialog>
 
-<!-- Dialog de Apagar -->
-<dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-  <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta empresa?</h3>
-  <div class="flex justify-end gap-2">
-    <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
-    <button type="button" @click="confirmDelete" class="btn btn-danger">Apagar</button>
-  </div>
-</dialog>
-
+    <!-- Dialog de Apagar -->
+    <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmDelete" class="btn btn-danger">Apagar</button>
+      </div>
+    </dialog>
   </div>
 </template>
-
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -162,6 +173,7 @@ const roleLoaded = ref(false);
 
 const editCompany = ref({});
 const editDialog = ref(null);
+const acceptDialog = ref(null);
 const deleteDialog = ref(null);
 const inviteEmail = ref('');
 const companyToDelete = ref(null);
@@ -212,6 +224,14 @@ const closeEditModal = () => {
   editDialog.value?.close();
 };
 
+const openAcceptModal = () => {
+  acceptDialog.value?.showModal();
+};
+
+const closeAcceptModal = () => {
+  acceptDialog.value?.close();
+};
+
 // Guardar alterações da empresa
 const updateCompany = async () => {
   try {
@@ -255,10 +275,11 @@ const confirmDelete = async () => {
 };
 
 // Aceitar empresa (SA)
-const acceptCompany = async (id) => {
+const confirmAcceptCompany = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/companies/${id}/approve`);
+    await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/approve`);
     toast.success('Empresa aceite com sucesso!');
+    closeAcceptModal();
     await fetchCompany();
   } catch {
     toast.error('Erro ao aceitar empresa.');
@@ -354,6 +375,19 @@ onMounted(async () => {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+}
+
+
+.btn-edit:hover {
+  background-color: #0069d9;
+}
+
+.btn-accept {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
   background-color: #4CAF50;
   color: white;
 }
@@ -374,14 +408,7 @@ onMounted(async () => {
   background-color: #c82333;
 }
 
-.btn-edit {
-  background-color: #007bff;
-  color: white;
-}
 
-.btn-edit:hover {
-  background-color: #0069d9;
-}
 
 dialog {
   border-radius: 12px;
@@ -390,5 +417,34 @@ dialog {
 
 dialog::backdrop {
   background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes dots {
+  0% {
+    content: '';
+  }
+
+  25% {
+    content: '.';
+  }
+
+  50% {
+    content: '..';
+  }
+
+  75% {
+    content: '...';
+  }
+
+  100% {
+    content: '';
+  }
+}
+
+.dot-anim::after {
+  display: inline-block;
+  animation: dots 1.5s steps(4, end) infinite;
+  content: '';
+  white-space: pre;
 }
 </style>

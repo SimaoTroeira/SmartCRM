@@ -1,6 +1,6 @@
 <template>
   <div class="campaign">
-    <div v-if="!roleLoaded || campaigns.length === 0 && !campaignsLoaded" class="mb-4">
+    <div v-if="!roleLoaded || (!campaignsLoaded && campaigns.length === 0)" class="mb-4">
       <h3 class="text-xl font-semibold mb-4 text-gray-600">
         A carregar campanhas<span class="dot-anim"></span>
       </h3>
@@ -44,7 +44,7 @@
                 </router-link>
               </td>
               <td class="px-4 py-2 border">{{ campaign.description }}</td>
-              <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
+              <td class="px-4 py-2 border">{{ campaign.name }}</td>
             </tr>
           </tbody>
         </table>
@@ -164,6 +164,8 @@ const selectedCampaignId = ref(null);
 const STATUS_ATIVO = 'Ativo';
 const currentPage = ref(1);
 const itemsPerPage = ref(25); // quantidade por página (antes era constante `pageSize`)
+const campaignsLoaded = ref(false);
+
 
 const hasActiveCompanies = computed(() => {
   return companies.value.some(company => company.status === STATUS_ATIVO);
@@ -208,8 +210,11 @@ const fetchCampaigns = async () => {
   } catch (error) {
     toast.error('Erro ao carregar campanhas.');
     console.error(error);
+  } finally {
+    campaignsLoaded.value = true;
   }
 };
+
 
 const fetchCompanies = async () => {
   try {
@@ -401,12 +406,15 @@ onMounted(() => {
   0% {
     content: "";
   }
+
   33% {
     content: ".";
   }
+
   66% {
     content: "..";
   }
+
   100% {
     content: "...";
   }
