@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Campaign;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -48,12 +49,11 @@ class CampaignController extends Controller
             return response()->json(['error' => 'Só é possível criar campanhas para empresas ativas.'], 403);
         }
 
-        // Verifica se o utilizador é CA dessa empresa
         $user = Auth::user();
         $hasAccess = DB::table('user_company_roles')
             ->where('user_id', $user->id)
             ->where('company_id', $company->id)
-            ->where('role_id', 2) // CA
+            ->where('role_id', 2)
             ->exists();
 
         if (!$hasAccess && !$user->hasRole('SA')) {
@@ -97,12 +97,11 @@ class CampaignController extends Controller
             return response()->json(['error' => 'Só é possível atualizar campanhas de empresas ativas.'], 403);
         }
 
-        // Verifica se o utilizador tem permissão (CA da empresa ou SA)
         $user = Auth::user();
         $hasAccess = DB::table('user_company_roles')
             ->where('user_id', $user->id)
             ->where('company_id', $company->id)
-            ->where('role_id', 2) // CA
+            ->where('role_id', 2)
             ->exists();
 
         if (!$hasAccess && !$user->hasRole('SA')) {
@@ -127,7 +126,7 @@ class CampaignController extends Controller
         $hasAccess = DB::table('user_company_roles')
             ->where('user_id', $user->id)
             ->where('company_id', $company->id)
-            ->where('role_id', 2) // CA
+            ->where('role_id', 2)
             ->exists();
 
         if (!$hasAccess && !$user->hasRole('SA')) {
@@ -142,5 +141,74 @@ class CampaignController extends Controller
             Log::error('Erro ao excluir campanha: ' . $e->getMessage());
             return response()->json(['error' => 'Erro ao excluir campanha.'], 500);
         }
+    }
+
+    public function addUsers(Request $request, $id)
+    {
+        $request->validate([
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+        ]);
+
+        $campaign = Campaign::findOrFail($id);
+        $user = Auth::user();
+        $company = $campaign->company;
+
+        $isCA = DB::table('user_company_roles')
+            ->where('user_id', $user->id)
+            ->where('company_id', $company->id)
+            ->where('role_id', 2)
+            ->exists();
+
+        if (!$isCA && !$user->hasRole('SA')) {
+            return response()->json(['error' => 'Sem permissões para associar utilizadores.'], 403);
+        }
+
+        $campaign->users()->syncWithoutDetaching($request->user_ids);
+
+        return response()->json(['message' => 'Utilizadores associados com sucesso.']);
+    }
+
+    public function getUsers(Campaign $campaign)
+    {
+        $users = $campaign->users()->with(['companyRoles' => function ($query) use ($campaign) {
+            $query->where('company_id', $campaign->company_id);
+        }, 'companyRoles.role'])->get();
+
+        return $users->map(function ($user) use ($campaign) {
+            $role = $user->companyRoles->firstWhere('company_id', $campaign->company_id);
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'role' => $role ? $role->role->code : 'CU',
+            ];
+        });
+    }
+
+    public function removeUser(Campaign $campaign, User $user)
+    {
+        $authUser = Auth::user();
+        $company = $campaign->company;
+
+        // Verifica se o utilizador autenticado tem permissão (CA da empresa ou SA)
+        $isCA = DB::table('user_company_roles')
+            ->where('user_id', $authUser->id)
+            ->where('company_id', $company->id)
+            ->where('role_id', 2) // CA
+            ->exists();
+
+        if (!$isCA && !$authUser->hasRole('SA')) {
+            return response()->json(['error' => 'Sem permissões para remover utilizadores.'], 403);
+        }
+
+        // Verifica se o utilizador está associado à campanha
+        if (!$campaign->users()->where('user_id', $user->id)->exists()) {
+            return response()->json(['error' => 'Utilizador não está associado à campanha.'], 404);
+        }
+
+        // Remove o utilizador da campanha
+        $campaign->users()->detach($user->id);
+
+        return response()->json(['message' => 'Utilizador removido da campanha com sucesso.']);
     }
 }

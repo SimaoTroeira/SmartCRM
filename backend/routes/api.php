@@ -61,6 +61,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/campaigns/{campaign}', [CampaignController::class, 'update']);
     Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy']);
 
+    Route::post('/campaigns/{id}/users', [CampaignController::class, 'addUsers']);
+    Route::get('/campaigns/{campaign}/users', [CampaignController::class, 'getUsers']);
+    Route::delete('/campaigns/{campaign}/users/{user}', [CampaignController::class, 'removeUser']);
+
+
     //invites
     Route::post('/companies/{company}/invite', [CompanyInviteController::class, 'invite']);
     Route::get('/invites/accept/{token}', [CompanyInviteController::class, 'accept']);
