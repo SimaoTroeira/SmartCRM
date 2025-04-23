@@ -234,7 +234,8 @@ class CompanyController extends Controller
         $company = Company::with([
             'campaigns',
             'userCompanyRoles.user',
-            'userCompanyRoles.role'
+            'userCompanyRoles.role',
+            'invites'
         ])->findOrFail($id);
 
         return response()->json($company);

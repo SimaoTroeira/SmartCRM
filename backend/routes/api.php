@@ -10,6 +10,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\CompanyInviteController;
+use App\Http\Controllers\UserCompanyRoleController;
 
 
 /*
@@ -50,6 +51,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/companies/{id}/reject', [CompanyController::class, 'rejectCompany']);
     });
     Route::get('/companies/{id}', [CompanyController::class, 'show']);
+    Route::get('/companies/{companyId}/user-role', [CompanyController::class, 'getUserRole']);
+
 
     //campaigns
     Route::get('/campaigns', [CampaignController::class, 'index']);
@@ -61,4 +64,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //invites
     Route::post('/companies/{company}/invite', [CompanyInviteController::class, 'invite']);
     Route::get('/invites/accept/{token}', [CompanyInviteController::class, 'accept']);
+
+    Route::put('/user-company-roles/{id}/promote', [UserCompanyRoleController::class, 'promote']);
+    Route::put('/invites/{id}/resend', [CompanyInviteController::class, 'resend']);
+    Route::delete('/invites/{id}/cancel', [CompanyInviteController::class, 'cancel']);
 });

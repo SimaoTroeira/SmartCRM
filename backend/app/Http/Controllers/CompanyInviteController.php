@@ -66,4 +66,31 @@ class CompanyInviteController extends Controller
 
         return response()->json(['message' => 'Convite aceite com sucesso.']);
     }
+
+    public function resend($id)
+    {
+        $invite = CompanyInvite::findOrFail($id);
+
+        if ($invite->isCancelled()) {
+            return response()->json(['error' => 'Este convite foi cancelado.'], 400);
+        }
+
+        $invite->token = Str::random(40);
+        $invite->expires_at = now()->addMinutes(10);
+        $invite->resended_at = now();
+        $invite->save();
+
+        // TODO: reenviar email com o novo link
+
+        return response()->json(['message' => 'Convite reenviado com sucesso.', 'token' => $invite->token]);
+    }
+
+    public function cancel($id)
+    {
+        $invite = CompanyInvite::findOrFail($id);
+        $invite->cancelled_at = now();
+        $invite->save();
+
+        return response()->json(['message' => 'Convite cancelado com sucesso.']);
+    }
 }
