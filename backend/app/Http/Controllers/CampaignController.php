@@ -7,7 +7,6 @@ use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CampaignController extends Controller
@@ -19,20 +18,15 @@ class CampaignController extends Controller
             return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
 
-        // Verificar se o usuário é um SuperAdmin (SA)
         if ($user->hasRole('SA')) {
-            // Se for SuperAdmin, retorna todas as campanhas
             $campaigns = Campaign::with('company')->get();
         } else {
-            // Obter os IDs das empresas associadas ao usuário
             $userCompanies = $user->companyRoles()->pluck('company_id')->toArray();
 
-            // Se o usuário não tem empresas associadas, retorna um erro
             if (empty($userCompanies)) {
                 return response()->json(['error' => 'Você não tem empresas associadas.'], 403);
             }
 
-            // Obter todas as campanhas das empresas associadas ao usuário
             $campaigns = Campaign::with('company')
                 ->whereIn('company_id', $userCompanies)
                 ->get();
@@ -41,23 +35,31 @@ class CampaignController extends Controller
         return response()->json($campaigns);
     }
 
-
     public function store(Request $request)
     {
-        // Validação dos dados
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'company_id' => 'required|exists:companies,id',
         ]);
 
-        // Verifica se a empresa está ativa
         $company = Company::find($validated['company_id']);
         if ($company->status !== 'Ativo') {
             return response()->json(['error' => 'Só é possível criar campanhas para empresas ativas.'], 403);
         }
 
-        // Resetar AUTO_INCREMENT se necessário
+        // Verifica se o utilizador é CA dessa empresa
+        $user = Auth::user();
+        $hasAccess = DB::table('user_company_roles')
+            ->where('user_id', $user->id)
+            ->where('company_id', $company->id)
+            ->where('role_id', 2) // CA
+            ->exists();
+
+        if (!$hasAccess && !$user->hasRole('SA')) {
+            return response()->json(['error' => 'Apenas Company Admins podem criar campanhas.'], 403);
+        }
+
         if (Campaign::count() === 0) {
             DB::statement('ALTER TABLE campaigns AUTO_INCREMENT = 1');
         }
@@ -71,17 +73,14 @@ class CampaignController extends Controller
         }
     }
 
-
     public function show(Campaign $campaign)
     {
-        $campaign->load('company'); //pag campanhas
+        $campaign->load('company');
         return response()->json($campaign);
     }
 
-
     public function update(Request $request, Campaign $campaign)
     {
-        // Validar os dados
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
@@ -91,16 +90,26 @@ class CampaignController extends Controller
             'company_id' => 'nullable|exists:companies,id',
         ]);
 
-        // Verifica se a empresa associada está ativa (usa a atual se não foi alterada)
         $companyId = $validated['company_id'] ?? $campaign->company_id;
-        $company = \App\Models\Company::find($companyId);
+        $company = Company::find($companyId);
 
         if (!$company || $company->status !== 'Ativo') {
             return response()->json(['error' => 'Só é possível atualizar campanhas de empresas ativas.'], 403);
         }
 
+        // Verifica se o utilizador tem permissão (CA da empresa ou SA)
+        $user = Auth::user();
+        $hasAccess = DB::table('user_company_roles')
+            ->where('user_id', $user->id)
+            ->where('company_id', $company->id)
+            ->where('role_id', 2) // CA
+            ->exists();
+
+        if (!$hasAccess && !$user->hasRole('SA')) {
+            return response()->json(['error' => 'Apenas Company Admins podem editar campanhas.'], 403);
+        }
+
         try {
-            // Atualizar a campanha com os dados validados
             $campaign->update($validated);
             Log::info('Campanha atualizada com sucesso', ['campaign_id' => $campaign->id]);
             return response()->json($campaign);
@@ -112,14 +121,22 @@ class CampaignController extends Controller
 
     public function destroy(Campaign $campaign)
     {
+        $user = Auth::user();
+        $company = Company::find($campaign->company_id);
+
+        $hasAccess = DB::table('user_company_roles')
+            ->where('user_id', $user->id)
+            ->where('company_id', $company->id)
+            ->where('role_id', 2) // CA
+            ->exists();
+
+        if (!$hasAccess && !$user->hasRole('SA')) {
+            return response()->json(['error' => 'Apenas Company Admins podem apagar campanhas.'], 403);
+        }
 
         try {
-            // Deletar a campanha
             $campaign->delete();
-
-            // Log para registrar a exclusão
             Log::info('Campanha excluída com sucesso', ['campaign_id' => $campaign->id]);
-
             return response()->json(null, 204);
         } catch (\Exception $e) {
             Log::error('Erro ao excluir campanha: ' . $e->getMessage());
