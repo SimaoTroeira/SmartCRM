@@ -1,7 +1,7 @@
 <template>
   <div class="company">
     <!-- Enquanto carrega -->
-    <div v-if="!roleLoaded || companies.length === 0 && !companiesLoaded">
+    <div v-if="!roleLoaded || !companiesLoaded">
       <h3 class="text-xl font-semibold mb-4 text-gray-600">
         A carregar empresas<span class="dot-anim"></span>
       </h3>
@@ -14,7 +14,7 @@
       </h2>
 
       <!-- Filtros para o SuperAdmin -->
-      <div v-if="userRole === 'SA'" class="filters-container mb-4 flex gap-4">
+      <div v-if="userRole === 'SA' && companies.length > 0" class="filters-container mb-4 flex gap-4">
         <div>
           <label class="block font-medium mb-1">Filtrar por estado</label>
           <select v-model="filterState" class="form-control">
@@ -40,8 +40,14 @@
         </button>
       </div>
 
-      <div v-if="filteredCompanies.length === 0" class="text-gray-500 mb-4">
-        Ainda não há empresas registradas.
+      <!-- Mensagem: ainda não há nenhuma empresa no sistema -->
+      <div v-if="companies.length === 0" class="text-gray-500 mb-4">
+        Ainda não há empresas registadas.
+      </div>
+
+      <!-- Mensagem: há empresas mas nenhuma corresponde aos filtros -->
+      <div v-else-if="filteredCompanies.length === 0" class="text-gray-500 mb-4">
+        Nenhuma empresa corresponde aos filtros aplicados.
       </div>
 
       <div v-else class="overflow-x-auto">
@@ -90,22 +96,24 @@
       </div>
 
       <!-- Paginação -->
-      <div class="pagination-left mt-4 gap-4 items-center">
-        <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
+      <div v-if="filteredCompanies.length > 0" class="pagination-left mt-4 gap-4 items-center">
+        <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">
+          Anterior
+        </button>
 
-        <span class="mx-2">
-          Página {{ currentPage }} de {{ totalPages }}
-        </span>
+        <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
 
-        <button @click="currentPage++" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
+        <button @click="currentPage++" :disabled="currentPage >= totalPages" class="btn btn-secondary">
+          Próxima
+        </button>
+
         <div class="ml-6">
           <label class="mr-2 font-medium">Ver por página:</label>
           <select v-model="itemsPerPage" class="form-control w-24 inline-block">
+            <option :value="10">10</option>
             <option :value="25">25</option>
             <option :value="50">50</option>
             <option :value="100">100</option>
-            <option :value="250">250</option>
-            <option :value="500">500</option>
           </select>
         </div>
       </div>
@@ -209,7 +217,9 @@ const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
 const filterDraft = ref(localStorage.getItem('filterDraft') || 'Todos');
 const currentPage = ref(1);
-const itemsPerPage = ref(25); // número de empresas por página
+const itemsPerPage = ref(10);
+const companiesLoaded = ref(false);
+
 
 // Atualiza empresas e papel do usuário
 const refreshAll = async () => {
@@ -255,10 +265,12 @@ const fetchCompanies = async () => {
     companies.value = Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     toast.error('Erro ao carregar empresas.');
-    console.error('Erro ao carregar empresas:', error);
     companies.value = [];
+  } finally {
+    companiesLoaded.value = true; // <- garante que o carregamento foi concluído
   }
 };
+
 
 const registerCompany = async () => {
   try {
@@ -543,12 +555,15 @@ onMounted(refreshAll);
   0% {
     content: "";
   }
+
   33% {
     content: ".";
   }
+
   66% {
     content: "..";
   }
+
   100% {
     content: "...";
   }
@@ -558,5 +573,4 @@ onMounted(refreshAll);
   content: ".";
   animation: dots 1.2s steps(3, end) infinite;
 }
-
 </style>

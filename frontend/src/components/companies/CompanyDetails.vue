@@ -109,7 +109,7 @@
         <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
           class="btn-remove text-white px-4 py-2 rounded">Apagar</button>
         <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
-          class="btn-accept text-white px-4 py-2 rounded">Validar</button>
+          class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
       </div>
     </div>
 

@@ -22,7 +22,15 @@
 
       <!-- Mensagem caso não haja campanhas -->
       <div v-if="campaigns.length === 0" class="text-gray-500 mb-4">
-        Ainda não há campanhas registradas.
+        <span v-if="userRole === 'SA'">
+          Ainda não há campanhas registadas.
+        </span>
+        <span v-else-if="!hasActiveCompanies">
+          Para criar campanhas, terá de ter uma empresa ativa.
+        </span>
+        <span v-else>
+          Ainda não há campanhas registadas.
+        </span>
       </div>
 
       <!-- Tabela de campanhas -->
@@ -60,11 +68,10 @@
           <div class="ml-6 flex items-center gap-2">
             <label for="perPageSelect" class="font-medium">Ver por página:</label>
             <select id="perPageSelect" v-model="itemsPerPage" class="form-control w-24">
+              <option :value="10">10</option>
               <option :value="25">25</option>
               <option :value="50">50</option>
               <option :value="100">100</option>
-              <option :value="250">250</option>
-              <option :value="500">500</option>
             </select>
           </div>
         </div>
@@ -163,7 +170,7 @@ const campaignToDelete = ref(null);
 const selectedCampaignId = ref(null);
 const STATUS_ATIVO = 'Ativo';
 const currentPage = ref(1);
-const itemsPerPage = ref(25); // quantidade por página (antes era constante `pageSize`)
+const itemsPerPage = ref(10);
 const campaignsLoaded = ref(false);
 
 
