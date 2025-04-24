@@ -23,14 +23,6 @@
             <option value="Inativo">Inativo</option>
           </select>
         </div>
-        <div>
-          <label class="block font-medium mb-1">Filtrar por rascunho</label>
-          <select v-model="filterDraft" class="form-control">
-            <option value="Todos">Todos</option>
-            <option value="Terminado">Terminado</option>
-            <option value="Por terminar">Por terminar</option>
-          </select>
-        </div>
       </div>
 
       <!-- Botão de registrar empresa -->
@@ -56,9 +48,9 @@
             <tr>
               <th class="px-4 py-2 border">Empresa</th>
               <th class="px-4 py-2 border">Setor</th>
-              <th class="px-4 py-2 border">Preenchimento de dados</th>
               <th class="px-4 py-2 border">Estado Atual</th>
-              <th v-if="userRole === 'SA'" class="px-4 py-2 border">Ações</th>
+              <th class="px-4 py-2 border" v-if="userRole !== 'SA'">Pedido de Validação</th>
+              <th class="px-4 py-2 border" v-if="userRole === 'SA'">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -70,17 +62,27 @@
                 </router-link>
               </td>
               <td class="px-4 py-2 border">{{ company.sector }}</td>
-              <td class="px-4 py-2 border text-center">
-                <span :class="company.draft ? 'text-yellow-600' : 'text-green-600'">
-                  {{ company.draft ? 'Por terminar' : 'Terminado' }}
-                </span>
-              </td>
               <td class="px-4 py-2 border">
                 <span
                   :class="company.status === 'Ativo' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'">
                   {{ company.status }}
                 </span>
               </td>
+
+              <!-- Coluna para Company Admin pedir validação -->
+              <td v-if="userRole !== 'SA'" class="px-4 py-2 border text-center">
+                <span v-if="company.status === 'Ativo'" class="text-green-600 font-medium">
+                  Pedido aceite
+                </span>
+                <button v-else-if="company.status === 'Inativo' && !company.submitted"
+                  @click="openSubmitModal(company.id)" class="btn btn-secondary text-white text-sm px-3 py-1 rounded">
+                  Pedir validação
+                </button>
+                <span v-else-if="company.status === 'Inativo' && company.submitted" class="text-blue-500 font-medium">
+                  Aguardando aprovação
+                </span>
+              </td>
+
               <td v-if="userRole === 'SA'" class="px-4 py-2 border text-center">
                 <button v-if="company.status === 'Inativo'" @click="openAcceptModal(company.id)"
                   class="btn-success text-white px-4 py-2 rounded mr-2">
@@ -133,10 +135,6 @@
             <label class="block font-medium">Setor</label>
             <input v-model="companyForm.sector" class="form-control" required />
           </div>
-          <div class="mb-3 flex items-center">
-            <input type="checkbox" id="draft" v-model="companyForm.draft" class="mr-2" />
-            <label for="draft" class="font-medium">Guardar como rascunho</label>
-          </div>
           <div class="flex justify-end gap-2">
             <button type="button" @click="showDialog = false" class="btn btn-secondary text-white">Cancelar</button>
             <button type="submit" class="btn btn-success text-white">Registar</button>
@@ -158,10 +156,6 @@
           <div class="mb-3">
             <label class="block font-medium">Setor</label>
             <input v-model="editCompany.sector" class="form-control" required />
-          </div>
-          <div class="mb-3 flex items-center">
-            <input type="checkbox" id="edit-draft" v-model="editCompany.draft" class="mr-2" />
-            <label for="edit-draft" class="font-medium">Guardar como rascunho</label>
           </div>
           <div class="flex justify-end gap-2">
             <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
@@ -195,6 +189,17 @@
       </div>
     </div>
   </div>
+  <div v-if="showSubmitModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
+    <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
+      :class="{ 'scale-100 opacity-100': showSubmitModal, 'scale-95 opacity-0': !showSubmitModal }">
+      <h3 class="text-lg font-bold mb-4">Deseja pedir a validação desta empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeSubmitModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmRequestValidation" class="btn btn-success">Confirmar</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -215,10 +220,12 @@ const companyToDelete = ref(null);
 const userRole = ref('');
 const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
-const filterDraft = ref(localStorage.getItem('filterDraft') || 'Todos');
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const companiesLoaded = ref(false);
+
+const showSubmitModal = ref(false);
+const companyToSubmit = ref(null);
 
 
 // Atualiza empresas e papel do usuário
@@ -231,9 +238,6 @@ watch(filterState, (newVal) => {
   localStorage.setItem('filterState', newVal);
 });
 
-watch(filterDraft, (newVal) => {
-  localStorage.setItem('filterDraft', newVal);
-});
 
 watch(itemsPerPage, () => {
   currentPage.value = 1;
@@ -244,7 +248,6 @@ const fetchUserRole = async () => {
   try {
     const res = await axios.get('http://127.0.0.1:8000/api/user');
     const email = res.data.email;
-
     if (email === 'admin@admin.com') {
       userRole.value = 'SA';
     } else {
@@ -255,7 +258,7 @@ const fetchUserRole = async () => {
   } catch (error) {
     console.error('Erro ao obter o papel do usuário:', error);
   } finally {
-    roleLoaded.value = true; // <- só aqui mostramos os elementos baseados no papel
+    roleLoaded.value = true;
   }
 };
 
@@ -267,44 +270,36 @@ const fetchCompanies = async () => {
     toast.error('Erro ao carregar empresas.');
     companies.value = [];
   } finally {
-    companiesLoaded.value = true; // <- garante que o carregamento foi concluído
+    companiesLoaded.value = true;
   }
 };
 
 
 const registerCompany = async () => {
   try {
-    await axios.post('http://127.0.0.1:8000/api/companies', {
-      ...companyForm.value,
-      draft: companyForm.value.draft ? 1 : 0,
-    });
+    await axios.post('http://127.0.0.1:8000/api/companies', companyForm.value);
     toast.success('Empresa registrada com sucesso!');
     showDialog.value = false;
-    companyForm.value = { name: '', sector: '', draft: false };
+    companyForm.value = { name: '', sector: '' };
     await refreshAll();
   } catch (error) {
     toast.error('Erro ao registrar empresa.');
-    console.log('Detalhe do erro:', error.response?.data);
   }
 };
 
 const acceptCompany = async () => {
   try {
     await axios.post(`http://127.0.0.1:8000/api/companies/${companyToAccept.value}/approve`);
-    toast.success('Empresa aceita com sucesso!');
+    toast.success('Empresa aceite com sucesso!');
     await refreshAll();
     closeAcceptModal();
   } catch (error) {
     toast.error('Erro ao aceitar empresa.');
-    console.error('Erro ao aceitar empresa:', error);
   }
 };
 
 const openEditModal = (company) => {
-  editCompany.value = {
-    ...company,
-    draft: !!company.draft  // força a ser booleano
-  };
+  editCompany.value = { ...company };
   showEditModal.value = true;
 };
 
@@ -316,17 +311,31 @@ const closeEditModal = () => {
 
 const updateCompany = async () => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, {
-      name: editCompany.value.name,
-      sector: editCompany.value.sector,
-      draft: editCompany.value.draft ? 1 : 0, // sempre enviado
-    });
+    await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, editCompany.value);
     toast.success('Empresa atualizada com sucesso!');
     await refreshAll();
     closeEditModal();
   } catch (error) {
     toast.error('Erro ao atualizar empresa.');
   }
+};
+
+const requestValidation = async (companyId) => {
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/companies/${companyId}/submit`);
+    toast.success('Pedido de validação enviado.');
+    await fetchCompanies();
+  } catch (error) {
+    toast.error(
+      error.response?.data?.error || 'Erro ao enviar pedido de validação.'
+    );
+  }
+};
+
+const confirmRequestValidation = async () => {
+  if (!companyToSubmit.value) return;
+  await requestValidation(companyToSubmit.value);
+  closeSubmitModal();
 };
 
 const openDeleteModal = (companyId) => {
@@ -360,15 +369,22 @@ const closeAcceptModal = () => {
   showAcceptModal.value = false;
 };
 
+// Abre modal de confirmação
+const openSubmitModal = (companyId) => {
+  companyToSubmit.value = companyId;
+  showSubmitModal.value = true;
+};
+
+// Fecha modal de confirmação
+const closeSubmitModal = () => {
+  companyToSubmit.value = null;
+  showSubmitModal.value = false;
+};
+
+
 const filteredCompanies = computed(() => {
   return companies.value.filter(company => {
-    const matchState =
-      filterState.value === 'Todos' || company.status === filterState.value;
-    const matchDraft =
-      filterDraft.value === 'Todos' ||
-      (filterDraft.value === 'Terminado' && company.draft === 0) ||
-      (filterDraft.value === 'Por terminar' && company.draft === 1);
-    return matchState && matchDraft;
+    return filterState.value === 'Todos' || company.status === filterState.value;
   });
 });
 
@@ -379,8 +395,9 @@ const paginatedCompanies = computed(() => {
 });
 
 const totalPages = computed(() => {
-  return Math.ceil(filteredCompanies.value.length / itemsPerPage.value)
+  return Math.ceil(filteredCompanies.value.length / itemsPerPage.value);
 });
+
 
 
 

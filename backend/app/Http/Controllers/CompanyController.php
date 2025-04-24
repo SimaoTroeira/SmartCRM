@@ -15,7 +15,8 @@ class CompanyController extends Controller
             $user = Auth::user();
 
             if ($user->hasRole('SA')) {
-                $companies = Company::all();
+                // SA só vê empresas que foram submetidas para validação
+                $companies = Company::where('submitted', true)->get();
             } else {
                 $companies = Company::whereHas('userCompanyRoles', function ($query) use ($user) {
                     $query->where('user_id', $user->id)
@@ -31,7 +32,6 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-        // Bloqueia Super Admin de registar empresas
         if (Auth::user()->hasRole('SA')) {
             return response()->json(['error' => 'Super Admin não pode criar empresas.'], 403);
         }
@@ -39,7 +39,6 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sector' => 'required|string|max:255',
-            'draft' => 'nullable|boolean',
         ]);
 
         if (Company::count() === 0) {
@@ -52,8 +51,8 @@ class CompanyController extends Controller
             $company = Company::create([
                 'name' => $validated['name'],
                 'sector' => $validated['sector'],
-                'draft' => $validated['draft'] ?? 0,
                 'status' => 'Inativo',
+                'submitted' => false,
             ]);
 
             DB::table('user_company_roles')->insert([
@@ -76,6 +75,36 @@ class CompanyController extends Controller
         }
     }
 
+    public function submit($id)
+    {
+        $company = Company::findOrFail($id);
+
+        if ($company->status === 'Ativo') {
+            return response()->json(['error' => 'Empresa já está ativa.'], 400);
+        }
+
+        if ($company->submitted) {
+            return response()->json(['error' => 'Empresa já foi submetida.'], 400);
+        }
+
+        $user = Auth::user();
+
+        $hasAccess = DB::table('user_company_roles')
+            ->where('user_id', $user->id)
+            ->where('company_id', $company->id)
+            ->where('role_id', $this->getRoleId('CA'))
+            ->exists();
+
+        if (!$hasAccess) {
+            return response()->json(['error' => 'Acesso negado.'], 403);
+        }
+
+        $company->submitted = true;
+        $company->save();
+
+        return response()->json(['message' => 'Empresa submetida com sucesso.']);
+    }
+
     private function getRoleId($roleCode)
     {
         $role = \App\Models\Role::where('code', $roleCode)->first();
@@ -92,7 +121,6 @@ class CompanyController extends Controller
                 return response()->json(['error' => 'Apenas o SuperAdmin pode editar empresas ativas.'], 403);
             }
         } else {
-            // empresa inativa
             $hasAccess = DB::table('user_company_roles')
                 ->where('user_id', $user->id)
                 ->where('company_id', $id)
@@ -107,7 +135,6 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sector' => 'required|string|max:255',
-            'draft' => 'nullable|boolean',
         ]);
 
         $company->update($validated);
@@ -120,14 +147,11 @@ class CompanyController extends Controller
         $user = Auth::user();
         $company = Company::findOrFail($id);
 
-        // Se for SA, tem acesso total, mas depende do estado da empresa
         if ($user->hasRole('SA')) {
             if ($company->status === 'Ativo') {
-                // Soft delete
                 $company->delete();
                 return response()->json(['message' => 'Empresa desativada (soft delete).']);
             } else {
-                // Hard delete - remove relações também
                 DB::table('user_company_roles')
                     ->where('company_id', $id)
                     ->delete();
@@ -137,7 +161,6 @@ class CompanyController extends Controller
             }
         }
 
-        // Se não for SA, só pode apagar se for CA e a empresa estiver inativa
         if ($company->status !== 'Inativo') {
             return response()->json(['error' => 'Apenas empresas inativas podem ser apagadas por Company Admin.'], 403);
         }
@@ -152,7 +175,6 @@ class CompanyController extends Controller
             return response()->json(['error' => 'Apenas o Company Admin pode apagar empresas inativas.'], 403);
         }
 
-        // Hard delete e remoção da linha de relação
         DB::table('user_company_roles')
             ->where('company_id', $id)
             ->delete();
@@ -165,18 +187,14 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
 
-    
         $company->status = 'Ativo';
         $company->save();
-    
 
-        // Verifica se já existe um user com role CA associado a esta empresa
         $existingCA = DB::table('user_company_roles')
             ->where('company_id', $company->id)
             ->where('role_id', $this->getRoleId('CA'))
             ->first();
 
-        // Se não existir, busca o primeiro user ligado à empresa (quem criou) e atribui a role CA
         if (!$existingCA) {
             $creator = DB::table('user_company_roles')
                 ->where('company_id', $company->id)
@@ -196,10 +214,9 @@ class CompanyController extends Controller
                 );
             }
         }
-    
+
         return response()->json(['message' => 'Empresa aprovada com sucesso.']);
     }
-    
 
     public function rejectCompany($id)
     {

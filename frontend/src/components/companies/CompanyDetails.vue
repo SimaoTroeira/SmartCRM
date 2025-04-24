@@ -20,8 +20,7 @@
       <!-- Descrição -->
       <div class="pb-4">
         <p><strong>Setor:</strong> {{ company.sector }}</p>
-        <p><strong>Status:</strong> {{ company.status }}</p>
-        <p><strong>Rascunho:</strong> {{ company.draft ? 'Sim' : 'Não' }}</p>
+        <p><strong>Estado Atual:</strong> {{ company.status }}</p>
       </div>
 
       <hr class="border-t border-gray-300 my-6" />
@@ -108,6 +107,18 @@
           class="btn-edit text-white px-4 py-2 rounded">Editar</button>
         <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
           class="btn-remove text-white px-4 py-2 rounded">Apagar</button>
+        <!-- Botão de pedido de validação -->
+        <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
+          class="btn-submit text-white px-4 py-2 rounded">
+          Pedir validação
+        </button>
+        <span v-else-if="userRole === 'CA' && company.submitted && company.status === 'Inativo'"
+          class="text-blue-500 font-medium mt-2">
+          Aguardando aprovação
+        </span>
+        <span v-else-if="userRole === 'CA' && company.status === 'Ativo'" class="text-green-600 font-medium mt-2">
+          Pedido aceite
+        </span>
         <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
           class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
       </div>
@@ -134,10 +145,6 @@
           <label class="block font-medium">Setor</label>
           <input v-model="editCompany.sector" class="form-control w-full border px-2 py-1" required />
         </div>
-        <div class="mb-3 flex items-center">
-          <input type="checkbox" id="edit-draft" v-model="editCompany.draft" class="mr-2" />
-          <label for="edit-draft" class="font-medium">Guardar como rascunho</label>
-        </div>
         <div class="flex justify-end gap-2">
           <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
           <button type="submit" class="btn btn-success">Guardar alterações</button>
@@ -153,6 +160,16 @@
         <button type="button" @click="confirmDelete" class="btn btn-danger">Apagar</button>
       </div>
     </dialog>
+
+    <!-- Modal de Confirmação de Pedido de Validação -->
+    <dialog ref="submitDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Deseja pedir a validação desta empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeSubmitModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmSubmitCompany" class="btn btn-submit">Confirmar</button>
+      </div>
+    </dialog>
+
   </div>
 </template>
 
@@ -177,6 +194,8 @@ const acceptDialog = ref(null);
 const deleteDialog = ref(null);
 const inviteEmail = ref('');
 const companyToDelete = ref(null);
+
+const submitDialog = ref(null);
 
 const goBack = () => {
   router.back();
@@ -216,7 +235,11 @@ const openEditModal = (c) => {
     toast.warning('Estado Ativo não permite. Contacte o administrador.');
     return;
   }
-  editCompany.value = { ...c, draft: !!c.draft };
+  editCompany.value = {
+    id: c.id,
+    name: c.name,
+    sector: c.sector
+  };
   editDialog.value?.showModal();
 };
 
@@ -232,13 +255,20 @@ const closeAcceptModal = () => {
   acceptDialog.value?.close();
 };
 
+const openSubmitModal = () => {
+  submitDialog.value?.showModal();
+};
+
+const closeSubmitModal = () => {
+  submitDialog.value?.close();
+};
+
 // Guardar alterações da empresa
 const updateCompany = async () => {
   try {
     await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, {
       name: editCompany.value.name,
       sector: editCompany.value.sector,
-      draft: editCompany.value.draft ? 1 : 0,
     });
     toast.success('Empresa atualizada com sucesso!');
     closeEditModal();
@@ -283,6 +313,17 @@ const confirmAcceptCompany = async () => {
     await fetchCompany();
   } catch {
     toast.error('Erro ao aceitar empresa.');
+  }
+};
+
+const confirmSubmitCompany = async () => {
+  try {
+    await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/submit`);
+    toast.success('Pedido de validação enviado com sucesso!');
+    closeSubmitModal();
+    await fetchCompany();
+  } catch (error) {
+    toast.error(error.response?.data?.error || 'Erro ao enviar pedido de validação.');
   }
 };
 
@@ -408,7 +449,17 @@ onMounted(async () => {
   background-color: #c82333;
 }
 
+.btn-submit {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+}
 
+.btn-submit:hover {
+  background-color: #45a049;
+}
 
 dialog {
   border-radius: 12px;
