@@ -15,13 +15,26 @@ class CompanyController extends Controller
             $user = Auth::user();
 
             if ($user->hasRole('SA')) {
-                // SA só vê empresas que foram submetidas para validação
-                $companies = Company::where('submitted', true)->get();
+                // SA vê empresas submetidas com relações completas
+                $companies = Company::with([
+                    'campaigns',
+                    'invites',
+                    'userCompanyRoles.user',
+                    'userCompanyRoles.role'
+                ])
+                    ->where('submitted', true)
+                    ->get();
             } else {
-                $companies = Company::whereHas('userCompanyRoles', function ($query) use ($user) {
-                    $query->where('user_id', $user->id)
-                        ->whereNotNull('company_id');
-                })->get();
+                $companies = Company::with([
+                    'campaigns',
+                    'invites',
+                    'userCompanyRoles.user',
+                    'userCompanyRoles.role'
+                ])
+                    ->whereHas('userCompanyRoles', function ($query) use ($user) {
+                        $query->where('user_id', $user->id)
+                            ->whereNotNull('company_id');
+                    })->get();
             }
 
             return response()->json($companies);
@@ -29,6 +42,7 @@ class CompanyController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function store(Request $request)
     {

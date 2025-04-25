@@ -330,15 +330,14 @@ const confirmSubmitCompany = async () => {
 // Enviar convite
 const sendInvite = async () => {
   try {
-    const response = await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/invite`, {
+    await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/invite`, {
       email: inviteEmail.value
     });
-    toast.success('Convite enviado com sucesso!');
-    console.log(`Link de aceitação: http://localhost:5174/accept-invite/${response.data.token}`);
+    toast.success('Convite enviado para o email com sucesso!');
     inviteEmail.value = '';
     await fetchCompany();
   } catch (error) {
-    toast.error('Erro ao enviar convite.');
+    toast.error(error.response?.data?.error || 'Erro ao enviar convite.');
     console.error(error);
   }
 };
@@ -346,9 +345,8 @@ const sendInvite = async () => {
 // Reenviar convite
 const resendInvite = async (inviteId) => {
   try {
-    const { data } = await axios.put(`http://127.0.0.1:8000/api/invites/${inviteId}/resend`);
-    toast.success('Convite reenviado com sucesso!');
-    console.log(`Novo link: http://localhost:5174/accept-invite/${data.token}`);
+    await axios.put(`http://127.0.0.1:8000/api/invites/${inviteId}/resend`);
+    toast.success('Convite reenviado com sucesso para o email!');
     await fetchCompany();
   } catch {
     toast.error('Erro ao reenviar convite.');

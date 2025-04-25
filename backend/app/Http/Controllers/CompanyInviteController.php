@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use App\Mail\CompanyInvitationMail;
+use Illuminate\Support\Facades\Mail;
 
 class CompanyInviteController extends Controller
 {
@@ -34,7 +36,12 @@ class CompanyInviteController extends Controller
             'expires_at' => Carbon::now()->addMinutes(10),
         ]);
 
-        // TODO: Enviar email com o link contendo o token
+        $link = 'http://localhost:5174' . '/accept-invite/' . $token;
+        // $link = env('FRONTEND_URL') . '/accept-invite/' . $token;
+        // $link = config('services.frontend.url') . '/accept-invite/' . $token;
+
+
+        Mail::to($userEmail)->send(new CompanyInvitationMail($link, Company::find($companyId)->name));
 
         return response()->json([
             'message' => 'Convite enviado com sucesso!',
@@ -80,7 +87,9 @@ class CompanyInviteController extends Controller
         $invite->resended_at = now();
         $invite->save();
 
-        // TODO: reenviar email com o novo link
+        $link = env('FRONTEND_URL') . '/accept-invite/' . $invite->token;
+
+        Mail::to($invite->email)->send(new CompanyInvitationMail($link, $invite->company->name));
 
         return response()->json(['message' => 'Convite reenviado com sucesso.', 'token' => $invite->token]);
     }

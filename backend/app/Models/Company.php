@@ -14,6 +14,7 @@ class Company extends Model
         'name',
         'sector',
         'status',
+        'submitted',
     ];
 
     public function userCompanyRoles()
