@@ -67,12 +67,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/campaigns/{campaign}/users', [CampaignController::class, 'getUsers']);
     Route::delete('/campaigns/{campaign}/users/{user}', [CampaignController::class, 'removeUser']);
 
-    
+
     //invites
     Route::post('/companies/{company}/invite', [CompanyInviteController::class, 'invite']);
-    Route::get('/invites/accept/{token}', [CompanyInviteController::class, 'accept']);
+    // Route::get('/invites/accept/{token}', [CompanyInviteController::class, 'accept']);
+    Route::post('/invites/accept/{token}', [CompanyInviteController::class, 'accept']);
 
     Route::put('/user-company-roles/{id}/promote', [UserCompanyRoleController::class, 'promote']);
+    Route::delete('/user-company-roles/{id}', [UserCompanyRoleController::class, 'destroy']);
+
     Route::put('/invites/{id}/resend', [CompanyInviteController::class, 'resend']);
     Route::delete('/invites/{id}/cancel', [CompanyInviteController::class, 'cancel']);
 });

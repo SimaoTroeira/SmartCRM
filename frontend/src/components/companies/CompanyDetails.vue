@@ -56,6 +56,9 @@
               <button @click="promoteUser(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
                 Promover a CA
               </button>
+              <button @click="removeUserFromCompany(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
+                Remover
+              </button>
             </template>
           </li>
         </ul>
@@ -375,6 +378,18 @@ const promoteUser = async (ucrId) => {
     console.error(error);
   }
 };
+
+const removeUserFromCompany = async (ucrId) => {
+  try {
+    await axios.delete(`http://127.0.0.1:8000/api/user-company-roles/${ucrId}`);
+    toast.success('Utilizador removido com sucesso!');
+    await fetchCompany();
+  } catch (error) {
+    toast.error('Erro ao remover utilizador da empresa.');
+    console.error(error);
+  }
+};
+
 
 onMounted(async () => {
   await fetchUserRole();
