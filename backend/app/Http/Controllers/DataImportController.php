@@ -35,6 +35,9 @@ class DataImportController extends Controller
                 'campaigns',
                 'roles',
                 'user_company_roles',
+                'company_invites',
+                'campaign_user',
+                'accounts'
             ];
 
             $filteredTables = array_filter($tables, function ($table) use ($keyName, $excludedTables) {
@@ -69,7 +72,9 @@ class DataImportController extends Controller
                 'created_at',
                 'updated_at',
                 'deleted_at',
-                'user_id'
+                'user_id',
+                'campaign_id',
+                'company_id',
             ]);
         });
 
@@ -79,65 +84,74 @@ class DataImportController extends Controller
     public function storeMappedData(Request $request)
     {
         $request->validate([
-            'target_table' => 'required|string',
-            'mappings' => 'required|array',
-            'rows' => 'required|array'
+            'campaign_id' => 'required|integer',
+            'data' => 'required|array',
         ]);
-    
-        // Verifica se a tabela existe
-        if (!Schema::hasTable($request->target_table)) {
-            return response()->json(['error' => 'Tabela não encontrada'], 404);
-        }
-    
-        $user = Auth::user();
-        $successCount = 0;
-    
+
         try {
-            // Reseta o AUTO_INCREMENT para o valor correto se a tabela estiver vazia
-            if (DB::table($request->target_table)->count() === 0) {
-                try {
-                    DB::statement('ALTER TABLE ' . $request->target_table . ' AUTO_INCREMENT = 1');
-                } catch (\Exception $e) {
-                    Log::error("Erro ao redefinir AUTO_INCREMENT: " . $e->getMessage());
+            $campaignId = $request->campaign_id;
+            $data = $request->data;
+
+            // Buscar o company_id associado à campanha
+            $campaign = DB::table('campaigns')->where('id', $campaignId)->first();
+
+            if (!$campaign) {
+                return response()->json([
+                    'error' => 'Campanha não encontrada.'
+                ], 404);
+            }
+
+            $companyId = $campaign->company_id; // Pega o company_id certo
+
+            $successCount = 0;
+            $updateCount = 0;
+
+            foreach ($data as $index => $row) {
+                $rowToUpsert = $row;
+                $rowToUpsert['company_id'] = $companyId;
+                $rowToUpsert['campaign_id'] = $campaignId;
+
+                unset($rowToUpsert['id'], $rowToUpsert['created_at'], $rowToUpsert['updated_at'], $rowToUpsert['deleted_at']);
+
+                // Tenta encontrar uma linha existente
+                $query = DB::table('datasets')
+                    ->where('company_id', $companyId)
+                    ->where('customer_identifier', $row['customer_identifier'] ?? null);
+
+                if (isset($row['transaction_identifier'])) {
+                    $query->where('transaction_identifier', $row['transaction_identifier']);
                 }
-            } else {
-                // Se a tabela não estiver vazia, ajusta o AUTO_INCREMENT para o maior valor de 'id' + 1
-                DB::statement('ALTER TABLE ' . $request->target_table . ' AUTO_INCREMENT = ' . (DB::table($request->target_table)->max('id') + 1));
+                if (isset($row['item_identifier'])) {
+                    $query->where('item_identifier', $row['item_identifier']);
+                }
+
+                $existingRow = $query->first();
+
+                if ($existingRow) {
+                    // Atualiza apenas os campos novos
+                    DB::table('datasets')
+                        ->where('id', $existingRow->id)
+                        ->update(array_filter($rowToUpsert)); // Só atualiza campos preenchidos
+                    $updateCount++;
+                } else {
+                    // Se não existir, insere novo
+                    DB::table('datasets')->insert($rowToUpsert);
+                    $successCount++;
+                }
             }
-    
-            // Insere os dados mapeados
-            foreach ($request->rows as $index => $row) {
-                $columns = Schema::getColumnListing($request->target_table);
-                $filteredData = array_intersect_key($row, array_flip($columns));
-    
-                // Remove qualquer user_id vindo do CSV
-                unset($filteredData['user_id']);
-    
-                // Insere os dados para a tabela com o user_id do usuário logado
-                DB::table($request->target_table)->insert(
-                    array_merge($filteredData, [
-                        'user_id' => $user->id,
-                        'campaign_id' => $request->campaign_id, // <- adiciona esta linha
-                    ])
-                );
-    
-                $successCount++;
-                Log::info("Linha $index inserida para user_id: " . $user->id);
-            }
-    
+
             return response()->json([
-                'message' => "$successCount registros importados com sucesso"
+                'message' => "$successCount novos registros inseridos, $updateCount registros atualizados."
             ]);
         } catch (\Exception $e) {
-            Log::error("Erro ao importar dados: " . $e->getMessage());
-    
+            Log::error('Erro ao importar dados: ' . $e->getMessage());
+
             return response()->json([
-                'error' => 'Erro ao importar dados',
+                'error' => 'Erro ao importar dados.',
                 'details' => $e->getMessage()
             ], 500);
         }
     }
-    
 
     public function getUserData($tableName)
     {

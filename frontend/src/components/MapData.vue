@@ -1,18 +1,5 @@
 <template>
   <div>
-    <div class="flex flex-wrap items-end justify-between gap-4 mb-2">
-      <div>
-        <h5 class="font-semibold">A tabela {{ tableName }} corresponde a
-          <select v-model="selectedTable" class="border p-2 rounded w-full">
-            <option value="">Selecione uma tabela</option>
-            <option v-for="table in availableTables" :key="table" :value="table">
-              {{ table }}
-            </option>
-          </select>
-        </h5>
-      </div>
-    </div>
-
     <div class="overflow-x-auto">
       <table class="min-w-full border-collapse border border-gray-300">
         <thead>
@@ -31,10 +18,49 @@
               <select v-model="mappedColumns[index]" class="border p-1 rounded w-full"
                 :disabled="!selectedTable || rejectedColumns[index]">
                 <option value="">Selecione a coluna</option>
-                <option v-for="column in tableColumns" :key="column" :value="column">
-                  {{ column }}
-                </option>
+
+                <optgroup label="Identificação do Cliente">
+                  <option value="customer_identifier">Identificador do Cliente</option>
+                  <option value="name">Nome</option>
+                  <option value="email">Email</option>
+                  <option value="phone">Telefone</option>
+                </optgroup>
+
+                <optgroup label="Localização">
+                  <option value="region">Região</option>
+                  <option value="country">País</option>
+                  <option value="city">Cidade</option>
+                </optgroup>
+
+                <optgroup label="Produto ou Serviço">
+                  <option value="item_identifier">Identificador do Produto</option>
+                  <option value="item_name">Nome do Produto</option>
+                  <option value="item_category">Categoria</option>
+                  <option value="item_subcategory">Subcategoria</option>
+                  <option value="item_price">Preço</option>
+                </optgroup>
+
+                <optgroup label="Transação">
+                  <option value="transaction_identifier">Identificador da Transação</option>
+                  <option value="transaction_date">Data da Transação</option>
+                  <option value="quantity">Quantidade</option>
+                  <option value="total_amount">Valor Total</option>
+                  <option value="purchase_channel">Canal de Compra</option>
+                  <option value="payment_method">Método de Pagamento</option>
+                </optgroup>
+
+                <optgroup label="Atributos Flexíveis">
+                  <option value="attribute_1">Atributo 1</option>
+                  <option value="attribute_2">Atributo 2</option>
+                  <option value="attribute_3">Atributo 3</option>
+                  <option value="attribute_4">Atributo 4</option>
+                  <option value="attribute_5">Atributo 5</option>
+                  <option value="numeric_attribute_1">Atributo Numérico 1</option>
+                  <option value="numeric_attribute_2">Atributo Numérico 2</option>
+                  <option value="numeric_attribute_3">Atributo Numérico 3</option>
+                </optgroup>
               </select>
+
             </td>
             <td class="border border-gray-300 px-4 py-2">
               <select v-model="columnTypes[index]" class="border p-1 rounded" :disabled="rejectedColumns[index]">
@@ -112,8 +138,7 @@ export default {
     tableName: String
   },
   data: () => ({
-    selectedTable: "",
-    availableTables: [],
+    selectedTable: "datasets",
     tableColumns: [],
     mappedColumns: [],
     columnTypes: [],
@@ -125,15 +150,68 @@ export default {
   }),
   async created() {
     this.initMappings();
-    await this.loadAvailableTables();
+    await this.loadTableColumns(); // já usa 'datasets'
     await this.loadCampaigns();
   },
   methods: {
     initMappings() {
-      this.columnTypes = this.headers.map(() => 'text');
-      this.mappedColumns = this.headers.map(() => '');
-      this.rejectedColumns = this.headers.map(() => false); // Marca todas as colunas como não rejeitadas inicialmente
-    },
+      const smartMappingKeywords = {
+        customer_identifier: ['id', 'cliente', 'nº cliente', 'identificador'],
+        name: ['nome', 'cliente', 'utilizador', 'user', 'name'],
+        email: ['email', 'e-mail'],
+        phone: ['telefone', 'telemóvel', 'contacto'],
+        region: ['região', 'regiao'],
+        country: ['país', 'pais'],
+        city: ['cidade'],
+        gender: ['sexo', 'género', 'genero'],
+        date_of_birth: ['data nascimento', 'nascimento', 'dob'],
+        item_identifier: ['id produto', 'id item', 'produto', 'sku'],
+        item_name: ['nome produto', 'descrição', 'descricao'],
+        item_category: ['categoria'],
+        item_subcategory: ['subcategoria'],
+        item_price: ['preço', 'valor unitário'],
+        transaction_identifier: ['transação', 'transacao', 'id transação', 'id compra'],
+        transaction_date: ['data', 'data compra', 'data transação'],
+        quantity: ['quantidade', 'qtd'],
+        total_amount: ['total', 'valor total', 'montante'],
+        purchase_channel: ['canal', 'origem'],
+        payment_method: ['pagamento', 'método pagamento'],
+        attribute_1: ['nota', 'comentário', 'observações'],
+        numeric_attribute_1: ['pontuação', 'score']
+      };
+
+      this.mappedColumns = this.headers.map((header) => {
+        const normalizedHeader = header.toLowerCase().trim();
+        for (const [targetField, keywords] of Object.entries(smartMappingKeywords)) {
+          if (keywords.some(keyword => normalizedHeader.includes(keyword))) {
+            return targetField;
+          }
+        }
+        return '';
+      });
+
+      this.columnTypes = this.headers.map((header, index) => {
+        const values = this.tableData.map(row => (row[index] || '').toString().trim().toLowerCase());
+
+        const isDate = values.every(val => val === '' || /^\d{4}-\d{2}-\d{2}$/.test(val) || /^\d{2}\/\d{2}\/\d{4}$/.test(val));
+        if (isDate) return 'date';
+
+        const isNumber = values.every(val => val === '' || !isNaN(val));
+        if (isNumber) return 'number';
+
+        const isBoolean = values.every(val => ['true', 'false', 'sim', 'não', 'yes', 'no', '1', '0', ''].includes(val));
+        if (isBoolean) return 'boolean';
+
+        return 'text';
+      });
+
+      this.rejectedColumns = this.headers.map(() => false);
+      this.$emit('showToast', {
+        type: 'info',
+        message: 'Mapeamento automático sugerido com base nas colunas detectadas.'
+      });
+    }
+    ,
 
     async apiRequest(config) {
       try {
@@ -157,22 +235,10 @@ export default {
         console.error("Erro ao carregar campanhas:", error);
       }
     },
-    async loadAvailableTables() {
-      try {
-        const tables = await this.apiRequest({ url: '/available-tables' });
-        this.availableTables = tables.filter(table =>
-          !['users', 'password_resets', 'migrations'].includes(table) &&
-          !table.startsWith('oauth_')
-        );
-      } catch (error) {
-        alert("Erro ao carregar tabelas. Verifique o console.");
-      }
-    },
-
-    async loadTableColumns(tableName) {
+    async loadTableColumns() {
       try {
         this.tableColumns = await this.apiRequest({
-          url: `/table-columns/${tableName}`
+          url: `/table-columns/datasets`
         });
       } catch (error) {
         this.tableColumns = [];
@@ -208,46 +274,35 @@ export default {
     },
 
     async applyMapping() {
-      const mappedData = {
-        target_table: this.selectedTable,
+      const rows = this.tableData.map(row => {
+        const mappedRow = {};
+        this.headers.forEach((header, index) => {
+          if (this.mappedColumns[index] && !this.rejectedColumns[index]) {
+            mappedRow[this.mappedColumns[index]] = row[index];
+          }
+        });
+        return mappedRow;
+      });
+      const payload = {
         campaign_id: this.campaign_id,
-        mappings: this.headers.map((header, index) => ({
-          csv_column: header,
-          db_column: this.mappedColumns[index],
-          data_type: this.columnTypes[index]
-        })),
-        rows: this.tableData.map(row => {
-          const mappedRow = {};
-          this.headers.forEach((header, index) => {
-            if (this.mappedColumns[index] && !this.rejectedColumns[index]) {
-              mappedRow[this.mappedColumns[index]] = row[index];
-            }
-          });
-          return mappedRow;
-        })
+        data: rows
       };
 
       try {
         await this.apiRequest({
           method: 'post',
           url: '/import/mapped-data',
-          data: mappedData
+          data: payload
         });
         this.$emit('close');
       } catch (error) {
         alert('Erro ao importar: ' + (error.response?.data?.error || error.message));
       }
-    },
-
+    }
+    ,
     cancel() {
       this.$emit('close');
     }
   },
-  watch: {
-    selectedTable(newTable) {
-      if (newTable) this.loadTableColumns(newTable);
-      else this.tableColumns = [];
-    }
-  }
 };
 </script>
