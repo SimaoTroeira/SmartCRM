@@ -52,7 +52,7 @@
                 </router-link>
               </td>
               <td class="px-4 py-2 border">{{ campaign.description }}</td>
-              <td class="px-4 py-2 border">{{ campaign.name }}</td>
+              <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
             </tr>
           </tbody>
         </table>
