@@ -14,35 +14,32 @@ class CompanyController extends Controller
         try {
             $user = Auth::user();
 
+            $relations = [
+                'campaigns',
+                'invites',
+                'userCompanyRoles.user',
+                'userCompanyRoles.role'
+            ];
+
             if ($user->hasRole('SA')) {
-                // SA vê empresas submetidas com relações completas
-                $companies = Company::with([
-                    'campaigns',
-                    'invites',
-                    'userCompanyRoles.user',
-                    'userCompanyRoles.role'
-                ])
+                $companies = Company::with($relations)
                     ->where('submitted', true)
                     ->get();
             } else {
-                $companies = Company::with([
-                    'campaigns',
-                    'invites',
-                    'userCompanyRoles.user',
-                    'userCompanyRoles.role'
-                ])
+                $companies = Company::with($relations)
                     ->whereHas('userCompanyRoles', function ($query) use ($user) {
                         $query->where('user_id', $user->id)
                             ->whereNotNull('company_id');
-                    })->get();
+                    })
+                    ->get();
             }
 
             return response()->json($companies);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            \Log::error('Erro ao carregar empresas: ' . $e->getMessage());
+            return response()->json(['error' => 'Erro ao carregar empresas. Verifique o log do servidor.'], 500);
         }
     }
-
 
     public function store(Request $request)
     {
