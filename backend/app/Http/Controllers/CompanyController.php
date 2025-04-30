@@ -156,46 +156,46 @@ class CompanyController extends Controller
         return response()->json($company);
     }
 
-    public function destroy($id)
-    {
-        $user = Auth::user();
-        $company = Company::findOrFail($id);
+    // public function destroy($id)
+    // {
+    //     $user = Auth::user();
+    //     $company = Company::findOrFail($id);
 
-        if ($user->hasRole('SA')) {
-            if ($company->status === 'Ativo') {
-                $company->delete();
-                return response()->json(['message' => 'Empresa desativada (soft delete).']);
-            } else {
-                DB::table('user_company_roles')
-                    ->where('company_id', $id)
-                    ->delete();
+    //     if ($user->hasRole('SA')) {
+    //         if ($company->status === 'Ativo') {
+    //             $company->delete();
+    //             return response()->json(['message' => 'Empresa desativada (soft delete).']);
+    //         } else {
+    //             DB::table('user_company_roles')
+    //                 ->where('company_id', $id)
+    //                 ->delete();
 
-                $company->forceDelete();
-                return response()->json(['message' => 'Empresa removida permanentemente (hard delete).']);
-            }
-        }
+    //             $company->forceDelete();
+    //             return response()->json(['message' => 'Empresa removida permanentemente (hard delete).']);
+    //         }
+    //     }
 
-        if ($company->status !== 'Inativo') {
-            return response()->json(['error' => 'Apenas empresas inativas podem ser apagadas por Company Admin.'], 403);
-        }
+    //     if ($company->status !== 'Inativo') {
+    //         return response()->json(['error' => 'Apenas empresas inativas podem ser apagadas por Company Admin.'], 403);
+    //     }
 
-        $hasAccess = DB::table('user_company_roles')
-            ->where('user_id', $user->id)
-            ->where('company_id', $id)
-            ->where('role_id', $this->getRoleId('CA'))
-            ->exists();
+    //     $hasAccess = DB::table('user_company_roles')
+    //         ->where('user_id', $user->id)
+    //         ->where('company_id', $id)
+    //         ->where('role_id', $this->getRoleId('CA'))
+    //         ->exists();
 
-        if (!$hasAccess) {
-            return response()->json(['error' => 'Apenas o Company Admin pode apagar empresas inativas.'], 403);
-        }
+    //     if (!$hasAccess) {
+    //         return response()->json(['error' => 'Apenas o Company Admin pode apagar empresas inativas.'], 403);
+    //     }
 
-        DB::table('user_company_roles')
-            ->where('company_id', $id)
-            ->delete();
+    //     DB::table('user_company_roles')
+    //         ->where('company_id', $id)
+    //         ->delete();
 
-        $company->forceDelete();
-        return response()->json(['message' => 'Empresa removida permanentemente (hard delete).']);
-    }
+    //     $company->forceDelete();
+    //     return response()->json(['message' => 'Empresa removida permanentemente (hard delete).']);
+    // }
 
     public function approveCompany($id)
     {

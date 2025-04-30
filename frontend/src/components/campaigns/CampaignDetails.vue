@@ -267,13 +267,18 @@ onMounted(fetchCampaign);
 }
 
 .btn-edit {
-    background-color: #4CAF50;
-    color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: #ffc107;
+  color: white;
 }
 
 .btn-edit:hover {
-    background-color: #45a049;
+  background-color: #e0a800;
 }
+
+
 
 .btn-remove {
     background-color: #dc3545;
@@ -294,28 +299,31 @@ dialog::backdrop {
 }
 
 @keyframes dots {
-  0% {
-    content: '';
-  }
-  25% {
-    content: '.';
-  }
-  50% {
-    content: '..';
-  }
-  75% {
-    content: '...';
-  }
-  100% {
-    content: '';
-  }
+    0% {
+        content: '';
+    }
+
+    25% {
+        content: '.';
+    }
+
+    50% {
+        content: '..';
+    }
+
+    75% {
+        content: '...';
+    }
+
+    100% {
+        content: '';
+    }
 }
 
 .dot-anim::after {
-  display: inline-block;
-  animation: dots 1.5s steps(4, end) infinite;
-  content: '';
-  white-space: pre;
+    display: inline-block;
+    animation: dots 1.5s steps(4, end) infinite;
+    content: '';
+    white-space: pre;
 }
-
 </style>

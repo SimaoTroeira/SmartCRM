@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/companies', [CompanyController::class, 'index']);
     Route::post('/companies', [CompanyController::class, 'store']);
     Route::put('/companies/{id}', [CompanyController::class, 'update']);
-    Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
+    // Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
     Route::post('/companies/{id}/submit', [CompanyController::class, 'submit']);
     
     Route::middleware(['auth:sanctum', 'is_superadmin'])->group(function () {

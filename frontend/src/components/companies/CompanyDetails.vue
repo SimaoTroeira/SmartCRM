@@ -53,10 +53,10 @@
           <li v-for="ucr in company.user_company_roles" :key="ucr.id">
             {{ ucr.user.name }} – {{ ucr.role.code }}
             <template v-if="userRole === 'CA' && ucr.role.code === 'CU'">
-              <button @click="promoteUser(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
+              <button @click="openPromoteUserModal(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
                 Promover a CA
               </button>
-              <button @click="removeUserFromCompany(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
+              <button @click="openRemoveUserModal(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
                 Remover
               </button>
             </template>
@@ -125,7 +125,8 @@
         <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
           class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
         <!-- botão apenas para SA -->
-        <button v-if="userRole === 'SA'" @click="openDeactivateModal" class="btn-remove text-white px-4 py-2 rounded">
+        <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
+          class="btn-remove text-white px-4 py-2 rounded">
           Desativar
         </button>
       </div>
@@ -186,7 +187,23 @@
       </div>
     </dialog>
 
+    <!-- Modal: Confirmar Promoção -->
+    <dialog ref="promoteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja promover este utilizador a Company Admin?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closePromoteUserModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmPromoteUser" class="btn btn-success">Promover</button>
+      </div>
+    </dialog>
 
+    <!-- Modal: Confirmar Remoção -->
+    <dialog ref="removeUserDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja remover este utilizador da empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeRemoveUserModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmRemoveUser" class="btn btn-danger">Remover</button>
+      </div>
+    </dialog>
   </div>
 </template>
 
@@ -425,6 +442,42 @@ const confirmDeactivateCompany = async () => {
   }
 };
 
+const promoteDialog = ref(null);
+const removeUserDialog = ref(null);
+const userToPromote = ref(null);
+const userToRemove = ref(null);
+
+const openPromoteUserModal = (ucrId) => {
+  userToPromote.value = ucrId;
+  promoteDialog.value?.showModal();
+};
+
+const closePromoteUserModal = () => {
+  userToPromote.value = null;
+  promoteDialog.value?.close();
+};
+
+const confirmPromoteUser = async () => {
+  if (!userToPromote.value) return;
+  await promoteUser(userToPromote.value);
+  closePromoteUserModal();
+};
+
+const openRemoveUserModal = (ucrId) => {
+  userToRemove.value = ucrId;
+  removeUserDialog.value?.showModal();
+};
+
+const closeRemoveUserModal = () => {
+  userToRemove.value = null;
+  removeUserDialog.value?.close();
+};
+
+const confirmRemoveUser = async () => {
+  if (!userToRemove.value) return;
+  await removeUserFromCompany(userToRemove.value);
+  closeRemoveUserModal();
+};
 
 
 onMounted(async () => {
@@ -465,13 +518,12 @@ onMounted(async () => {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #ffc107;
   color: white;
 }
 
-
 .btn-edit:hover {
-  background-color: #0069d9;
+  background-color: #e0a800;
 }
 
 .btn-accept {
