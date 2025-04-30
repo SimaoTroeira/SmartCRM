@@ -108,8 +108,8 @@
       <div class="flex gap-4 mt-4">
         <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
           class="btn-edit text-white px-4 py-2 rounded">Editar</button>
-        <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
-          class="btn-remove text-white px-4 py-2 rounded">Apagar</button>
+        <!-- <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
+          class="btn-remove text-white px-4 py-2 rounded">Apagar</button> -->
         <!-- Botão de pedido de validação -->
         <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
           class="btn-submit text-white px-4 py-2 rounded">
@@ -124,6 +124,10 @@
         </span>
         <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
           class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
+        <!-- botão apenas para SA -->
+        <button v-if="userRole === 'SA'" @click="openDeactivateModal" class="btn-remove text-white px-4 py-2 rounded">
+          Desativar
+        </button>
       </div>
     </div>
 
@@ -172,6 +176,16 @@
         <button type="button" @click="confirmSubmitCompany" class="btn btn-submit">Confirmar</button>
       </div>
     </dialog>
+
+    <!-- Modal de Desativação (SA) -->
+    <dialog ref="deactivateDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja desativar esta empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeDeactivateModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="confirmDeactivateCompany" class="btn btn-danger">Desativar</button>
+      </div>
+    </dialog>
+
 
   </div>
 </template>
@@ -389,6 +403,28 @@ const removeUserFromCompany = async (ucrId) => {
     console.error(error);
   }
 };
+
+const deactivateDialog = ref(null);
+
+const openDeactivateModal = () => {
+  deactivateDialog.value?.showModal();
+};
+
+const closeDeactivateModal = () => {
+  deactivateDialog.value?.close();
+};
+
+const confirmDeactivateCompany = async () => {
+  try {
+    await axios.put(`http://127.0.0.1:8000/api/companies/${company.value.id}/deactivate`);
+    toast.success('Empresa desativada com sucesso!');
+    closeDeactivateModal();
+    await fetchCompany();
+  } catch {
+    toast.error('Erro ao desativar empresa.');
+  }
+};
+
 
 
 onMounted(async () => {

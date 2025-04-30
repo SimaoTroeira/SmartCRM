@@ -88,8 +88,11 @@
                   class="btn-success text-white px-4 py-2 rounded mr-2">
                   Ativar
                 </button>
-                <button @click="openDeleteModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
+                <!-- <button @click="openDeleteModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
                   Apagar
+                </button> -->
+                <button v-else @click="openDeactivateModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
+                  Desativar
                 </button>
               </td>
             </tr>
@@ -200,6 +203,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal de Desativação -->
+  <div v-if="showDeactivateModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
+    <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
+      :class="{ 'scale-100 opacity-100': showDeactivateModal, 'scale-95 opacity-0': !showDeactivateModal }">
+      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja desativar esta empresa?</h3>
+      <div class="flex justify-end gap-2">
+        <button type="button" @click="closeDeactivateModal" class="btn btn-secondary">Cancelar</button>
+        <button type="button" @click="deactivateCompany" class="btn btn-danger">Desativar</button>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -226,6 +243,9 @@ const companiesLoaded = ref(false);
 
 const showSubmitModal = ref(false);
 const companyToSubmit = ref(null);
+
+const showDeactivateModal = ref(false);
+const companyToDeactivate = ref(null);
 
 
 // Atualiza empresas e papel do usuário
@@ -398,6 +418,27 @@ const totalPages = computed(() => {
   return Math.ceil(filteredCompanies.value.length / itemsPerPage.value);
 });
 
+const openDeactivateModal = (companyId) => {
+  companyToDeactivate.value = companyId;
+  showDeactivateModal.value = true;
+};
+
+const closeDeactivateModal = () => {
+  companyToDeactivate.value = null;
+  showDeactivateModal.value = false;
+};
+
+const deactivateCompany = async () => {
+  try {
+    await axios.put(`http://127.0.0.1:8000/api/companies/${companyToDeactivate.value}/deactivate`);
+    toast.success('Empresa desativada com sucesso!');
+    await refreshAll();
+    closeDeactivateModal();
+  } catch (error) {
+    toast.error('Erro ao desativar empresa.');
+    console.error(error);
+  }
+};
 
 
 

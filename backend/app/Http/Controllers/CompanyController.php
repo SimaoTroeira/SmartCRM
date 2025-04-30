@@ -271,4 +271,19 @@ class CompanyController extends Controller
 
         return response()->json($company);
     }
+
+    public function deactivate($id)
+    {
+        $company = Company::findOrFail($id);
+
+        if ($company->status === 'Inativo') {
+            return response()->json(['error' => 'Empresa já se encontra inativa.'], 400);
+        }
+
+        $company->status = 'Inativo';
+        $company->submitted = false; // opcional: resetar pedido de validação
+        $company->save();
+
+        return response()->json(['message' => 'Empresa desativada com sucesso.']);
+    }
 }

@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('/companies/{id}', [CompanyController::class, 'show']);
     Route::get('/companies/{companyId}/user-role', [CompanyController::class, 'getUserRole']);
+    Route::put('/companies/{id}/deactivate', [CompanyController::class, 'deactivate']);
 
 
     //campaigns
