@@ -123,6 +123,10 @@ class CampaignController extends Controller
         $user = Auth::user();
         $company = Company::find($campaign->company_id);
 
+        if (!$company || $company->status !== 'Ativo') {
+            return response()->json(['error' => 'Não é possível eliminar campanhas de empresas inativas.'], 403);
+        }
+
         $hasAccess = DB::table('user_company_roles')
             ->where('user_id', $user->id)
             ->where('company_id', $company->id)
@@ -190,23 +194,24 @@ class CampaignController extends Controller
         $authUser = Auth::user();
         $company = $campaign->company;
 
-        // Verifica se o utilizador autenticado tem permissão (CA da empresa ou SA)
+        if ($company->status !== 'Ativo') {
+            return response()->json(['error' => 'Empresa inativa. Operação não permitida.'], 403);
+        }
+
         $isCA = DB::table('user_company_roles')
             ->where('user_id', $authUser->id)
             ->where('company_id', $company->id)
-            ->where('role_id', 2) // CA
+            ->where('role_id', 2)
             ->exists();
 
         if (!$isCA && !$authUser->hasRole('SA')) {
             return response()->json(['error' => 'Sem permissões para remover utilizadores.'], 403);
         }
 
-        // Verifica se o utilizador está associado à campanha
         if (!$campaign->users()->where('user_id', $user->id)->exists()) {
             return response()->json(['error' => 'Utilizador não está associado à campanha.'], 404);
         }
 
-        // Remove o utilizador da campanha
         $campaign->users()->detach($user->id);
 
         return response()->json(['message' => 'Utilizador removido da campanha com sucesso.']);
