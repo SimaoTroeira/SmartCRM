@@ -107,47 +107,6 @@
           </form>
         </div>
       </div>
-
-      <!-- Modal de Edição -->
-      <div v-if="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
-          <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
-          <form @submit.prevent="updateCampaign">
-            <div class="mb-3">
-              <label class="block font-medium">Título</label>
-              <input v-model="form.name" class="form-control" required />
-            </div>
-            <div class="mb-3">
-              <label class="block font-medium">Descrição</label>
-              <textarea v-model="form.description" class="form-control" required></textarea>
-            </div>
-            <div class="mb-3">
-              <label class="block font-medium">Empresa</label>
-              <select v-model="form.company_id" class="form-control" required>
-                <option disabled value="">Selecione uma empresa</option>
-                <option v-for="company in companies" :key="company.id" :value="company.id">
-                  {{ company.name }}
-                </option>
-              </select>
-            </div>
-            <div class="flex justify-end gap-2">
-              <button type="button" @click="showEditModal = false" class="btn btn-secondary">Cancelar</button>
-              <button type="submit" class="btn btn-success">Salvar alterações</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <!-- Modal de Exclusão -->
-      <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96 border-9 border-gray-500">
-          <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
-          <div class="flex justify-end gap-2">
-            <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
-            <button type="button" @click="deleteCampaign" class="btn btn-danger">Apagar</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -159,15 +118,11 @@ import { useToast } from 'vue-toastification';
 
 const toast = useToast();
 const showDialog = ref(false);
-const showEditModal = ref(false);
-const showDeleteModal = ref(false);
 const campaigns = ref([]);
 const companies = ref([]);
 const userRole = ref('');
 const roleLoaded = ref(false);
 const form = ref({ name: '', description: '', company_id: '' });
-const campaignToDelete = ref(null);
-const selectedCampaignId = ref(null);
 const STATUS_ATIVO = 'Ativo';
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
@@ -252,50 +207,6 @@ const createCampaign = async () => {
   }
 };
 
-const editCampaign = (campaign) => {
-  selectedCampaignId.value = campaign.id;
-  form.value = { name: campaign.name, description: campaign.description, company_id: campaign.company.id };
-  showEditModal.value = true;
-};
-
-const updateCampaign = async () => {
-  try {
-    if (selectedCampaignId.value) {
-      await axios.put(`http://127.0.0.1:8000/api/campaigns/${selectedCampaignId.value}`, form.value);
-      toast.success('Campanha atualizada com sucesso!');
-      showEditModal.value = false;
-      form.value = { name: '', description: '', company_id: '' };
-      fetchCampaigns();
-    } else {
-      toast.error('ID da campanha não encontrado.');
-    }
-  } catch (error) {
-    toast.error('Erro ao atualizar campanha.');
-    console.error(error);
-  }
-};
-
-const confirmDeleteCampaign = (campaignId) => {
-  campaignToDelete.value = campaignId;
-  showDeleteModal.value = true;
-};
-
-const deleteCampaign = async () => {
-  try {
-    await axios.delete(`http://127.0.0.1:8000/api/campaigns/${campaignToDelete.value}`);
-    toast.success('Campanha excluída com sucesso!');
-    showDeleteModal.value = false;
-    fetchCampaigns();
-  } catch (error) {
-    toast.error('Erro ao excluir campanha.');
-    console.error(error);
-  }
-};
-
-const closeDeleteModal = () => {
-  showDeleteModal.value = false;
-  campaignToDelete.value = null;
-};
 
 onMounted(() => {
   fetchCompanies();

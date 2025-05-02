@@ -6,13 +6,11 @@
         A carregar empresas<span class="dot-anim"></span>
       </h3>
     </div>
-
     <!-- Conteúdo completo -->
     <div v-else>
       <h2 class="text-xl font-semibold mb-4">
         {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'Lista de Empresas:' }}
       </h2>
-
       <!-- Filtros para o SuperAdmin -->
       <div v-if="userRole === 'SA' && companies.length > 0" class="filters-container mb-4 flex gap-4">
         <div>
@@ -24,24 +22,20 @@
           </select>
         </div>
       </div>
-
       <!-- Botão de registrar empresa -->
       <div v-if="userRole !== 'SA'" class="mb-4 ">
         <button @click="showDialog = true" class="btn btn-primary">
           Registar nova empresa
         </button>
       </div>
-
       <!-- Mensagem: ainda não há nenhuma empresa no sistema -->
       <div v-if="companies.length === 0" class="text-gray-500 mb-4">
         Ainda não há empresas registadas.
       </div>
-
       <!-- Mensagem: há empresas mas nenhuma corresponde aos filtros -->
       <div v-else-if="filteredCompanies.length === 0" class="text-gray-500 mb-4">
         Nenhuma empresa corresponde aos filtros aplicados.
       </div>
-
       <div v-else class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200">
           <thead class="bg-gray-100">
@@ -88,9 +82,6 @@
                   class="btn-success text-white px-4 py-2 rounded mr-2">
                   Ativar
                 </button>
-                <!-- <button @click="openDeleteModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
-                  Apagar
-                </button> -->
                 <button v-else @click="openDeactivateModal(company.id)" class="btn-remove text-white px-4 py-2 rounded">
                   Desativar
                 </button>
@@ -99,7 +90,6 @@
           </tbody>
         </table>
       </div>
-
       <!-- Paginação -->
       <div v-if="filteredCompanies.length > 0" class="pagination-left mt-4 gap-4 items-center">
         <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">
@@ -123,7 +113,6 @@
         </div>
       </div>
     </div>
-
     <div v-if="showDialog && userRole !== 'SA'"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -143,40 +132,6 @@
             <button type="submit" class="btn btn-success text-white">Registar</button>
           </div>
         </form>
-      </div>
-    </div>
-
-    <div v-if="showEditModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
-      <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
-        :class="{ 'scale-100 opacity-100': showEditModal, 'scale-95 opacity-0': !showEditModal }">
-        <h3 class="text-lg font-bold mb-4">Editar Empresa</h3>
-        <form @submit.prevent="updateCompany">
-          <div class="mb-3">
-            <label class="block font-medium">Nome da Empresa</label>
-            <input v-model="editCompany.name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label class="block font-medium">Setor</label>
-            <input v-model="editCompany.sector" class="form-control" required />
-          </div>
-          <div class="flex justify-end gap-2">
-            <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
-            <button type="submit" class="btn btn-success">Guardar alterações</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div v-if="showDeleteModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
-      <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
-        :class="{ 'scale-100 opacity-100': showDeleteModal, 'scale-95 opacity-0': !showDeleteModal }">
-        <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta empresa?</h3>
-        <div class="flex justify-end gap-2">
-          <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
-          <button type="button" @click="deleteCompany" class="btn btn-danger">Apagar</button>
-        </div>
       </div>
     </div>
     <!-- Modal de Aceitação -->
@@ -203,7 +158,6 @@
       </div>
     </div>
   </div>
-
   <!-- Modal de Desativação -->
   <div v-if="showDeactivateModal"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
@@ -226,14 +180,10 @@ import { useToast } from 'vue-toastification';
 
 const toast = useToast();
 const showDialog = ref(false);
-const showEditModal = ref(false);
-const showDeleteModal = ref(false);
 const showAcceptModal = ref(false);
 const companyToAccept = ref(null);
 const companies = ref([]);
 const companyForm = ref({ name: '', sector: '' });
-const editCompany = ref({});
-const companyToDelete = ref(null);
 const userRole = ref('');
 const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
@@ -318,28 +268,6 @@ const acceptCompany = async () => {
   }
 };
 
-const openEditModal = (company) => {
-  editCompany.value = { ...company };
-  showEditModal.value = true;
-};
-
-
-const closeEditModal = () => {
-  showEditModal.value = false;
-  editCompany.value = {};
-};
-
-const updateCompany = async () => {
-  try {
-    await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, editCompany.value);
-    toast.success('Empresa atualizada com sucesso!');
-    await refreshAll();
-    closeEditModal();
-  } catch (error) {
-    toast.error('Erro ao atualizar empresa.');
-  }
-};
-
 const requestValidation = async (companyId) => {
   try {
     await axios.post(`http://127.0.0.1:8000/api/companies/${companyId}/submit`);
@@ -358,26 +286,6 @@ const confirmRequestValidation = async () => {
   closeSubmitModal();
 };
 
-const openDeleteModal = (companyId) => {
-  companyToDelete.value = companyId;
-  showDeleteModal.value = true;
-};
-
-const closeDeleteModal = () => {
-  showDeleteModal.value = false;
-  companyToDelete.value = null;
-};
-
-const deleteCompany = async () => {
-  try {
-    await axios.delete(`http://127.0.0.1:8000/api/companies/${companyToDelete.value}`);
-    toast.success('Empresa excluída com sucesso!');
-    await refreshAll();
-    closeDeleteModal();
-  } catch (error) {
-    toast.error('Erro ao excluir empresa.');
-  }
-};
 
 const openAcceptModal = (companyId) => {
   companyToAccept.value = companyId;
@@ -471,18 +379,6 @@ onMounted(refreshAll);
   /* Tom mais escuro de verde no hover */
 }
 
-.btn-danger {
-  background-color: #e13849;
-  /* Vermelho para excluir */
-  color: white;
-  /* Cor do texto do botão */
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-  /* Tom mais escuro de vermelho no hover */
-}
-
 .btn-secondary {
   background-color: #3659f4;
   /* Vermelho para cancelar */
@@ -493,18 +389,6 @@ onMounted(refreshAll);
 .btn-secondary:hover {
   background-color: #357be5;
   /* Tom mais escuro de vermelho no hover */
-}
-
-/* Estilo para os botões Editar e Remover */
-.btn-edit {
-  background-color: #4CAF50 !important;
-  /* Verde para editar */
-  color: white !important;
-}
-
-.btn-edit:hover {
-  background-color: #45a049 !important;
-  /* Tom mais escuro de verde no hover */
 }
 
 .btn-remove {
