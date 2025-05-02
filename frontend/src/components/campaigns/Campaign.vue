@@ -20,8 +20,8 @@
         </button>
       </div>
 
-      <!-- Mensagem caso não haja campanhas -->
-      <div v-if="campaigns.length === 0" class="text-gray-500 mb-4">
+      <!-- Mensagem caso não haja campanhas visíveis -->
+      <div v-if="filteredCampaigns.length === 0" class="text-gray-500 mb-4">
         <span v-if="userRole === 'SA'">
           Ainda não há campanhas registadas.
         </span>
@@ -34,7 +34,7 @@
       </div>
 
       <!-- Tabela de campanhas -->
-      <div v-else class="overflow-x-auto">
+      <div v-if="filteredCampaigns.length > 0" class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200">
           <thead class="bg-gray-100">
             <tr>
@@ -134,13 +134,27 @@ const hasActiveCompanies = computed(() => {
 });
 
 const totalPages = computed(() => {
-  return Math.ceil(campaigns.value.length / itemsPerPage.value);
+  const filtered = userRole.value === 'SA'
+    ? campaigns.value.filter(c => c.company?.status === 'Ativo')
+    : campaigns.value;
+
+  return Math.ceil(filtered.length / itemsPerPage.value);
 });
+
 
 const paginatedCampaigns = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
-  return campaigns.value.slice(start, start + itemsPerPage.value);
+  const filtered = filteredCampaigns.value;
+  return filtered.slice(start, start + itemsPerPage.value);
 });
+
+
+const filteredCampaigns = computed(() => {
+  return userRole.value === 'SA'
+    ? campaigns.value.filter(c => c.company?.status === 'Ativo')
+    : campaigns.value;
+});
+
 
 watch(itemsPerPage, () => {
   currentPage.value = 1;
@@ -166,9 +180,22 @@ async function fetchUserRole() {
 }
 
 const fetchCampaigns = async () => {
+  if (companies.value.length === 0) {
+    campaigns.value = [];
+    campaignsLoaded.value = true;
+    return;
+  }
+
   try {
     const res = await axios.get('http://127.0.0.1:8000/api/campaigns');
-    campaigns.value = Array.isArray(res.data) ? res.data : [];
+    let allCampaigns = Array.isArray(res.data) ? res.data : [];
+
+    // Filtra campanhas visíveis ao SA: apenas empresas com status 'Ativo'
+    if (userRole.value === 'SA') {
+      allCampaigns = allCampaigns.filter(c => c.company?.status === 'Ativo');
+    }
+
+    campaigns.value = allCampaigns;
   } catch (error) {
     toast.error('Erro ao carregar campanhas.');
     console.error(error);
@@ -176,6 +203,7 @@ const fetchCampaigns = async () => {
     campaignsLoaded.value = true;
   }
 };
+
 
 
 const fetchCompanies = async () => {
@@ -208,11 +236,12 @@ const createCampaign = async () => {
 };
 
 
-onMounted(() => {
-  fetchCompanies();
-  fetchCampaigns();
-  fetchUserRole();
+onMounted(async () => {
+  await fetchCompanies();
+  await fetchUserRole();
+  await fetchCampaigns();
 });
+
 </script>
 
 <style scoped>
