@@ -289,15 +289,31 @@ export default {
     },
 
     convertExcelDate(excelDate, columnName = '') {
-      if (typeof excelDate === 'number' && excelDate > 25569 && excelDate < 2958465 && columnName.toLowerCase().includes('date')) {
-        const correctedDate = (excelDate - 25568.5) * 86400 * 1000; // Ajuste refinado de meio dia
+      const lowerCol = columnName.toLowerCase();
+      const isDateCol = /data|date|hora|nascimento|criado|cadastro/i.test(lowerCol);
+
+      // Trata números como datas, mesmo se o nome da coluna não indicar
+      if (typeof excelDate === 'number' && excelDate > 25569 && excelDate < 2958465) {
+        const correctedDate = (excelDate - 25569) * 86400 * 1000;
         const date = new Date(correctedDate);
-
-        // Formata a data corretamente no formato YYYY-MM-DD
-        const dateString = date.toISOString().split('T')[0];
-
-        return dateString;
+        return date.toISOString().split('T')[0];
       }
+
+      // Também tenta converter strings que pareçam datas
+      if (typeof excelDate === 'string') {
+        const parsed = Date.parse(excelDate);
+        if (!isNaN(parsed)) {
+          const date = new Date(parsed);
+          return date.toISOString().split('T')[0];
+        }
+        // tenta forçar conversão de número como string (ex: "45034")
+        if (!isNaN(Number(excelDate)) && Number(excelDate) > 25569 && Number(excelDate) < 2958465) {
+          const correctedDate = (Number(excelDate) - 25569) * 86400 * 1000;
+          const date = new Date(correctedDate);
+          return date.toISOString().split('T')[0];
+        }
+      }
+
       return excelDate;
     },
 
@@ -336,7 +352,6 @@ export default {
 </script>
 
 <style scoped>
-
 .hidden {
   display: none;
 }
@@ -407,6 +422,7 @@ tbody tr:nth-child(odd) {
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -448,6 +464,7 @@ tbody tr:nth-child(odd) {
 
 /* Garante que a paginação não interfira */
 .fixed {
-  z-index: 100; /* Menor que o do diálogo */
+  z-index: 100;
+  /* Menor que o do diálogo */
 }
 </style>

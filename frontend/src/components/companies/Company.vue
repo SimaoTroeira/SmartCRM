@@ -253,8 +253,20 @@ const registerCompany = async () => {
     companyForm.value = { name: '', sector: '' };
     await refreshAll();
   } catch (error) {
-    toast.error('Erro ao registrar empresa.');
+  if (error.response?.data?.error) {
+    // Mensagem personalizada vinda diretamente do backend
+    toast.error(error.response.data.error);
+  } else if (error.response?.data?.errors) {
+    // Mensagens de validação padrão do Laravel (422)
+    toast.error('Já existe uma empresa registada com esse nome.');
+    toast.error(firstError);
+  } else {
+    // Fallback
+    toast.error('Erro ao registrar empresa. Verifique os dados inseridos.');
   }
+}
+
+
 };
 
 const acceptCompany = async () => {

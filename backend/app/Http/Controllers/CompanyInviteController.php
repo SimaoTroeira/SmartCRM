@@ -36,7 +36,7 @@ class CompanyInviteController extends Controller
             'expires_at' => Carbon::now()->addMinutes(10),
         ]);
 
-        $link = 'http://localhost:5174' . '/accept-invite/' . $token;
+        $link = 'http://localhost:5173' . '/accept-invite/' . $token;
         // $link = env('FRONTEND_URL') . '/accept-invite/' . $token;
         // $link = config('services.frontend.url') . '/accept-invite/' . $token;
 

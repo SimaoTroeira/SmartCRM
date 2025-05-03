@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class CampaignController extends Controller
 {
@@ -45,6 +46,7 @@ class CampaignController extends Controller
         ]);
 
         $company = Company::find($validated['company_id']);
+
         if ($company->status !== 'Ativo') {
             return response()->json(['error' => 'Só é possível criar campanhas para empresas ativas.'], 403);
         }
@@ -53,7 +55,7 @@ class CampaignController extends Controller
         $hasAccess = DB::table('user_company_roles')
             ->where('user_id', $user->id)
             ->where('company_id', $company->id)
-            ->where('role_id', 2)
+            ->where('role_id', 2) // CA
             ->exists();
 
         if (!$hasAccess && !$user->hasRole('SA')) {
@@ -65,13 +67,30 @@ class CampaignController extends Controller
         }
 
         try {
+            // Criar campanha na base de dados
             $campaign = Campaign::create($validated);
+
+            // Criar estrutura de pastas
+            $basePath = config('smartcrm.storage_path');
+            $companyFolder = 'empresa_id_' . $company->id;
+            $campaignFolder = 'campanha_id_' . $campaign->id;
+
+            $campaignPath = $basePath
+                . DIRECTORY_SEPARATOR . $companyFolder
+                . DIRECTORY_SEPARATOR . 'campanhas'
+                . DIRECTORY_SEPARATOR . $campaignFolder;
+
+            if (!File::exists($campaignPath)) {
+                File::makeDirectory($campaignPath, 0755, true);
+            }
+
             return response()->json($campaign, 201);
         } catch (\Exception $e) {
             Log::error('Erro ao criar campanha: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
             return response()->json(['error' => 'Erro interno no servidor'], 500);
         }
     }
+
 
     public function show(Campaign $campaign)
     {

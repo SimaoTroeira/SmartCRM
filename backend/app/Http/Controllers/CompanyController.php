@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 
 class CompanyController extends Controller
 {
@@ -36,7 +39,7 @@ class CompanyController extends Controller
 
             return response()->json($companies);
         } catch (\Exception $e) {
-            \Log::error('Erro ao carregar empresas: ' . $e->getMessage());
+            Log::error('Erro ao carregar empresas: ' . $e->getMessage());
             return response()->json(['error' => 'Erro ao carregar empresas. Verifique o log do servidor.'], 500);
         }
     }
@@ -48,9 +51,13 @@ class CompanyController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:companies,name',
             'sector' => 'required|string|max:255',
         ]);
+
+        if (Company::where('name', $validated['name'])->exists()) {
+            return response()->json(['error' => 'Já existe uma empresa com esse nome.'], 422);
+        }
 
         if (Company::count() === 0) {
             DB::statement('ALTER TABLE companies AUTO_INCREMENT = 1');
@@ -224,6 +231,34 @@ class CompanyController extends Controller
                     ]
                 );
             }
+        }
+
+        // Criar pastas locais a partir da configuração
+        try {
+            // a usar config/smartcrm.php
+            $basePath = config('smartcrm.storage_path');
+
+
+            if (!File::exists($basePath)) {
+                File::makeDirectory($basePath, 0755, true);
+            }
+
+            $companyFolderName = 'empresa_id_' . $company->id;
+            $companyPath = $basePath . DIRECTORY_SEPARATOR . $companyFolderName;
+
+
+            if (!File::exists($companyPath)) {
+                File::makeDirectory($companyPath, 0755, true);
+            }
+
+            foreach (['campanhas', 'dados_importados'] as $sub) {
+                $subPath = $companyPath . DIRECTORY_SEPARATOR . $sub;
+                if (!File::exists($subPath)) {
+                    File::makeDirectory($subPath, 0755, true);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Erro ao criar diretórios para empresa: ' . $e->getMessage());
         }
 
         return response()->json(['message' => 'Empresa aprovada com sucesso.']);
