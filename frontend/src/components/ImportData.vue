@@ -107,7 +107,7 @@
         <div class="map-dialog-wrapper">
           <div class="map-dialog">
             <div class="dialog-header">
-              <h3>Para importar a tabela tem de mapear os dados</h3>
+              <h3>Garanta que tipo de dados é coerente com os seus valores</h3>
               <button @click="closeMapDialog" class="close-btn">&times;</button>
             </div>
             <div class="dialog-content">

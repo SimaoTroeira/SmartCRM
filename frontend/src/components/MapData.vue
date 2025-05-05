@@ -1,82 +1,53 @@
 <template>
-  <div>
-    <div class="overflow-x-auto">
+  <div class="flex flex-col px-4 pt-0">
+    <div class="inline-flex items-center gap-4 mt-2">
+      <div class="flex flex-col">
+        <label class="font-bold mb-1">Nome da Tabela:</label>
+        <input type="text" v-model="localTableName" class="w-64 p-2 border rounded text-center">
+      </div>
+      <div class="flex flex-col">
+        <label class="font-bold mb-1">Empresa:</label>
+        <select v-model="selectedCompanyId" class="w-64 p-2 border rounded">
+          <option v-for="company in companies" :key="company.id" :value="company.id">
+            {{ company.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="overflow-x-auto mb-4">
       <table class="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="border border-gray-300 px-4 py-2">Coluna Original</th>
-            <th class="border border-gray-300 px-4 py-2">Coluna SmartCRM</th>
-            <th class="border border-gray-300 px-4 py-2">Tipo de Dado</th>
-            <th class="border border-gray-300 px-4 py-2">Ações</th>
+        <thead class="bg-gray-100">
+          <tr>
+            <th v-for="(header, index) in headers" :key="'header-' + index"
+              class="px-4 py-2 border text-center align-top" style="vertical-align: top; position: relative;">
+              <div class="flex flex-col gap-1 items-stretch mt-2">
+                <label class="text-left text-xs mt-1">Nome da Coluna:</label>
+                <input type="text" v-model="mappedColumns[index]" class="p-1 border rounded w-full text-center"
+                  :disabled="rejectedColumns[index]">
+                <label class="text-left text-xs mt-2">Tipo de Dado:</label>
+                <select v-model="columnTypes[index]" class="p-1 border rounded w-full"
+                  :disabled="rejectedColumns[index]" @change="autoDetectType(index)">
+                  <option value="text">Texto</option>
+                  <option value="number">Número</option>
+                  <option value="date">Data</option>
+                  <option value="boolean">Booleano</option>
+                </select>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(header, index) in headers" :key="index"
-            :class="{ 'underline text-red-500': rejectedColumns[index] }">
-            <td class="border border-gray-300 px-4 py-2">{{ header }}</td>
-            <td class="border border-gray-300 px-4 py-2">
-              <select v-model="mappedColumns[index]" class="border p-1 rounded w-full"
-                :disabled="!selectedTable || rejectedColumns[index]">
-                <option value="">Selecione a coluna</option>
-
-                <optgroup label="Identificação do Cliente">
-                  <option value="customer_identifier">Identificador do Cliente</option>
-                  <option value="name">Nome</option>
-                  <option value="email">Email</option>
-                  <option value="phone">Telefone</option>
-                </optgroup>
-
-                <optgroup label="Localização">
-                  <option value="region">Região</option>
-                  <option value="country">País</option>
-                  <option value="city">Cidade</option>
-                </optgroup>
-
-                <optgroup label="Produto ou Serviço">
-                  <option value="item_identifier">Identificador do Produto</option>
-                  <option value="item_name">Nome do Produto</option>
-                  <option value="item_category">Categoria</option>
-                  <option value="item_subcategory">Subcategoria</option>
-                  <option value="item_price">Preço</option>
-                </optgroup>
-
-                <optgroup label="Transação">
-                  <option value="transaction_identifier">Identificador da Transação</option>
-                  <option value="transaction_date">Data da Transação</option>
-                  <option value="quantity">Quantidade</option>
-                  <option value="total_amount">Valor Total</option>
-                  <option value="purchase_channel">Canal de Compra</option>
-                  <option value="payment_method">Método de Pagamento</option>
-                </optgroup>
-
-                <optgroup label="Atributos Flexíveis">
-                  <option value="attribute_1">Atributo 1</option>
-                  <option value="attribute_2">Atributo 2</option>
-                  <option value="attribute_3">Atributo 3</option>
-                  <option value="attribute_4">Atributo 4</option>
-                  <option value="attribute_5">Atributo 5</option>
-                  <option value="numeric_attribute_1">Atributo Numérico 1</option>
-                  <option value="numeric_attribute_2">Atributo Numérico 2</option>
-                  <option value="numeric_attribute_3">Atributo Numérico 3</option>
-                </optgroup>
-              </select>
-
+          <tr v-for="rowIndex in previewRowCount" :key="'row-' + rowIndex">
+            <td v-for="(cell, colIndex) in tableData[rowIndex - 1]" :key="'cell-' + rowIndex + '-' + colIndex"
+              class="border px-4 py-2 text-center" :class="{ 'bg-red-100': rejectedColumns[colIndex] }">
+              {{ cell }}
             </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <select v-model="columnTypes[index]" class="border p-1 rounded" :disabled="rejectedColumns[index]">
-                <option value="text">Texto</option>
-                <option value="number">Número</option>
-                <option value="date">Data</option>
-                <option value="boolean">Booleano</option>
-              </select>
-            </td>
-            <td class="border border-gray-300 px-4 py-2">
-              <button @click.stop="previewColumn(index)" class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
-                Pré-visualizar
-              </button>
-              <button @click.stop="toggleColumnState(index)"
-                class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs mt-2">
-                {{ rejectedColumns[index] ? 'Aceitar coluna' : 'Descartar coluna' }}
+          </tr>
+          <tr>
+            <td v-for="(header, index) in headers" :key="'footer-' + index" class="border text-center">
+              <button @click="toggleColumnState(index)" class="text-sm">
+                <span v-if="!rejectedColumns[index]" class="text-red-600 hover:text-red-800">&times;</span>
+                <span v-else class="text-green-600 hover:text-green-800">&#8634;</span>
               </button>
             </td>
           </tr>
@@ -84,45 +55,10 @@
       </table>
     </div>
 
-    <div v-if="previewData.length > 0" class="mt-6">
-      <h4 class="font-semibold mb-2">Pré-visualização dos Dados</h4>
-      <div class="overflow-x-auto">
-        <table class="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr class="bg-gray-200">
-              <th v-for="(header, index) in previewHeaders" :key="index" class="border border-gray-300 px-4 py-2">
-                {{ header }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, rowIndex) in previewData.slice(0, 5)" :key="rowIndex">
-              <td v-for="(cell, cellIndex) in row" :key="cellIndex" class="border border-gray-300 px-4 py-2">
-                {{ cell }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-sm text-gray-500 mt-2">Amostra de 5 de {{ previewData.length }} linhas</p>
-    </div>
-
-    <div class="flex items-center gap-2 mb-2 p-4 rounded bg-white shadow">
-      <span class="font-semibold whitespace-nowrap">Os dados serão importados para a campanha</span>
-      <select v-model="campaign_id" class="border p-2 rounded min-w-[200px]">
-        <option value="">Selecione uma campanha</option>
-        <option v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
-          {{ campaign.name }}
-        </option>
-      </select>
-    </div>
-
-    <div class="mt-6 flex justify-end gap-2">
-      <button @click="cancel" class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400">
-        Cancelar
-      </button>
-      <button @click="applyMapping" class="px-4 py-2 bg-green-600 text-black rounded-lg hover:bg-green-700">
-        Aplicar Mapeamento
+    <div class="mt-10 flex justify-end gap-2">
+      <button @click="cancel" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancelar</button>
+      <button @click="applyMapping" class="px-4 py-2 bg-green-600 text-black rounded hover:bg-green-700">
+        Guardar Tabela
       </button>
     </div>
   </div>
@@ -130,179 +66,109 @@
 
 <script>
 import axios from 'axios';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 export default {
   props: {
     headers: Array,
     tableData: Array,
-    tableName: String
+    tableName: String,
   },
-  data: () => ({
-    selectedTable: "datasets",
-    tableColumns: [],
-    mappedColumns: [],
-    columnTypes: [],
-    rejectedColumns: [],
-    previewData: [],
-    previewHeaders: [],
-    campaign_id: "",
-    campaigns: []
-  }),
-  async created() {
-    this.initMappings();
-    await this.loadTableColumns(); // já usa 'datasets'
-    await this.loadCampaigns();
+  data() {
+    return {
+      localTableName: this.tableName,
+      mappedColumns: [],
+      columnTypes: [],
+      rejectedColumns: [],
+      previewRowCount: 5,
+      companies: [],
+      selectedCompanyId: null,
+    };
+  },
+  created() {
+    this.initMapping();
+    this.loadCompanies();
   },
   methods: {
-    initMappings() {
-      const smartMappingKeywords = {
-        customer_identifier: ['id', 'cliente', 'nº cliente', 'identificador'],
-        name: ['nome', 'cliente', 'utilizador', 'user', 'name'],
-        email: ['email', 'e-mail'],
-        phone: ['telefone', 'telemóvel', 'contacto'],
-        region: ['região', 'regiao'],
-        country: ['país', 'pais'],
-        city: ['cidade'],
-        gender: ['sexo', 'género', 'genero'],
-        date_of_birth: ['data nascimento', 'nascimento', 'dob'],
-        item_identifier: ['id produto', 'id item', 'produto', 'sku'],
-        item_name: ['nome produto', 'descrição', 'descricao'],
-        item_category: ['categoria'],
-        item_subcategory: ['subcategoria'],
-        item_price: ['preço', 'valor unitário'],
-        transaction_identifier: ['transação', 'transacao', 'id transação', 'id compra'],
-        transaction_date: ['data', 'data compra', 'data transação'],
-        quantity: ['quantidade', 'qtd'],
-        total_amount: ['total', 'valor total', 'montante'],
-        purchase_channel: ['canal', 'origem'],
-        payment_method: ['pagamento', 'método pagamento'],
-        attribute_1: ['nota', 'comentário', 'observações'],
-        numeric_attribute_1: ['pontuação', 'score']
-      };
-
-      this.mappedColumns = this.headers.map((header) => {
-        const normalizedHeader = header.toLowerCase().trim();
-        for (const [targetField, keywords] of Object.entries(smartMappingKeywords)) {
-          if (keywords.some(keyword => normalizedHeader.includes(keyword))) {
-            return targetField;
-          }
-        }
-        return '';
-      });
-
-      this.columnTypes = this.headers.map((header, index) => {
-        const values = this.tableData.map(row => (row[index] || '').toString().trim().toLowerCase());
-
-        const isDate = values.every(val => val === '' || /^\d{4}-\d{2}-\d{2}$/.test(val) || /^\d{2}\/\d{2}\/\d{4}$/.test(val));
-        if (isDate) return 'date';
-
-        const isNumber = values.every(val => val === '' || !isNaN(val));
-        if (isNumber) return 'number';
-
-        const isBoolean = values.every(val => ['true', 'false', 'sim', 'não', 'yes', 'no', '1', '0', ''].includes(val));
-        if (isBoolean) return 'boolean';
-
-        return 'text';
-      });
-
-      this.rejectedColumns = this.headers.map(() => false);
-      this.$emit('showToast', {
-        type: 'info',
-        message: 'Mapeamento automático sugerido com base nas colunas detectadas.'
-      });
-    }
-    ,
-
-    async apiRequest(config) {
+    async loadCompanies() {
       try {
-        const response = await axios({
-          ...config,
+        const response = await axios.get('/user/companies', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
-            ...config.headers
-          }
+          },
         });
-        return response.data;
-      } catch (error) {
-        console.error(`Erro na requisição ${config.url}:`, error.response || error);
-        throw error;
+
+        this.companies = response.data;
+
+        const lastCompanyId = localStorage.getItem('lastSelectedCompanyId');
+
+        if (lastCompanyId && this.companies.some(c => c.id === parseInt(lastCompanyId))) {
+          this.selectedCompanyId = parseInt(lastCompanyId);
+        } else if (this.companies.length > 0) {
+          this.selectedCompanyId = this.companies[0].id;
+        }
+      } catch (err) {
+        console.error('Erro ao carregar empresas:', err);
       }
     },
-    async loadCampaigns() {
-      try {
-        this.campaigns = await this.apiRequest({ url: '/campaigns' });
-      } catch (error) {
-        console.error("Erro ao carregar campanhas:", error);
-      }
+    initMapping() {
+      this.mappedColumns = this.headers.map(h => h);
+      this.rejectedColumns = this.headers.map(() => false);
+      this.columnTypes = this.headers.map((_, index) => this.detectType(index));
     },
-    async loadTableColumns() {
-      try {
-        this.tableColumns = await this.apiRequest({
-          url: `/table-columns/datasets`
-        });
-      } catch (error) {
-        this.tableColumns = [];
-      }
+    detectType(index) {
+      const values = this.tableData.map(row => (row[index] || '').toString().toLowerCase().trim());
+      const isDate = values.every(v => v === '' || /^\d{4}-\d{2}-\d{2}$/.test(v) || /^\d{2}\/\d{2}\/\d{4}$/.test(v));
+      if (isDate) return 'date';
+      const isNumber = values.every(v => v === '' || !isNaN(Number(v)));
+      if (isNumber) return 'number';
+      const isBoolean = values.every(v => ['true', 'false', '1', '0', 'sim', 'nao', 'não', 'yes', 'no'].includes(v));
+      if (isBoolean) return 'boolean';
+      return 'text';
     },
-
-    previewColumn(index) {
-      this.previewHeaders = [
-        this.headers[index],
-        this.mappedColumns[index] || '(Não mapeado)',
-        this.columnTypes[index]
-      ];
-
-      this.previewData = this.tableData.map(row => [
-        row[index],
-        this.mappedColumns[index] ? `[${this.mappedColumns[index]}]` : '',
-        `[${this.columnTypes[index]}]`
-      ]);
+    autoDetectType(index) {
+      this.columnTypes[index] = this.detectType(index);
     },
-
     toggleColumnState(index) {
-      if (this.rejectedColumns[index]) {
-        // Aceitar a coluna, restaurar o mapeamento e tipo de dado
-        this.rejectedColumns[index] = false;
-        this.mappedColumns[index] = ''; // Limpa o mapeamento
-        this.columnTypes[index] = 'text'; // Restaura o tipo de dado para texto
-      } else {
-        // Rejeitar a coluna
-        this.rejectedColumns[index] = true;
-        this.mappedColumns[index] = ''; // Limpa o mapeamento
-        this.columnTypes[index] = 'text'; // Restaura o tipo de dado para texto
-      }
+      this.rejectedColumns[index] = !this.rejectedColumns[index];
     },
-
     async applyMapping() {
+      if (!this.selectedCompanyId) {
+        toast.error('Selecione uma empresa válida.');
+        return;
+      }
       const rows = this.tableData.map(row => {
-        const mappedRow = {};
+        const obj = {};
         this.headers.forEach((header, index) => {
-          if (this.mappedColumns[index] && !this.rejectedColumns[index]) {
-            mappedRow[this.mappedColumns[index]] = row[index];
+          if (!this.rejectedColumns[index]) {
+            obj[this.mappedColumns[index]] = row[index];
           }
         });
-        return mappedRow;
+        return obj;
       });
-      const payload = {
-        campaign_id: this.campaign_id,
-        data: rows
-      };
-
       try {
-        await this.apiRequest({
-          method: 'post',
-          url: '/import/mapped-data',
-          data: payload
+        await axios.post('/import/mapped-data', {
+          table_name: this.localTableName,
+          data: rows,
+          types: this.columnTypes,
+          company_id: this.selectedCompanyId,
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          }
         });
         this.$emit('close');
-      } catch (error) {
-        alert('Erro ao importar: ' + (error.response?.data?.error || error.message));
+      } catch (err) {
+        alert('Erro ao guardar: ' + err.message);
       }
-    }
-    ,
+      localStorage.setItem('lastSelectedCompanyId', this.selectedCompanyId);
+    },
+  
     cancel() {
       this.$emit('close');
-    }
-  },
+    },
+  }
 };
 </script>

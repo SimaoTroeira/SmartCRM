@@ -28,18 +28,17 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    // User
     Route::post('/change-password', [UserController::class, 'changePassword']);
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/user', [UserController::class, 'getUserProfile']);
+    // Upload files
     Route::post('/upload', [FileUploadController::class, 'upload']);
-
-
-    Route::get('/available-tables', [DataImportController::class, 'getAvailableTables']);
-    Route::get('/table-columns/{table}', [DataImportController::class, 'getTableColumns']);
 
     //data mapping
     Route::post('/import/mapped-data', [DataImportController::class, 'storeMappedData']);
-    Route::get('/tables/{tableName}/data', [DataImportController::class, 'getUserData']);
+    Route::get('/user/companies', [DataImportController::class, 'getUserCompanies']);
+
 
     //companies
     Route::get('/companies', [CompanyController::class, 'index']);
@@ -47,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/companies/{id}', [CompanyController::class, 'update']);
     // Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
     Route::post('/companies/{id}/submit', [CompanyController::class, 'submit']);
-    
+
     Route::middleware(['auth:sanctum', 'is_superadmin'])->group(function () {
         Route::post('/companies/{id}/approve', [CompanyController::class, 'approveCompany']);
         Route::delete('/companies/{id}/reject', [CompanyController::class, 'rejectCompany']);

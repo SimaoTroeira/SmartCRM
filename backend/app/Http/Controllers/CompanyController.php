@@ -237,8 +237,6 @@ class CompanyController extends Controller
         try {
             // a usar config/smartcrm.php
             $basePath = config('smartcrm.storage_path');
-
-
             if (!File::exists($basePath)) {
                 File::makeDirectory($basePath, 0755, true);
             }

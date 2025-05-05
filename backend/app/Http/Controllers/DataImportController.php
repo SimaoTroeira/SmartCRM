@@ -7,141 +7,47 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\File;
 
 class DataImportController extends Controller
 {
-    public function getAvailableTables()
-    {
-        try {
-            $tables = DB::select("SHOW TABLES");
-            $databaseName = config('database.connections.mysql.database');
-            $keyName = 'Tables_in_' . $databaseName;
-
-
-            $excludedTables = [
-                'users',
-                'password_resets',
-                'oauth_access_tokens',
-                'oauth_auth_codes',
-                'oauth_clients',
-                'oauth_personal_access_clients',
-                'oauth_refresh_tokens',
-                'personal_access_tokens',
-                'failed_jobs',
-                'migrations',
-                'password_reset_tokens',
-                'companies',
-                'campaigns',
-                'roles',
-                'user_company_roles',
-                'company_invites',
-                'campaign_user',
-                'accounts'
-            ];
-
-            $filteredTables = array_filter($tables, function ($table) use ($keyName, $excludedTables) {
-                $tableName = $table->{$keyName};
-                return !in_array($tableName, $excludedTables);
-            });
-
-            $tableNames = array_map(function ($table) use ($keyName) {
-                return $table->{$keyName};
-            }, $filteredTables);
-
-            return response()->json(array_values($tableNames));
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'database_error',
-                'message' => 'Failed to retrieve tables list'
-            ], 500);
-        }
-    }
-
-    public function getTableColumns($table)
-    {
-        if (!Schema::hasTable($table)) {
-            return response()->json(['error' => 'Tabela não encontrada'], 404);
-        }
-
-        $columns = Schema::getColumnListing($table);
-
-        // Filtra colunas padrão
-        $filteredColumns = array_filter($columns, function ($column) {
-            return !in_array($column, [
-                'created_at',
-                'updated_at',
-                'deleted_at',
-                'user_id',
-                'campaign_id',
-                'company_id',
-            ]);
-        });
-
-        return response()->json(array_values($filteredColumns));
-    }
 
     public function storeMappedData(Request $request)
     {
         $request->validate([
-            'campaign_id' => 'required|integer',
+            'table_name' => 'required|string',
             'data' => 'required|array',
+            'types' => 'nullable|array',
+            'company_id' => 'required|integer|exists:companies,id',
         ]);
 
         try {
-            $campaignId = $request->campaign_id;
+            $user = Auth::user();
+            $companyId = $request->company_id;
+
+            // Verifica se o user tem acesso à empresa
+            $hasAccess = DB::table('user_company_roles')
+                ->where('user_id', $user->id)
+                ->where('company_id', $companyId)
+                ->exists();
+
+            if (!$hasAccess) {
+                return response()->json(['error' => 'Acesso negado à empresa selecionada.'], 403);
+            }
+
+            $tableName = preg_replace('/[^a-zA-Z0-9_]/', '_', $request->table_name);
             $data = $request->data;
 
-            // Buscar o company_id associado à campanha
-            $campaign = DB::table('campaigns')->where('id', $campaignId)->first();
+            $basePath = config('smartcrm.storage_path');
+            $importPath = $basePath . "/empresa_id_$companyId/dados_importados";
+            File::ensureDirectoryExists($importPath);
 
-            if (!$campaign) {
-                return response()->json([
-                    'error' => 'Campanha não encontrada.'
-                ], 404);
-            }
-
-            $companyId = $campaign->company_id; // Pega o company_id certo
-
-            $successCount = 0;
-            $updateCount = 0;
-
-            foreach ($data as $index => $row) {
-                $rowToUpsert = $row;
-                $rowToUpsert['company_id'] = $companyId;
-                $rowToUpsert['campaign_id'] = $campaignId;
-
-                unset($rowToUpsert['id'], $rowToUpsert['created_at'], $rowToUpsert['updated_at'], $rowToUpsert['deleted_at']);
-
-                // Tenta encontrar uma linha existente
-                $query = DB::table('datasets')
-                    ->where('company_id', $companyId)
-                    ->where('customer_identifier', $row['customer_identifier'] ?? null);
-
-                if (isset($row['transaction_identifier'])) {
-                    $query->where('transaction_identifier', $row['transaction_identifier']);
-                }
-                if (isset($row['item_identifier'])) {
-                    $query->where('item_identifier', $row['item_identifier']);
-                }
-
-                $existingRow = $query->first();
-
-                if ($existingRow) {
-                    // Atualiza apenas os campos novos
-                    DB::table('datasets')
-                        ->where('id', $existingRow->id)
-                        ->update(array_filter($rowToUpsert)); // Só atualiza campos preenchidos
-                    $updateCount++;
-                } else {
-                    // Se não existir, insere novo
-                    DB::table('datasets')->insert($rowToUpsert);
-                    $successCount++;
-                }
-            }
+            $filePath = "$importPath/{$tableName}.json";
+            File::put($filePath, json_encode($data, JSON_UNESCAPED_UNICODE));
 
             return response()->json([
-                'message' => "$successCount novos registros inseridos, $updateCount registros atualizados."
+                'message' => "Ficheiro JSON guardado com sucesso como '{$tableName}.json'",
+                'path' => $filePath
             ]);
         } catch (\Exception $e) {
             Log::error('Erro ao importar dados: ' . $e->getMessage());
@@ -153,18 +59,24 @@ class DataImportController extends Controller
         }
     }
 
-    public function getUserData($tableName)
+    public function getUserCompanies()
     {
-        $user = Auth::user();
+        try {
+            $userId = Auth::id();
 
-        if (!Schema::hasTable($tableName)) {
-            return response()->json(['error' => 'Tabela não encontrada'], 404);
+            // Traz empresas válidas (ativas e submetidas) associadas ao utilizador
+            $companies = DB::table('companies')
+                ->join('user_company_roles', 'companies.id', '=', 'user_company_roles.company_id')
+                ->where('user_company_roles.user_id', $userId)
+                ->where('companies.status', 'Ativo')
+                ->where('companies.submitted', true)
+                ->select('companies.id', 'companies.name')
+                ->get();
+
+            return response()->json($companies);
+        } catch (\Exception $e) {
+            Log::error('Erro ao buscar empresas do utilizador: ' . $e->getMessage());
+            return response()->json(['error' => 'Erro ao buscar empresas.'], 500);
         }
-
-        $data = DB::table($tableName)
-            ->where('user_id', $user->id)
-            ->get();
-
-        return response()->json($data);
     }
 }
