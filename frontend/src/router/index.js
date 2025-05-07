@@ -11,6 +11,7 @@ import Company from '../components/companies/Company.vue';
 import Campaign from '../components/campaigns/Campaign.vue';
 import CompanyDetails from '../components/companies/CompanyDetails.vue';
 import CampaignDetails from '../components/campaigns/CampaignDetails.vue';
+import Algorithms from '../components/Algorithms.vue';
 
 const routes = [
   {
@@ -73,7 +74,13 @@ const routes = [
     name: 'AcceptInvite',
     component: () => import('@/components/AcceptInvite.vue'),
     meta: { requiresAuth: true } // garantir que o utilizador esteja autenticado
+  },
+  {
+    path: '/algorithms',
+    name: 'Algorithms',
+    component: Algorithms,
   }
+  
   // Adicionar outras rotas aqui
 ];
 

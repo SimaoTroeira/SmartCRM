@@ -24,7 +24,11 @@
                 <i class="bi bi-megaphone me-2"></i> Campanhas
               </a>
             </li>
-
+            <li v-if="isAuthenticated" class="nav-item">
+              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToAlgorithms">
+                <i class="bi bi-diagram-3 me-2"></i> Algoritmos
+              </a>
+            </li>
             <!-- Separador flexível entre esquerda e direita -->
             <li class="flex-grow-1"></li>
 
@@ -128,6 +132,9 @@ const redirectToCompany = () => {
 };
 const redirectToCampaign = () => {
   router.push({ name: 'Campaigns' });
+};
+const redirectToAlgorithms = () => {
+  router.push({ name: 'Algorithms' });
 };
 </script>
 

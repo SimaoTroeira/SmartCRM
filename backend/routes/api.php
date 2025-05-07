@@ -11,6 +11,7 @@ use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\CompanyInviteController;
 use App\Http\Controllers\UserCompanyRoleController;
+use App\Http\Controllers\AlgorithmsController;
 
 
 /*
@@ -78,4 +79,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('/invites/{id}/resend', [CompanyInviteController::class, 'resend']);
     Route::delete('/invites/{id}/cancel', [CompanyInviteController::class, 'cancel']);
+
+
+
+    //algorithms
+    Route::post('/algoritmos/gerar', [AlgorithmsController::class, 'executarScript']);
+    Route::get('/algoritmos/resultados/{campanhaId}', [AlgorithmsController::class, 'obterResultados']);
+    
+    Route::get('/algoritmos/verificar-colunas/{campanhaId}', [AlgorithmsController::class, 'verificarColunas']);
+
 });

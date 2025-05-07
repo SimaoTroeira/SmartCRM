@@ -1,0 +1,157 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use App\Jobs\ExecutarScriptPython;
+use App\Models\Campaign;
+use Illuminate\Http\Request;
+
+class AlgorithmsController extends Controller
+{
+    public function executarScript(Request $request)
+    {
+        $request->validate([
+            'campanha_id' => 'required|exists:campaigns,id',
+            'algoritmo' => 'required|string'
+        ]);
+
+        $algoritmo = $request->input('algoritmo');
+        $scriptMap = [
+            'rfm' => 'rfm_segmentation.py',
+            'churn' => 'churn_prediction.py',
+        ];
+
+        if (!array_key_exists($algoritmo, $scriptMap)) {
+            return response()->json(['error' => 'Algoritmo inválido.'], 400);
+        }
+
+        $campanhaId = $request->input('campanha_id');
+        $campanha = Campaign::with('company')->findOrFail($campanhaId);
+        $empresaId = $campanha->company->id;
+
+        $script = $scriptMap[$algoritmo];
+
+        Log::info("✅ Disparando script {$script} para empresa {$empresaId}, campanha {$campanhaId}");
+        ExecutarScriptPython::dispatch($script, $empresaId, $campanhaId);
+
+        return response()->json([
+            'message' => 'Script iniciado com sucesso',
+            'empresa_id' => $empresaId,
+            'campanha_id' => $campanhaId,
+            'script' => $script
+        ]);
+    }
+
+    public function obterResultados($campanhaId, Request $request)
+    {
+        $algoritmo = $request->query('algoritmo', 'rfm');
+
+        $filenameMap = [
+            'rfm' => 'resultados_rfm.json',
+            'churn' => 'resultados_churn.json',
+        ];
+
+        if (!isset($filenameMap[$algoritmo])) {
+            return response()->json(['error' => 'Algoritmo inválido.'], 400);
+        }
+
+        $campanha = Campaign::with('company')->findOrFail($campanhaId);
+        $empresaId = $campanha->company->id;
+
+        $basePath = config('smartcrm.storage_path');
+        $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $filenameMap[$algoritmo];
+
+        if (!File::exists($jsonPath)) {
+            return response()->json(['message' => 'Ficheiro ainda não disponível.'], 202);
+        }
+
+        return response()->json(json_decode(File::get($jsonPath), true));
+    }
+
+    public function verificarColunas($campanhaId, Request $request)
+    {
+        $algoritmo = $request->query('algoritmo', 'rfm'); // default para RFM
+
+        $requisitosPorAlgoritmo = [
+            'rfm' => [
+                'vendas.json' => [
+                    ['ClienteID', 'cliente_id', 'IDCliente'],
+                    ['ValorTotal', 'Total', 'valor_total'],
+                ],
+            ],
+            'churn' => [
+                'clientes.json' => [
+                    ['ClienteID', 'cliente_id', 'IDCliente'],
+                    ['Email', 'email'],
+                    ['Cancelado', 'cancelado'],
+                ],
+            ],
+        ];
+
+        if (!isset($requisitosPorAlgoritmo[$algoritmo])) {
+            return response()->json(['error' => 'Algoritmo inválido.'], 400);
+        }
+
+        $requisitos = $requisitosPorAlgoritmo[$algoritmo];
+
+        $campanha = Campaign::with('company')->findOrFail($campanhaId);
+        $empresaId = $campanha->company->id;
+
+        $basePath = config('smartcrm.storage_path');
+        $dadosPath = $basePath . "/empresa_id_{$empresaId}/dados_importados";
+
+        if (!File::exists($dadosPath)) {
+            return response()->json(['error' => 'Pasta de dados não encontrada.'], 404);
+        }
+
+        $ficheiros_presentes = [];
+        $colunas_em_falta = [];
+
+        $files = File::files($dadosPath);
+        foreach ($files as $file) {
+            if ($file->getExtension() !== 'json') continue;
+            $filename = $file->getFilename();
+
+            try {
+                $conteudo = File::get($file->getPathname());
+                $json = json_decode($conteudo, true);
+
+                if (is_array($json) && count($json) > 0) {
+                    $primeiraLinha = $json[0];
+                    if (is_array($primeiraLinha)) {
+                        $colunas = array_keys($primeiraLinha);
+                        $ficheiros_presentes[$filename] = $colunas;
+
+                        if (isset($requisitos[$filename])) {
+                            foreach ($requisitos[$filename] as $grupo) {
+                                $encontrado = false;
+                                foreach ($grupo as $alternativa) {
+                                    if (in_array($alternativa, $colunas)) {
+                                        $encontrado = true;
+                                        break;
+                                    }
+                                }
+                                if (!$encontrado) {
+                                    $colunas_em_falta[$filename][] = $grupo;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                $ficheiros_presentes[$filename] = ['erro ao ler ficheiro'];
+            }
+        }
+
+        $ficheiros_obrigatorios = array_keys($requisitos);
+        $ficheiros_em_falta = array_diff($ficheiros_obrigatorios, array_keys($ficheiros_presentes));
+
+        return response()->json([
+            'ficheiros_presentes' => $ficheiros_presentes,
+            'ficheiros_em_falta' => array_values($ficheiros_em_falta),
+            'colunas_em_falta' => $colunas_em_falta,
+        ]);
+    }
+}
