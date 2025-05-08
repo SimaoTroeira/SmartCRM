@@ -1,46 +1,43 @@
 <template>
-    <div v-if="!validado"> <!-- só aparece se houver erro -->
-        <div class="mt-4">
-            <h4 class="text-lg font-semibold mb-2">Verificação de dados</h4>
-
-            <div v-if="carregando" class="text-blue-600 font-medium">
-                A verificar os dados necessários...
-            </div>
-
-            <div v-else-if="validado !== null">
-                <div v-if="ficheirosEmFalta.length" class="mb-3">
-                    <p class="text-red-600 font-medium">
-                        <span v-if="Object.keys(colunasEmFalta).length">Faltam tabelas e colunas:</span>
-                        <span v-else>Faltam tabelas:</span>
-                    </p>
-                    <ul class="ml-4 list-disc text-red-600">
-                        <li v-for="ficheiro in ficheirosEmFalta" :key="ficheiro">
-                            ❌ {{ ficheiro }}
-                        </li>
-                    </ul>
-                </div>
-
-                <div v-if="Object.keys(colunasEmFalta).length && ficheirosEmFalta.length === 0" class="mb-3">
-                    <p class="text-red-600 font-medium">Faltam colunas:</p>
-                    <ul class="ml-4 list-disc text-red-600">
-                        <li v-for="(colunas, ficheiro) in colunasEmFalta" :key="ficheiro">
-                            {{ ficheiro }}:
-                            <ul class="ml-4 list-disc">
-                                <li v-for="grupo in colunas" :key="grupo.join('-')">
-                                    ❌ {{ grupo.join(" / ") }}
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <div v-if="!validado" class="text-red-600 font-medium">
-                    Existem dados em falta. Corrija-os antes de continuar.
-                </div>
-            </div>
-        </div>
+    <div v-if="!carregando && validado === false" class="mt-4">
+      <h5 class="text-lg font-semibold mb-2">Dados em falta!</h5>
+  
+      <div v-if="ficheirosEmFalta.length" class="mb-3">
+        <p class="text-red-600 font-medium">
+          <span v-if="Object.keys(colunasEmFalta).length">Faltam tabelas e colunas:</span>
+          <span v-else>Precisa de importar as seguintes tabelas:</span>
+        </p>
+        <ul class="ml-4 list-disc text-red-600">
+          <li v-for="ficheiro in ficheirosEmFalta" :key="ficheiro">
+            ❌ {{ ficheiro }}
+          </li>
+        </ul>
+      </div>
+  
+      <div v-if="Object.keys(colunasEmFalta).length && ficheirosEmFalta.length === 0" class="mb-3">
+        <p class="text-red-600 font-medium">Faltam as colunas:</p>
+        <ul class="ml-4 list-disc text-red-600">
+          <li v-for="(colunas, ficheiro) in colunasEmFalta" :key="ficheiro">
+            {{ ficheiro }}:
+            <ul class="ml-4 list-disc">
+              <li v-for="grupo in colunas" :key="grupo.join('-')">
+                ❌ {{ grupo.join(" / ") }}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+  
+      <div class="text-red-600 font-medium">
+        Sem estes dados, o algoritmo não irá funcionar. Importe-os antes de continuar.
+      </div>
     </div>
-</template>
+  
+    <div v-if="carregando" class="mt-4 text-blue-600 font-medium">
+      A verificar os dados necessários...
+    </div>
+  </template>
+  
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
