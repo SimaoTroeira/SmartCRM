@@ -141,4 +141,73 @@ const redirectToAlgorithms = () => {
 
 <style>
 @import "./assets/dashboard.css";
+
+/* dashboard.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+}
+
+.navbar {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #0f172a;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  color: #f1f5f9 !important;
+}
+
+.navbar-brand img {
+  margin-right: 8px;
+}
+
+.nav-link {
+  color: #cbd5e1 !important;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffffff !important;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 6px;
+}
+
+.dropdown-menu {
+  background-color: #0f172a;
+  border: none;
+}
+
+.dropdown-item {
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #ffffff;
+}
+
+
+main {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .nav-link {
+    padding: 0.75rem 0;
+  }
+}
+
 </style>
