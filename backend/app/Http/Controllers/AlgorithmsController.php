@@ -80,6 +80,9 @@ class AlgorithmsController extends Controller
                     ['ClienteID', 'cliente_id', 'IDCliente'],
                     ['ValorTotal', 'Total', 'valor_total'],
                 ],
+                'clientes.json' => [ 
+                    ['ClienteID', 'cliente_id', 'IDCliente'],
+                ]
             ],
             'churn' => [
                 'clientes.json' => [

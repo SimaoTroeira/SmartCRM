@@ -100,10 +100,9 @@
                             Gráfico: {{ selectedAlgorithm === 'rfm' ? 'Segmentação RFM' : 'Previsão de Churn' }}
                         </h3>
 
-                        <div class="mb-3 text-sm text-gray-600">Este gráfico representa uma análise visual do algoritmo
+                        <div class="mb-3 text-sm text-gray-600">Este gráfico de barras representa uma análise visual do algoritmo
                             selecionado.</div>
 
-                        <!-- Gráfico Simples -->
                         <canvas id="graficoCanvas" class="grafico-canvas mx-auto"></canvas>
                     </div>
                 </div>
@@ -184,7 +183,11 @@ const fetchResults = async () => {
 
     try {
         const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
-        results.value = res.data.dados || []
+        if (selectedAlgorithm.value === 'rfm' && res.data.segmentos) {
+            results.value = res.data.segmentos
+        } else {
+            results.value = res.data.dados || []
+        }
         descricao.value = res.data.descricao || ''
         showResults.value = results.value.length > 0
 
@@ -209,15 +212,15 @@ const desenharGrafico = async () => {
     if (!ctx || !results.value.length) return
     if (chartInstance) chartInstance.destroy()
 
-    const labels = results.value.map((_, i) => `Item ${i + 1}`)
-    const valores = results.value.map(obj => Object.values(obj)[1]) // usa a 2ª coluna para exemplo
+    const labels = results.value.map(item => item.Segmento || `Cluster ${item.Cluster}`)
+    const valores = results.value.map(item => item.QtdClientes || 0)
 
     chartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
             labels,
             datasets: [{
-                label: 'Valores do Algoritmo',
+                label: 'Clientes',
                 data: valores,
                 backgroundColor: '#60a5fa'
             }]
