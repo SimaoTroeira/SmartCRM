@@ -26,8 +26,12 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libwebp-dev \
     libxpm-dev \
+    python3 \
+    python3-pip \
     && docker-php-ext-configure gd \
-    && docker-php-ext-install pdo_mysql gd intl mbstring zip xml
+    && docker-php-ext-install pdo_mysql gd intl mbstring zip xml \
+    && ln -s /usr/bin/python3 /usr/bin/python \
+    && pip install pandas numpy scikit-learn matplotlib
 
 
 # Instalar Composer

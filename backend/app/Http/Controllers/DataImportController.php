@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class DataImportController extends Controller
 {
@@ -25,7 +26,7 @@ class DataImportController extends Controller
             $user = Auth::user();
             $companyId = $request->company_id;
 
-            // Verifica se o user tem acesso à empresa
+            // Verificar acesso
             $hasAccess = DB::table('user_company_roles')
                 ->where('user_id', $user->id)
                 ->where('company_id', $companyId)
@@ -38,12 +39,31 @@ class DataImportController extends Controller
             $tableName = preg_replace('/[^a-zA-Z0-9_]/', '_', $request->table_name);
             $data = $request->data;
 
+            // Obter caminho base e normalizar
+            $configuredPath = config('smartcrm.storage_path');
+            // $basePath = realpath($configuredPath) ?: storage_path('app/smartcrm');
             $basePath = config('smartcrm.storage_path');
-            $importPath = $basePath . "/empresa_id_$companyId/dados_importados";
-            File::ensureDirectoryExists($importPath);
 
-            $filePath = "$importPath/{$tableName}.json";
-            File::put($filePath, json_encode($data, JSON_UNESCAPED_UNICODE));
+            if (!$basePath || !is_string($basePath)) {
+                $basePath = storage_path('app/smartcrm');
+            }
+
+            Log::info("Base path resolvido: $basePath");
+
+            $importPath = $basePath . DIRECTORY_SEPARATOR . "empresa_id_$companyId" . DIRECTORY_SEPARATOR . "dados_importados";
+
+            if (!File::exists($importPath)) {
+                Log::info("Criando diretório: $importPath");
+                File::makeDirectory($importPath, 0755, true);
+            }
+
+            $filePath = $importPath . DIRECTORY_SEPARATOR . "{$tableName}.json";
+
+            Log::info("Tentando guardar ficheiro JSON em: $filePath");
+
+            File::put($filePath, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+            Log::info("Ficheiro guardado com sucesso!");
 
             return response()->json([
                 'message' => "Ficheiro JSON guardado com sucesso como '{$tableName}.json'",
@@ -58,6 +78,7 @@ class DataImportController extends Controller
             ], 500);
         }
     }
+
 
     public function getUserCompanies()
     {

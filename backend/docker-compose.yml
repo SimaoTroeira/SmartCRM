@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Serviço PHP + Laravel
+  # Serviço PHP + Laravel (Web)
   app:
     build:
       context: .
@@ -10,6 +10,8 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - ./dados_smart_crm:/var/www/html/dados_smart_crm
+      - ./scripts:/var/www/html/scripts
     ports:
       - "8000:8000"
     depends_on:
@@ -17,6 +19,23 @@ services:
     networks:
       - laravel_network
     command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # Serviço PHP + Laravel (Queue Worker)
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_queue
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./dados_smart_crm:/var/www/html/dados_smart_crm
+      - ./scripts:/var/www/html/scripts
+    depends_on:
+      - mysql
+    networks:
+      - laravel_network
+    command: php artisan queue:work
 
   # Serviço MySQL
   mysql:
@@ -33,7 +52,7 @@ services:
     networks:
       - laravel_network
 
-  # phpMyAdmin para gerir a BD
+  # Serviço phpMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin

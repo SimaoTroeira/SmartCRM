@@ -237,6 +237,7 @@ class CompanyController extends Controller
         try {
             // a usar config/smartcrm.php
             $basePath = config('smartcrm.storage_path');
+            Log::info("Base path para criar diretórios da empresa: $basePath");
             if (!File::exists($basePath)) {
                 File::makeDirectory($basePath, 0755, true);
             }
@@ -244,10 +245,13 @@ class CompanyController extends Controller
             $companyFolderName = 'empresa_id_' . $company->id;
             $companyPath = $basePath . DIRECTORY_SEPARATOR . $companyFolderName;
 
+            Log::info("Base path real: " . realpath(config('smartcrm.storage_path'))); 
 
             if (!File::exists($companyPath)) {
                 File::makeDirectory($companyPath, 0755, true);
             }
+
+            Log::info("File exists? " . (File::exists(config('smartcrm.storage_path')) ? 'yes' : 'no'));   
 
             foreach (['campanhas', 'dados_importados'] as $sub) {
                 $subPath = $companyPath . DIRECTORY_SEPARATOR . $sub;

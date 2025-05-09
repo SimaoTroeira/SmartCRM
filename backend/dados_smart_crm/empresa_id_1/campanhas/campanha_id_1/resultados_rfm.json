@@ -1,0 +1,33 @@
+{
+  "descricao": "Segmentação FM com 4 clusters (sem recência).",
+  "dados": [
+    {
+      "Cluster": 0,
+      "FrequencyMedia": 1.0945945945945945,
+      "MonetaryMedia": 426.3614864864865,
+      "MonetaryTotal": 31550.75,
+      "QtdClientes": 74
+    },
+    {
+      "Cluster": 1,
+      "FrequencyMedia": 3.816793893129771,
+      "MonetaryMedia": 5269.921450381679,
+      "MonetaryTotal": 690359.71,
+      "QtdClientes": 131
+    },
+    {
+      "Cluster": 2,
+      "FrequencyMedia": 1.0,
+      "MonetaryMedia": 2004.4942666666668,
+      "MonetaryTotal": 150337.07,
+      "QtdClientes": 75
+    },
+    {
+      "Cluster": 3,
+      "FrequencyMedia": 2.2337662337662336,
+      "MonetaryMedia": 2438.416103896104,
+      "MonetaryTotal": 375516.08,
+      "QtdClientes": 154
+    }
+  ]
+}
