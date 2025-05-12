@@ -44,7 +44,7 @@ class AlgorithmsController extends Controller
         ]);
     }
 
-    public function obterResultados($campanhaId, Request $request)
+    public function obterResultadoPrincipal($campanhaId, Request $request)
     {
         $algoritmo = $request->query('algoritmo', 'rfm');
 
@@ -70,6 +70,32 @@ class AlgorithmsController extends Controller
         return response()->json(json_decode(File::get($jsonPath), true));
     }
 
+    public function obterResultadoComplementar($campanhaId, Request $request)
+    {
+        $tipo = $request->query('tipo');
+
+        $map = [
+            'clientes' => 'clientes_segmentados_rfm.json',
+            'clusters' => 'clusters_rfm.json',
+        ];
+
+        if (!isset($map[$tipo])) {
+            return response()->json(['error' => 'Tipo inválido.'], 400);
+        }
+
+        $campanha = Campaign::with('company')->findOrFail($campanhaId);
+        $empresaId = $campanha->company->id;
+
+        $basePath = config('smartcrm.storage_path');
+        $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $map[$tipo];
+
+        if (!File::exists($jsonPath)) {
+            return response()->json(['message' => 'Ficheiro ainda não disponível.'], 202);
+        }
+
+        return response()->json(json_decode(File::get($jsonPath), true));
+    }
+
     public function verificarColunas($campanhaId, Request $request)
     {
         $algoritmo = $request->query('algoritmo', 'rfm'); // default para RFM
@@ -80,7 +106,7 @@ class AlgorithmsController extends Controller
                     ['ClienteID', 'cliente_id', 'IDCliente'],
                     ['ValorTotal', 'Total', 'valor_total'],
                 ],
-                'clientes.json' => [ 
+                'clientes.json' => [
                     ['ClienteID', 'cliente_id', 'IDCliente'],
                 ]
             ],

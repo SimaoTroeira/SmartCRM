@@ -28,7 +28,6 @@ def rfm_segmentation(base_path, empresa_id, campanha_id):
 
         df = pd.read_json(file_path)
 
-        # Normalizar nomes de colunas
         col_renames = {
             "cliente_id": "ClienteID",
             "IDCliente": "ClienteID",
@@ -45,10 +44,8 @@ def rfm_segmentation(base_path, empresa_id, campanha_id):
             print("Colunas essenciais em falta (ClienteID ou ValorTotal).")
             return
 
-        # --- Tentar detectar uma coluna de data automaticamente ---
         coluna_data = None
         padroes_possiveis = ["data", "compra", "venda", "registro", "registo"]
-
         for col in df.columns:
             amostra = df[col].dropna().head(10).astype(str)
             if any(any(p in col.lower() for p in padroes_possiveis) for _ in amostra):
@@ -77,23 +74,31 @@ def rfm_segmentation(base_path, empresa_id, campanha_id):
                 )
                 .rename(
                     columns={
-                        coluna_data: "Recency",
-                        "ClienteID": "Frequency",
-                        "ValorTotal": "Monetary",
+                        coluna_data: "Recência",
+                        "ClienteID": "Frequência",
+                        "ValorTotal": "Monetário",
                     }
                 )
             )
         else:
-            print(
-                "⚠️ Nenhuma coluna de data válida encontrada. Cálculo de Recência será ignorado."
-            )
+            print("⚠️ Nenhuma coluna de data válida encontrada. Recência será ignorada.")
             rfm = (
                 df.groupby("ClienteID")
-                .agg({"ClienteID": "count", "ValorTotal": "sum"})
-                .rename(columns={"ClienteID": "Frequency", "ValorTotal": "Monetary"})
+                .agg(
+                    {
+                        "ClienteID": "count",
+                        "ValorTotal": "sum",
+                    }
+                )
+                .rename(
+                    columns={
+                        "ClienteID": "Frequência",
+                        "ValorTotal": "Monetário",
+                    }
+                )
             )
 
-        rfm = rfm[rfm["Monetary"] > 0]
+        rfm = rfm[rfm["Monetário"] > 0]
         rfm_log = np.log1p(rfm)
         scaler = StandardScaler()
         rfm_scaled = scaler.fit_transform(rfm_log)
@@ -106,97 +111,124 @@ def rfm_segmentation(base_path, empresa_id, campanha_id):
         kmeans = KMeans(n_clusters=n_clusters, random_state=42)
         rfm["Cluster"] = kmeans.fit_predict(rfm_scaled)
 
-        # Classificação dos clusters
-        if usar_recency:
-            resumo = rfm.groupby("Cluster")[["Recency", "Frequency", "Monetary"]].mean()
-        else:
-            resumo = rfm.groupby("Cluster")[["Frequency", "Monetary"]].mean()
-
+        resumo = rfm.groupby("Cluster")[rfm.columns].mean()
         cluster_labels = {}
         for cluster_id in resumo.index:
+            dados = resumo.loc[cluster_id]
             if usar_recency:
-                r, f, m = resumo.loc[cluster_id]
-                if (
-                    r < resumo["Recency"].median()
-                    and f > resumo["Frequency"].median()
-                    and m > resumo["Monetary"].median()
-                ):
-                    nome = "Top Customers"
-                elif (
-                    r > resumo["Recency"].median()
-                    and f < resumo["Frequency"].median()
-                    and m < resumo["Monetary"].median()
-                ):
-                    nome = "Lost Customers"
-                elif m > resumo["Monetary"].median():
-                    nome = "Medium Value Customers"
-                else:
-                    nome = "Low Value Customers"
+                r, f, m = dados["Recência"], dados["Frequência"], dados["Monetário"]
             else:
-                f, m = resumo.loc[cluster_id]
-                if f > resumo["Frequency"].median() and m > resumo["Monetary"].median():
-                    nome = "Top Customers"
-                elif (
-                    f < resumo["Frequency"].median() and m < resumo["Monetary"].median()
-                ):
-                    nome = "Lost Customers"
-                elif m > resumo["Monetary"].median():
-                    nome = "Medium Value Customers"
-                else:
-                    nome = "Low Value Customers"
+                f, m = dados["Frequência"], dados["Monetário"]
+                r = None
+
+            if (
+                usar_recency
+                and r < resumo["Recência"].median()
+                and f > resumo["Frequência"].median()
+                and m > resumo["Monetário"].median()
+            ):
+                nome = "Clientes Principais"
+            elif (
+                usar_recency
+                and r > resumo["Recência"].median()
+                and f < resumo["Frequência"].median()
+                and m < resumo["Monetário"].median()
+            ):
+                nome = "Clientes Perdidos"
+            elif m > resumo["Monetário"].median():
+                nome = "Clientes Valiosos"
+            else:
+                nome = "Clientes com Baixo Valor"
+
             cluster_labels[cluster_id] = nome
 
         rfm["Segmento"] = rfm["Cluster"].map(cluster_labels)
 
-        # Agrupamento final
+        clientes_path = dados_path / "clientes.json"
+        if clientes_path.exists():
+            try:
+                df_clientes = pd.read_json(clientes_path)
+                df_clientes = df_clientes.rename(
+                    columns={"IDCliente": "ClienteID", "cliente_id": "ClienteID"}
+                )
+                if "Nome" in df_clientes.columns:
+                    rfm = rfm.reset_index().merge(
+                        df_clientes[["ClienteID", "Nome"]], on="ClienteID", how="left"
+                    )
+            except Exception as e:
+                print(f"Erro ao ler clientes.json para nomes: {e}")
+
         group_cols = {
-            "Frequency": "mean",
-            "Monetary": ["mean", "sum", "count"],
+            "Frequência": ["mean", "median", "std", "min", "max"],
+            "Monetário": ["mean", "sum", "median", "std", "min", "max", "count"],
         }
         if usar_recency:
-            group_cols["Recency"] = "mean"
+            group_cols["Recência"] = ["mean", "median", "std", "min", "max"]
 
         agrupado = rfm.groupby(["Cluster", "Segmento"]).agg(group_cols).reset_index()
+        agrupado.columns = [
+            "_".join(filter(None, col)).strip("_") for col in agrupado.columns.values
+        ]
 
-        # Flatten MultiIndex columns
-        flat_cols = ["Cluster", "Segmento"]
-        if usar_recency:
-            flat_cols += [
-                "FrequencyMedia",
-                "MonetaryMedia",
-                "MonetaryTotal",
-                "QtdClientes",
-                "RecencyMedia",
-            ]
-        else:
-            flat_cols += [
-                "FrequencyMedia",
-                "MonetaryMedia",
-                "MonetaryTotal",
-                "QtdClientes",
-            ]
+        renomear_colunas = {
+            "Frequência_mean": "Frequência Média",
+            "Frequência_median": "Frequência Mediana",
+            "Frequência_std": "Frequência Desvio-Padrão",
+            "Frequência_min": "Frequência Mínima",
+            "Frequência_max": "Frequência Máxima",
+            "Monetário_mean": "Média Monetária",
+            "Monetário_median": "Mediana Monetária",
+            "Monetário_std": "Desvio Monetário",
+            "Monetário_sum": "Total Monetário",
+            "Monetário_min": "Mínimo Monetário",
+            "Monetário_max": "Máximo Monetário",
+            "Monetário_count": "Quantidade de Compras",
+            "Recência_mean": "Recência Média",
+            "Recência_median": "Recência Mediana",
+            "Recência_std": "Recência Desvio-Padrão",
+            "Recência_min": "Recência Mínima",
+            "Recência_max": "Recência Máxima",
+        }
+        agrupado.rename(columns=renomear_colunas, inplace=True)
 
-        agrupado.columns = flat_cols
-        agrupado = agrupado.sort_values(by="MonetaryTotal", ascending=False)
-
-        # Guardar ficheiro
-        output_file = campanha_path / "resultados_rfm.json"
+        agrupado = agrupado.sort_values(by="Total Monetário", ascending=False)
+        agrupado = agrupado.replace([np.inf, -np.inf], np.nan).fillna(0)
+        rfm_safe = rfm.replace([np.inf, -np.inf], np.nan).fillna(0)
 
         descricao_texto = (
             f"Segmentação {'RFM' if usar_recency else 'FM'} com {n_clusters} clusters."
         )
         if not usar_recency:
-            descricao_texto += " O campo 'Recency' (data da última compra) não foi encontrado nos dados e foi ignorado."
+            descricao_texto += " O campo 'Recência' (data da última compra) não foi encontrado e foi ignorado."
 
-        resultado = {
-            "descricao": descricao_texto,
-            "dados": agrupado.to_dict(orient="records"),
-        }
+        resultados_path = campanha_path / "resultados_rfm.json"
+        clusters_path = campanha_path / "clusters_rfm.json"
+        clientes_path = campanha_path / "clientes_segmentados_rfm.json"
 
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(resultado, f, indent=2, ensure_ascii=False)
+        with open(resultados_path, "w", encoding="utf-8") as f:
+            json.dump(
+                {
+                    "descricao": descricao_texto,
+                    "dados": agrupado.to_dict(orient="records"),
+                },
+                f,
+                indent=2,
+                ensure_ascii=False,
+            )
 
-        print(f"✅ Ficheiro salvo em: {output_file}")
+        with open(clusters_path, "w", encoding="utf-8") as f:
+            json.dump(
+                agrupado.to_dict(orient="records"), f, indent=2, ensure_ascii=False
+            )
+
+        with open(clientes_path, "w", encoding="utf-8") as f:
+            json.dump(
+                rfm_safe.to_dict(orient="records"), f, indent=2, ensure_ascii=False
+            )
+
+        print(
+            f"✅ Ficheiros gerados:\n- {resultados_path}\n- {clusters_path}\n- {clientes_path}"
+        )
 
     except Exception as e:
         print(f"[ERRO CRÍTICO]: {str(e)}")

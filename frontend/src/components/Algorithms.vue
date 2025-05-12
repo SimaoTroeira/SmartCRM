@@ -14,7 +14,8 @@
             </div>
 
             <div v-else class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- DROPDOWNS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"> <!-- 👈 adiciona mb-8 aqui -->
                     <div>
                         <label class="block mb-1 font-medium">Selecione uma campanha:</label>
                         <select v-model="selectedCampaignId" class="form-control w-full max-w-xs">
@@ -38,9 +39,11 @@
                 <AlgorithmWizard v-if="mostrarWizard && selectedCampaignId && selectedAlgorithm"
                     :campanha-id="selectedCampaignId" :algoritmo="selectedAlgorithm" @valido="handleValid" />
 
-                <div class="flex flex-wrap gap-4 mt-6 pb-4 border-b border-gray-300">
+                <div class="flex flex-wrap gap-4 mt-6 pb-4 border-b border-gray-300"></div>
+                <!-- BOTÕES -->
+                <div class="mt-10 mb-6 flex flex-wrap gap-4 border-b border-gray-300 pb-4">
                     <button class="executar-btn" :disabled="!selectedCampaignId || !selectedAlgorithm || loading"
-                        @click="verificarDadosAntesDeExecutar">
+                        @click="mostrarWizard = true">
                         Executar algoritmo
                     </button>
 
@@ -49,12 +52,30 @@
                         Visualizar resultados
                     </button>
                 </div>
+                <!-- Descrição Geral do Algoritmo -->
+                <div class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl">
+                    <p v-if="selectedAlgorithm === 'rfm'" class="text-sm text-gray-700">
+                        A segmentação <strong>RFM</strong> (Recência, Frequência e Valor Monetário) é uma técnica usada
+                        para categorizar
+                        clientes com base no tempo da última compra, frequência de compras e valor gasto. Com ela, é
+                        possível identificar
+                        os melhores clientes, os clientes inativos e aqueles com potencial de crescimento.
+                    </p>
+                    <p v-else-if="selectedAlgorithm === 'churn'" class="text-sm text-gray-700">
+                        A <strong>Previsão de Churn</strong> utiliza análise de comportamento para estimar a
+                        probabilidade de um cliente
+                        deixar de interagir ou comprar, ajudando a antecipar estratégias de retenção e marketing
+                        direcionado.
+                    </p>
+                </div>
 
-                <div v-if="showResults" class="mt-6 flex justify-end items-center">
-                    <div class="text-sm font-medium mr-2">Modo de visualização:</div>
-                    <select v-model="visualizacao" class="form-control w-40">
-                        <option value="tabela">Tabela</option>
-                        <option value="graficos">Gráficos</option>
+                <div v-if="showResults" class="mt-6 flex justify-end items-center gap-4">
+                    <label class="text-sm font-medium">Modo de visualização:</label>
+                    <select v-model="visualizacao" class="form-control w-56">
+                        <option value="resumo">Tabela</option>
+                        <option value="graficos">Gráfico de Barras</option>
+                        <option value="clusters">Estatísticas por Cluster</option>
+                        <option value="clientes">Clientes Segmentados</option>
                     </select>
                 </div>
 
@@ -62,48 +83,122 @@
                     {{ errorMessage }}
                 </div>
 
-                <div v-if="results.length > 0 && showResults">
-                    <!-- Tabela -->
-                    <div v-if="visualizacao === 'tabela'"
-                        class="mt-10 bg-white shadow-md rounded-lg p-6 border border-gray-200">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-700">
-                            Tabela: {{ selectedAlgorithm === 'rfm' ? 'Segmentação RFM' : 'Previsão de Churn' }}
-                        </h3>
+                <!-- Tabela -->
+                <div v-if="visualizacao === 'resumo' && results.length" class="mt-6">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-700">Tabela</h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Esta tabela apresenta as médias, totais e outros dados estatísticos de cada cluster gerado com
+                        base nas métricas RFM.
+                    </p>
+                    <p class="text-sm text-gray-500 mb-4">{{ descricao }}</p>
+                    <div class="overflow-x-auto">
 
-                        <div class="mb-3 text-sm text-gray-600">{{ descricao }}</div>
+                        <table class="min-w-full table-auto border border-gray-200 text-sm">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th v-for="(val, key) in results[0]" :key="key" class="px-4 py-2 border text-left">
+                                        {{ nomeColunasCluster[key] || key }}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(row, idx) in results" :key="idx">
+                                    <td v-for="(val, key) in row" :key="key" class="px-4 py-2 border">
+                                        {{ formatarValor(key, val) }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                        <div class="overflow-x-auto" style="max-height: 500px; overflow-y: auto">
-                            <table class="min-w-full table-auto border border-gray-200">
-                                <thead class="bg-gray-100">
-                                    <tr>
-                                        <th v-for="(value, key) in results[0]" :key="key"
-                                            class="px-4 py-2 border text-left">
-                                            {{ key }}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, index) in results" :key="index">
-                                        <td v-for="(value, key) in item" :key="key" class="px-4 py-2 border">
-                                            {{ value }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <!-- Gráfico de Barras -->
+                <div v-if="visualizacao === 'graficos' && results.length" class="mt-6">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-700">Gráfico de Barras</h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Representação gráfica da quantidade de clientes pertencentes a cada segmento identificado na
+                        análise RFM.
+                    </p>
+                    <div class="mb-3 text-sm text-gray-600">
+                        Este gráfico mostra a quantidade de clientes por segmento identificado pelo algoritmo.
+                    </div>
+                    <div style="max-width: 600px; margin: auto;">
+                        <canvas ref="graficoCanvas" class="grafico-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Estatísticas por Cluster -->
+                <div v-if="visualizacao === 'clusters' && clustersData.length" class="mt-6">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-700">Estatísticas por Cluster</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Abaixo estão os valores estatísticos agregados de cada cluster, como médias de recência,
+                        frequência e valor monetário, para melhor comparação entre segmentos.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div v-for="(cluster, idx) in clustersData" :key="idx" class="p-4 bg-gray-50 border rounded-lg">
+                            <h4 class="text-lg font-semibold text-green-700 mb-2">
+                                Cluster {{ cluster.Cluster }} — {{ cluster.Segmento }}
+                            </h4>
+                            <p class="text-sm mb-2 text-gray-600">
+                                Clientes: <strong>{{ cluster.QtdClientes }}</strong>
+                            </p>
+                            <div v-for="(valor, chave) in cluster"
+                                v-if="chave !== 'Cluster' && chave !== 'Segmento' && chave !== 'QtdClientes'"
+                                :key="chave">
+                                <p class="text-sm text-gray-700">
+                                    {{ nomeColunasCluster[chave] || chave }}:
+                                    <strong>{{ formatarValor(chave, valor) }}</strong>
+                                </p>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Gráficos -->
-                    <div v-else-if="visualizacao === 'graficos'"
-                        class="mt-10 bg-white shadow-md rounded-lg p-6 border border-gray-200">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-700">
-                            Gráfico: {{ selectedAlgorithm === 'rfm' ? 'Segmentação RFM' : 'Previsão de Churn' }}
-                        </h3>
+                <!-- Clientes Segmentados -->
+                <div v-if="visualizacao === 'clientes' && clientesSegmentados.length" class="mt-6">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-700">Clientes Segmentados</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Esta visualização lista cada cliente individualmente, com o respetivo segmento atribuído e
+                        métricas de compra, permitindo análises personalizadas.
+                    </p>
+                    <div class="mb-4">
+                        <label class="text-sm font-medium">Filtrar por segmento:</label>
+                        <select v-model="segmentoFiltro" class="form-control w-64">
+                            <option value="">Todos</option>
+                            <option v-for="seg in segmentosUnicos" :key="seg">{{ seg }}</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <div class="mb-2 flex justify-end">
+                            <button @click="resetarOrdenacao"
+                                class="text-sm text-blue-600 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50 transition">
+                                Repor ordenação
+                            </button>
+                        </div>
 
-                        <div class="mb-3 text-sm text-gray-600">Este gráfico de barras representa uma análise visual do algoritmo
-                            selecionado.</div>
+                        <table class="min-w-full table-auto border border-gray-200 text-sm">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th v-for="key in Object.keys(clientesSegmentados[0])" :key="key"
+                                        v-if="key !== 'ClienteID'" @click="ordenarPor(key)"
+                                        class="cursor-pointer px-4 py-2 border hover:bg-gray-100 select-none">
+                                        {{ key === 'Nome' ? 'Nome do Cliente' : key }}
+                                        <span v-if="colunaOrdenada === key">
+                                            {{ ordemCrescente ? '▲' : '▼' }}
+                                        </span>
+                                    </th>
 
-                        <canvas id="graficoCanvas" class="grafico-canvas mx-auto"></canvas>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in clientesFiltrados" :key="index">
+                                    <td v-for="(val, key) in item" :key="key" v-if="key !== 'ClienteID'"
+                                        class="px-4 py-2 border">
+                                        {{ val }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -111,8 +206,9 @@
     </div>
 </template>
 
+
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import AlgorithmWizard from './AlgorithmWizard.vue'
@@ -130,8 +226,26 @@ const toast = useToast()
 const valid = ref(false)
 const showResults = ref(false)
 const mostrarWizard = ref(false)
-const visualizacao = ref('tabela')
+const visualizacao = ref('resumo')
+const clustersData = ref([])
+const clientesSegmentados = ref([])
+const segmentoFiltro = ref('')
+const graficoCanvas = ref(null)
 let chartInstance = null
+
+const colunaOrdenada = ref('')
+const ordemCrescente = ref(true)
+
+
+const nomeColunasCluster = {
+    Cluster: "Cluster",
+    Segmento: "Segmento",
+    FrequencyMedia: "Frequência Média",
+    MonetaryMedia: "Valor Médio (€)",
+    MonetaryTotal: "Valor Total (€)",
+    QtdClientes: "Nº de Clientes",
+    RecencyMedia: "Recência Média (Em Dias)"
+}
 
 const fetchCampaigns = async () => {
     try {
@@ -146,12 +260,17 @@ const fetchCampaigns = async () => {
 
 const handleValid = (value) => {
     valid.value = value
-    if (value) runAlgorithm()
+
+    if (value) {
+        mostrarWizard.value = false
+        runAlgorithm()
+    }
 }
+
+
 
 const runAlgorithm = async () => {
     if (!selectedCampaignId.value || !selectedAlgorithm.value) return
-
     mostrarWizard.value = true
     loading.value = true
     errorMessage.value = ''
@@ -164,7 +283,7 @@ const runAlgorithm = async () => {
             campanha_id: selectedCampaignId.value,
             algoritmo: selectedAlgorithm.value
         })
-        toast.success('Algoritmo executado com sucesso.', { timeout: 3000, closeOnClick: true })
+        toast.success('Algoritmo executado com sucesso.')
     } catch (err) {
         errorMessage.value = err.response?.data?.error || 'Erro ao processar dados da campanha.'
     } finally {
@@ -174,7 +293,6 @@ const runAlgorithm = async () => {
 
 const fetchResults = async () => {
     if (!selectedCampaignId.value || !selectedAlgorithm.value) return
-
     loading.value = true
     errorMessage.value = ''
     results.value = []
@@ -183,23 +301,24 @@ const fetchResults = async () => {
 
     try {
         const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
-        if (selectedAlgorithm.value === 'rfm' && res.data.segmentos) {
-            results.value = res.data.segmentos
-        } else {
-            results.value = res.data.dados || []
-        }
+        results.value = res.data.dados || []
         descricao.value = res.data.descricao || ''
         showResults.value = results.value.length > 0
 
-        if (results.value.length > 0) {
-            toast.info('Resultados carregados com sucesso.', { timeout: 3000, closeOnClick: true })
-            if (visualizacao.value === 'graficos') await desenharGrafico()
+        const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
+        if (empresaId) {
+            const resClusters = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/complementares/${selectedCampaignId.value}?tipo=clusters`)
+            const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/complementares/${selectedCampaignId.value}?tipo=clientes`)
+            clustersData.value = resClusters.data || []
+            clientesSegmentados.value = resClientes.data || []
         }
+
+        if (visualizacao.value === 'graficos') await desenharGrafico()
     } catch (err) {
         if (err.response?.status === 202) {
-            errorMessage.value = 'Os resultados do algoritmo ainda não foram realizados, aguarde uns segundos e tente mais tarde.'
+            errorMessage.value = 'Os resultados ainda não estão prontos. Aguarde e tente novamente.'
         } else {
-            errorMessage.value = err.response?.data?.error || 'Erro ao buscar os resultados.'
+            errorMessage.value = err.response?.data?.error || 'Erro ao buscar resultados.'
         }
     } finally {
         loading.value = false
@@ -208,41 +327,127 @@ const fetchResults = async () => {
 
 const desenharGrafico = async () => {
     await nextTick()
-    const ctx = document.getElementById('graficoCanvas')
-    if (!ctx || !results.value.length) return
-    if (chartInstance) chartInstance.destroy()
+    const canvas = graficoCanvas.value
+    if (!canvas || !results.value.length) {
+        console.warn("Canvas ou dados ausentes para o gráfico.")
+        return
+    }
 
     const labels = results.value.map(item => item.Segmento || `Cluster ${item.Cluster}`)
-    const valores = results.value.map(item => item.QtdClientes || 0)
+    const valores = results.value.map(item =>
+        Number(item.QtdClientes || item['Quantidade de Compras'] || 0)
+    )
 
-    chartInstance = new Chart(ctx, {
+
+    console.log("Labels:", labels)
+    console.log("Valores:", valores)
+
+    if (chartInstance) {
+        chartInstance.destroy()
+        chartInstance = null
+    }
+
+    chartInstance = new Chart(canvas, {
         type: 'bar',
         data: {
             labels,
             datasets: [{
-                label: 'Clientes',
+                label: 'Clientes por Segmento',
                 data: valores,
-                backgroundColor: '#60a5fa'
+                backgroundColor: '#3b82f6'
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Distribuição de Clientes por Segmento'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
     })
 }
 
-watch(visualizacao, (modo) => {
-    if (modo === 'graficos' && showResults.value) desenharGrafico()
-})
+function formatarValor(key, val) {
+    if (typeof val !== 'number') return val
 
-const verificarDadosAntesDeExecutar = () => {
-    if (!selectedCampaignId.value || !selectedAlgorithm.value) return
-    mostrarWizard.value = true
+    const lower = key.toLowerCase()
+
+    // Formatação apenas para colunas esperadas no resumo
+    if (['monetarymedia', 'valormédio', 'valortotal'].some(k => lower.includes(k))) {
+        return new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(val)
+    }
+
+    if (lower.includes('recency')) {
+        return `${Math.round(val)} dias`
+    }
+
+    if (lower.includes('frequency')) {
+        return val.toFixed(2)
+    }
+
+    return val
 }
 
-watch(selectedCampaignId, (val) => {
-    if (val) localStorage.setItem('selectedCampaignId', val)
+
+const segmentosUnicos = computed(() => [...new Set(clientesSegmentados.value.map(c => c.Segmento))])
+
+const clientesFiltrados = computed(() => {
+    let filtrados = segmentoFiltro.value
+        ? clientesSegmentados.value.filter(c => c.Segmento === segmentoFiltro.value)
+        : [...clientesSegmentados.value]
+
+    if (colunaOrdenada.value) {
+        filtrados.sort((a, b) => {
+            const valA = a[colunaOrdenada.value]
+            const valB = b[colunaOrdenada.value]
+
+            if (typeof valA === 'number' && typeof valB === 'number') {
+                return ordemCrescente.value ? valA - valB : valB - valA
+            }
+
+            return ordemCrescente.value
+                ? String(valA).localeCompare(String(valB))
+                : String(valB).localeCompare(String(valA))
+        })
+    }
+
+    return filtrados
 })
 
-watch(selectedAlgorithm, (val) => {
-    if (val) localStorage.setItem('selectedAlgorithm', val)
+
+
+function ordenarPor(coluna) {
+    if (colunaOrdenada.value === coluna) {
+        ordemCrescente.value = !ordemCrescente.value
+    } else {
+        colunaOrdenada.value = coluna
+        ordemCrescente.value = true
+    }
+}
+
+function resetarOrdenacao() {
+    colunaOrdenada.value = ''
+    ordemCrescente.value = true
+}
+
+
+watch(visualizacao, async (modo) => {
+    if (modo === 'graficos' && showResults.value) {
+        await desenharGrafico()
+    }
+})
+
+watch([selectedCampaignId, selectedAlgorithm], () => {
+    valid.value = false
+    mostrarWizard.value = false
 })
 
 onMounted(() => {
@@ -253,6 +458,7 @@ onMounted(() => {
     if (storedAlgorithm) selectedAlgorithm.value = storedAlgorithm
 })
 </script>
+
 
 <style scoped>
 .p-6 {
@@ -320,8 +526,12 @@ onMounted(() => {
 }
 
 .grafico-canvas {
-    width: 100%;
+    width: 100% !important;
     max-width: 600px;
-    height: 300px;
+    height: 300px !important;
+}
+
+.mt-10 {
+    margin-top: 1rem !important;
 }
 </style>
