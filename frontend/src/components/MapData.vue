@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col px-4 pt-0">
+    <!-- Empresa e Nome -->
     <div class="inline-flex items-center gap-4 mt-2">
       <div class="flex flex-col">
         <label class="font-bold mb-1">Nome da Tabela:</label>
@@ -14,18 +15,28 @@
         </select>
       </div>
     </div>
-    <div class="overflow-x-auto mb-4">
+
+    <!-- Wizard de validação -->
+    <div v-if="selectedCompanyId" class="mt-4 max-w-4xl">
+      <AlgorithmWizard :campanha-id="selectedCompanyId" algoritmo="rfm" mostrar-so-card />
+    </div>
+
+    <!-- Tabela de Mapeamento -->
+    <div class="overflow-x-auto mb-4 mt-4">
       <table class="min-w-full border-collapse border border-gray-300">
         <thead class="bg-gray-100">
           <tr>
             <th v-for="(header, index) in headers" :key="'header-' + index"
-              class="px-4 py-2 border text-center align-top" style="vertical-align: top; position: relative;">
+              :class="['px-4 py-2 border text-center align-top', rejectedColumns[index] ? 'coluna-rejeitada' : '']"
+              style="vertical-align: top; position: relative;">
               <div class="flex flex-col gap-1 items-stretch mt-2">
                 <label class="text-left text-xs mt-1">Nome da Coluna:</label>
                 <input type="text" v-model="mappedColumns[index]" class="p-1 border rounded w-full text-center"
                   :disabled="rejectedColumns[index]">
                 <label class="text-left text-xs mt-2">Tipo de Dado:</label>
                 <select v-model="columnTypes[index]" class="p-1 border rounded w-full"
+                  :class="{ 'coluna-rejeitada': rejectedColumns[index] }" :disabled="rejectedColumns[index]"
+                  @change="autoDetectType(index)">
                   :disabled="rejectedColumns[index]" @change="autoDetectType(index)">
                   <option value="text">Texto</option>
                   <option value="number">Número</option>
@@ -39,7 +50,7 @@
         <tbody>
           <tr v-for="rowIndex in previewRowCount" :key="'row-' + rowIndex">
             <td v-for="(cell, colIndex) in tableData[rowIndex - 1]" :key="'cell-' + rowIndex + '-' + colIndex"
-              class="border px-4 py-2 text-center" :class="{ 'bg-red-100': rejectedColumns[colIndex] }">
+              class="border px-4 py-2 text-center" :class="rejectedColumns[colIndex] ? 'coluna-rejeitada' : ''">
               {{ cell }}
             </td>
           </tr>
@@ -55,6 +66,7 @@
       </table>
     </div>
 
+    <!-- Ações -->
     <div class="mt-10 flex justify-end gap-2">
       <button @click="cancel" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancelar</button>
       <button @click="applyMapping" class="px-4 py-2 bg-green-600 text-black rounded hover:bg-green-700">
@@ -67,10 +79,12 @@
 <script>
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
+import AlgorithmWizard from './AlgorithmWizard.vue';
 
 const toast = useToast();
 
 export default {
+  components: { AlgorithmWizard },
   props: {
     headers: Array,
     tableData: Array,
@@ -165,10 +179,16 @@ export default {
       }
       localStorage.setItem('lastSelectedCompanyId', this.selectedCompanyId);
     },
-  
+
     cancel() {
       this.$emit('close');
     },
   }
 };
 </script>
+
+<style scoped>
+.coluna-rejeitada {
+  background-color: #fee2e2 !important;
+}
+</style>
