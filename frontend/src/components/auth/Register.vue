@@ -1,40 +1,45 @@
 <template>
-  <form class="row g-3 needs-validation" novalidate @submit.prevent="register">
-    <h3 class="mt-5 mb-3">Register</h3>
-    <hr>
-    <div class="mb-3">
-      <label for="inputName" class="form-label">Name</label>
-      <input type="text" class="form-control" id="inputName" required v-model="user.name">
-      <div v-if="errors.name && errors.name.length" class="text-danger">
-        {{ errors.name[0] }}
+  <div class="register-wrapper">
+    <form class="register-form" @submit.prevent="register">
+      <h1 class="mb-4 text-center">Registar</h1>
+
+      <div class="mb-3">
+        <label for="inputName" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="inputName" required v-model="user.name">
+        <div v-if="errors.name && errors.name.length" class="text-danger">
+          {{ errors.name[0] }}
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="inputEmail" class="form-label">Email</label>
-      <input type="email" class="form-control" id="inputEmail" required v-model="user.email">
-      <div v-if="errors.email && errors.email.length" class="text-danger">
-        {{ errors.email[0] }}
+
+      <div class="mb-3">
+        <label for="inputEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="inputEmail" required v-model="user.email">
+        <div v-if="errors.email && errors.email.length" class="text-danger">
+          {{ errors.email[0] }}
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="inputPassword" class="form-label">Password</label>
-      <input type="password" class="form-control" id="inputPassword" required v-model="user.password">
-      <div v-if="errors.password && errors.password.length" class="text-danger">
-        {{ errors.password[0] }}
+
+      <div class="mb-3">
+        <label for="inputPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="inputPassword" required v-model="user.password">
+        <div v-if="errors.password && errors.password.length" class="text-danger">
+          {{ errors.password[0] }}
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="inputPasswordConfirmation" class="form-label">Confirm Password</label>
-      <input type="password" class="form-control" id="inputPasswordConfirmation" required
-        v-model="user.password_confirmation">
-      <div v-if="errors.password_confirmation && errors.password_confirmation.length" class="text-danger">
-        {{ errors.password_confirmation[0] }}
+
+      <div class="mb-3">
+        <label for="inputPasswordConfirmation" class="form-label">Confirmar Password</label>
+        <input type="password" class="form-control" id="inputPasswordConfirmation" required v-model="user.password_confirmation">
+        <div v-if="errors.password_confirmation && errors.password_confirmation.length" class="text-danger">
+          {{ errors.password_confirmation[0] }}
+        </div>
       </div>
-    </div>
-    <div class="mb-3 d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary px-5">Register</button>
-    </div>
-  </form>
+
+      <div class="mb-3 d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary px-5">Registar</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script setup>
@@ -109,3 +114,37 @@ const register = async () => {
 
 };
 </script>
+
+<style scoped>
+.register-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 78vh;
+  background-color: #f8fafc;
+  padding-left: 8vw;
+  border-width: 10;
+  padding-top: 5%;
+}
+
+.register-form {
+  width: 750px;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.register-form input {
+  width: 100% !important;
+  display: block;
+  height: 50px;
+  font-size: 16px;
+}
+
+.register-form button {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+}
+</style>
