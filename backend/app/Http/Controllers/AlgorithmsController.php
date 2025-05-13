@@ -151,9 +151,11 @@ class AlgorithmsController extends Controller
                     $primeiraLinha = $json[0];
                     if (is_array($primeiraLinha)) {
                         $colunas = array_keys($primeiraLinha);
-                        $ficheiros_presentes[$filename] = $colunas;
+                        $nomeSemExtensao = pathinfo($filename, PATHINFO_FILENAME);
+                        $ficheiros_presentes[$nomeSemExtensao] = $colunas;
 
-                        if (isset($requisitos[$filename])) {
+
+                        if (isset($requisitos[$nomeSemExtensao . '.json'])) {
                             foreach ($requisitos[$filename] as $grupo) {
                                 $encontrado = false;
                                 foreach ($grupo as $alternativa) {
@@ -163,7 +165,7 @@ class AlgorithmsController extends Controller
                                     }
                                 }
                                 if (!$encontrado) {
-                                    $colunas_em_falta[$filename][] = $grupo;
+                                    $colunas_em_falta[$nomeSemExtensao][] = $grupo;
                                 }
                             }
                         }
@@ -175,7 +177,18 @@ class AlgorithmsController extends Controller
         }
 
         $ficheiros_obrigatorios = array_keys($requisitos);
-        $ficheiros_em_falta = array_diff($ficheiros_obrigatorios, array_keys($ficheiros_presentes));
+        $ficheirosPresentesSemExtensao = array_map(function ($f) {
+            return pathinfo($f, PATHINFO_FILENAME);
+        }, array_keys($ficheiros_presentes));
+        $ficheiros_em_falta = [];
+
+        foreach ($ficheiros_obrigatorios as $ficheiro) {
+            $semExt = pathinfo($ficheiro, PATHINFO_FILENAME);
+            if (!in_array($semExt, $ficheirosPresentesSemExtensao)) {
+                $ficheiros_em_falta[] = $semExt;
+            }
+        }
+
 
         return response()->json([
             'ficheiros_presentes' => $ficheiros_presentes,

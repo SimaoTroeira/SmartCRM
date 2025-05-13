@@ -205,16 +205,33 @@ def rfm_segmentation(base_path, empresa_id, campanha_id):
         clusters_path = campanha_path / "clusters_rfm.json"
         clientes_path = campanha_path / "clientes_segmentados_rfm.json"
 
+        # Seleciona apenas colunas principais (valores médios por cluster)
+        colunas_resumo = [
+            "Cluster",
+            "Segmento",
+            "Recência Média",
+            "Frequência Média",
+            "Média Monetária",
+            "Quantidade de Compras",
+            "Total Monetário"
+        ]
+
+        # Nem todos podem existir (ex: sem recência), então filtra os que existem
+        colunas_validas = [col for col in colunas_resumo if col in agrupado.columns]
+        dados_resumidos = agrupado[colunas_validas].copy()
+
         with open(resultados_path, "w", encoding="utf-8") as f:
             json.dump(
                 {
                     "descricao": descricao_texto,
-                    "dados": agrupado.to_dict(orient="records"),
+                    "dados": dados_resumidos.to_dict(orient="records"),
                 },
                 f,
                 indent=2,
                 ensure_ascii=False,
             )
+
+
 
         with open(clusters_path, "w", encoding="utf-8") as f:
             json.dump(

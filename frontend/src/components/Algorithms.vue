@@ -37,13 +37,14 @@
                 </div>
 
                 <AlgorithmWizard v-if="mostrarWizard && selectedCampaignId && selectedAlgorithm"
-                    :campanha-id="selectedCampaignId" :algoritmo="selectedAlgorithm" @valido="handleValid" />
+                    :campanha-id="selectedCampaignId" :algoritmo="selectedAlgorithm" @valido="handleValid"
+                    class="mt-10 mb-6" />
 
                 <div class="flex flex-wrap gap-4 mt-6 pb-4 border-b border-gray-300"></div>
                 <!-- BOTÕES -->
                 <div class="mt-10 mb-6 flex flex-wrap gap-4 border-b border-gray-300 pb-4">
                     <button class="executar-btn" :disabled="!selectedCampaignId || !selectedAlgorithm || loading"
-                        @click="mostrarWizard = true">
+                        @click="reiniciarWizard">
                         Executar algoritmo
                     </button>
 
@@ -168,12 +169,21 @@
                             <option v-for="seg in segmentosUnicos" :key="seg">{{ seg }}</option>
                         </select>
                     </div>
+
                     <div class="overflow-x-auto">
-                        <div class="mb-2 flex justify-end">
-                            <button @click="resetarOrdenacao"
-                                class="text-sm text-blue-600 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50 transition">
+                        <!-- Controlo de ordenação e linhas por página -->
+                        <div class="tabela-controles flex items-center justify-between mt-4">
+                            <button @click="resetarOrdenacao" class="btn-reset">
                                 Repor ordenação
                             </button>
+                            <!-- Controle de linhas por página -->
+                            <div class="tabela-footer">
+                                <div class="linhas-por-pagina">
+                                    <label class="text-sm font-medium text-gray-700 mr-2">Linhas por página:</label>
+                                    <input v-model.number="limiteLinhas" type="number" min="1"
+                                        class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
+                                </div>
+                            </div>
                         </div>
 
                         <table class="min-w-full table-auto border border-gray-200 text-sm">
@@ -187,7 +197,6 @@
                                             {{ ordemCrescente ? '▲' : '▼' }}
                                         </span>
                                     </th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -199,7 +208,14 @@
                                 </tr>
                             </tbody>
                         </table>
+
                     </div>
+
+                    <!-- Insights abaixo de qualquer visualização -->
+                    <div v-if="showResults" class="mt-10">
+                        <Insights :modo="visualizacao" :dados="obterDadosParaInsights" />
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -213,6 +229,7 @@ import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import AlgorithmWizard from './AlgorithmWizard.vue'
 import Chart from 'chart.js/auto'
+import Insights from './Insights.vue'
 
 const campaigns = ref([])
 const campaignsLoaded = ref(false)
@@ -232,7 +249,7 @@ const clientesSegmentados = ref([])
 const segmentoFiltro = ref('')
 const graficoCanvas = ref(null)
 let chartInstance = null
-
+const limiteLinhas = ref(50) // valor inicial
 const colunaOrdenada = ref('')
 const ordemCrescente = ref(true)
 
@@ -267,6 +284,12 @@ const handleValid = (value) => {
     }
 }
 
+function reiniciarWizard() {
+    mostrarWizard.value = false
+    nextTick(() => {
+        mostrarWizard.value = true
+    })
+}
 
 
 const runAlgorithm = async () => {
@@ -283,13 +306,50 @@ const runAlgorithm = async () => {
             campanha_id: selectedCampaignId.value,
             algoritmo: selectedAlgorithm.value
         })
-        toast.success('Algoritmo executado com sucesso.')
+        toast.success('Algoritmo executado com sucesso. A aguardar resultados...')
+        esperarResultados() // 👈 Inicia polling após execução
     } catch (err) {
         errorMessage.value = err.response?.data?.error || 'Erro ao processar dados da campanha.'
-    } finally {
         loading.value = false
     }
 }
+
+const esperarResultados = async (tentativas = 0) => {
+    const maxTentativas = 20
+    const intervalo = 3000 // milissegundos
+
+    try {
+        const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
+        if (res.data?.dados?.length) {
+            results.value = res.data.dados
+            descricao.value = res.data.descricao || ''
+            showResults.value = true
+
+            const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
+            if (empresaId) {
+                const resClusters = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/complementares/${selectedCampaignId.value}?tipo=clusters`)
+                const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/complementares/${selectedCampaignId.value}?tipo=clientes`)
+                clustersData.value = resClusters.data || []
+                clientesSegmentados.value = resClientes.data || []
+            }
+
+            toast.success('Resultados carregados automaticamente.')
+            if (visualizacao.value === 'graficos') await desenharGrafico()
+            loading.value = false
+            return
+        }
+    } catch (err) {
+        // Continua tentando se status 202 ou erro temporário
+    }
+
+    if (tentativas < maxTentativas) {
+        setTimeout(() => esperarResultados(tentativas + 1), intervalo)
+    } else {
+        toast.warning('Os resultados ainda não estão prontos. Tente novamente mais tarde.')
+        loading.value = false
+    }
+}
+
 
 const fetchResults = async () => {
     if (!selectedCampaignId.value || !selectedAlgorithm.value) return
@@ -301,9 +361,16 @@ const fetchResults = async () => {
 
     try {
         const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
-        results.value = res.data.dados || []
+
+        if (!res.data?.dados || res.data.dados.length === 0) {
+            toast.error('O algoritmo ainda não foi executado para esta campanha.')
+            loading.value = false
+            return
+        }
+
+        results.value = res.data.dados
         descricao.value = res.data.descricao || ''
-        showResults.value = results.value.length > 0
+        showResults.value = true
 
         const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
         if (empresaId) {
@@ -313,10 +380,13 @@ const fetchResults = async () => {
             clientesSegmentados.value = resClientes.data || []
         }
 
+        toast.info('Resultados carregados com sucesso.')
+
         if (visualizacao.value === 'graficos') await desenharGrafico()
+
     } catch (err) {
         if (err.response?.status === 202) {
-            errorMessage.value = 'Os resultados ainda não estão prontos. Aguarde e tente novamente.'
+            toast.info('Os resultados ainda estão a ser processados. Aguarde mais um momento.')
         } else {
             errorMessage.value = err.response?.data?.error || 'Erro ao buscar resultados.'
         }
@@ -324,6 +394,8 @@ const fetchResults = async () => {
         loading.value = false
     }
 }
+
+
 
 const desenharGrafico = async () => {
     await nextTick()
@@ -419,9 +491,21 @@ const clientesFiltrados = computed(() => {
         })
     }
 
-    return filtrados
+    return filtrados.slice(0, limiteLinhas.value || 50)
 })
 
+
+const obterDadosParaInsights = computed(() => {
+    switch (visualizacao.value) {
+        case 'clientes':
+            return clientesSegmentados.value
+        case 'resumo':
+        case 'graficos':
+        case 'clusters':
+        default:
+            return results.value
+    }
+})
 
 
 function ordenarPor(coluna) {
@@ -448,7 +532,14 @@ watch(visualizacao, async (modo) => {
 watch([selectedCampaignId, selectedAlgorithm], () => {
     valid.value = false
     mostrarWizard.value = false
+
+    results.value = []
+    descricao.value = ''
+    showResults.value = false
+    clustersData.value = []
+    clientesSegmentados.value = []
 })
+
 
 onMounted(() => {
     fetchCampaigns()
@@ -533,5 +624,24 @@ onMounted(() => {
 
 .mt-10 {
     margin-top: 1rem !important;
+}
+
+.tabela-controles {
+    display: flex;
+    gap: 20px;
+}
+
+
+.btn-reset {
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.btn-reset:hover {
+    background-color: #e0ecff;
 }
 </style>

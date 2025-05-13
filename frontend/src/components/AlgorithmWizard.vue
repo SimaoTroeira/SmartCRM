@@ -1,7 +1,8 @@
 <template>
-    <div v-if="!carregando && validado === false" class="mt-4">
+  <div class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl">
+    <div v-if="!carregando && validado === false">
       <h5 class="text-lg font-semibold mb-2">Dados em falta!</h5>
-  
+
       <div v-if="ficheirosEmFalta.length" class="mb-3">
         <p class="text-red-600 font-medium">
           <span v-if="Object.keys(colunasEmFalta).length">Faltam tabelas e colunas:</span>
@@ -13,7 +14,7 @@
           </li>
         </ul>
       </div>
-  
+
       <div v-if="Object.keys(colunasEmFalta).length && ficheirosEmFalta.length === 0" class="mb-3">
         <p class="text-red-600 font-medium">Faltam as colunas:</p>
         <ul class="ml-4 list-disc text-red-600">
@@ -27,17 +28,19 @@
           </li>
         </ul>
       </div>
-  
+
       <div class="text-red-600 font-medium">
-        Sem estes dados, o algoritmo não irá funcionar. Importe-os antes de continuar.
+        Garanta que as colunas e as tabelas têm os nomes como um dos indicados acima. Pode renomear as tabelas e colunas se necessário.
+        Sem estes dados, o algoritmo não irá funcionar.
       </div>
     </div>
-  
-    <div v-if="carregando" class="mt-4 text-blue-600 font-medium">
+
+    <div v-if="carregando" class="text-blue-600 font-medium">
       A verificar os dados necessários...
     </div>
-  </template>
-  
+  </div>
+</template>
+
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
