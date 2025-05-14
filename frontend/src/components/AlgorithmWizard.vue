@@ -1,7 +1,8 @@
 <template>
-    <div v-if="!carregando && validado === false" class="mt-4">
+  <div class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl">
+    <div v-if="!carregando && validado === false">
       <h5 class="text-lg font-semibold mb-2">Dados em falta!</h5>
-  
+
       <div v-if="ficheirosEmFalta.length" class="mb-3">
         <p class="text-red-600 font-medium">
           <span v-if="Object.keys(colunasEmFalta).length">Faltam tabelas e colunas:</span>
@@ -13,7 +14,7 @@
           </li>
         </ul>
       </div>
-  
+
       <div v-if="Object.keys(colunasEmFalta).length && ficheirosEmFalta.length === 0" class="mb-3">
         <p class="text-red-600 font-medium">Faltam as colunas:</p>
         <ul class="ml-4 list-disc text-red-600">
@@ -27,28 +28,29 @@
           </li>
         </ul>
       </div>
-  
+
       <div class="text-red-600 font-medium">
-        Sem estes dados, o algoritmo não irá funcionar. Importe-os antes de continuar.
+        Garanta que as colunas e as tabelas têm os nomes como um dos indicados acima. Pode renomear as tabelas e colunas se necessário.
+        Sem estes dados, o algoritmo não irá funcionar.
       </div>
     </div>
-  
-    <div v-if="carregando" class="mt-4 text-blue-600 font-medium">
+
+    <div v-if="carregando" class="text-blue-600 font-medium">
       A verificar os dados necessários...
     </div>
-  </template>
-  
+  </div>
+</template>
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import axios from 'axios'
 
 const props = defineProps({
-    campanhaId: Number,
-    algoritmo: String
+  campanhaId: Number,
+  algoritmo: String
 })
 
-const emit = defineEmits(['valido'])
+const emit = defineEmits(['valido', 'faltas'])
 
 const ficheirosPresentes = ref({})
 const validado = ref(null)
@@ -57,53 +59,55 @@ const colunasEmFalta = ref({})
 const carregando = ref(false)
 
 const verificar = async () => {
-    validado.value = null
-    ficheirosEmFalta.value = []
-    ficheirosPresentes.value = {}
-    colunasEmFalta.value = {}
-    carregando.value = true
+  validado.value = null
+  ficheirosEmFalta.value = []
+  ficheirosPresentes.value = {}
+  colunasEmFalta.value = {}
+  carregando.value = true
 
-    try {
-        const res = await axios.get(
-            `http://127.0.0.1:8000/api/algoritmos/verificar-colunas/${props.campanhaId}?algoritmo=${props.algoritmo}`
-        )
-        ficheirosPresentes.value = res.data.ficheiros_presentes || {}
-        ficheirosEmFalta.value = res.data.ficheiros_em_falta || []
-        colunasEmFalta.value = res.data.colunas_em_falta || {}
+  try {
+    const res = await axios.get(
+      `http://127.0.0.1:8000/api/algoritmos/verificar-colunas/${props.campanhaId}?algoritmo=${props.algoritmo}`
+    )
+    ficheirosPresentes.value = res.data.ficheiros_presentes || {}
+    ficheirosEmFalta.value = res.data.ficheiros_em_falta || []
+    colunasEmFalta.value = res.data.colunas_em_falta || {}
 
-        const ok = ficheirosEmFalta.value.length === 0 && Object.keys(colunasEmFalta.value).length === 0
-        validado.value = ok
-        emit('valido', ok)
-    } catch (err) {
-        console.error('Erro ao verificar colunas:', err)
-        validado.value = false
-        emit('valido', false)
-    } finally {
-        carregando.value = false
-    }
+    const ok = ficheirosEmFalta.value.length === 0 && Object.keys(colunasEmFalta.value).length === 0
+    validado.value = ok
+    emit('valido', ok)
+    emit('faltas', !ok ? { ficheiros: ficheirosEmFalta.value, colunas: colunasEmFalta.value } : [])
+  } catch (err) {
+    console.error('Erro ao verificar colunas:', err)
+    validado.value = false
+    emit('valido', false)
+    emit('faltas', { ficheiros: [], colunas: {} })
+  } finally {
+    carregando.value = false
+  }
 }
 
 watch(() => props.campanhaId, () => {
-    if (props.campanhaId && props.algoritmo) {
-        verificar()
-    }
+  if (props.campanhaId && props.algoritmo) {
+    verificar()
+  }
 })
 
 watch(() => props.algoritmo, () => {
-    if (props.campanhaId && props.algoritmo) {
-        verificar()
-    }
+  if (props.campanhaId && props.algoritmo) {
+    verificar()
+  }
 })
 
 onMounted(() => {
-    if (props.campanhaId && props.algoritmo) {
-        verificar()
-    }
+  if (props.campanhaId && props.algoritmo) {
+    verificar()
+  }
 })
 </script>
 
 <style scoped>
 ul li {
-    font-size: 14px;
+  font-size: 14px;
 }
 </style>

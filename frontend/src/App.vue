@@ -156,7 +156,7 @@ body {
 }
 
 .navbar-brand {
-  font-weight: 600;
+  font-weight: 200;
   font-size: 1.1rem;
   display: flex;
   align-items: center;
@@ -197,7 +197,7 @@ body {
 
 main {
   padding-top: 1rem;
-  padding-bottom: 2rem;
+  padding-bottom: 4rem;
 }
 
 @media (max-width: 768px) {
@@ -209,5 +209,11 @@ main {
     padding: 0.75rem 0;
   }
 }
+
+.form-control {
+  width: auto !important;
+  max-width: 100%;
+}
+
 
 </style>
