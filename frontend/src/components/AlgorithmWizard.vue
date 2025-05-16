@@ -67,7 +67,7 @@ const verificar = async () => {
 
   try {
     const res = await axios.get(
-      `http://127.0.0.1:8000/api/algoritmos/verificar-colunas/${props.campanhaId}?algoritmo=${props.algoritmo}`
+      `http://127.0.0.1:8000/api/algoritmos/verificar_colunas/${props.campanhaId}?algoritmo=${props.algoritmo}`
     )
     ficheirosPresentes.value = res.data.ficheiros_presentes || {}
     ficheirosEmFalta.value = res.data.ficheiros_em_falta || []

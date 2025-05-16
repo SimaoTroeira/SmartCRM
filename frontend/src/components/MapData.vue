@@ -1,11 +1,39 @@
 <template>
   <div class="flex flex-col px-4 pt-0">
-    <!-- Empresa e Nome -->
-    <div class="inline-flex items-center gap-4 mt-2">
+    <!-- Nome da Tabela (readonly) -->
+    <div class="inline-flex items-center gap-4 mt-4">
       <div class="flex flex-col">
-        <label class="font-bold mb-1">Nome da Tabela:</label>
-        <input type="text" v-model="localTableName" class="w-64 p-2 border rounded text-center">
+        <label class="font-bold mb-1">Quer importar a tabela </label>
+        <input type="text" :value="tableName" class="w-64 p-2 border rounded text-center bg-gray-100" readonly>
       </div>
+    </div>
+
+    <!-- Tipo de Ficheiro e Ação -->
+    <div class="inline-flex items-center gap-4 mt-4">
+      <div class="flex flex-col">
+        <label class="font-bold mb-1">Qual destes ficheiros corresponde ao que importou? </label>
+        <select v-model="fileType" class="w-64 p-2 border rounded">
+          <option disabled value="">-- Escolha o tipo --</option>
+          <option value="vendas">Vendas</option>
+          <option value="clientes">Clientes</option>
+          <option value="produtos">Produtos</option>
+        </select>
+      </div>
+
+      <!-- Se for vendas, mostrar seletores -->
+      <div class="flex flex-col" v-if="fileType === 'vendas'">
+        <label class="font-bold mb-1">Período das vendas (opcional):</label>
+        <div class="flex gap-2">
+          <input type="month" v-model="startMonth" class="p-2 border rounded w-48" placeholder="De">
+          <input type="month" v-model="endMonth" class="p-2 border rounded w-48" placeholder="Até">
+          <input type="number" v-model="onlyYear" placeholder="Ou apenas ano" class="p-2 border rounded w-36" min="2000"
+            max="2099">
+        </div>
+      </div>
+    </div>
+
+    <!-- Empresa e Nome Final -->
+    <div class="inline-flex items-center gap-4 mt-6">
       <div class="flex flex-col">
         <label class="font-bold mb-1">Empresa:</label>
         <select v-model="selectedCompanyId" class="w-64 p-2 border rounded">
@@ -37,7 +65,6 @@
                 <select v-model="columnTypes[index]" class="p-1 border rounded w-full"
                   :class="{ 'coluna-rejeitada': rejectedColumns[index] }" :disabled="rejectedColumns[index]"
                   @change="autoDetectType(index)">
-                  :disabled="rejectedColumns[index]" @change="autoDetectType(index)">
                   <option value="text">Texto</option>
                   <option value="number">Número</option>
                   <option value="date">Data</option>
@@ -83,6 +110,11 @@ import AlgorithmWizard from './AlgorithmWizard.vue';
 
 const toast = useToast();
 
+const monthMap = [
+  'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+];
+
 export default {
   components: { AlgorithmWizard },
   props: {
@@ -99,6 +131,10 @@ export default {
       previewRowCount: 5,
       companies: [],
       selectedCompanyId: null,
+      fileType: '',
+      startMonth: '',
+      endMonth: '',
+      onlyYear: '',
     };
   },
   created() {
@@ -109,15 +145,10 @@ export default {
     async loadCompanies() {
       try {
         const response = await axios.get('/user/companies', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
-
         this.companies = response.data;
-
         const lastCompanyId = localStorage.getItem('lastSelectedCompanyId');
-
         if (lastCompanyId && this.companies.some(c => c.id === parseInt(lastCompanyId))) {
           this.selectedCompanyId = parseInt(lastCompanyId);
         } else if (this.companies.length > 0) {
@@ -149,10 +180,11 @@ export default {
       this.rejectedColumns[index] = !this.rejectedColumns[index];
     },
     async applyMapping() {
-      if (!this.selectedCompanyId) {
-        toast.error('Selecione uma empresa válida.');
+      if (!this.selectedCompanyId || !this.fileType) {
+        toast.error('Preencha todos os campos obrigatórios.');
         return;
       }
+
       const rows = this.tableData.map(row => {
         const obj = {};
         this.headers.forEach((header, index) => {
@@ -162,24 +194,50 @@ export default {
         });
         return obj;
       });
+
+      const nomeFinal = this.gerarNomeFicheiro();
+
       try {
         await axios.post('/import/mapped-data', {
-          table_name: this.localTableName,
+          table_name: nomeFinal,
           data: rows,
           types: this.columnTypes,
           company_id: this.selectedCompanyId,
         }, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
+
         this.$emit('close');
       } catch (err) {
         alert('Erro ao guardar: ' + err.message);
       }
+
       localStorage.setItem('lastSelectedCompanyId', this.selectedCompanyId);
     },
+    gerarNomeFicheiro() {
+      let nome = this.fileType;
 
+      if (this.fileType === 'vendas') {
+        if (this.onlyYear && !this.startMonth && !this.endMonth) {
+          nome += `_${this.onlyYear}`;
+        } else if (this.startMonth && this.endMonth) {
+          const [anoIni, mesIni] = this.startMonth.split('-');
+          const [anoFim, mesFim] = this.endMonth.split('-');
+
+          if (anoIni === anoFim) {
+            const nomeMesIni = monthMap[parseInt(mesIni) - 1].slice(0, 3);
+            const nomeMesFim = monthMap[parseInt(mesFim) - 1].slice(0, 3);
+            nome += `_${nomeMesIni}-${nomeMesFim}${anoIni}`;
+          } else {
+            const nomeMesIni = monthMap[parseInt(mesIni) - 1].slice(0, 3);
+            const nomeMesFim = monthMap[parseInt(mesFim) - 1].slice(0, 3);
+            nome += `_${nomeMesIni}${anoIni}-${nomeMesFim}${anoFim}`;
+          }
+        }
+      }
+
+      return nome;
+    },
     cancel() {
       this.$emit('close');
     },

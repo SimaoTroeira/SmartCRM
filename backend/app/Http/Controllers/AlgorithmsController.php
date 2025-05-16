@@ -73,21 +73,30 @@ class AlgorithmsController extends Controller
     public function obterResultadoComplementar($campanhaId, Request $request)
     {
         $tipo = $request->query('tipo');
+        $algoritmo = $request->query('algoritmo', 'rfm'); // valor padrão
 
         $map = [
-            'clientes' => 'clientes_segmentados_rfm.json',
-            'clusters' => 'clusters_rfm.json',
+            'rfm' => [
+                'clientes' => 'clientes_segmentados_rfm.json',
+                'scatter_clientes' => 'clusters.json',
+                'scatter_regioes' => 'clusters_por_regiao.json',
+            ],
+            'churn' => [
+                'clientes' => 'clientes_churn.json',
+                'estatisticas' => 'estatisticas_churn.json',
+            ],
+            // outros algoritmos no futuro
         ];
 
-        if (!isset($map[$tipo])) {
-            return response()->json(['error' => 'Tipo inválido.'], 400);
+        if (!isset($map[$algoritmo][$tipo])) {
+            return response()->json(['error' => 'Tipo ou algoritmo inválido.'], 400);
         }
 
         $campanha = Campaign::with('company')->findOrFail($campanhaId);
         $empresaId = $campanha->company->id;
 
         $basePath = config('smartcrm.storage_path');
-        $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $map[$tipo];
+        $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $map[$algoritmo][$tipo];
 
         if (!File::exists($jsonPath)) {
             return response()->json(['message' => 'Ficheiro ainda não disponível.'], 202);
@@ -95,6 +104,8 @@ class AlgorithmsController extends Controller
 
         return response()->json(json_decode(File::get($jsonPath), true));
     }
+
+
 
     public function verificarColunas($campanhaId, Request $request)
     {
@@ -108,7 +119,12 @@ class AlgorithmsController extends Controller
                 ],
                 'clientes.json' => [
                     ['ClienteID', 'cliente_id', 'IDCliente'],
-                ]
+                ],
+                'produtos.json' => [
+                    ['ProdutoID'],
+                    ['NomeProduto'],
+                    ['Categoria'],
+                ],
             ],
             'churn' => [
                 'clientes.json' => [
