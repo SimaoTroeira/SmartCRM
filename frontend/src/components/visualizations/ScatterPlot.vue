@@ -32,30 +32,39 @@ const props = defineProps({
 
 const modo = ref('clientes')
 
-const cores = [
-    '#8884d8', '#82ca9d', '#ffc658', '#ff7300',
-    '#d0ed57', '#a4de6c', '#8dd1e1', '#83a6ed'
-]
+const coresFixas = {
+  "Campeões": "#8e44ad",
+  "Clientes Valiosos": "#2980b9",
+  "Clientes Regulares": "#27ae60",
+  "Em Risco": "#f39c12",
+  "Clientes Perdidos": "#c0392b",
+  "Pouca Frequência": "#7f8c8d",
+  "Baixo Valor": "#d35400",
+  "Inativos": "#95a5a6"
+}
+
+
 
 const datasets = computed(() => {
-    const grupos = {}
-    const dadosOrigem = modo.value === 'clientes' ? props.scatterClientes : props.scatterRegioes
+  const grupos = {}
+  const dadosOrigem = modo.value === 'clientes' ? props.scatterClientes : props.scatterRegioes
 
-    dadosOrigem.forEach((ponto, i) => {
-        const grupo = modo.value === 'clientes'
-            ? (ponto.Segmento || `Cluster ${ponto.Cluster}`)
-            : (ponto.ProdutoMaisComprado || `Grupo ${i}`)
+  dadosOrigem.forEach((ponto, i) => {
+    const grupo = modo.value === 'clientes'
+      ? (ponto.Segmento || `Cluster ${ponto.Cluster}`)
+      : (ponto.ProdutoMaisComprado || `Grupo ${i}`)
 
-        if (!grupos[grupo]) grupos[grupo] = []
-        grupos[grupo].push({ x: ponto.x, y: ponto.y, ...ponto })
-    })
+    if (!grupos[grupo]) grupos[grupo] = []
+    grupos[grupo].push({ x: ponto.x, y: ponto.y, ...ponto })
+  })
 
-    return Object.entries(grupos).map(([label, data], i) => ({
-        label,
-        data,
-        backgroundColor: cores[i % cores.length]
-    }))
+  return Object.entries(grupos).map(([label, data]) => ({
+    label,
+    data,
+    backgroundColor: coresFixas[label] || '#ccc'
+  }))
 })
+
 
 const chartData = computed(() => ({
     datasets: datasets.value

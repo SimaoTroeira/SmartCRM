@@ -200,17 +200,18 @@ def gerar_clusters_por_regiao(base_path, empresa_id, campanha_id):
         vendas_files = [f for f in dados_path.glob("*.json") if "vendas" in f.stem.lower()]
         produtos_file = next((f for f in dados_path.glob("*.json") if "produto" in f.stem.lower()), None)
         clientes_file = next((f for f in dados_path.glob("*.json") if "cliente" in f.stem.lower()), None)
+        clientes_segmentados_path = campanha_path / "clientes_segmentados_rfm.json"
 
-        if not vendas_files or not produtos_file or not clientes_file:
-            print("[ERRO]: Faltam ficheiros de vendas, produtos ou clientes.")
+        if not vendas_files or not produtos_file or not clientes_file or not clientes_segmentados_path.exists():
+            print("[ERRO]: Faltam ficheiros de vendas, produtos, clientes ou segmentos.")
             return
 
         df_vendas = pd.concat([pd.read_json(f) for f in vendas_files], ignore_index=True)
         df_produtos = pd.read_json(produtos_file)
         df_clientes = pd.read_json(clientes_file)
+        df_segmentos = pd.read_json(clientes_segmentados_path)
 
         # Normalizar nomes de colunas para merge
-        df_produtos = df_produtos.rename(columns={"ProdutoID": "ProdutoID"})
         df_clientes = df_clientes.rename(columns={
             "cliente_id": "ClienteID", "IDCliente": "ClienteID",
             "Localidade": "Regiao", "Cidade": "Regiao", "Distrito": "Regiao"
@@ -222,24 +223,19 @@ def gerar_clusters_por_regiao(base_path, empresa_id, campanha_id):
                     break
         df_clientes = df_clientes[["ClienteID", "Regiao"]]
 
-        # Juntar tudo
+        # Juntar dados principais
         df = df_vendas.merge(df_clientes, on="ClienteID", how="left").merge(df_produtos, on="ProdutoID", how="left")
         if df.empty or "Regiao" not in df.columns:
             print("[ERRO]: Nenhuma região encontrada.")
             return
 
-        # Agregação por região + produto
         df["ValorTotal"] = df["Quantidade"] * df["PreçoUnitário"]
         agrupado = (
             df.groupby(["Regiao", "ProdutoID", "NomeProduto", "Categoria", "Marca"])
-            .agg({
-                "Quantidade": "sum",
-                "ValorTotal": "sum"
-            })
+            .agg({"Quantidade": "sum", "ValorTotal": "sum"})
             .reset_index()
         )
 
-        # Para cada região, escolher produto com maior valor total
         melhor_produto_regiao = (
             agrupado.sort_values("ValorTotal", ascending=False)
             .groupby("Regiao")
@@ -247,24 +243,31 @@ def gerar_clusters_por_regiao(base_path, empresa_id, campanha_id):
             .reset_index()
         )
 
-        melhor_produto_regiao = melhor_produto_regiao.round(2)
+        # Contar segmentos por região
+        if "Regiao" not in df_segmentos.columns:
+            df_segmentos = df_segmentos.merge(df_clientes, on="ClienteID", how="left")
 
-        # Guardar
-        clusters_path = campanha_path / "clusters_por_regiao.json"
-        melhor_produto_regiao.rename(columns={
-            "Regiao": "Regiao",
+        contagens = df_segmentos.groupby(["Regiao", "Segmento"]).size().unstack(fill_value=0).reset_index()
+
+        # Merge e formatação final
+        final = melhor_produto_regiao.merge(contagens, on="Regiao", how="left").fillna(0)
+        final = final.round(2)
+        final = final.rename(columns={
             "NomeProduto": "ProdutoMaisComprado",
             "Quantidade": "QuantidadeTotal",
             "ValorTotal": "ValorTotal"
-        }, inplace=True)
+        })
 
+        # Salvar
+        clusters_path = campanha_path / "clusters_por_regiao.json"
         with open(clusters_path, "w", encoding="utf-8") as f:
-            json.dump(melhor_produto_regiao.to_dict(orient="records"), f, indent=2, ensure_ascii=False)
+            json.dump(final.to_dict(orient="records"), f, indent=2, ensure_ascii=False)
 
-        print(f" Ficheiro clusters_por_regiao.json criado com sucesso.")
+        print("Ficheiro clusters_por_regiao.json atualizado com segmentos por região.")
 
     except Exception as e:
         print(f"[ERRO ao gerar clusters_por_regiao.json]: {e}")
+
 
 
 def rfm_segmentation(base_path, empresa_id, campanha_id):
