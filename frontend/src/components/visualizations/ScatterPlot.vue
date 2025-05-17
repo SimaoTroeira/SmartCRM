@@ -33,36 +33,36 @@ const props = defineProps({
 const modo = ref('clientes')
 
 const coresFixas = {
-  "Campeões": "#8e44ad",
-  "Clientes Valiosos": "#2980b9",
-  "Clientes Regulares": "#27ae60",
-  "Em Risco": "#f39c12",
-  "Clientes Perdidos": "#c0392b",
-  "Pouca Frequência": "#7f8c8d",
-  "Baixo Valor": "#d35400",
-  "Inativos": "#95a5a6"
+    "Campeões": "#8e44ad",
+    "Clientes Valiosos": "#2980b9",
+    "Clientes Regulares": "#27ae60",
+    "Em Risco": "#f39c12",
+    "Clientes Perdidos": "#c0392b",
+    "Pouca Frequência": "#7f8c8d",
+    "Baixo Valor": "#d35400",
+    "Inativos": "#95a5a6"
 }
 
 
 
 const datasets = computed(() => {
-  const grupos = {}
-  const dadosOrigem = modo.value === 'clientes' ? props.scatterClientes : props.scatterRegioes
+    const grupos = {}
+    const dadosOrigem = modo.value === 'clientes' ? props.scatterClientes : props.scatterRegioes
 
-  dadosOrigem.forEach((ponto, i) => {
-    const grupo = modo.value === 'clientes'
-      ? (ponto.Segmento || `Cluster ${ponto.Cluster}`)
-      : (ponto.ProdutoMaisComprado || `Grupo ${i}`)
+    dadosOrigem.forEach((ponto, i) => {
+        const grupo = modo.value === 'clientes'
+            ? (ponto.Segmento || `Cluster ${ponto.Cluster}`)
+            : (ponto.ProdutoMaisComprado || `Grupo ${i}`)
 
-    if (!grupos[grupo]) grupos[grupo] = []
-    grupos[grupo].push({ x: ponto.x, y: ponto.y, ...ponto })
-  })
+        if (!grupos[grupo]) grupos[grupo] = []
+        grupos[grupo].push({ x: ponto.x, y: ponto.y, ...ponto })
+    })
 
-  return Object.entries(grupos).map(([label, data]) => ({
-    label,
-    data,
-    backgroundColor: coresFixas[label] || '#ccc'
-  }))
+    return Object.entries(grupos).map(([label, data]) => ({
+        label,
+        data,
+        backgroundColor: coresFixas[label] || '#ccc'
+    }))
 })
 
 
@@ -108,6 +108,11 @@ const chartOptions = computed(() => ({
                 display: true,
                 text: 'Valor Monetário/Frequência'
             },
+            min: -0.1,
+            max: 1.1,
+            ticks: {
+                stepSize: 0.1
+            },
             grid: {
                 color: '#e0e0e0'
             }
@@ -117,11 +122,17 @@ const chartOptions = computed(() => ({
                 display: true,
                 text: 'Recência'
             },
+            min: -0.1,
+            max: 1.1,
+            ticks: {
+                stepSize: 0.1
+            },
             grid: {
                 color: '#e0e0e0'
             }
         }
     }
+
 
 }))
 </script>

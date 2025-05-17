@@ -187,31 +187,6 @@ const dadosProntos = computed(() => {
 })
 
 
-const gruposScatter = computed(() => {
-  if (modoVisualizacao.value === 'clientes') {
-    const grupos = {}
-    for (const item of clustersClientes.value) {
-      const nome = item.Segmento || `Cluster ${item.Cluster}`
-      if (!grupos[nome]) grupos[nome] = []
-      grupos[nome].push({ ...item })
-    }
-    const resultado = Object.entries(grupos).map(([nome, dados]) => ({ nome, dados }))
-    console.log('gruposScatter (clientes):', resultado)
-    return resultado
-  } else {
-    const resultado = clustersRegioes.value.map((regiao, i) => ({
-      nome: regiao.ProdutoMaisComprado,
-      dados: [{
-        x: i * 5,
-        y: i * 7 + Math.random() * 10,
-        ...regiao
-      }]
-    }))
-    console.log('gruposScatter (regiões):', resultado)
-    return resultado
-  }
-})
-
 
 
 </script>

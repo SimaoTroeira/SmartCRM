@@ -149,9 +149,9 @@ def salvar_resultados(rfm, agrupado, campanha_path, usar_recency, metodo_usado):
     resultados_path = campanha_path / "resultados_rfm.json"
     clientes_path = campanha_path / "clientes_segmentados_rfm.json"
 
-    descricao_texto = f"Segmentação {'RFM' if usar_recency else 'FM'} com {agrupado['Cluster'].nunique()} clusters usando {metodo_usado}."
+    descricao_texto = f"A Segmentação {'RFM' if usar_recency else 'FM'} resultou em {agrupado['Cluster'].nunique()} clusters utilizando o algoritmo {metodo_usado}."
     if not usar_recency:
-        descricao_texto += " O campo 'Recência' (data da última compra) não foi encontrado e foi ignorado."
+        descricao_texto += " O campo 'Recência' (data da última compra) não foi encontrado, portanto foi ignorado."
 
     with open(resultados_path, "w", encoding="utf-8") as f:
         json.dump({
@@ -164,28 +164,42 @@ def salvar_resultados(rfm, agrupado, campanha_path, usar_recency, metodo_usado):
 
     print(f" Ficheiros gerados:\n- {resultados_path}\n- {clientes_path}")
 
+
 def gerar_clusters_json_com_pontos(rfm, rfm_scaled, campanha_path):
     try:
         pca = PCA(n_components=2)
         pontos = pca.fit_transform(rfm_scaled)
 
-        dados_clientes = rfm.copy()
-        dados_clientes["x"] = pontos[:, 0]
-        dados_clientes["y"] = pontos[:, 1]
+        # Normalizar para intervalo [0, 1]
+        x_vals = pontos[:, 0]
+        y_vals = pontos[:, 1]
 
-        # Selecionar colunas com RFM + info adicional
+        x_min, x_max = x_vals.min(), x_vals.max()
+        y_min, y_max = y_vals.min(), y_vals.max()
+
+        x_norm = (x_vals - x_min) / (x_max - x_min)
+        y_norm = (y_vals - y_min) / (y_max - y_min)
+
+        dados_clientes = rfm.copy()
+        dados_clientes["x"] = x_norm
+        dados_clientes["y"] = y_norm
+
         colunas_exportar = [
-            "ClienteID", "Nome", "Cluster", "Segmento", "Recência", "Frequência", "Monetário", "x", "y"
+            "ClienteID", "Nome", "Cluster", "Segmento",
+            "Recência", "Frequência", "Monetário", "x", "y"
         ]
-        dados_clientes = dados_clientes[colunas_exportar] if all(c in dados_clientes.columns for c in colunas_exportar) else dados_clientes
+        if all(c in dados_clientes.columns for c in colunas_exportar):
+            dados_clientes = dados_clientes[colunas_exportar]
 
         clusters_json_path = campanha_path / "clusters.json"
         with open(clusters_json_path, "w", encoding="utf-8") as f:
             json.dump(dados_clientes.to_dict(orient="records"), f, indent=2, ensure_ascii=False)
 
-        print(f" Ficheiro clusters.json criado com sucesso com colunas RFM.")
+        print(" Ficheiro clusters.json criado com x e y normalizados entre 0 e 1.")
+
     except Exception as e:
         print(f"[ERRO ao gerar clusters.json]: {e}")
+
 
 
 
