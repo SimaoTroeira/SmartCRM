@@ -103,7 +103,7 @@ def rfm_segmentation(base_path, empresa_id, campanha_id):
         scaler = StandardScaler()
         rfm_scaled = scaler.fit_transform(rfm_log)
 
-        n_clusters = min(1, len(rfm_scaled))
+        n_clusters = min(2, len(rfm_scaled))
         if n_clusters < 2:
             print("Dados insuficientes para clustering.")
             return
