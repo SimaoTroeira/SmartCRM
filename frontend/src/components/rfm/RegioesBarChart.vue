@@ -1,12 +1,5 @@
 <template>
     <div>
-        <h4 class="text-xl font-semibold mb-4 text-blue-700">Produtos Mais Comprados por Região</h4>
-        <div class="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded p-3 mt-2">
-            Este gráfico mostra as regiões com os produtos mais comprados. Cada barra representa a região e o seu
-            produto mais popular, com base no volume e valor de vendas. As cores nas barras indicam a proporção de
-            clientes pertencentes a diferentes segmentos (como Campeões, Em Risco, etc.).
-        </div>
-
         <Bar :data="chartData" :options="chartOptions" />
     </div>
 </template>

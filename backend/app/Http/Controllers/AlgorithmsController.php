@@ -33,7 +33,7 @@ class AlgorithmsController extends Controller
 
         $script = $scriptMap[$algoritmo];
 
-        Log::info("✅ Disparando script {$script} para empresa {$empresaId}, campanha {$campanhaId}");
+        Log::info("Disparando script {$script} para empresa {$empresaId}, campanha {$campanhaId}");
         ExecutarScriptPython::dispatch($script, $empresaId, $campanhaId);
 
         return response()->json([
@@ -114,23 +114,31 @@ class AlgorithmsController extends Controller
         $requisitosPorAlgoritmo = [
             'rfm' => [
                 'vendas.json' => [
-                    ['ClienteID', 'cliente_id', 'IDCliente'],
-                    ['ValorTotal', 'Total', 'valor_total'],
+                    ['ClienteID'],
+                    ['ValorTotal'],
                 ],
                 'clientes.json' => [
-                    ['ClienteID', 'cliente_id', 'IDCliente'],
+                    ['ClienteID'],
+                    ['Regiao'],
                 ],
                 'produtos.json' => [
                     ['ProdutoID'],
                     ['NomeProduto'],
                     ['Categoria'],
+                    ['Marca'],
                 ],
             ],
             'churn' => [
                 'clientes.json' => [
-                    ['ClienteID', 'cliente_id', 'IDCliente'],
-                    ['Email', 'email'],
-                    ['Cancelado', 'cancelado'],
+                    ['ClienteID'],
+                    ['DataCadastro'],
+                    ['UltimaCompra'],
+                    ['TotalCompras'],
+                    ['ValorTotalGasto'],
+                ],
+                'vendas.json' => [
+                    ['ClienteID'],
+                    ['DataVenda'],
                 ],
             ],
         ];

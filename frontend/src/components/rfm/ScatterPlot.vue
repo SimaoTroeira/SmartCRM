@@ -1,12 +1,5 @@
 <template>
     <div>
-        <h4 class="text-xl font-semibold mb-4 text-blue-700">Dispersão dos Clientes</h4>
-        <div class="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded p-3 mt-2">
-            Este gráfico mostra agrupamentos de clientes com base nos seus padrões de compra.
-            A posição horizontal e vertical representa combinações de recência, frequência e valor monetário (RFM).
-            Clientes próximos entre si tendem a ter comportamentos semelhantes. A direção vertical tende a refletir o
-            tempo desde a última compra. A horizontal, o valor e frequência das compras.
-        </div>
         <Scatter v-if="modo === 'clientes'" :data="chartData" :options="chartOptions" />
     </div>
 </template>

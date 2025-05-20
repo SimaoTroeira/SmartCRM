@@ -2,8 +2,16 @@
   <div v-if="dadosProntos" class="space-y-10">
     <!-- Controlo de visualização -->
     <div class="card-resultados mb-6">
-      <h3 class="text-xl font-semibold mb-4 text-blue-700">Visualização dos Clusters</h3>
-      <div class="flex items-center gap-4 mb-4">
+      <div class="mb-2">
+        <h3 class="text-2xl font-semibold text-blue-700">
+          {{ tituloVisualizacao }}
+        </h3>
+        <p class="text-sm text-gray-600 mt-1">
+          {{ descricaoVisualizacao }}
+        </p>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 mb-4">
         <label class="font-medium text-sm">Visualizar por:</label>
         <select v-model="modoVisualizacao" class="form-control border px-2 py-1 text-sm rounded w-48">
           <option value="clientes">Clientes</option>
@@ -15,6 +23,7 @@
         :scatter-regioes="scatterRegioes" />
       <RegioesBarChart v-else :scatter-regioes="scatterRegioes" />
     </div>
+
 
     <!-- Clientes Segmentados -->
     <div class="card-resultados">
@@ -63,9 +72,10 @@
         </table>
       </div>
     </div>
-
     <!-- Tabela Resumo -->
     <div class="card-resultados">
+
+
       <h3 class="text-xl font-semibold mb-3 text-blue-700">Tabela</h3>
       <p class="text-sm text-gray-600 mb-2">Apresenta dados estatísticos por cluster.</p>
       <p class="text-sm text-gray-500 mb-4">{{ descricao }}</p>
@@ -94,8 +104,8 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import ScatterPlot from '@/components/visualizations/ScatterPlot.vue'
-import RegioesBarChart from '@/components/visualizations/RegioesBarChart.vue'
+import ScatterPlot from './ScatterPlot.vue'
+import RegioesBarChart from './RegioesBarChart.vue'
 
 const segmentoFiltro = ref('')
 const colunaOrdenada = ref('')
@@ -103,18 +113,6 @@ const ordemCrescente = ref(true)
 const limiteLinhas = ref(10)
 
 const modoVisualizacao = ref('clientes')
-const clustersClientes = computed(() =>
-  Array.isArray(props.scatterClientes) ? props.scatterClientes : []
-)
-const clustersRegioes = computed(() =>
-  Array.isArray(props.scatterRegioes) ? props.scatterRegioes : []
-)
-
-
-const cores = [
-  "#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#d0ed57", "#a4de6c", "#8dd1e1", "#83a6ed"
-]
-
 
 const props = defineProps({
   results: Array,
@@ -123,6 +121,19 @@ const props = defineProps({
   scatterClientes: Array,
   scatterRegioes: Array
 })
+
+const tituloVisualizacao = computed(() =>
+  modoVisualizacao.value === 'clientes'
+    ? '📌 Dispersão dos Clientes'
+    : '🌍 Produtos Mais Comprados por Região'
+)
+
+const descricaoVisualizacao = computed(() =>
+  modoVisualizacao.value === 'clientes'
+    ? 'Este gráfico mostra agrupamentos de clientes com base nos seus padrões de compra. A posição horizontal e vertical representa combinações de recência, frequência e valor monetário (RFM). Clientes próximos entre si tendem a ter comportamentos semelhantes. A direção vertical tende a refletir otempo desde a última compra. A horizontal, o valor e frequência das compras.'
+    : 'Este gráfico mostra as regiões com os produtos mais comprados. Cada barra representa a região e o seu produto mais popular, com base no volume e valor de vendas. As cores nas barras indicam a proporção de clientes pertencentes a diferentes segmentos(como Campeões, Em Risco, etc.).'
+)
+
 
 const nomeColunasCluster = {
   Cluster: "Cluster",
@@ -188,7 +199,6 @@ const dadosProntos = computed(() => {
 
 
 
-
 </script>
 
 <style scoped>
@@ -233,6 +243,7 @@ const dadosProntos = computed(() => {
   min-height: 500px;
   background-color: #fff;
 }
+
 
 .tooltip-box {
   background-color: white;
