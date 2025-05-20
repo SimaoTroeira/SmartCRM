@@ -32,22 +32,33 @@
                             <option disabled value="">-- Escolha um algoritmo --</option>
                             <option value="rfm">Segmentação RFM</option>
                             <option value="churn">Previsão de Churn</option>
+                            <option value="recomendacao">Recomendação</option>
                         </select>
                     </div>
                 </div>
 
-                <AlgorithmWizard v-if="mostrarWizard && selectedCampaignId && selectedAlgorithm"
-                    :campanha-id="selectedCampaignId" :algoritmo="selectedAlgorithm" @valido="handleValid"
-                    class="mt-10 mb-6" />
+                <AlgorithmWizard
+                    v-if="mostrarWizard && selectedCampaignId && selectedAlgorithm"
+                    :campanha-id="selectedCampaignId"
+                    :algoritmo="selectedAlgorithm"
+                    @valido="handleValid"
+                    class="mt-10 mb-6"
+                />
 
                 <!-- Botões -->
                 <div class="mt-10 mb-6 flex flex-wrap gap-4 border-b border-gray-300 pb-4">
-                    <button class="executar-btn" :disabled="!selectedCampaignId || !selectedAlgorithm || loading"
-                        @click="reiniciarWizard">
+                    <button
+                        class="executar-btn"
+                        :disabled="!selectedCampaignId || !selectedAlgorithm || loading"
+                        @click="reiniciarWizard"
+                    >
                         Executar algoritmo
                     </button>
-                    <button class="visualizar-btn" :disabled="!selectedCampaignId || !selectedAlgorithm"
-                        @click="fetchResults">
+                    <button
+                        class="visualizar-btn"
+                        :disabled="!selectedCampaignId || !selectedAlgorithm"
+                        @click="fetchResults"
+                    >
                         Visualizar resultados
                     </button>
                 </div>
@@ -71,10 +82,26 @@
 
                 <!-- Visualizações por componente -->
                 <div v-if="showResults">
-                    <RfmResults v-if="selectedAlgorithm === 'rfm'" :results="results" :descricao="descricao"
-                        :clientes-segmentados="clientesSegmentados" :scatter-clientes="scatterClientes"
-                        :scatter-regioes="scatterRegioes" />
-                    <ChurnResults v-if="selectedAlgorithm === 'churn'" :results="results" :descricao="descricao" />
+                    <RfmResults
+                        v-if="selectedAlgorithm === 'rfm'"
+                        :results="results"
+                        :descricao="descricao"
+                        :clientes-segmentados="clientesSegmentados"
+                        :scatter-clientes="scatterClientes"
+                        :scatter-regioes="scatterRegioes"
+                    />
+
+                    <ChurnResults
+                        v-else-if="selectedAlgorithm === 'churn'"
+                        :results="results"
+                        :descricao="descricao"
+                    />
+
+                    <RecommendResults
+                        v-else-if="selectedAlgorithm === 'recomendacao'"
+                        :empresa-id="empresaId"
+                        :campanha-id="selectedCampaignId"
+                    />
                 </div>
             </div>
         </div>
@@ -82,12 +109,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import AlgorithmWizard from '@/components/AlgorithmWizard.vue'
 import RfmResults from '@/components/visualizations/RfmResults.vue'
 import ChurnResults from '@/components/visualizations/ChurnResults.vue'
+import RecommendResults from '@/components/visualizations/RecommendResults.vue'
 
 const campaigns = ref([])
 const campaignsLoaded = ref(false)
@@ -105,6 +133,11 @@ const clientesSegmentados = ref([])
 const scatterClientes = ref([])
 const scatterRegioes = ref([])
 
+// Computed para obter company_id da campanha selecionada
+const empresaId = computed(() => {
+  const camp = campaigns.value.find(c => c.id === selectedCampaignId.value)
+  return camp ? camp.company_id : null
+})
 
 const fetchCampaigns = async () => {
     try {
@@ -116,6 +149,10 @@ const fetchCampaigns = async () => {
         campaignsLoaded.value = true
     }
 }
+
+onMounted(() => {
+  fetchCampaigns()
+})
 
 const handleValid = (value) => {
     valid.value = value
@@ -165,15 +202,15 @@ const esperarResultados = async (tentativas = 0) => {
             descricao.value = res.data.descricao || ''
             showResults.value = true
 
-            const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
-            if (empresaId && selectedAlgorithm.value === 'rfm') {
-                const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}&tipo=clientes`)
+            const empresa = empresaId.value
+            if (empresa && selectedAlgorithm.value === 'rfm') {
+                const [resClientes, resScatterClientes, resScatterRegioes] = await Promise.all([
+                    axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`),
+                    axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`),
+                    axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+                ])
                 clientesSegmentados.value = resClientes.data || []
-
-                const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}&tipo=scatter_clientes`)
                 scatterClientes.value = resScatterClientes.data || []
-
-                const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}&tipo=scatter_regioes`)
                 scatterRegioes.value = resScatterRegioes.data || []
             }
 
@@ -213,15 +250,15 @@ const fetchResults = async () => {
         descricao.value = res.data.descricao || ''
         showResults.value = true
 
-        const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
-        if (empresaId && selectedAlgorithm.value === 'rfm') {
-            const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}&tipo=clientes`)
+        const empresa = empresaId.value
+        if (empresa && selectedAlgorithm.value === 'rfm') {
+            const [resClientes, resScatterClientes, resScatterRegioes] = await Promise.all([
+                axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`),
+                axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`),
+                axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+            ])
             clientesSegmentados.value = resClientes.data || []
-
-            const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}&tipo=scatter_clientes`)
             scatterClientes.value = resScatterClientes.data || []
-
-            const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}&tipo=scatter_regioes`)
             scatterRegioes.value = resScatterRegioes.data || []
         }
 
@@ -237,7 +274,6 @@ const fetchResults = async () => {
     }
 }
 
-
 watch([selectedCampaignId, selectedAlgorithm], () => {
     valid.value = false
     mostrarWizard.value = false
@@ -246,101 +282,15 @@ watch([selectedCampaignId, selectedAlgorithm], () => {
     showResults.value = false
     clientesSegmentados.value = []
 })
-
-onMounted(() => {
-    fetchCampaigns()
-    const storedCampaign = localStorage.getItem('selectedCampaignId')
-    const storedAlgorithm = localStorage.getItem('selectedAlgorithm')
-    if (storedCampaign) selectedCampaignId.value = parseInt(storedCampaign)
-    if (storedAlgorithm) selectedAlgorithm.value = storedAlgorithm
-})
 </script>
 
 <style scoped>
-.p-6 {
-    padding: 20px;
-}
-
-.dot-anim::after {
-    content: '.';
-    animation: dots 1.2s steps(3, end) infinite;
-}
-
-@keyframes dots {
-    0% {
-        content: "";
-    }
-
-    33% {
-        content: ".";
-    }
-
-    66% {
-        content: "..";
-    }
-
-    100% {
-        content: "...";
-    }
-}
-
-.executar-btn {
-    border: 2px solid #16a34a;
-    color: #16a34a;
-    background-color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.executar-btn:hover {
-    background-color: #16a34a;
-    color: white;
-}
-
-.visualizar-btn {
-    margin-left: 8px;
-    border: 2px solid #2563eb;
-    color: #2563eb;
-    background-color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.visualizar-btn:hover {
-    background-color: #2563eb;
-    color: white;
-}
-
-.flex.gap-4.mt-2 {
-    align-items: center;
-}
-
-.mt-10 {
-    margin-top: 1rem !important;
-}
-
-.tabela-controles {
-    display: flex;
-    gap: 20px;
-}
-
-
-.btn-reset {
-    color: #2563eb;
-    border: 1px solid #2563eb;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.375rem;
-    transition: all 0.3s ease;
-    background-color: white;
-}
-
-.btn-reset:hover {
-    background-color: #e0ecff;
-}
+.p-6 { padding: 20px; }
+.dot-anim::after { content: '.'; animation: dots 1.2s steps(3,end) infinite; }
+@keyframes dots { 0% {content:"";} 33% {content:".";} 66% {content:"..";} 100% {content:"...";} }
+.executar-btn { border:2px solid #16a34a; color:#16a34a; background:#fff; padding:8px 16px; border-radius:4px; transition:.3s; font-weight:500; cursor:pointer; }
+.executar-btn:hover { background:#16a34a; color:#fff; }
+.visualizar-btn { margin-left:8px; border:2px solid #2563eb; color:#2563eb; background:#fff; padding:8px 16px; border-radius:4px; transition:.3s; font-weight:500; cursor:pointer; }
+.visualizar-btn:hover { background:#2563eb; color:#fff; }
+.mt-10 { margin-top:1rem!important; }
 </style>

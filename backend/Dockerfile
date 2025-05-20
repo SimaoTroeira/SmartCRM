@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd \
     && docker-php-ext-install pdo_mysql gd intl mbstring zip xml \
     && ln -s /usr/bin/python3 /usr/bin/python \
-    && pip install pandas numpy scikit-learn matplotlib mlxtend joblib xgboost
+    && pip install pandas numpy scikit-learn matplotlib mlxtend joblib xgboost kneed
 
 
 # Instalar Composer

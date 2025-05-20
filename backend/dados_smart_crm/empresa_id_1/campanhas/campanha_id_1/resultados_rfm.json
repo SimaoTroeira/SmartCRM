@@ -1,41 +1,41 @@
 {
-  "descricao": "Segmentação RFM com 4 clusters.",
+  "descricao": "A Segmentação RFM resultou em 4 clusters utilizando o algoritmo KMeans.",
   "dados": [
     {
       "Cluster": 1,
-      "Segmento": "Clientes Principais",
-      "Recência Média": 191.47286821705427,
-      "Frequência Média": 3.6666666666666665,
-      "Média Monetária": 4854.362403100775,
-      "Quantidade de Compras": 129,
-      "Total Monetário": 626212.75
+      "Segmento": "Campeões",
+      "Recência Média": 191.47,
+      "Frequência Média": 3.67,
+      "Média Monetária": 4854.36,
+      "Total Monetário": 626212.75,
+      "Quantidade de Compras": 129
     },
     {
       "Cluster": 3,
-      "Segmento": "Clientes Perdidos",
-      "Recência Média": 342.64900662251654,
-      "Frequência Média": 1.6754966887417218,
-      "Média Monetária": 2384.277682119205,
-      "Quantidade de Compras": 151,
-      "Total Monetário": 360025.93
+      "Segmento": "Clientes Regulares",
+      "Recência Média": 342.65,
+      "Frequência Média": 1.68,
+      "Média Monetária": 2384.28,
+      "Total Monetário": 360025.93,
+      "Quantidade de Compras": 151
     },
     {
       "Cluster": 2,
-      "Segmento": "Clientes Principais",
-      "Recência Média": 28.89855072463768,
-      "Frequência Média": 2.63768115942029,
-      "Média Monetária": 3172.6852173913044,
-      "Quantidade de Compras": 69,
-      "Total Monetário": 218915.28
+      "Segmento": "Clientes Valiosos",
+      "Recência Média": 28.9,
+      "Frequência Média": 2.64,
+      "Média Monetária": 3172.69,
+      "Total Monetário": 218915.28,
+      "Quantidade de Compras": 69
     },
     {
       "Cluster": 0,
-      "Segmento": "Clientes Perdidos",
-      "Recência Média": 329.4823529411765,
-      "Frequência Média": 1.0823529411764705,
+      "Segmento": "Em Risco",
+      "Recência Média": 329.48,
+      "Frequência Média": 1.08,
       "Média Monetária": 501.29,
-      "Quantidade de Compras": 85,
-      "Total Monetário": 42609.65
+      "Total Monetário": 42609.65,
+      "Quantidade de Compras": 85
     }
   ]
 }
