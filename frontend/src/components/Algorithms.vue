@@ -32,6 +32,7 @@
                             <option disabled value="">-- Escolha um algoritmo --</option>
                             <option value="rfm">Segmentação RFM</option>
                             <option value="churn">Previsão de Churn</option>
+                            <option value="recomendacao">Recomendação</option>
                         </select>
                     </div>
                 </div>
@@ -71,11 +72,16 @@
 
                 <!-- Visualizações por componente -->
                 <div v-if="showResults">
+
                     <RfmResults v-if="selectedAlgorithm === 'rfm'" :results="results" :descricao="descricao"
                         :clientes-segmentados="clientesSegmentados" :scatter-clientes="scatterClientes"
                         :scatter-regioes="scatterRegioes" />
                     <ChurnResults v-if="selectedAlgorithm === 'churn'" :results="results" :descricao="descricao"
                         :campanha-id="selectedCampaignId" />
+
+                    <RecommendResults v-else-if="selectedAlgorithm === 'recomendacao'" :empresa-id="empresaId"
+                        :campanha-id="selectedCampaignId" />
+
                 </div>
             </div>
         </div>
@@ -83,12 +89,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import AlgorithmWizard from '@/components/AlgorithmWizard.vue'
+
 import RfmResults from '@/components/rfm/RfmResults.vue'
 import ChurnResults from '@/components/churn/ChurnResults.vue'
+import RecommendResults from '@/components/recommendation/RecommendResults.vue'
+
 
 const campaigns = ref([])
 const campaignsLoaded = ref(false)
@@ -106,6 +115,11 @@ const clientesSegmentados = ref([])
 const scatterClientes = ref([])
 const scatterRegioes = ref([])
 
+// Computed para obter company_id da campanha selecionada
+const empresaId = computed(() => {
+    const camp = campaigns.value.find(c => c.id === selectedCampaignId.value)
+    return camp ? camp.company_id : null
+})
 
 const fetchCampaigns = async () => {
     try {
@@ -117,6 +131,10 @@ const fetchCampaigns = async () => {
         campaignsLoaded.value = true
     }
 }
+
+onMounted(() => {
+    fetchCampaigns()
+})
 
 const handleValid = (value) => {
     valid.value = value
@@ -156,47 +174,48 @@ const runAlgorithm = async () => {
 }
 
 const esperarResultados = async (tentativas = 0) => {
-  const maxTentativas = 20
-  const intervalo = 3000
+    const maxTentativas = 20
+    const intervalo = 3000
 
-  try {
-    const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
+    try {
+        const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
 
-    const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
-    const isChurnOk = selectedAlgorithm.value === 'churn' && res.data?.estatisticas
+        const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
+        const isChurnOk = selectedAlgorithm.value === 'churn' && res.data?.estatisticas
 
-    if (isRfmOk || isChurnOk) {
-      results.value = res.data
-      descricao.value = res.data.descricao || ''
-      showResults.value = true
+        if (isRfmOk || isChurnOk) {
+            results.value = res.data
+            descricao.value = res.data.descricao || ''
+            showResults.value = true
 
-      const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
+            const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
 
-      if (empresaId && selectedAlgorithm.value === 'rfm') {
-        const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
-        clientesSegmentados.value = resClientes.data || []
 
-        const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
-        scatterClientes.value = resScatterClientes.data || []
+            if (empresaId && selectedAlgorithm.value === 'rfm') {
+                const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
+                clientesSegmentados.value = resClientes.data || []
 
-        const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
-        scatterRegioes.value = resScatterRegioes.data || []
-      }
+                const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
+                scatterClientes.value = resScatterClientes.data || []
 
-      toast.success('Resultados carregados automaticamente.')
-      loading.value = false
-      return
+                const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+                scatterRegioes.value = resScatterRegioes.data || []
+            }
+
+            toast.success('Resultados carregados automaticamente.')
+            loading.value = false
+            return
+        }
+    } catch (err) {
+        console.error('Erro ao buscar resultados:', err)
     }
-  } catch (err) {
-    console.error('Erro ao buscar resultados:', err)
-  }
 
-  if (tentativas < maxTentativas) {
-    setTimeout(() => esperarResultados(tentativas + 1), intervalo)
-  } else {
-    toast.warning('Os resultados ainda não estão prontos. Tente novamente mais tarde.')
-    loading.value = false
-  }
+    if (tentativas < maxTentativas) {
+        setTimeout(() => esperarResultados(tentativas + 1), intervalo)
+    } else {
+        toast.warning('Os resultados ainda não estão prontos. Tente novamente mais tarde.')
+        loading.value = false
+    }
 }
 
 
@@ -240,6 +259,7 @@ const fetchResults = async () => {
             scatterClientes.value = resScatterClientes.data || []
 
             const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+
             scatterRegioes.value = resScatterRegioes.data || []
         }
 
@@ -255,7 +275,6 @@ const fetchResults = async () => {
     }
 }
 
-
 watch([selectedCampaignId, selectedAlgorithm], () => {
     valid.value = false
     mostrarWizard.value = false
@@ -263,14 +282,6 @@ watch([selectedCampaignId, selectedAlgorithm], () => {
     descricao.value = ''
     showResults.value = false
     clientesSegmentados.value = []
-})
-
-onMounted(() => {
-    fetchCampaigns()
-    const storedCampaign = localStorage.getItem('selectedCampaignId')
-    const storedAlgorithm = localStorage.getItem('selectedAlgorithm')
-    if (storedCampaign) selectedCampaignId.value = parseInt(storedCampaign)
-    if (storedAlgorithm) selectedAlgorithm.value = storedAlgorithm
 })
 </script>
 
@@ -305,60 +316,37 @@ onMounted(() => {
 .executar-btn {
     border: 2px solid #16a34a;
     color: #16a34a;
-    background-color: white;
+    background: #fff;
     padding: 8px 16px;
     border-radius: 4px;
-    transition: all 0.3s ease;
+    transition: .3s;
     font-weight: 500;
     cursor: pointer;
 }
 
 .executar-btn:hover {
-    background-color: #16a34a;
-    color: white;
+    background: #16a34a;
+    color: #fff;
 }
 
 .visualizar-btn {
     margin-left: 8px;
     border: 2px solid #2563eb;
     color: #2563eb;
-    background-color: white;
+    background: #fff;
     padding: 8px 16px;
     border-radius: 4px;
-    transition: all 0.3s ease;
+    transition: .3s;
     font-weight: 500;
     cursor: pointer;
 }
 
 .visualizar-btn:hover {
-    background-color: #2563eb;
-    color: white;
-}
-
-.flex.gap-4.mt-2 {
-    align-items: center;
+    background: #2563eb;
+    color: #fff;
 }
 
 .mt-10 {
     margin-top: 1rem !important;
-}
-
-.tabela-controles {
-    display: flex;
-    gap: 20px;
-}
-
-
-.btn-reset {
-    color: #2563eb;
-    border: 1px solid #2563eb;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.375rem;
-    transition: all 0.3s ease;
-    background-color: white;
-}
-
-.btn-reset:hover {
-    background-color: #e0ecff;
 }
 </style>

@@ -5,7 +5,7 @@
     "Frequência": 1,
     "Monetário": 250.53,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Carminho Lopes"
   },
   {
@@ -14,7 +14,7 @@
     "Frequência": 1,
     "Monetário": 860.43,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Paulo Pacheco"
   },
   {
@@ -23,16 +23,16 @@
     "Frequência": 2,
     "Monetário": 2196.14,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Sara Pires-Moreira"
   },
   {
     "ClienteID": 4,
     "Recência": 139,
     "Frequência": 3,
-    "Monetário": 5977.379999999999,
+    "Monetário": 5977.38,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Bianca Sousa"
   },
   {
@@ -41,7 +41,7 @@
     "Frequência": 1,
     "Monetário": 1031.87,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Freitas"
   },
   {
@@ -50,7 +50,7 @@
     "Frequência": 2,
     "Monetário": 5060.43,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Íris de Assunção"
   },
   {
@@ -59,7 +59,7 @@
     "Frequência": 3,
     "Monetário": 3103.95,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Lourenço"
   },
   {
@@ -68,7 +68,7 @@
     "Frequência": 3,
     "Monetário": 1029.26,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Silva"
   },
   {
@@ -77,7 +77,7 @@
     "Frequência": 3,
     "Monetário": 2402.62,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Magalhães Lda."
   },
   {
@@ -86,7 +86,7 @@
     "Frequência": 5,
     "Monetário": 5084.59,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Ribeiro"
   },
   {
@@ -95,7 +95,7 @@
     "Frequência": 4,
     "Monetário": 7471.1,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Vitória Torres"
   },
   {
@@ -104,16 +104,16 @@
     "Frequência": 2,
     "Monetário": 1362.85,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Caetana Melo"
   },
   {
     "ClienteID": 13,
     "Recência": 172,
     "Frequência": 4,
-    "Monetário": 7436.4800000000005,
+    "Monetário": 7436.48,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Ivan Mota"
   },
   {
@@ -122,7 +122,7 @@
     "Frequência": 2,
     "Monetário": 3132.57,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Miranda"
   },
   {
@@ -131,7 +131,7 @@
     "Frequência": 1,
     "Monetário": 4452.84,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Moura"
   },
   {
@@ -140,7 +140,7 @@
     "Frequência": 4,
     "Monetário": 4101.95,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rita de Baptista"
   },
   {
@@ -149,7 +149,7 @@
     "Frequência": 2,
     "Monetário": 4379.32,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Andreia Pereira"
   },
   {
@@ -158,7 +158,7 @@
     "Frequência": 1,
     "Monetário": 80.78,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Tomé Henriques"
   },
   {
@@ -167,7 +167,7 @@
     "Frequência": 2,
     "Monetário": 1376.35,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Esteves S/A"
   },
   {
@@ -176,7 +176,7 @@
     "Frequência": 1,
     "Monetário": 1183.79,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Batista Pires S.A."
   },
   {
@@ -185,7 +185,7 @@
     "Frequência": 1,
     "Monetário": 103.68,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Nádia da Araújo"
   },
   {
@@ -194,16 +194,16 @@
     "Frequência": 5,
     "Monetário": 7192.76,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Amaral"
   },
   {
     "ClienteID": 24,
     "Recência": 47,
     "Frequência": 4,
-    "Monetário": 4659.369999999999,
+    "Monetário": 4659.37,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rodrigues"
   },
   {
@@ -212,16 +212,16 @@
     "Frequência": 3,
     "Monetário": 7197.42,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Torres S/A"
   },
   {
     "ClienteID": 26,
     "Recência": 190,
     "Frequência": 2,
-    "Monetário": 971.5799999999999,
+    "Monetário": 971.58,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Jorge Cruz"
   },
   {
@@ -230,16 +230,16 @@
     "Frequência": 1,
     "Monetário": 584.87,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Monteiro"
   },
   {
     "ClienteID": 29,
     "Recência": 554,
     "Frequência": 2,
-    "Monetário": 2827.8500000000004,
+    "Monetário": 2827.85,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Marques Ferreira e Filhos"
   },
   {
@@ -248,7 +248,7 @@
     "Frequência": 1,
     "Monetário": 1048.01,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Mendes Fernandes Lda."
   },
   {
@@ -257,7 +257,7 @@
     "Frequência": 2,
     "Monetário": 1535.12,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Morais"
   },
   {
@@ -266,7 +266,7 @@
     "Frequência": 1,
     "Monetário": 70.5,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Eduardo Gomes"
   },
   {
@@ -275,7 +275,7 @@
     "Frequência": 2,
     "Monetário": 1204.9,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Jesus S.A."
   },
   {
@@ -284,7 +284,7 @@
     "Frequência": 2,
     "Monetário": 2383.37,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Lúcia Correia"
   },
   {
@@ -293,16 +293,16 @@
     "Frequência": 1,
     "Monetário": 603.39,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Valente Henriques S.A."
   },
   {
     "ClienteID": 38,
     "Recência": 305,
     "Frequência": 2,
-    "Monetário": 4002.6900000000005,
+    "Monetário": 4002.69,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rafaela Pereira"
   },
   {
@@ -311,7 +311,7 @@
     "Frequência": 2,
     "Monetário": 4162.53,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pires"
   },
   {
@@ -320,7 +320,7 @@
     "Frequência": 3,
     "Monetário": 2286.99,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "António Antunes"
   },
   {
@@ -329,7 +329,7 @@
     "Frequência": 3,
     "Monetário": 3727.5,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Silva Sousa S/A"
   },
   {
@@ -338,7 +338,7 @@
     "Frequência": 1,
     "Monetário": 3827.38,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rita Correia"
   },
   {
@@ -347,7 +347,7 @@
     "Frequência": 8,
     "Monetário": 10610.38,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Torres"
   },
   {
@@ -356,7 +356,7 @@
     "Frequência": 2,
     "Monetário": 1743.46,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Luana Araújo"
   },
   {
@@ -365,7 +365,7 @@
     "Frequência": 3,
     "Monetário": 2961.96,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Bryan Maia"
   },
   {
@@ -374,7 +374,7 @@
     "Frequência": 1,
     "Monetário": 2378.1,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Micael Rodrigues"
   },
   {
@@ -383,7 +383,7 @@
     "Frequência": 6,
     "Monetário": 5227.08,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rafael Vaz"
   },
   {
@@ -392,7 +392,7 @@
     "Frequência": 1,
     "Monetário": 1166.87,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Helena Azevedo"
   },
   {
@@ -401,7 +401,7 @@
     "Frequência": 3,
     "Monetário": 2965.98,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cardoso"
   },
   {
@@ -410,7 +410,7 @@
     "Frequência": 2,
     "Monetário": 2071.39,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Freitas"
   },
   {
@@ -419,7 +419,7 @@
     "Frequência": 2,
     "Monetário": 4181.92,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Esteves"
   },
   {
@@ -428,7 +428,7 @@
     "Frequência": 1,
     "Monetário": 2723.21,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Núria Pinheiro"
   },
   {
@@ -437,7 +437,7 @@
     "Frequência": 1,
     "Monetário": 2669.0,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Guerreiro"
   },
   {
@@ -446,7 +446,7 @@
     "Frequência": 1,
     "Monetário": 634.62,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "William Campos"
   },
   {
@@ -455,7 +455,7 @@
     "Frequência": 1,
     "Monetário": 1215.65,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Juliana Ramos"
   },
   {
@@ -464,16 +464,16 @@
     "Frequência": 3,
     "Monetário": 3255.67,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Nascimento"
   },
   {
     "ClienteID": 59,
     "Recência": 146,
     "Frequência": 3,
-    "Monetário": 4793.9400000000005,
+    "Monetário": 4793.94,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rui Figueiredo"
   },
   {
@@ -482,7 +482,7 @@
     "Frequência": 1,
     "Monetário": 199.8,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Marcos Amorim"
   },
   {
@@ -491,7 +491,7 @@
     "Frequência": 1,
     "Monetário": 2530.63,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Castro Sá S.A."
   },
   {
@@ -500,16 +500,16 @@
     "Frequência": 2,
     "Monetário": 1419.04,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Leite"
   },
   {
     "ClienteID": 64,
     "Recência": 125,
     "Frequência": 4,
-    "Monetário": 8183.900000000001,
+    "Monetário": 8183.9,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cunha Miranda Lda."
   },
   {
@@ -518,7 +518,7 @@
     "Frequência": 2,
     "Monetário": 2706.74,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Bruno Silva"
   },
   {
@@ -527,7 +527,7 @@
     "Frequência": 3,
     "Monetário": 4227.46,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Bruno Ramos"
   },
   {
@@ -536,16 +536,16 @@
     "Frequência": 2,
     "Monetário": 838.67,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Tomás Freitas"
   },
   {
     "ClienteID": 68,
     "Recência": 418,
     "Frequência": 3,
-    "Monetário": 4662.030000000001,
+    "Monetário": 4662.03,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Benedita Marques"
   },
   {
@@ -554,7 +554,7 @@
     "Frequência": 2,
     "Monetário": 2503.77,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Inês Castro"
   },
   {
@@ -563,7 +563,7 @@
     "Frequência": 3,
     "Monetário": 5385.73,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Amélia Alves"
   },
   {
@@ -572,7 +572,7 @@
     "Frequência": 3,
     "Monetário": 4150.45,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Iara Oliveira"
   },
   {
@@ -581,7 +581,7 @@
     "Frequência": 1,
     "Monetário": 120.25,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Figueiredo Pinto S/A"
   },
   {
@@ -590,7 +590,7 @@
     "Frequência": 3,
     "Monetário": 1286.58,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Igor Nogueira-Moreira"
   },
   {
@@ -599,7 +599,7 @@
     "Frequência": 1,
     "Monetário": 2458.52,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Mauro Anjos"
   },
   {
@@ -608,7 +608,7 @@
     "Frequência": 1,
     "Monetário": 207.93,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Azevedo Gonçalves S/A"
   },
   {
@@ -617,7 +617,7 @@
     "Frequência": 3,
     "Monetário": 2072.73,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Margarida Maia"
   },
   {
@@ -626,7 +626,7 @@
     "Frequência": 1,
     "Monetário": 2391.25,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Fonseca"
   },
   {
@@ -635,7 +635,7 @@
     "Frequência": 2,
     "Monetário": 1649.25,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Carvalho Lda."
   },
   {
@@ -644,7 +644,7 @@
     "Frequência": 3,
     "Monetário": 2216.0,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Campos"
   },
   {
@@ -653,16 +653,16 @@
     "Frequência": 3,
     "Monetário": 3887.88,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pinheiro Sousa S.A."
   },
   {
     "ClienteID": 82,
     "Recência": 128,
     "Frequência": 3,
-    "Monetário": 4687.349999999999,
+    "Monetário": 4687.35,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Valente e Filhos"
   },
   {
@@ -671,7 +671,7 @@
     "Frequência": 1,
     "Monetário": 2236.61,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Madalena Macedo"
   },
   {
@@ -680,7 +680,7 @@
     "Frequência": 1,
     "Monetário": 898.01,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Bruna Branco"
   },
   {
@@ -689,7 +689,7 @@
     "Frequência": 5,
     "Monetário": 6557.12,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Vicente Fernandes"
   },
   {
@@ -698,7 +698,7 @@
     "Frequência": 1,
     "Monetário": 469.05,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Isabel Silva"
   },
   {
@@ -707,7 +707,7 @@
     "Frequência": 2,
     "Monetário": 1553.82,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Paulo Fernandes"
   },
   {
@@ -716,16 +716,16 @@
     "Frequência": 4,
     "Monetário": 3222.93,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Anita do Melo"
   },
   {
     "ClienteID": 89,
     "Recência": 315,
     "Frequência": 2,
-    "Monetário": 3751.0499999999997,
+    "Monetário": 3751.05,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pinto Ribeiro Lda."
   },
   {
@@ -734,7 +734,7 @@
     "Frequência": 1,
     "Monetário": 171.21,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Gomes"
   },
   {
@@ -743,7 +743,7 @@
     "Frequência": 2,
     "Monetário": 3759.43,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pires Machado Lda."
   },
   {
@@ -752,7 +752,7 @@
     "Frequência": 1,
     "Monetário": 3166.33,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Francisca Tavares"
   },
   {
@@ -761,7 +761,7 @@
     "Frequência": 4,
     "Monetário": 5271.02,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Miriam Magalhães"
   },
   {
@@ -770,25 +770,25 @@
     "Frequência": 2,
     "Monetário": 3162.38,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Matias Cunha Lda."
   },
   {
     "ClienteID": 96,
     "Recência": 58,
     "Frequência": 2,
-    "Monetário": 3639.1800000000003,
+    "Monetário": 3639.18,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Lorena Santos"
   },
   {
     "ClienteID": 97,
     "Recência": 267,
     "Frequência": 3,
-    "Monetário": 5078.639999999999,
+    "Monetário": 5078.64,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Álvaro Costa"
   },
   {
@@ -797,7 +797,7 @@
     "Frequência": 4,
     "Monetário": 5388.15,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Coelho Reis S.A."
   },
   {
@@ -806,7 +806,7 @@
     "Frequência": 3,
     "Monetário": 1821.41,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Álvaro Pires"
   },
   {
@@ -815,7 +815,7 @@
     "Frequência": 3,
     "Monetário": 5159.09,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Yasmin Batista"
   },
   {
@@ -824,7 +824,7 @@
     "Frequência": 1,
     "Monetário": 442.55,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Fabiana Lima-Vicente"
   },
   {
@@ -833,7 +833,7 @@
     "Frequência": 1,
     "Monetário": 934.78,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Castro Mota S.A."
   },
   {
@@ -842,7 +842,7 @@
     "Frequência": 5,
     "Monetário": 3663.0,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Rafaela Vieira"
   },
   {
@@ -851,7 +851,7 @@
     "Frequência": 4,
     "Monetário": 6972.14,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Fabiana Rodrigues"
   },
   {
@@ -860,7 +860,7 @@
     "Frequência": 2,
     "Monetário": 2633.19,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nascimento Lda."
   },
   {
@@ -869,7 +869,7 @@
     "Frequência": 1,
     "Monetário": 2486.97,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pires Marques S.A."
   },
   {
@@ -878,7 +878,7 @@
     "Frequência": 2,
     "Monetário": 2079.66,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Vieira Morais Lda."
   },
   {
@@ -887,7 +887,7 @@
     "Frequência": 3,
     "Monetário": 4079.13,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rui Lima"
   },
   {
@@ -896,7 +896,7 @@
     "Frequência": 1,
     "Monetário": 447.62,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Brito S/A"
   },
   {
@@ -905,7 +905,7 @@
     "Frequência": 2,
     "Monetário": 1836.13,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Igor Ribeiro"
   },
   {
@@ -914,7 +914,7 @@
     "Frequência": 2,
     "Monetário": 2251.55,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Vera-Emma Anjos"
   },
   {
@@ -923,16 +923,16 @@
     "Frequência": 3,
     "Monetário": 7699.12,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Anjos e Filhos"
   },
   {
     "ClienteID": 116,
     "Recência": 402,
     "Frequência": 2,
-    "Monetário": 6404.0599999999995,
+    "Monetário": 6404.06,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Kyara Nunes"
   },
   {
@@ -941,16 +941,16 @@
     "Frequência": 2,
     "Monetário": 1806.75,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rodrigues Cruz S.A."
   },
   {
     "ClienteID": 118,
     "Recência": 47,
     "Frequência": 5,
-    "Monetário": 5431.700000000001,
+    "Monetário": 5431.7,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Gabriel Cunha-Magalhães"
   },
   {
@@ -959,16 +959,16 @@
     "Frequência": 3,
     "Monetário": 4559.26,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Almeida Lda."
   },
   {
     "ClienteID": 120,
     "Recência": 60,
     "Frequência": 4,
-    "Monetário": 2128.7000000000003,
+    "Monetário": 2128.7,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cristiano Jesus"
   },
   {
@@ -977,7 +977,7 @@
     "Frequência": 2,
     "Monetário": 2185.36,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pinheiro"
   },
   {
@@ -986,7 +986,7 @@
     "Frequência": 2,
     "Monetário": 872.72,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Oliveira"
   },
   {
@@ -995,7 +995,7 @@
     "Frequência": 2,
     "Monetário": 1570.79,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rúben Magalhães"
   },
   {
@@ -1004,7 +1004,7 @@
     "Frequência": 3,
     "Monetário": 5000.58,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Diego Amorim"
   },
   {
@@ -1013,7 +1013,7 @@
     "Frequência": 4,
     "Monetário": 4735.67,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Fabiana do Gomes"
   },
   {
@@ -1022,7 +1022,7 @@
     "Frequência": 1,
     "Monetário": 3001.67,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nascimento"
   },
   {
@@ -1031,16 +1031,16 @@
     "Frequência": 1,
     "Monetário": 617.99,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Tomé Macedo"
   },
   {
     "ClienteID": 130,
     "Recência": 407,
     "Frequência": 3,
-    "Monetário": 7179.5199999999995,
+    "Monetário": 7179.52,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Fábio Pereira"
   },
   {
@@ -1049,16 +1049,16 @@
     "Frequência": 1,
     "Monetário": 1162.42,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Reis"
   },
   {
     "ClienteID": 132,
     "Recência": 116,
     "Frequência": 2,
-    "Monetário": 4942.200000000001,
+    "Monetário": 4942.2,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Andrade Lda."
   },
   {
@@ -1067,16 +1067,16 @@
     "Frequência": 3,
     "Monetário": 4389.43,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Marcos Morais-Marques"
   },
   {
     "ClienteID": 134,
     "Recência": 307,
     "Frequência": 3,
-    "Monetário": 3896.5600000000004,
+    "Monetário": 3896.56,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Vera Valente"
   },
   {
@@ -1085,7 +1085,7 @@
     "Frequência": 1,
     "Monetário": 3058.37,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Margarida Silva"
   },
   {
@@ -1094,7 +1094,7 @@
     "Frequência": 3,
     "Monetário": 1889.41,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Luna-Ema Amaral"
   },
   {
@@ -1103,16 +1103,16 @@
     "Frequência": 1,
     "Monetário": 3218.29,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Nascimento Martins e Filhos"
   },
   {
     "ClienteID": 139,
     "Recência": 245,
     "Frequência": 2,
-    "Monetário": 3725.1499999999996,
+    "Monetário": 3725.15,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Cunha Ferreira S.A."
   },
   {
@@ -1121,7 +1121,7 @@
     "Frequência": 1,
     "Monetário": 834.62,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Sofia Teixeira-Pinto"
   },
   {
@@ -1130,7 +1130,7 @@
     "Frequência": 3,
     "Monetário": 1724.49,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pedro Lima"
   },
   {
@@ -1139,7 +1139,7 @@
     "Frequência": 3,
     "Monetário": 2616.98,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Gustavo Macedo"
   },
   {
@@ -1148,7 +1148,7 @@
     "Frequência": 1,
     "Monetário": 848.75,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Iara Vaz"
   },
   {
@@ -1157,7 +1157,7 @@
     "Frequência": 3,
     "Monetário": 1067.21,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Nelson Mendes"
   },
   {
@@ -1166,7 +1166,7 @@
     "Frequência": 2,
     "Monetário": 3602.11,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Jesus S.A."
   },
   {
@@ -1175,7 +1175,7 @@
     "Frequência": 2,
     "Monetário": 1609.63,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Larissa Morais-Loureiro"
   },
   {
@@ -1184,7 +1184,7 @@
     "Frequência": 4,
     "Monetário": 5675.82,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Moura S/A"
   },
   {
@@ -1193,7 +1193,7 @@
     "Frequência": 2,
     "Monetário": 1438.02,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Andrade S/A"
   },
   {
@@ -1202,7 +1202,7 @@
     "Frequência": 2,
     "Monetário": 504.95,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Sofia Branco"
   },
   {
@@ -1211,7 +1211,7 @@
     "Frequência": 1,
     "Monetário": 1630.83,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Paulo Domingues"
   },
   {
@@ -1220,7 +1220,7 @@
     "Frequência": 2,
     "Monetário": 5051.93,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Mota"
   },
   {
@@ -1229,7 +1229,7 @@
     "Frequência": 1,
     "Monetário": 1238.52,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Cruz"
   },
   {
@@ -1238,7 +1238,7 @@
     "Frequência": 3,
     "Monetário": 7975.07,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Costa Pinho S/A"
   },
   {
@@ -1247,16 +1247,16 @@
     "Frequência": 4,
     "Monetário": 7624.59,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Afonso de Cruz"
   },
   {
     "ClienteID": 158,
     "Recência": 214,
     "Frequência": 4,
-    "Monetário": 4037.0699999999997,
+    "Monetário": 4037.07,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Maria Andrade"
   },
   {
@@ -1265,7 +1265,7 @@
     "Frequência": 3,
     "Monetário": 2130.03,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Iara Simões"
   },
   {
@@ -1274,7 +1274,7 @@
     "Frequência": 1,
     "Monetário": 1589.64,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Santiago Teixeira-Correia"
   },
   {
@@ -1283,7 +1283,7 @@
     "Frequência": 1,
     "Monetário": 1296.94,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Neto S.A."
   },
   {
@@ -1292,7 +1292,7 @@
     "Frequência": 2,
     "Monetário": 2560.64,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Marta Branco"
   },
   {
@@ -1301,7 +1301,7 @@
     "Frequência": 2,
     "Monetário": 3625.81,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Violeta do Marques"
   },
   {
@@ -1310,7 +1310,7 @@
     "Frequência": 4,
     "Monetário": 7005.13,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Barbosa e Filhos"
   },
   {
@@ -1319,7 +1319,7 @@
     "Frequência": 1,
     "Monetário": 379.41,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Ângelo Costa"
   },
   {
@@ -1328,16 +1328,16 @@
     "Frequência": 3,
     "Monetário": 2685.1,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Lara Araújo"
   },
   {
     "ClienteID": 172,
     "Recência": 12,
     "Frequência": 3,
-    "Monetário": 5681.5599999999995,
+    "Monetário": 5681.56,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Mário Pereira"
   },
   {
@@ -1346,7 +1346,7 @@
     "Frequência": 3,
     "Monetário": 4392.84,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rocha"
   },
   {
@@ -1355,7 +1355,7 @@
     "Frequência": 1,
     "Monetário": 541.16,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Emanuel Matos"
   },
   {
@@ -1364,7 +1364,7 @@
     "Frequência": 1,
     "Monetário": 3297.17,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Campos S.A."
   },
   {
@@ -1373,7 +1373,7 @@
     "Frequência": 3,
     "Monetário": 4083.74,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Santos"
   },
   {
@@ -1382,7 +1382,7 @@
     "Frequência": 4,
     "Monetário": 7845.85,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Renato Borges"
   },
   {
@@ -1391,16 +1391,16 @@
     "Frequência": 2,
     "Monetário": 3084.38,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Francisco Brito"
   },
   {
     "ClienteID": 180,
     "Recência": 189,
     "Frequência": 2,
-    "Monetário": 3282.2599999999998,
+    "Monetário": 3282.26,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Guerreiro"
   },
   {
@@ -1409,7 +1409,7 @@
     "Frequência": 2,
     "Monetário": 3256.67,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gustavo Neto"
   },
   {
@@ -1418,7 +1418,7 @@
     "Frequência": 1,
     "Monetário": 1177.42,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Matos Assunção Lda."
   },
   {
@@ -1427,7 +1427,7 @@
     "Frequência": 2,
     "Monetário": 3632.66,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Leite"
   },
   {
@@ -1436,7 +1436,7 @@
     "Frequência": 3,
     "Monetário": 5808.67,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Figueiredo"
   },
   {
@@ -1445,7 +1445,7 @@
     "Frequência": 2,
     "Monetário": 5213.82,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Amaral S/A"
   },
   {
@@ -1454,7 +1454,7 @@
     "Frequência": 1,
     "Monetário": 851.39,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Tavares"
   },
   {
@@ -1463,7 +1463,7 @@
     "Frequência": 1,
     "Monetário": 509.78,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Mota Santos S.A."
   },
   {
@@ -1472,7 +1472,7 @@
     "Frequência": 3,
     "Monetário": 3413.84,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rui Cardoso"
   },
   {
@@ -1481,7 +1481,7 @@
     "Frequência": 4,
     "Monetário": 2987.25,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Gil Reis"
   },
   {
@@ -1490,7 +1490,7 @@
     "Frequência": 1,
     "Monetário": 543.11,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Andrade"
   },
   {
@@ -1499,7 +1499,7 @@
     "Frequência": 2,
     "Monetário": 841.75,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Santos"
   },
   {
@@ -1508,7 +1508,7 @@
     "Frequência": 4,
     "Monetário": 2231.35,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Fernandes Neto S.A."
   },
   {
@@ -1517,7 +1517,7 @@
     "Frequência": 1,
     "Monetário": 3009.58,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Marques"
   },
   {
@@ -1526,7 +1526,7 @@
     "Frequência": 5,
     "Monetário": 7039.03,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Frederico Rodrigues-Figueiredo"
   },
   {
@@ -1535,7 +1535,7 @@
     "Frequência": 3,
     "Monetário": 860.52,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Alícia Macedo"
   },
   {
@@ -1544,7 +1544,7 @@
     "Frequência": 1,
     "Monetário": 169.75,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Nascimento"
   },
   {
@@ -1553,7 +1553,7 @@
     "Frequência": 3,
     "Monetário": 2926.33,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Diana de Abreu"
   },
   {
@@ -1562,7 +1562,7 @@
     "Frequência": 1,
     "Monetário": 118.38,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Camila Pires"
   },
   {
@@ -1571,7 +1571,7 @@
     "Frequência": 2,
     "Monetário": 507.49,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Cruz Lda."
   },
   {
@@ -1580,7 +1580,7 @@
     "Frequência": 2,
     "Monetário": 1878.78,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Gonçalves"
   },
   {
@@ -1589,7 +1589,7 @@
     "Frequência": 3,
     "Monetário": 3570.34,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rodrigues Borges S.A."
   },
   {
@@ -1598,7 +1598,7 @@
     "Frequência": 1,
     "Monetário": 344.28,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Laura Matias"
   },
   {
@@ -1607,7 +1607,7 @@
     "Frequência": 1,
     "Monetário": 731.68,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Pacheco e Filhos"
   },
   {
@@ -1616,7 +1616,7 @@
     "Frequência": 1,
     "Monetário": 1350.63,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pilar Morais"
   },
   {
@@ -1625,7 +1625,7 @@
     "Frequência": 4,
     "Monetário": 1719.96,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Marques S/A"
   },
   {
@@ -1634,7 +1634,7 @@
     "Frequência": 1,
     "Monetário": 236.72,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Pacheco Lda."
   },
   {
@@ -1643,7 +1643,7 @@
     "Frequência": 1,
     "Monetário": 3433.01,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Victória Leal"
   },
   {
@@ -1652,7 +1652,7 @@
     "Frequência": 6,
     "Monetário": 4163.99,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Figueiredo"
   },
   {
@@ -1661,7 +1661,7 @@
     "Frequência": 1,
     "Monetário": 376.92,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Afonso Barros"
   },
   {
@@ -1670,7 +1670,7 @@
     "Frequência": 6,
     "Monetário": 7752.41,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Mateus Gomes"
   },
   {
@@ -1679,7 +1679,7 @@
     "Frequência": 1,
     "Monetário": 721.54,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Vicente"
   },
   {
@@ -1688,7 +1688,7 @@
     "Frequência": 3,
     "Monetário": 4164.35,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Sebastião Carvalho"
   },
   {
@@ -1697,7 +1697,7 @@
     "Frequência": 4,
     "Monetário": 2853.17,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Simão Carvalho-Matos"
   },
   {
@@ -1706,7 +1706,7 @@
     "Frequência": 3,
     "Monetário": 3119.58,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Barbosa Lda."
   },
   {
@@ -1715,7 +1715,7 @@
     "Frequência": 2,
     "Monetário": 4599.81,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Isabel Nascimento"
   },
   {
@@ -1724,7 +1724,7 @@
     "Frequência": 4,
     "Monetário": 6958.67,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Vieira"
   },
   {
@@ -1733,7 +1733,7 @@
     "Frequência": 4,
     "Monetário": 7338.74,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Domingues Miranda Lda."
   },
   {
@@ -1742,7 +1742,7 @@
     "Frequência": 2,
     "Monetário": 1369.4,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Soares"
   },
   {
@@ -1751,7 +1751,7 @@
     "Frequência": 1,
     "Monetário": 1030.47,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Costa Macedo Lda."
   },
   {
@@ -1760,7 +1760,7 @@
     "Frequência": 1,
     "Monetário": 1077.18,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Matos"
   },
   {
@@ -1769,16 +1769,16 @@
     "Frequência": 2,
     "Monetário": 3825.42,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Ramos"
   },
   {
     "ClienteID": 230,
     "Recência": 47,
     "Frequência": 3,
-    "Monetário": 3430.2099999999996,
+    "Monetário": 3430.21,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Nunes e Filhos"
   },
   {
@@ -1787,7 +1787,7 @@
     "Frequência": 1,
     "Monetário": 894.05,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Melo"
   },
   {
@@ -1796,7 +1796,7 @@
     "Frequência": 2,
     "Monetário": 2742.74,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Lourenço"
   },
   {
@@ -1805,7 +1805,7 @@
     "Frequência": 1,
     "Monetário": 307.69,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Moreira"
   },
   {
@@ -1814,7 +1814,7 @@
     "Frequência": 2,
     "Monetário": 1715.87,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rocha"
   },
   {
@@ -1823,7 +1823,7 @@
     "Frequência": 1,
     "Monetário": 644.49,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Machado"
   },
   {
@@ -1832,25 +1832,25 @@
     "Frequência": 3,
     "Monetário": 10566.89,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Marques"
   },
   {
     "ClienteID": 239,
     "Recência": 172,
     "Frequência": 2,
-    "Monetário": 1121.6399999999999,
+    "Monetário": 1121.64,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Xavier Barbosa"
   },
   {
     "ClienteID": 240,
     "Recência": 271,
     "Frequência": 2,
-    "Monetário": 1917.3400000000001,
+    "Monetário": 1917.34,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Salvador Neto"
   },
   {
@@ -1859,7 +1859,7 @@
     "Frequência": 3,
     "Monetário": 2657.38,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Letícia Gonçalves"
   },
   {
@@ -1868,7 +1868,7 @@
     "Frequência": 3,
     "Monetário": 5922.49,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Samuel Batista"
   },
   {
@@ -1877,7 +1877,7 @@
     "Frequência": 1,
     "Monetário": 500.49,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Machado"
   },
   {
@@ -1886,7 +1886,7 @@
     "Frequência": 1,
     "Monetário": 347.71,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Antunes Lda."
   },
   {
@@ -1895,7 +1895,7 @@
     "Frequência": 1,
     "Monetário": 3463.31,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Ricardo Andrade"
   },
   {
@@ -1904,7 +1904,7 @@
     "Frequência": 1,
     "Monetário": 354.45,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Nuno Brito"
   },
   {
@@ -1913,7 +1913,7 @@
     "Frequência": 2,
     "Monetário": 4128.94,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Tiago Araújo"
   },
   {
@@ -1922,7 +1922,7 @@
     "Frequência": 2,
     "Monetário": 3724.25,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Leonor Azevedo"
   },
   {
@@ -1931,16 +1931,16 @@
     "Frequência": 2,
     "Monetário": 3402.31,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nunes Barros S.A."
   },
   {
     "ClienteID": 252,
     "Recência": 321,
     "Frequência": 2,
-    "Monetário": 772.7800000000001,
+    "Monetário": 772.78,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rodrigo Moura"
   },
   {
@@ -1949,7 +1949,7 @@
     "Frequência": 2,
     "Monetário": 799.98,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Juliana Neves"
   },
   {
@@ -1958,7 +1958,7 @@
     "Frequência": 2,
     "Monetário": 5201.69,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Kelly Gonçalves-Faria"
   },
   {
@@ -1967,7 +1967,7 @@
     "Frequência": 1,
     "Monetário": 667.95,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Valentina Garcia"
   },
   {
@@ -1976,7 +1976,7 @@
     "Frequência": 1,
     "Monetário": 668.59,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Afonso Campos"
   },
   {
@@ -1985,7 +1985,7 @@
     "Frequência": 1,
     "Monetário": 805.66,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Batista Moreira e Filhos"
   },
   {
@@ -1994,7 +1994,7 @@
     "Frequência": 1,
     "Monetário": 482.18,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Castro Lda."
   },
   {
@@ -2003,16 +2003,16 @@
     "Frequência": 2,
     "Monetário": 3774.92,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Campos"
   },
   {
     "ClienteID": 260,
     "Recência": 67,
     "Frequência": 3,
-    "Monetário": 933.0699999999999,
+    "Monetário": 933.07,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Lima Magalhães S/A"
   },
   {
@@ -2021,7 +2021,7 @@
     "Frequência": 3,
     "Monetário": 2766.45,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Rui Jesus"
   },
   {
@@ -2030,7 +2030,7 @@
     "Frequência": 3,
     "Monetário": 5686.93,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Fabiana Carneiro-Figueiredo"
   },
   {
@@ -2039,7 +2039,7 @@
     "Frequência": 1,
     "Monetário": 1291.29,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Salvador do Castro"
   },
   {
@@ -2048,7 +2048,7 @@
     "Frequência": 1,
     "Monetário": 1013.13,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Kévim Garcia"
   },
   {
@@ -2057,16 +2057,16 @@
     "Frequência": 1,
     "Monetário": 220.65,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Ismael Castro"
   },
   {
     "ClienteID": 268,
     "Recência": 38,
     "Frequência": 4,
-    "Monetário": 7063.4800000000005,
+    "Monetário": 7063.48,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Ângelo Rodrigues"
   },
   {
@@ -2075,7 +2075,7 @@
     "Frequência": 5,
     "Monetário": 7379.87,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Nádia-Irina Leite"
   },
   {
@@ -2084,7 +2084,7 @@
     "Frequência": 5,
     "Monetário": 7062.88,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Lopes"
   },
   {
@@ -2093,16 +2093,16 @@
     "Frequência": 2,
     "Monetário": 3242.93,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Maia"
   },
   {
     "ClienteID": 273,
     "Recência": 317,
     "Frequência": 3,
-    "Monetário": 3706.7200000000003,
+    "Monetário": 3706.72,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Matos"
   },
   {
@@ -2111,7 +2111,7 @@
     "Frequência": 1,
     "Monetário": 727.97,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Adriana-Gabriela Vieira"
   },
   {
@@ -2120,7 +2120,7 @@
     "Frequência": 4,
     "Monetário": 4005.95,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "João Ferreira"
   },
   {
@@ -2129,7 +2129,7 @@
     "Frequência": 4,
     "Monetário": 8655.27,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Luísa Miranda"
   },
   {
@@ -2138,7 +2138,7 @@
     "Frequência": 2,
     "Monetário": 2491.74,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gabriel Valente-Garcia"
   },
   {
@@ -2147,7 +2147,7 @@
     "Frequência": 1,
     "Monetário": 2027.57,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Madalena de Martins"
   },
   {
@@ -2156,7 +2156,7 @@
     "Frequência": 5,
     "Monetário": 4487.29,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Marques S/A"
   },
   {
@@ -2165,7 +2165,7 @@
     "Frequência": 2,
     "Monetário": 2487.95,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nogueira"
   },
   {
@@ -2174,7 +2174,7 @@
     "Frequência": 3,
     "Monetário": 5136.46,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Rafael Lima"
   },
   {
@@ -2183,7 +2183,7 @@
     "Frequência": 3,
     "Monetário": 2080.96,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Matos"
   },
   {
@@ -2192,16 +2192,16 @@
     "Frequência": 3,
     "Monetário": 6326.85,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Campos Araújo Lda."
   },
   {
     "ClienteID": 288,
     "Recência": 503,
     "Frequência": 2,
-    "Monetário": 1386.1999999999998,
+    "Monetário": 1386.2,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Ariana Pereira"
   },
   {
@@ -2210,7 +2210,7 @@
     "Frequência": 2,
     "Monetário": 2989.37,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Paiva Figueiredo S/A"
   },
   {
@@ -2219,7 +2219,7 @@
     "Frequência": 1,
     "Monetário": 2339.76,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Loureiro"
   },
   {
@@ -2228,7 +2228,7 @@
     "Frequência": 1,
     "Monetário": 698.13,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Gonçalves Lda."
   },
   {
@@ -2237,16 +2237,16 @@
     "Frequência": 3,
     "Monetário": 1944.97,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Kyara Magalhães"
   },
   {
     "ClienteID": 293,
     "Recência": 267,
     "Frequência": 3,
-    "Monetário": 3914.1499999999996,
+    "Monetário": 3914.15,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Moreira"
   },
   {
@@ -2255,25 +2255,25 @@
     "Frequência": 2,
     "Monetário": 2943.34,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Martins Cruz e Filhos"
   },
   {
     "ClienteID": 295,
     "Recência": 31,
     "Frequência": 2,
-    "Monetário": 2152.6400000000003,
+    "Monetário": 2152.64,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Inês Lopes"
   },
   {
     "ClienteID": 296,
     "Recência": 92,
     "Frequência": 4,
-    "Monetário": 2867.1600000000003,
+    "Monetário": 2867.16,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Miranda Branco Lda."
   },
   {
@@ -2282,7 +2282,7 @@
     "Frequência": 4,
     "Monetário": 2934.59,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Mélanie Pires-Matos"
   },
   {
@@ -2291,7 +2291,7 @@
     "Frequência": 2,
     "Monetário": 2705.64,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Carneiro"
   },
   {
@@ -2300,7 +2300,7 @@
     "Frequência": 3,
     "Monetário": 4185.91,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cristiano Lourenço"
   },
   {
@@ -2309,7 +2309,7 @@
     "Frequência": 3,
     "Monetário": 3145.0,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Eduardo Silva"
   },
   {
@@ -2318,7 +2318,7 @@
     "Frequência": 1,
     "Monetário": 755.58,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Artur Lourenço"
   },
   {
@@ -2327,7 +2327,7 @@
     "Frequência": 4,
     "Monetário": 8726.26,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Teixeira Campos S/A"
   },
   {
@@ -2336,7 +2336,7 @@
     "Frequência": 1,
     "Monetário": 290.78,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Nair Barbosa"
   },
   {
@@ -2345,7 +2345,7 @@
     "Frequência": 3,
     "Monetário": 1724.91,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Fernando Vieira"
   },
   {
@@ -2354,7 +2354,7 @@
     "Frequência": 2,
     "Monetário": 1163.23,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Tavares"
   },
   {
@@ -2363,7 +2363,7 @@
     "Frequência": 1,
     "Monetário": 1715.07,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Eva Castro"
   },
   {
@@ -2372,7 +2372,7 @@
     "Frequência": 1,
     "Monetário": 2036.16,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Soares"
   },
   {
@@ -2381,16 +2381,16 @@
     "Frequência": 2,
     "Monetário": 2840.98,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gomes"
   },
   {
     "ClienteID": 310,
     "Recência": 9,
     "Frequência": 4,
-    "Monetário": 10718.880000000001,
+    "Monetário": 10718.88,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Mota Domingues S.A."
   },
   {
@@ -2399,7 +2399,7 @@
     "Frequência": 3,
     "Monetário": 2422.46,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Leonor Barbosa"
   },
   {
@@ -2408,7 +2408,7 @@
     "Frequência": 1,
     "Monetário": 2715.2,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Emanuel Faria"
   },
   {
@@ -2417,7 +2417,7 @@
     "Frequência": 3,
     "Monetário": 2507.94,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Moura"
   },
   {
@@ -2426,7 +2426,7 @@
     "Frequência": 1,
     "Monetário": 3080.85,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Fonseca Costa S/A"
   },
   {
@@ -2435,7 +2435,7 @@
     "Frequência": 3,
     "Monetário": 1467.07,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Lucas Neves"
   },
   {
@@ -2444,7 +2444,7 @@
     "Frequência": 2,
     "Monetário": 2093.33,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Ismael da Campos"
   },
   {
@@ -2453,7 +2453,7 @@
     "Frequência": 3,
     "Monetário": 2435.91,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Bruno Pacheco"
   },
   {
@@ -2462,7 +2462,7 @@
     "Frequência": 2,
     "Monetário": 280.55,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Henriques Lda."
   },
   {
@@ -2471,7 +2471,7 @@
     "Frequência": 3,
     "Monetário": 2544.42,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Vaz Castro Lda."
   },
   {
@@ -2480,7 +2480,7 @@
     "Frequência": 1,
     "Monetário": 1117.33,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Marques"
   },
   {
@@ -2489,7 +2489,7 @@
     "Frequência": 3,
     "Monetário": 5466.93,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Nuno Rocha"
   },
   {
@@ -2498,7 +2498,7 @@
     "Frequência": 2,
     "Monetário": 4649.28,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Melo"
   },
   {
@@ -2507,7 +2507,7 @@
     "Frequência": 1,
     "Monetário": 1422.04,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Fonseca"
   },
   {
@@ -2516,7 +2516,7 @@
     "Frequência": 4,
     "Monetário": 5535.64,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Magalhães"
   },
   {
@@ -2525,7 +2525,7 @@
     "Frequência": 4,
     "Monetário": 4632.52,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cunha e Filhos"
   },
   {
@@ -2534,7 +2534,7 @@
     "Frequência": 2,
     "Monetário": 6094.19,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Duarte Morais"
   },
   {
@@ -2543,7 +2543,7 @@
     "Frequência": 1,
     "Monetário": 300.21,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Matias Coelho S/A"
   },
   {
@@ -2552,7 +2552,7 @@
     "Frequência": 3,
     "Monetário": 4869.0,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pinho S.A."
   },
   {
@@ -2561,7 +2561,7 @@
     "Frequência": 5,
     "Monetário": 6376.26,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Barbosa"
   },
   {
@@ -2570,7 +2570,7 @@
     "Frequência": 2,
     "Monetário": 3204.14,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Mia Neto"
   },
   {
@@ -2579,7 +2579,7 @@
     "Frequência": 3,
     "Monetário": 3230.87,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Vieira S.A."
   },
   {
@@ -2588,7 +2588,7 @@
     "Frequência": 2,
     "Monetário": 2829.49,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Freitas"
   },
   {
@@ -2597,7 +2597,7 @@
     "Frequência": 3,
     "Monetário": 2943.25,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Nunes"
   },
   {
@@ -2606,7 +2606,7 @@
     "Frequência": 1,
     "Monetário": 2242.49,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Mélanie Borges"
   },
   {
@@ -2615,7 +2615,7 @@
     "Frequência": 1,
     "Monetário": 1536.16,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gabriela Fernandes"
   },
   {
@@ -2624,7 +2624,7 @@
     "Frequência": 4,
     "Monetário": 6207.12,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Baptista Pacheco Lda."
   },
   {
@@ -2633,7 +2633,7 @@
     "Frequência": 1,
     "Monetário": 142.05,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Vicente Pacheco Lda."
   },
   {
@@ -2642,7 +2642,7 @@
     "Frequência": 4,
     "Monetário": 1919.36,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Miranda"
   },
   {
@@ -2651,7 +2651,7 @@
     "Frequência": 1,
     "Monetário": 282.07,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Moreira Matos S/A"
   },
   {
@@ -2660,7 +2660,7 @@
     "Frequência": 1,
     "Monetário": 1152.27,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gomes S.A."
   },
   {
@@ -2669,7 +2669,7 @@
     "Frequência": 1,
     "Monetário": 1260.98,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nogueira"
   },
   {
@@ -2678,7 +2678,7 @@
     "Frequência": 4,
     "Monetário": 6067.89,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Sá Pacheco Lda."
   },
   {
@@ -2687,16 +2687,16 @@
     "Frequência": 7,
     "Monetário": 17186.99,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Emanuel Morais"
   },
   {
     "ClienteID": 349,
     "Recência": 6,
     "Frequência": 2,
-    "Monetário": 961.4300000000001,
+    "Monetário": 961.43,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Eva Lima"
   },
   {
@@ -2705,7 +2705,7 @@
     "Frequência": 1,
     "Monetário": 2412.83,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Lia Matias"
   },
   {
@@ -2714,7 +2714,7 @@
     "Frequência": 1,
     "Monetário": 3134.95,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Torres"
   },
   {
@@ -2723,7 +2723,7 @@
     "Frequência": 3,
     "Monetário": 5277.04,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Carneiro"
   },
   {
@@ -2732,7 +2732,7 @@
     "Frequência": 1,
     "Monetário": 357.31,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Soares S.A."
   },
   {
@@ -2741,7 +2741,7 @@
     "Frequência": 2,
     "Monetário": 2131.95,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Carvalho S.A."
   },
   {
@@ -2750,7 +2750,7 @@
     "Frequência": 2,
     "Monetário": 2636.88,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Miguel Antunes"
   },
   {
@@ -2759,7 +2759,7 @@
     "Frequência": 2,
     "Monetário": 785.24,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pedro Correia"
   },
   {
@@ -2768,7 +2768,7 @@
     "Frequência": 2,
     "Monetário": 929.47,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Francisca do Vicente"
   },
   {
@@ -2777,7 +2777,7 @@
     "Frequência": 2,
     "Monetário": 4694.28,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pilar Gonçalves"
   },
   {
@@ -2786,7 +2786,7 @@
     "Frequência": 2,
     "Monetário": 2498.91,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Lima"
   },
   {
@@ -2795,7 +2795,7 @@
     "Frequência": 2,
     "Monetário": 453.71,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Almeida"
   },
   {
@@ -2804,7 +2804,7 @@
     "Frequência": 3,
     "Monetário": 1345.95,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Luana-Francisca Abreu"
   },
   {
@@ -2813,16 +2813,16 @@
     "Frequência": 1,
     "Monetário": 1394.83,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Rodrigues S/A"
   },
   {
     "ClienteID": 366,
     "Recência": 147,
     "Frequência": 2,
-    "Monetário": 5247.379999999999,
+    "Monetário": 5247.38,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Naiara Castro"
   },
   {
@@ -2831,7 +2831,7 @@
     "Frequência": 1,
     "Monetário": 199.63,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Simões Lda."
   },
   {
@@ -2840,7 +2840,7 @@
     "Frequência": 3,
     "Monetário": 955.53,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Pinto"
   },
   {
@@ -2849,7 +2849,7 @@
     "Frequência": 2,
     "Monetário": 1861.15,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Núria de Costa"
   },
   {
@@ -2858,7 +2858,7 @@
     "Frequência": 1,
     "Monetário": 102.91,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Cunha Amorim S.A."
   },
   {
@@ -2867,7 +2867,7 @@
     "Frequência": 1,
     "Monetário": 623.72,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Vaz"
   },
   {
@@ -2876,16 +2876,16 @@
     "Frequência": 3,
     "Monetário": 2541.13,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Filipa Antunes"
   },
   {
     "ClienteID": 374,
     "Recência": 13,
     "Frequência": 5,
-    "Monetário": 5918.110000000001,
+    "Monetário": 5918.11,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Carneiro"
   },
   {
@@ -2894,16 +2894,16 @@
     "Frequência": 1,
     "Monetário": 631.97,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Nelson Ribeiro"
   },
   {
     "ClienteID": 376,
     "Recência": 173,
     "Frequência": 3,
-    "Monetário": 5077.6900000000005,
+    "Monetário": 5077.69,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cunha Nascimento e Filhos"
   },
   {
@@ -2912,7 +2912,7 @@
     "Frequência": 2,
     "Monetário": 1393.07,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Márcio Batista"
   },
   {
@@ -2921,7 +2921,7 @@
     "Frequência": 1,
     "Monetário": 3638.27,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Batista"
   },
   {
@@ -2930,7 +2930,7 @@
     "Frequência": 2,
     "Monetário": 2803.21,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nunes Marques Lda."
   },
   {
@@ -2939,7 +2939,7 @@
     "Frequência": 1,
     "Monetário": 1993.39,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Ema do Matos"
   },
   {
@@ -2948,7 +2948,7 @@
     "Frequência": 5,
     "Monetário": 5902.49,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Pinho Fonseca S.A."
   },
   {
@@ -2957,7 +2957,7 @@
     "Frequência": 1,
     "Monetário": 1460.21,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Juliana Gaspar"
   },
   {
@@ -2966,7 +2966,7 @@
     "Frequência": 1,
     "Monetário": 777.73,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Flor Correia"
   },
   {
@@ -2975,7 +2975,7 @@
     "Frequência": 5,
     "Monetário": 5601.82,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Nogueira S/A"
   },
   {
@@ -2984,7 +2984,7 @@
     "Frequência": 1,
     "Monetário": 1755.04,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gabriela do Azevedo"
   },
   {
@@ -2993,7 +2993,7 @@
     "Frequência": 2,
     "Monetário": 2281.76,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Isabela Castro-Campos"
   },
   {
@@ -3002,7 +3002,7 @@
     "Frequência": 1,
     "Monetário": 703.84,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Jaime Martins"
   },
   {
@@ -3011,7 +3011,7 @@
     "Frequência": 2,
     "Monetário": 1994.67,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Brito e Filhos"
   },
   {
@@ -3020,7 +3020,7 @@
     "Frequência": 2,
     "Monetário": 976.51,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Magalhães"
   },
   {
@@ -3029,7 +3029,7 @@
     "Frequência": 2,
     "Monetário": 4323.68,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Carminho Garcia"
   },
   {
@@ -3038,7 +3038,7 @@
     "Frequência": 6,
     "Monetário": 5549.41,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Mélanie Castro"
   },
   {
@@ -3047,7 +3047,7 @@
     "Frequência": 2,
     "Monetário": 3299.35,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Gustavo do Barros"
   },
   {
@@ -3056,7 +3056,7 @@
     "Frequência": 3,
     "Monetário": 3547.19,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Paiva S/A"
   },
   {
@@ -3065,7 +3065,7 @@
     "Frequência": 5,
     "Monetário": 4890.21,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Fernandes Carneiro S/A"
   },
   {
@@ -3074,16 +3074,16 @@
     "Frequência": 2,
     "Monetário": 1507.4,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Isabela Moreira"
   },
   {
     "ClienteID": 398,
     "Recência": 348,
     "Frequência": 5,
-    "Monetário": 3849.7799999999997,
+    "Monetário": 3849.78,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Ivan Coelho"
   },
   {
@@ -3092,7 +3092,7 @@
     "Frequência": 5,
     "Monetário": 4321.22,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Neto"
   },
   {
@@ -3101,7 +3101,7 @@
     "Frequência": 1,
     "Monetário": 409.52,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Andrade Rocha e Filhos"
   },
   {
@@ -3110,7 +3110,7 @@
     "Frequência": 1,
     "Monetário": 173.89,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Paulo da Figueiredo"
   },
   {
@@ -3119,7 +3119,7 @@
     "Frequência": 3,
     "Monetário": 3144.56,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Simões S/A"
   },
   {
@@ -3128,25 +3128,25 @@
     "Frequência": 1,
     "Monetário": 2310.86,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Lourenço Alves-Leal"
   },
   {
     "ClienteID": 405,
     "Recência": 11,
     "Frequência": 2,
-    "Monetário": 2779.8599999999997,
+    "Monetário": 2779.86,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Isabela Torres"
   },
   {
     "ClienteID": 406,
     "Recência": 313,
     "Frequência": 3,
-    "Monetário": 1951.8600000000001,
+    "Monetário": 1951.86,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Magalhães"
   },
   {
@@ -3155,7 +3155,7 @@
     "Frequência": 1,
     "Monetário": 740.5,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Amaral"
   },
   {
@@ -3164,7 +3164,7 @@
     "Frequência": 1,
     "Monetário": 2364.18,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Silva Lda."
   },
   {
@@ -3173,7 +3173,7 @@
     "Frequência": 2,
     "Monetário": 2310.45,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Freitas"
   },
   {
@@ -3182,7 +3182,7 @@
     "Frequência": 1,
     "Monetário": 1190.11,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Dinis Abreu"
   },
   {
@@ -3191,7 +3191,7 @@
     "Frequência": 2,
     "Monetário": 996.91,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Loureiro S/A"
   },
   {
@@ -3200,7 +3200,7 @@
     "Frequência": 2,
     "Monetário": 564.59,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Paiva"
   },
   {
@@ -3209,16 +3209,16 @@
     "Frequência": 1,
     "Monetário": 134.45,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Fernandes S.A."
   },
   {
     "ClienteID": 415,
     "Recência": 83,
     "Frequência": 5,
-    "Monetário": 7050.860000000001,
+    "Monetário": 7050.86,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Andrade S/A"
   },
   {
@@ -3227,7 +3227,7 @@
     "Frequência": 2,
     "Monetário": 1309.13,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Oliveira"
   },
   {
@@ -3236,16 +3236,16 @@
     "Frequência": 4,
     "Monetário": 6894.0,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Lucas Pereira"
   },
   {
     "ClienteID": 419,
     "Recência": 85,
     "Frequência": 2,
-    "Monetário": 975.8899999999999,
+    "Monetário": 975.89,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Vicente"
   },
   {
@@ -3254,7 +3254,7 @@
     "Frequência": 4,
     "Monetário": 2748.37,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Sérgio Nascimento-Fonseca"
   },
   {
@@ -3263,16 +3263,16 @@
     "Frequência": 2,
     "Monetário": 1066.91,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Inês Sá"
   },
   {
     "ClienteID": 422,
     "Recência": 354,
     "Frequência": 2,
-    "Monetário": 1431.1999999999998,
+    "Monetário": 1431.2,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Cláudio Torres"
   },
   {
@@ -3281,7 +3281,7 @@
     "Frequência": 5,
     "Monetário": 5730.82,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Alves S/A"
   },
   {
@@ -3290,7 +3290,7 @@
     "Frequência": 2,
     "Monetário": 4102.8,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Mota S.A."
   },
   {
@@ -3299,7 +3299,7 @@
     "Frequência": 2,
     "Monetário": 302.57,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Vieira Magalhães e Filhos"
   },
   {
@@ -3308,7 +3308,7 @@
     "Frequência": 2,
     "Monetário": 876.44,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Figueiredo"
   },
   {
@@ -3317,7 +3317,7 @@
     "Frequência": 1,
     "Monetário": 3390.42,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Tiago de Oliveira"
   },
   {
@@ -3326,7 +3326,7 @@
     "Frequência": 2,
     "Monetário": 1751.43,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Azevedo S.A."
   },
   {
@@ -3335,7 +3335,7 @@
     "Frequência": 1,
     "Monetário": 564.7,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Ângela Macedo"
   },
   {
@@ -3344,7 +3344,7 @@
     "Frequência": 1,
     "Monetário": 488.31,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Márcio Moura"
   },
   {
@@ -3353,7 +3353,7 @@
     "Frequência": 3,
     "Monetário": 2743.63,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Ariana Leite"
   },
   {
@@ -3362,7 +3362,7 @@
     "Frequência": 1,
     "Monetário": 314.77,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Ramos"
   },
   {
@@ -3371,7 +3371,7 @@
     "Frequência": 3,
     "Monetário": 4804.41,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Catarina Fernandes"
   },
   {
@@ -3380,7 +3380,7 @@
     "Frequência": 1,
     "Monetário": 2427.7,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Jorge Matos"
   },
   {
@@ -3389,16 +3389,16 @@
     "Frequência": 1,
     "Monetário": 1189.69,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Lucas Ferreira"
   },
   {
     "ClienteID": 437,
     "Recência": 177,
     "Frequência": 4,
-    "Monetário": 3115.8900000000003,
+    "Monetário": 3115.89,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pacheco"
   },
   {
@@ -3407,7 +3407,7 @@
     "Frequência": 2,
     "Monetário": 3264.5,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Araújo"
   },
   {
@@ -3416,7 +3416,7 @@
     "Frequência": 2,
     "Monetário": 1010.96,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Ismael Esteves-Anjos"
   },
   {
@@ -3425,7 +3425,7 @@
     "Frequência": 3,
     "Monetário": 3321.61,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Soares e Filhos"
   },
   {
@@ -3434,7 +3434,7 @@
     "Frequência": 1,
     "Monetário": 979.06,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Torres Vicente S/A"
   },
   {
@@ -3443,7 +3443,7 @@
     "Frequência": 3,
     "Monetário": 2054.35,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Carolina Torres"
   },
   {
@@ -3452,7 +3452,7 @@
     "Frequência": 2,
     "Monetário": 1938.49,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Leonor Coelho"
   },
   {
@@ -3461,34 +3461,34 @@
     "Frequência": 4,
     "Monetário": 7273.01,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Renata Gaspar"
   },
   {
     "ClienteID": 446,
     "Recência": 369,
     "Frequência": 4,
-    "Monetário": 4515.1900000000005,
+    "Monetário": 4515.19,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Benjamim Sousa"
   },
   {
     "ClienteID": 447,
     "Recência": 96,
     "Frequência": 5,
-    "Monetário": 4581.5599999999995,
+    "Monetário": 4581.56,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Clara-Alice Andrade"
   },
   {
     "ClienteID": 448,
     "Recência": 349,
     "Frequência": 2,
-    "Monetário": 1417.6299999999999,
+    "Monetário": 1417.63,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Cardoso Oliveira S.A."
   },
   {
@@ -3497,7 +3497,7 @@
     "Frequência": 2,
     "Monetário": 3252.9,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Isabel Paiva"
   },
   {
@@ -3506,7 +3506,7 @@
     "Frequência": 1,
     "Monetário": 1777.12,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Loureiro"
   },
   {
@@ -3515,7 +3515,7 @@
     "Frequência": 3,
     "Monetário": 3591.95,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Fernando Neves"
   },
   {
@@ -3524,7 +3524,7 @@
     "Frequência": 3,
     "Monetário": 1855.06,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Yasmin de Guerreiro"
   },
   {
@@ -3533,7 +3533,7 @@
     "Frequência": 3,
     "Monetário": 2976.36,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Eva Melo"
   },
   {
@@ -3542,7 +3542,7 @@
     "Frequência": 1,
     "Monetário": 1727.26,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Loureiro Lda."
   },
   {
@@ -3551,7 +3551,7 @@
     "Frequência": 1,
     "Monetário": 257.45,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Eduarda Costa"
   },
   {
@@ -3560,7 +3560,7 @@
     "Frequência": 2,
     "Monetário": 2000.67,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Silva"
   },
   {
@@ -3569,7 +3569,7 @@
     "Frequência": 1,
     "Monetário": 1661.48,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Matos e Filhos"
   },
   {
@@ -3578,7 +3578,7 @@
     "Frequência": 4,
     "Monetário": 3486.29,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Lisandro Abreu"
   },
   {
@@ -3587,7 +3587,7 @@
     "Frequência": 1,
     "Monetário": 1511.67,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Pinto"
   },
   {
@@ -3596,7 +3596,7 @@
     "Frequência": 1,
     "Monetário": 2427.07,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Hugo Castro"
   },
   {
@@ -3605,16 +3605,16 @@
     "Frequência": 3,
     "Monetário": 3298.55,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Catarina Pereira"
   },
   {
     "ClienteID": 464,
     "Recência": 43,
     "Frequência": 3,
-    "Monetário": 3894.5499999999997,
+    "Monetário": 3894.55,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Álvaro Mendes-Guerreiro"
   },
   {
@@ -3623,7 +3623,7 @@
     "Frequência": 1,
     "Monetário": 560.58,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Gonçalves Paiva S/A"
   },
   {
@@ -3632,7 +3632,7 @@
     "Frequência": 4,
     "Monetário": 5819.06,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Alexandra Garcia"
   },
   {
@@ -3641,7 +3641,7 @@
     "Frequência": 4,
     "Monetário": 10129.67,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pires Macedo S.A."
   },
   {
@@ -3650,7 +3650,7 @@
     "Frequência": 3,
     "Monetário": 1943.65,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Branco Macedo e Filhos"
   },
   {
@@ -3659,7 +3659,7 @@
     "Frequência": 1,
     "Monetário": 204.83,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "André Vieira"
   },
   {
@@ -3668,7 +3668,7 @@
     "Frequência": 1,
     "Monetário": 4123.53,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Gustavo Mota"
   },
   {
@@ -3677,7 +3677,7 @@
     "Frequência": 2,
     "Monetário": 3109.56,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Miranda Costa S.A."
   },
   {
@@ -3686,7 +3686,7 @@
     "Frequência": 2,
     "Monetário": 2801.62,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Micael Gaspar"
   },
   {
@@ -3695,16 +3695,16 @@
     "Frequência": 2,
     "Monetário": 1414.39,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Diego Cruz"
   },
   {
     "ClienteID": 475,
     "Recência": 129,
     "Frequência": 4,
-    "Monetário": 4726.870000000001,
+    "Monetário": 4726.87,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pereira"
   },
   {
@@ -3713,7 +3713,7 @@
     "Frequência": 3,
     "Monetário": 4256.09,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Pereira"
   },
   {
@@ -3722,16 +3722,16 @@
     "Frequência": 1,
     "Monetário": 655.47,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Torres"
   },
   {
     "ClienteID": 478,
     "Recência": 114,
     "Frequência": 4,
-    "Monetário": 3673.2599999999998,
+    "Monetário": 3673.26,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "André Leal"
   },
   {
@@ -3740,16 +3740,16 @@
     "Frequência": 1,
     "Monetário": 510.88,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Emília-Caetana Martins"
   },
   {
     "ClienteID": 480,
     "Recência": 177,
     "Frequência": 3,
-    "Monetário": 6224.0599999999995,
+    "Monetário": 6224.06,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Valente"
   },
   {
@@ -3758,16 +3758,16 @@
     "Frequência": 1,
     "Monetário": 2755.98,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Lopes"
   },
   {
     "ClienteID": 482,
     "Recência": 563,
     "Frequência": 3,
-    "Monetário": 5821.5599999999995,
+    "Monetário": 5821.56,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Nunes"
   },
   {
@@ -3776,7 +3776,7 @@
     "Frequência": 3,
     "Monetário": 4306.83,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Cunha Henriques e Filhos"
   },
   {
@@ -3785,16 +3785,16 @@
     "Frequência": 1,
     "Monetário": 260.51,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Rocha Lda."
   },
   {
     "ClienteID": 485,
     "Recência": 399,
     "Frequência": 2,
-    "Monetário": 334.09000000000003,
+    "Monetário": 334.09,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Maia S.A."
   },
   {
@@ -3803,7 +3803,7 @@
     "Frequência": 2,
     "Monetário": 861.97,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Faria"
   },
   {
@@ -3812,16 +3812,16 @@
     "Frequência": 1,
     "Monetário": 291.22,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Soraia Cunha"
   },
   {
     "ClienteID": 489,
     "Recência": 179,
     "Frequência": 2,
-    "Monetário": 1808.4299999999998,
+    "Monetário": 1808.43,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Nascimento"
   },
   {
@@ -3830,16 +3830,16 @@
     "Frequência": 1,
     "Monetário": 513.65,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Paiva S/A"
   },
   {
     "ClienteID": 491,
     "Recência": 295,
     "Frequência": 2,
-    "Monetário": 1942.7399999999998,
+    "Monetário": 1942.74,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Barbosa Lda."
   },
   {
@@ -3848,7 +3848,7 @@
     "Frequência": 3,
     "Monetário": 2595.89,
     "Cluster": 2,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Clientes Valiosos",
     "Nome": "Faria Lda."
   },
   {
@@ -3857,7 +3857,7 @@
     "Frequência": 1,
     "Monetário": 610.18,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Henriques Domingues S.A."
   },
   {
@@ -3866,7 +3866,7 @@
     "Frequência": 1,
     "Monetário": 640.63,
     "Cluster": 0,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Em Risco",
     "Nome": "Reis Barbosa Lda."
   },
   {
@@ -3875,7 +3875,7 @@
     "Frequência": 6,
     "Monetário": 5639.45,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Costa"
   },
   {
@@ -3884,7 +3884,7 @@
     "Frequência": 1,
     "Monetário": 2636.61,
     "Cluster": 3,
-    "Segmento": "Clientes Perdidos",
+    "Segmento": "Clientes Regulares",
     "Nome": "Luca Simões"
   },
   {
@@ -3893,16 +3893,16 @@
     "Frequência": 3,
     "Monetário": 6795.47,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Isabel Matias"
   },
   {
     "ClienteID": 500,
     "Recência": 222,
     "Frequência": 4,
-    "Monetário": 6381.540000000001,
+    "Monetário": 6381.54,
     "Cluster": 1,
-    "Segmento": "Clientes Principais",
+    "Segmento": "Campeões",
     "Nome": "Afonso Gonçalves-Melo"
   }
 ]
