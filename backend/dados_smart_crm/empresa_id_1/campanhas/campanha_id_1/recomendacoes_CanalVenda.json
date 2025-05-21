@@ -1,0 +1,24 @@
+[
+  {
+    "antecedents": [
+      "Loja Física"
+    ],
+    "consequents": [
+      "Online"
+    ],
+    "support": 0.426,
+    "confidence": 0.619,
+    "lift": 0.839
+  },
+  {
+    "antecedents": [
+      "Online"
+    ],
+    "consequents": [
+      "Loja Física"
+    ],
+    "support": 0.426,
+    "confidence": 0.578,
+    "lift": 0.839
+  }
+]

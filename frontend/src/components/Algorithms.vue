@@ -32,7 +32,7 @@
                             <option disabled value="">-- Escolha um algoritmo --</option>
                             <option value="rfm">Segmentação RFM</option>
                             <option value="churn">Previsão de Churn</option>
-                            <option value="recomendacao">Recomendação</option>
+                            <option value="recommendation">Recomendação</option>
                         </select>
                     </div>
                 </div>
@@ -64,6 +64,10 @@
                         A <strong>Previsão de Churn</strong> estima a probabilidade de um cliente deixar de interagir ou
                         comprar.
                     </p>
+                    <p v-else-if="selectedAlgorithm === 'recommendation'" class="text-sm text-gray-700">
+                        A <strong>Recomendação de Cross-Selling</strong> identifica produtos frequentemente comprados juntos,
+                        usando análise de regras de associação (Apriori).
+                    </p>
                 </div>
 
                 <div v-if="errorMessage" class="text-red-600 font-medium mt-4">
@@ -79,8 +83,8 @@
                     <ChurnResults v-if="selectedAlgorithm === 'churn'" :results="results" :descricao="descricao"
                         :campanha-id="selectedCampaignId" />
 
-                    <RecommendResults v-else-if="selectedAlgorithm === 'recomendacao'" :empresa-id="empresaId"
-                        :campanha-id="selectedCampaignId" />
+                    <RecommendResults v-else-if="selectedAlgorithm === 'recommendation'" :results="results" :descricao="descricao" 
+                        :empresa-id="empresaId" :campanha-id="selectedCampaignId" />
 
                 </div>
             </div>
@@ -182,10 +186,12 @@ const esperarResultados = async (tentativas = 0) => {
 
         const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
         const isChurnOk = selectedAlgorithm.value === 'churn' && res.data?.estatisticas
+        const isRecOk   = selectedAlgorithm.value === 'recommendation' && Array.isArray(res.data) //dif?
 
-        if (isRfmOk || isChurnOk) {
+        if (isRfmOk || isChurnOk || isRecOk) {
             results.value = res.data
-            descricao.value = res.data.descricao || ''
+            descricao.value = selectedAlgorithm.value === 'recommendation' ? '' : (res.data.descricao || '')
+            // descricao.value = res.data.descricao || ''
             showResults.value = true
 
             const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
@@ -221,6 +227,7 @@ const esperarResultados = async (tentativas = 0) => {
 
 const fetchResults = async () => {
     if (!selectedCampaignId.value || !selectedAlgorithm.value) return
+
     loading.value = true
     errorMessage.value = ''
     results.value = []
@@ -246,6 +253,14 @@ const fetchResults = async () => {
             }
             results.value = res.data
             descricao.value = res.data.descricao || ''
+        } else if (selectedAlgorithm.value === 'recommendation') {
+            if (!Array.isArray(res.data)) {
+                toast.error('O algoritmo ainda não foi executado para esta campanha.')
+                loading.value = false
+                return
+            }
+            results.value = res.data
+            descricao.value = ''
         }
 
         showResults.value = true
@@ -259,7 +274,6 @@ const fetchResults = async () => {
             scatterClientes.value = resScatterClientes.data || []
 
             const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
-
             scatterRegioes.value = resScatterRegioes.data || []
         }
 
@@ -274,6 +288,7 @@ const fetchResults = async () => {
         loading.value = false
     }
 }
+
 
 watch([selectedCampaignId, selectedAlgorithm], () => {
     valid.value = false

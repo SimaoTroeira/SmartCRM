@@ -1,0 +1,104 @@
+[
+  {
+    "antecedents": [
+      "Sub B",
+      "Sub A"
+    ],
+    "consequents": [
+      "Sub C"
+    ],
+    "support": 0.122,
+    "confidence": 0.552,
+    "lift": 0.874
+  },
+  {
+    "antecedents": [
+      "Sub A"
+    ],
+    "consequents": [
+      "Sub C"
+    ],
+    "support": 0.327,
+    "confidence": 0.546,
+    "lift": 0.865
+  },
+  {
+    "antecedents": [
+      "Sub B"
+    ],
+    "consequents": [
+      "Sub C"
+    ],
+    "support": 0.228,
+    "confidence": 0.538,
+    "lift": 0.852
+  },
+  {
+    "antecedents": [
+      "Sub B",
+      "Sub C"
+    ],
+    "consequents": [
+      "Sub A"
+    ],
+    "support": 0.122,
+    "confidence": 0.535,
+    "lift": 0.894
+  },
+  {
+    "antecedents": [
+      "Sub B"
+    ],
+    "consequents": [
+      "Sub A"
+    ],
+    "support": 0.221,
+    "confidence": 0.522,
+    "lift": 0.871
+  },
+  {
+    "antecedents": [
+      "Sub C"
+    ],
+    "consequents": [
+      "Sub A"
+    ],
+    "support": 0.327,
+    "confidence": 0.518,
+    "lift": 0.865
+  },
+  {
+    "antecedents": [
+      "Sub A",
+      "Sub C"
+    ],
+    "consequents": [
+      "Sub B"
+    ],
+    "support": 0.122,
+    "confidence": 0.373,
+    "lift": 0.88
+  },
+  {
+    "antecedents": [
+      "Sub A"
+    ],
+    "consequents": [
+      "Sub B"
+    ],
+    "support": 0.221,
+    "confidence": 0.369,
+    "lift": 0.871
+  },
+  {
+    "antecedents": [
+      "Sub C"
+    ],
+    "consequents": [
+      "Sub B"
+    ],
+    "support": 0.228,
+    "confidence": 0.361,
+    "lift": 0.852
+  }
+]

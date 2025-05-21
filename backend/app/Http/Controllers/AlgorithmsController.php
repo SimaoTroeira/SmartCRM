@@ -21,6 +21,7 @@ class AlgorithmsController extends Controller
         $scriptMap = [
             'rfm' => 'rfm_segmentation.py',
             'churn' => 'churn_prediction.py',
+            'recommendation' => 'recomendacao.py',
         ];
 
         if (!array_key_exists($algoritmo, $scriptMap)) {
@@ -51,6 +52,7 @@ class AlgorithmsController extends Controller
         $filenameMap = [
             'rfm' => 'resultados_rfm.json',
             'churn' => 'resultados_churn.json',
+            'recommendation' => 'recomendacoes_produto.json',
         ];
 
         if (!isset($filenameMap[$algoritmo])) {
@@ -85,6 +87,9 @@ class AlgorithmsController extends Controller
                 'clientes' => 'clientes_churn.json',
                 'estatisticas' => 'estatisticas_churn.json',
             ],
+            'recommendation' => [
+                'produto' => 'recomendacoes_produto.json'
+            ],
             // outros algoritmos no futuro
         ];
 
@@ -110,6 +115,10 @@ class AlgorithmsController extends Controller
     public function verificarColunas($campanhaId, Request $request)
     {
         $algoritmo = $request->query('algoritmo', 'rfm'); // default para RFM
+
+        if ($algoritmo === 'recomendacao') {
+            $algoritmo = 'recommendation';
+        }
 
         $requisitosPorAlgoritmo = [
             'rfm' => [
@@ -139,6 +148,14 @@ class AlgorithmsController extends Controller
                 'vendas.json' => [
                     ['ClienteID'],
                     ['DataVenda'],
+                ],
+            ],
+            'recommendation' => [
+                'vendas.json' => [
+                    ['ClienteID'],
+                ],
+                'produtos.json' => [
+                    ['ProdutoID'],
                 ],
             ],
         ];

@@ -1,0 +1,275 @@
+[
+  {
+    "antecedents": [
+      "Vestuário",
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Alimentação"
+    ],
+    "support": 0.065,
+    "confidence": 0.444,
+    "lift": 0.946
+  },
+  {
+    "antecedents": [
+      "Serviços",
+      "Vestuário"
+    ],
+    "consequents": [
+      "Alimentação"
+    ],
+    "support": 0.06,
+    "confidence": 0.433,
+    "lift": 0.922
+  },
+  {
+    "antecedents": [
+      "Serviços"
+    ],
+    "consequents": [
+      "Alimentação"
+    ],
+    "support": 0.175,
+    "confidence": 0.429,
+    "lift": 0.913
+  },
+  {
+    "antecedents": [
+      "Eletrónica"
+    ],
+    "consequents": [
+      "Alimentação"
+    ],
+    "support": 0.101,
+    "confidence": 0.427,
+    "lift": 0.909
+  },
+  {
+    "antecedents": [
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Alimentação"
+    ],
+    "support": 0.159,
+    "confidence": 0.421,
+    "lift": 0.895
+  },
+  {
+    "antecedents": [
+      "Serviços",
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.053,
+    "confidence": 0.418,
+    "lift": 1.061
+  },
+  {
+    "antecedents": [
+      "Vestuário"
+    ],
+    "consequents": [
+      "Alimentação"
+    ],
+    "support": 0.161,
+    "confidence": 0.409,
+    "lift": 0.871
+  },
+  {
+    "antecedents": [
+      "Alimentação",
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.065,
+    "confidence": 0.406,
+    "lift": 1.03
+  },
+  {
+    "antecedents": [
+      "Alimentação",
+      "Vestuário"
+    ],
+    "consequents": [
+      "Mobiliário"
+    ],
+    "support": 0.065,
+    "confidence": 0.4,
+    "lift": 1.059
+  },
+  {
+    "antecedents": [
+      "Eletrónica"
+    ],
+    "consequents": [
+      "Serviços"
+    ],
+    "support": 0.092,
+    "confidence": 0.388,
+    "lift": 0.952
+  },
+  {
+    "antecedents": [
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.145,
+    "confidence": 0.384,
+    "lift": 0.975
+  },
+  {
+    "antecedents": [
+      "Serviços",
+      "Vestuário"
+    ],
+    "consequents": [
+      "Mobiliário"
+    ],
+    "support": 0.053,
+    "confidence": 0.383,
+    "lift": 1.014
+  },
+  {
+    "antecedents": [
+      "Alimentação"
+    ],
+    "consequents": [
+      "Serviços"
+    ],
+    "support": 0.175,
+    "confidence": 0.373,
+    "lift": 0.913
+  },
+  {
+    "antecedents": [
+      "Alimentação",
+      "Vestuário"
+    ],
+    "consequents": [
+      "Serviços"
+    ],
+    "support": 0.06,
+    "confidence": 0.371,
+    "lift": 0.911
+  },
+  {
+    "antecedents": [
+      "Vestuário"
+    ],
+    "consequents": [
+      "Mobiliário"
+    ],
+    "support": 0.145,
+    "confidence": 0.368,
+    "lift": 0.975
+  },
+  {
+    "antecedents": [
+      "Vestuário",
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Serviços"
+    ],
+    "support": 0.053,
+    "confidence": 0.365,
+    "lift": 0.895
+  },
+  {
+    "antecedents": [
+      "Vestuário"
+    ],
+    "consequents": [
+      "Serviços"
+    ],
+    "support": 0.138,
+    "confidence": 0.351,
+    "lift": 0.86
+  },
+  {
+    "antecedents": [
+      "Alimentação"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.161,
+    "confidence": 0.343,
+    "lift": 0.871
+  },
+  {
+    "antecedents": [
+      "Alimentação",
+      "Serviços"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.06,
+    "confidence": 0.342,
+    "lift": 0.868
+  },
+  {
+    "antecedents": [
+      "Serviços"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.138,
+    "confidence": 0.339,
+    "lift": 0.86
+  },
+  {
+    "antecedents": [
+      "Alimentação"
+    ],
+    "consequents": [
+      "Mobiliário"
+    ],
+    "support": 0.159,
+    "confidence": 0.338,
+    "lift": 0.895
+  },
+  {
+    "antecedents": [
+      "Mobiliário"
+    ],
+    "consequents": [
+      "Serviços"
+    ],
+    "support": 0.127,
+    "confidence": 0.335,
+    "lift": 0.822
+  },
+  {
+    "antecedents": [
+      "Serviços"
+    ],
+    "consequents": [
+      "Mobiliário"
+    ],
+    "support": 0.127,
+    "confidence": 0.311,
+    "lift": 0.822
+  },
+  {
+    "antecedents": [
+      "Eletrónica"
+    ],
+    "consequents": [
+      "Vestuário"
+    ],
+    "support": 0.071,
+    "confidence": 0.301,
+    "lift": 0.764
+  }
+]
