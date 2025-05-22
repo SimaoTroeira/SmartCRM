@@ -1,6 +1,20 @@
 <template>
     <div>
-        <Scatter v-if="modo === 'clientes'" :data="chartData" :options="chartOptions" />
+        <!-- Checkboxes por cluster -->
+        <div class="checkboxes">
+            <label v-for="(visivel, nome) in gruposVisiveis" :key="nome"
+                :style="{ backgroundColor: coresFixas[nome] || '#ccc' }">
+                <input type="checkbox" v-model="gruposVisiveis[nome]" />
+                {{ nome }}
+            </label>
+
+        </div>
+
+        <!-- Gráfico -->
+        <Scatter ref="chartComponent" v-if="modo === 'clientes'" :data="chartData" :options="chartOptions" />
+
+        <!-- Botão de reset -->
+        <button @click="resetZoom">Repor Zoom</button>
     </div>
 </template>
 
@@ -15,8 +29,9 @@ import {
     PointElement,
     LinearScale
 } from 'chart.js'
+import zoomPlugin from 'chartjs-plugin-zoom'
 
-ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale, zoomPlugin)
 
 const props = defineProps({
     scatterClientes: Array,
@@ -24,6 +39,8 @@ const props = defineProps({
 })
 
 const modo = ref('clientes')
+const chartComponent = ref(null)
+const gruposVisiveis = ref({})
 
 const coresFixas = {
     "Campeões": "#8e44ad",
@@ -36,8 +53,6 @@ const coresFixas = {
     "Inativos": "#95a5a6"
 }
 
-
-
 const datasets = computed(() => {
     const grupos = {}
     const dadosOrigem = modo.value === 'clientes' ? props.scatterClientes : props.scatterRegioes
@@ -48,16 +63,49 @@ const datasets = computed(() => {
             : (ponto.ProdutoMaisComprado || `Grupo ${i}`)
 
         if (!grupos[grupo]) grupos[grupo] = []
-        grupos[grupo].push({ x: ponto.x, y: ponto.y, ...ponto })
+        grupos[grupo].push({
+            x: ponto.x,
+            y: ponto.y,
+            r: Math.max(8, ponto.r * 60),
+            ...ponto
+        })
+
+        // Inicializa os checkboxes se ainda não tiverem valor
+        if (!(grupo in gruposVisiveis.value)) {
+            gruposVisiveis.value[grupo] = true
+        }
     })
 
-    return Object.entries(grupos).map(([label, data]) => ({
-        label,
-        data,
-        backgroundColor: coresFixas[label] || '#ccc'
-    }))
-})
+    return Object.entries(grupos)
+        .filter(([label]) => gruposVisiveis.value[label])
+        .map(([label, data]) => {
+            const maxR = Math.max(...data.map(p => p.r))
+            const minR = Math.min(...data.map(p => p.r))
+            const escala = 14
+            const minimoVisual = 4
 
+            return {
+                label,
+                data,
+                backgroundColor: coresFixas[label] || '#ccc',
+                pointStyle: 'circle',
+                parsing: false,
+                showLine: false,
+                clip: false, // <- Isto é o importante
+                pointRadius: ctx => {
+                    const p = ctx.raw
+                    const normalizado = (p.r - minR) / (maxR - minR || 1)
+                    return Math.max(minimoVisual, normalizado * escala)
+                },
+                pointHoverRadius: ctx => {
+                    const p = ctx.raw
+                    const normalizado = (p.r - minR) / (maxR - minR || 1)
+                    return Math.max(minimoVisual + 1, normalizado * escala + 2)
+                }
+            }
+
+        })
+})
 
 const chartData = computed(() => ({
     datasets: datasets.value
@@ -67,7 +115,7 @@ const chartOptions = computed(() => ({
     responsive: true,
     plugins: {
         legend: {
-            position: 'top'
+            display: false // ⛔ desativa legenda original
         },
         tooltip: {
             callbacks: {
@@ -82,55 +130,78 @@ const chartOptions = computed(() => ({
                     if (p.ProdutoMaisComprado) linhas.push(`Produto: ${p.ProdutoMaisComprado}`)
                     if (p.Categoria) linhas.push(`Categoria: ${p.Categoria}`)
                     if (p.Marca) linhas.push(`Marca: ${p.Marca}`)
-
-                    // Ocultamos x/y e mostramos só RFM
                     if (p.Recência !== undefined) linhas.push(`Recência: ${p.Recência} dias`)
                     if (p.Frequência !== undefined) linhas.push(`Frequência: ${p.Frequência}`)
                     if (p.Monetário !== undefined) linhas.push(`Monetário: €${p.Monetário}`)
-
                     return linhas
                 }
             }
+        },
+        zoom: {
+            pan: {
+                enabled: true,
+                mode: 'xy',
+            },
+            zoom: {
+                wheel: { enabled: true },
+                pinch: { enabled: true },
+                mode: 'xy'
+            }
         }
+
     },
     scales: {
         x: {
-            type: 'linear',
-            position: 'bottom',
-            title: {
-                display: true,
-                text: 'Valor Monetário/Frequência'
-            },
             min: -0.1,
             max: 1.1,
-            ticks: {
-                stepSize: 0.1
+            title: {
+                display: true,
+                text: 'Valor Monetário (normalizado)'
             },
-            grid: {
-                color: '#e0e0e0'
-            }
+            ticks: { stepSize: 0.1 },
+            grid: { color: '#e0e0e0' }
         },
         y: {
+            min: -0.1,
+            max: 1.1,
             title: {
                 display: true,
                 text: 'Recência'
             },
-            min: -0.1,
-            max: 1.1,
-            ticks: {
-                stepSize: 0.1
-            },
-            grid: {
-                color: '#e0e0e0'
-            }
+            ticks: { stepSize: 0.1 },
+            grid: { color: '#e0e0e0' }
         }
     }
-
-
 }))
+
+function resetZoom() {
+    if (chartComponent.value?.chart?.resetZoom) {
+        chartComponent.value.chart.resetZoom()
+    }
+}
 </script>
 
 <style scoped>
+.checkboxes {
+    margin: 10px auto 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* centraliza no container */
+    gap: 10px;
+}
+
+.checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: white;
+    font-size: 0.9rem;
+}
+
 select {
     border: 1px solid #ccc;
     padding: 4px;

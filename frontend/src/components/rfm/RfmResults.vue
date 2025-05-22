@@ -17,13 +17,26 @@
           <option value="clientes">Clientes</option>
           <option value="regioes">Regiões</option>
         </select>
+
+        <!-- Submodo para clientes -->
+        <div v-if="modoVisualizacao === 'clientes'" class="flex items-center gap-2">
+          <label class="font-medium text-sm">Tipo de gráfico:</label>
+          <select v-model="submodoClientes" class="form-control border px-2 py-1 text-sm rounded w-48">
+            <option value="normal">Gráfico Normal</option>
+            <option value="pca">Gráfico PCA</option>
+            <option value="radar">Gráfico Radar</option>
+          </select>
+        </div>
       </div>
 
-      <ScatterPlot v-if="modoVisualizacao === 'clientes'" :scatter-clientes="scatterClientes"
-        :scatter-regioes="scatterRegioes" />
-      <RegioesBarChart v-else :scatter-regioes="scatterRegioes" />
+      <ScatterPlot v-if="modoVisualizacao === 'clientes' && submodoClientes === 'normal'"
+        :scatter-clientes="scatterClientes" :scatter-regioes="scatterRegioes" />
+      <ScatterPlotPCA v-if="modoVisualizacao === 'clientes' && submodoClientes === 'pca'"
+        :scatter-clientes="scatterClientes" />
+      <RadarPlot v-if="modoVisualizacao === 'clientes' && submodoClientes === 'radar'"
+        :scatter-clientes="scatterClientes" />
+      <RegioesBarChart v-else-if="modoVisualizacao === 'regioes'" :scatter-regioes="scatterRegioes" />
     </div>
-
 
     <!-- Clientes Segmentados -->
     <div class="card-resultados">
@@ -72,10 +85,9 @@
         </table>
       </div>
     </div>
+
     <!-- Tabela Resumo -->
     <div class="card-resultados">
-
-
       <h3 class="text-xl font-semibold mb-3 text-blue-700">Tabela</h3>
       <p class="text-sm text-gray-600 mb-2">Apresenta dados estatísticos por cluster.</p>
       <p class="text-sm text-gray-500 mb-4">{{ descricao }}</p>
@@ -105,6 +117,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 import ScatterPlot from './ScatterPlot.vue'
+import ScatterPlotPCA from './ScatterPlotPCA.vue'
+import RadarPlot from './RadarPlot.vue'
 import RegioesBarChart from './RegioesBarChart.vue'
 
 const segmentoFiltro = ref('')
@@ -113,6 +127,7 @@ const ordemCrescente = ref(true)
 const limiteLinhas = ref(10)
 
 const modoVisualizacao = ref('clientes')
+const submodoClientes = ref('normal')
 
 const props = defineProps({
   results: Array,
@@ -122,18 +137,27 @@ const props = defineProps({
   scatterRegioes: Array
 })
 
-const tituloVisualizacao = computed(() =>
-  modoVisualizacao.value === 'clientes'
-    ? '📌 Dispersão dos Clientes'
-    : '🌍 Produtos Mais Comprados por Região'
-)
+const tituloVisualizacao = computed(() => {
+  if (modoVisualizacao.value === 'clientes') {
+    if (submodoClientes.value === 'pca') return '🎯 Gráfico de Dispersão PCA'
+    if (submodoClientes.value === 'radar') return '📊 Comparação Média dos Segmentos (Radar)'
+    return '📌 Dispersão dos Clientes'
+  }
+  return '🌍 Produtos Mais Comprados por Região'
+})
 
-const descricaoVisualizacao = computed(() =>
-  modoVisualizacao.value === 'clientes'
-    ? 'Este gráfico mostra agrupamentos de clientes com base nos seus padrões de compra. A posição horizontal e vertical representa combinações de recência, frequência e valor monetário (RFM). Clientes próximos entre si tendem a ter comportamentos semelhantes. A direção vertical tende a refletir otempo desde a última compra. A horizontal, o valor e frequência das compras.'
-    : 'Este gráfico mostra as regiões com os produtos mais comprados. Cada barra representa a região e o seu produto mais popular, com base no volume e valor de vendas. As cores nas barras indicam a proporção de clientes pertencentes a diferentes segmentos(como Campeões, Em Risco, etc.).'
-)
-
+const descricaoVisualizacao = computed(() => {
+  if (modoVisualizacao.value === 'clientes') {
+    if (submodoClientes.value === 'pca') {
+      return 'Este gráfico aplica Análise de Componentes Principais (PCA) para condensar múltiplas variáveis dos clientes em dois eixos principais — PCA 1 e PCA 2. Estes eixos representam as direções de maior variação nos dados, facilitando a visualização de padrões e agrupamentos complexos. As cores indicam os segmentos atribuídos, e a posição dos pontos reflete semelhanças de comportamento entre os clientes.'
+    }
+    if (submodoClientes.value === 'radar') {
+      return 'Este gráfico mostra a média de Recência, Frequência e Valor Monetário para cada segmento, permitindo comparar o perfil médio de cada grupo de clientes de forma visual e intuitiva.'
+    }
+    return 'Este gráfico mostra agrupamentos de clientes com base nos seus padrões de compra através da segmentação RFM. A direção vertical tende a refletir o tempo desde a última compra. A horizontal, o valor das compras. O tamanho dos pontos representa a frequência de compras, enquanto as cores representam diferentes segmentos de clientes (como Campeões, Em Risco, etc.).'
+  }
+  return 'Este gráfico mostra as regiões com os produtos mais comprados. Cada barra representa a região e o seu produto mais popular, com base no volume e valor de vendas. As cores nas barras indicam a proporção de clientes pertencentes a diferentes segmentos (como Campeões, Em Risco, etc.).'
+})
 
 const nomeColunasCluster = {
   Cluster: "Cluster",
@@ -196,10 +220,8 @@ function resetarOrdenacao() {
 const dadosProntos = computed(() => {
   return props.results.length && props.clientesSegmentados.length
 })
-
-
-
 </script>
+
 
 <style scoped>
 .controles-tabela-clientes {
@@ -243,7 +265,6 @@ const dadosProntos = computed(() => {
   min-height: 500px;
   background-color: #fff;
 }
-
 
 .tooltip-box {
   background-color: white;

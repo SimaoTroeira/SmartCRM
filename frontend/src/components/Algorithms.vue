@@ -137,7 +137,18 @@ const fetchCampaigns = async () => {
 }
 
 onMounted(() => {
-    fetchCampaigns()
+    fetchCampaigns().then(() => {
+        const campanhaGuardada = localStorage.getItem('selectedCampaignId')
+        const algoritmoGuardado = localStorage.getItem('selectedAlgorithm')
+
+        if (campanhaGuardada && campaigns.value.find(c => c.id === parseInt(campanhaGuardada))) {
+            selectedCampaignId.value = parseInt(campanhaGuardada)
+        }
+
+        if (algoritmoGuardado && ['rfm', 'churn', 'recommendation'].includes(algoritmoGuardado)) {
+            selectedAlgorithm.value = algoritmoGuardado
+        }
+    })
 })
 
 const handleValid = (value) => {
@@ -298,6 +309,15 @@ watch([selectedCampaignId, selectedAlgorithm], () => {
     showResults.value = false
     clientesSegmentados.value = []
 })
+
+watch(selectedCampaignId, (novo) => {
+    localStorage.setItem('selectedCampaignId', novo || '')
+})
+
+watch(selectedAlgorithm, (novo) => {
+    localStorage.setItem('selectedAlgorithm', novo || '')
+})
+
 </script>
 
 <style scoped>
