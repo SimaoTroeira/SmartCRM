@@ -139,8 +139,8 @@ const props = defineProps({
 
 const tituloVisualizacao = computed(() => {
   if (modoVisualizacao.value === 'clientes') {
-    if (submodoClientes.value === 'pca') return '🎯 Gráfico de Dispersão PCA'
-    if (submodoClientes.value === 'radar') return '📊 Comparação Média dos Segmentos (Radar)'
+    if (submodoClientes.value === 'pca') return '🎯 Dispersão dos Clientes com PCA'
+    if (submodoClientes.value === 'radar') return '📊 Comparação Média dos Segmentos'
     return '📌 Dispersão dos Clientes'
   }
   return '🌍 Produtos Mais Comprados por Região'
@@ -149,7 +149,7 @@ const tituloVisualizacao = computed(() => {
 const descricaoVisualizacao = computed(() => {
   if (modoVisualizacao.value === 'clientes') {
     if (submodoClientes.value === 'pca') {
-      return 'Este gráfico aplica Análise de Componentes Principais (PCA) para condensar múltiplas variáveis dos clientes em dois eixos principais — PCA 1 e PCA 2. Estes eixos representam as direções de maior variação nos dados, facilitando a visualização de padrões e agrupamentos complexos. As cores indicam os segmentos atribuídos, e a posição dos pontos reflete semelhanças de comportamento entre os clientes.'
+      return 'Este gráfico aplica Análise de Componentes Principais (PCA) para condensar múltiplas variáveis dos clientes em dois eixos principais — PCA 1 e PCA 2. Estes eixos representam as direções de maior variação nos dados, facilitando a visualização de padrões e agrupamentos complexos. Clientes com comportamentos semelhantes estão mais próximos entre si.'
     }
     if (submodoClientes.value === 'radar') {
       return 'Este gráfico mostra a média de Recência, Frequência e Valor Monetário para cada segmento, permitindo comparar o perfil médio de cada grupo de clientes de forma visual e intuitiva.'

@@ -1,19 +1,30 @@
 <template>
-  <div>
-    <!-- Checkboxes por cluster -->
-    <div class="checkboxes">
-      <label
-        v-for="(visivel, nome) in gruposVisiveis"
-        :key="nome"
-        :style="{ backgroundColor: coresFixas[nome] || '#ccc' }"
-      >
-        <input type="checkbox" v-model="gruposVisiveis[nome]" />
-        {{ nome }}
-      </label>
+  <div class="radar-container">
+    <!-- Top bar com botão e checkboxes -->
+    <div class="top-bar">
+      <div class="toolbar-row">
+        <button @click="resetZoom" class="btn-reset">Repor Zoom</button>
+
+        <div class="checkboxes">
+          <label v-for="(visivel, nome) in gruposVisiveis" :key="nome"
+            :style="{ backgroundColor: coresFixas[nome] || '#ccc' }">
+            <input type="checkbox" v-model="gruposVisiveis[nome]" />
+            {{ nome }}
+          </label>
+        </div>
+      </div>
     </div>
 
     <!-- Gráfico -->
-    <Scatter v-if="modo === 'clientes'" :data="chartData" :options="chartOptions" />
+    <Scatter ref="chartComponent" :data="chartData" :options="chartOptions" />
+
+    <!-- Legenda abaixo do gráfico -->
+    <div class="legend-info">
+      <p><strong>PCA 1</strong>: Representa a direção com maior variância explicada entre as variáveis analisadas.</p>
+      <p><strong>PCA 2</strong>: Representa uma direção ortogonal à primeira, capturando a segunda maior variação nos
+        dados.</p>
+    </div>
+
   </div>
 </template>
 
@@ -28,14 +39,15 @@ import {
   PointElement,
   LinearScale
 } from 'chart.js'
+import zoomPlugin from 'chartjs-plugin-zoom'
 
-ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale, zoomPlugin)
 
 const props = defineProps({
   scatterClientes: Array
 })
 
-const modo = ref('clientes')
+const chartComponent = ref(null)
 const gruposVisiveis = ref({})
 
 const coresFixas = {
@@ -71,7 +83,8 @@ const datasets = computed(() => {
     .map(([label, data]) => ({
       label,
       data,
-      backgroundColor: coresFixas[label] || '#ccc'
+      backgroundColor: coresFixas[label] || '#ccc',
+      pointStyle: 'circle'
     }))
 })
 
@@ -81,6 +94,10 @@ const chartData = computed(() => ({
 
 const chartOptions = computed(() => ({
   responsive: true,
+  animation: {
+    duration: 700,
+    easing: 'easeOutQuart'
+  },
   plugins: {
     legend: { display: false },
     tooltip: {
@@ -99,40 +116,103 @@ const chartOptions = computed(() => ({
           return linhas
         }
       }
+    },
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: 'xy'
+      },
+      zoom: {
+        wheel: { enabled: true },
+        pinch: { enabled: true },
+        mode: 'xy'
+      },
+      limits: {
+        x: { min: -1, max: 2 },
+        y: { min: -1, max: 2 }
+      }
     }
   },
   scales: {
     x: {
-      title: {
-        display: true,
-        text: 'PCA 1 (aplicado às variáveis de frequência e monetário)'
-      },
       min: -0.1,
       max: 1.1,
-      ticks: { stepSize: 0.1 },
+      title: {
+        display: true,
+        text: 'PCA 1'
+      },
       grid: { color: '#e0e0e0' }
     },
     y: {
-      title: {
-        display: true,
-        text: 'PCA 2 (aplicado à variável de recência)'
-      },
       min: -0.1,
       max: 1.1,
-      ticks: { stepSize: 0.1 },
+      title: {
+        display: true,
+        text: 'PCA 2'
+      },
       grid: { color: '#e0e0e0' }
     }
   }
 }))
+
+function resetZoom() {
+  if (chartComponent.value?.chart?.resetZoom) {
+    chartComponent.value.chart.resetZoom()
+  }
+}
 </script>
 
 <style scoped>
-.checkboxes {
-  margin: 10px auto 20px;
+.radar-container {
+  max-width: 900px;
+  margin: 0 auto;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.legend-info {
+  font-size: 0.75rem;
+  color: #555;
+  background-color: #f8f8f8;
+  padding: 8px 16px;
+  border-left: 4px solid #2563eb;
+  border-radius: 4px;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: 90%;
+  /* ocupa a largura do gráfico */
+  max-width: 900px;
+  /* mesmo valor que o radar-container */
+  margin-top: 14px;
+  /* espaço entre gráfico e legenda */
+}
+
+
+.legend-info p {
+  margin: 4px 0;
+}
+
+.top-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+}
+
+.checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .checkboxes label {
@@ -144,5 +224,22 @@ const chartOptions = computed(() => ({
   font-weight: bold;
   color: white;
   font-size: 0.9rem;
+}
+
+.btn-reset {
+  background-color: #fff;
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  height: 36px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-reset:hover {
+  background-color: #e0ecff;
 }
 </style>
