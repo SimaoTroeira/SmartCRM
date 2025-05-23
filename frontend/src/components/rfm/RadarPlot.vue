@@ -9,7 +9,11 @@
 
         </div>
 
-        <Radar :data="radarData" :options="radarOptions" />
+        <!-- Gráfico com moldura -->
+        <div class="radar-box">
+            <Radar :data="radarData" :options="radarOptions" />
+        </div>
+
     </div>
 </template>
 
@@ -138,10 +142,13 @@ const radarOptions = {
 
 <style scoped>
 .radar-container {
-    max-width: 700px;
-    height: 480px;
-    margin: 0 auto;
+  max-width: 900px; /* mesmo valor dos outros gráficos */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 
 .checkboxes {
     display: flex;
@@ -161,4 +168,18 @@ const radarOptions = {
     border-radius: 6px;
     color: #fff;
 }
+
+.radar-box {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  width: 100%;
+  height: 400px; /* ou 480px se preferires mais altura */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
