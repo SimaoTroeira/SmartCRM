@@ -94,6 +94,7 @@ class AlgorithmsController extends Controller
         ];
 
         if (!isset($map[$algoritmo][$tipo])) {
+            Log::warning("Algoritmo ou tipo inválido: algoritmo={$algoritmo}, tipo={$tipo}");
             return response()->json(['error' => 'Tipo ou algoritmo inválido.'], 400);
         }
 
@@ -103,11 +104,23 @@ class AlgorithmsController extends Controller
         $basePath = config('smartcrm.storage_path');
         $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $map[$algoritmo][$tipo];
 
+        Log::info("A verificar ficheiro complementar em: {$jsonPath}");
+
         if (!File::exists($jsonPath)) {
+            Log::warning("Ficheiro não encontrado em: {$jsonPath}");
             return response()->json(['message' => 'Ficheiro ainda não disponível.'], 202);
         }
 
-        return response()->json(json_decode(File::get($jsonPath), true));
+        $conteudo = File::get($jsonPath);
+        Log::info("Conteúdo lido (primeiros 200 caracteres): " . substr($conteudo, 0, 200));
+
+        $data = json_decode($conteudo, true);
+
+        if (empty($data)) {
+            Log::warning("Ficheiro lido com sucesso, mas sem dados interpretáveis. Caminho: {$jsonPath}");
+        }
+
+        return response()->json($data);
     }
 
 
@@ -171,6 +184,7 @@ class AlgorithmsController extends Controller
 
         $basePath = config('smartcrm.storage_path');
         $dadosPath = $basePath . "/empresa_id_{$empresaId}/dados_importados";
+        // $dadosPath = $dadosPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/dados_importados";
 
         if (!File::exists($dadosPath)) {
             return response()->json(['error' => 'Pasta de dados não encontrada.'], 404);

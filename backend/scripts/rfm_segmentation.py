@@ -206,46 +206,39 @@ def salvar_resultados(rfm, agrupado, campanha_path, usar_recency, metodo_usado):
 
 def gerar_clusters_json_com_pontos(rfm, rfm_scaled, campanha_path):
     try:
-        pca = PCA(n_components=2)
-        pontos = pca.fit_transform(rfm_scaled)
-
-        x_vals = pontos[:, 0]
-        y_vals = pontos[:, 1]
-
-        x_min, x_max = x_vals.min(), x_vals.max()
-        y_min, y_max = y_vals.min(), y_vals.max()
-
-        x_norm = (x_vals - x_min) / (x_max - x_min)
-        y_norm = (y_vals - y_min) / (y_max - y_min)
-
         dados_clientes = rfm.copy()
-        dados_clientes["x"] = x_norm
-        dados_clientes["y"] = y_norm
 
+        # --- Normalização para gráfico padrão (x, y, r) ---
+        dados_clientes["x"] = (rfm["Monetário"] - rfm["Monetário"].min()) / (rfm["Monetário"].max() - rfm["Monetário"].min())
+        dados_clientes["y"] = (rfm["Recência"].max() - rfm["Recência"]) / (rfm["Recência"].max() - rfm["Recência"].min())
+
+        frequencia_norm = (rfm["Frequência"] - rfm["Frequência"].min()) / (rfm["Frequência"].max() - rfm["Frequência"].min())
+        dados_clientes["r"] = frequencia_norm.apply(lambda v: max(0.1, np.sqrt(v)))
+
+        # --- PCA (x_pca, y_pca) com normalização 0-1 ---
+        pca = PCA(n_components=2)
+        pontos_pca = pca.fit_transform(rfm_scaled)
+
+        x_pca = pontos_pca[:, 0]
+        y_pca = pontos_pca[:, 1]
+
+        dados_clientes["x_pca"] = (x_pca - x_pca.min()) / (x_pca.max() - x_pca.min())
+        dados_clientes["y_pca"] = (y_pca - y_pca.min()) / (y_pca.max() - y_pca.min())
+
+        # --- Exportar JSON com todos os campos ---
         colunas_exportar = [
-            "ClienteID",
-            "Nome",
-            "Cluster",
-            "Segmento",
-            "Recência",
-            "Frequência",
-            "Monetário",
-            "x",
-            "y",
+            "ClienteID", "Nome", "Cluster", "Segmento",
+            "Recência", "Frequência", "Monetário",
+            "x", "y", "r",
+            "x_pca", "y_pca"
         ]
-        if all(c in dados_clientes.columns for c in colunas_exportar):
-            dados_clientes = dados_clientes[colunas_exportar]
+        dados_clientes = dados_clientes[colunas_exportar]
 
         clusters_json_path = campanha_path / "clusters.json"
         with open(clusters_json_path, "w", encoding="utf-8") as f:
-            json.dump(
-                dados_clientes.to_dict(orient="records"),
-                f,
-                indent=2,
-                ensure_ascii=False,
-            )
+            json.dump(dados_clientes.to_dict(orient="records"), f, indent=2, ensure_ascii=False)
 
-        print(" Ficheiro clusters.json criado com x e y normalizados entre 0 e 1.")
+        print("Ficheiro clusters.json criado com eixos normais e PCA incluídos.")
 
     except Exception as e:
         print(f"[ERRO ao gerar clusters.json]: {e}")

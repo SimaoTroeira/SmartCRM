@@ -87,4 +87,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/algoritmos/resultados/{campanhaId}', [AlgorithmsController::class, 'obterResultadoPrincipal']);
     Route::get('/algoritmos/resultados_complementares/{campanhaId}', [AlgorithmsController::class, 'obterResultadoComplementar']);
     Route::get('/algoritmos/verificar_colunas/{campanhaId}', [AlgorithmsController::class, 'verificarColunas']);
+
 });
