@@ -86,7 +86,8 @@ class AlgorithmsController extends Controller
                 'clientes' => 'clientes_churn.json',
             ],
             'recommendation' => [
-                'produto' => 'recomendacoes_produto.json'
+                'produto' => 'recomendacoes_produto.json',
+                'atributos'  => 'recomendacoes_attr.json',
             ],
         ];
 
