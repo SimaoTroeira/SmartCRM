@@ -101,11 +101,10 @@ class AlgorithmsController extends Controller
         $campanha = Campaign::with('company')->findOrFail($campanhaId);
         $empresaId = $campanha->company->id;
 
-        $basePath = config('smartcrm.storage_path');
-        $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $map[$algoritmo][$tipo];
+        $basePath  = config('smartcrm.storage_path');
+        $jsonPath  = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/{$map[$algoritmo][$tipo]}";
 
         Log::info("A verificar ficheiro complementar em: {$jsonPath}");
-
         if (!File::exists($jsonPath)) {
             Log::warning("Ficheiro não encontrado em: {$jsonPath}");
             return response()->json(['message' => 'Ficheiro ainda não disponível.'], 202);
@@ -113,13 +112,10 @@ class AlgorithmsController extends Controller
 
         $conteudo = File::get($jsonPath);
         Log::info("Conteúdo lido (primeiros 200 caracteres): " . substr($conteudo, 0, 200));
-
         $data = json_decode($conteudo, true);
-
         if (empty($data)) {
             Log::warning("Ficheiro lido com sucesso, mas sem dados interpretáveis. Caminho: {$jsonPath}");
         }
-
         return response()->json($data);
     }
 

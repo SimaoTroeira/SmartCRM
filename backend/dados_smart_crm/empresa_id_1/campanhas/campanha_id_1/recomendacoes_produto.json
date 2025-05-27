@@ -1,0 +1,112 @@
+[
+  {
+    "antecedents": [
+      "32"
+    ],
+    "consequents": [
+      "1"
+    ],
+    "support": 0.007,
+    "confidence": 0.25,
+    "lift": 5.425
+  },
+  {
+    "antecedents": [
+      "7"
+    ],
+    "consequents": [
+      "28"
+    ],
+    "support": 0.012,
+    "confidence": 0.25,
+    "lift": 4.932
+  },
+  {
+    "antecedents": [
+      "11"
+    ],
+    "consequents": [
+      "45"
+    ],
+    "support": 0.007,
+    "confidence": 0.231,
+    "lift": 4.552
+  },
+  {
+    "antecedents": [
+      "11"
+    ],
+    "consequents": [
+      "33"
+    ],
+    "support": 0.007,
+    "confidence": 0.231,
+    "lift": 4.355
+  },
+  {
+    "antecedents": [
+      "28"
+    ],
+    "consequents": [
+      "7"
+    ],
+    "support": 0.012,
+    "confidence": 0.227,
+    "lift": 4.932
+  },
+  {
+    "antecedents": [
+      "8"
+    ],
+    "consequents": [
+      "30"
+    ],
+    "support": 0.009,
+    "confidence": 0.222,
+    "lift": 3.326
+  },
+  {
+    "antecedents": [
+      "15"
+    ],
+    "consequents": [
+      "49"
+    ],
+    "support": 0.007,
+    "confidence": 0.214,
+    "lift": 4.227
+  },
+  {
+    "antecedents": [
+      "46"
+    ],
+    "consequents": [
+      "30"
+    ],
+    "support": 0.007,
+    "confidence": 0.214,
+    "lift": 3.207
+  },
+  {
+    "antecedents": [
+      "4"
+    ],
+    "consequents": [
+      "12"
+    ],
+    "support": 0.007,
+    "confidence": 0.214,
+    "lift": 3.1
+  },
+  {
+    "antecedents": [
+      "47"
+    ],
+    "consequents": [
+      "25"
+    ],
+    "support": 0.009,
+    "confidence": 0.211,
+    "lift": 3.046
+  }
+]

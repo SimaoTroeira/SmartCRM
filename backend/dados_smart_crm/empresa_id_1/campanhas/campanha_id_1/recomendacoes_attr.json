@@ -1,0 +1,3226 @@
+{
+  "DataVenda": [],
+  "CanalVenda": [
+    {
+      "antecedents": [
+        "Loja Física"
+      ],
+      "consequents": [
+        "Online"
+      ],
+      "support": 0.426,
+      "confidence": 0.619,
+      "lift": 0.839
+    },
+    {
+      "antecedents": [
+        "Online"
+      ],
+      "consequents": [
+        "Loja Física"
+      ],
+      "support": 0.426,
+      "confidence": 0.578,
+      "lift": 0.839
+    }
+  ],
+  "LocalVenda": [
+    {
+      "antecedents": [
+        "Vizela"
+      ],
+      "consequents": [
+        "Leiria"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 16.909
+    },
+    {
+      "antecedents": [
+        "Leiria"
+      ],
+      "consequents": [
+        "Vizela"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 16.909
+    }
+  ],
+  "NomeProduto": [
+    {
+      "antecedents": [
+        "Exercitationem Eletrónica"
+      ],
+      "consequents": [
+        "Esse Serviços"
+      ],
+      "support": 0.012,
+      "confidence": 0.385,
+      "lift": 3.629
+    },
+    {
+      "antecedents": [
+        "Expedita Mobiliário"
+      ],
+      "consequents": [
+        "Alias Alimentação"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 5.425
+    },
+    {
+      "antecedents": [
+        "Facere Mobiliário"
+      ],
+      "consequents": [
+        "Quam Vestuário"
+      ],
+      "support": 0.012,
+      "confidence": 0.25,
+      "lift": 4.932
+    },
+    {
+      "antecedents": [
+        "Exercitationem Eletrónica"
+      ],
+      "consequents": [
+        "Dignissimos Serviços"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 4.355
+    },
+    {
+      "antecedents": [
+        "Quam Vestuário"
+      ],
+      "consequents": [
+        "Facere Mobiliário"
+      ],
+      "support": 0.012,
+      "confidence": 0.227,
+      "lift": 4.932
+    },
+    {
+      "antecedents": [
+        "Perferendis Serviços"
+      ],
+      "consequents": [
+        "Fugiat Eletrónica"
+      ],
+      "support": 0.009,
+      "confidence": 0.222,
+      "lift": 3.326
+    },
+    {
+      "antecedents": [
+        "Sit Eletrónica"
+      ],
+      "consequents": [
+        "Esse Serviços"
+      ],
+      "support": 0.009,
+      "confidence": 0.222,
+      "lift": 2.097
+    },
+    {
+      "antecedents": [
+        "Placeat Serviços"
+      ],
+      "consequents": [
+        "Facere Vestuário"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 4.227
+    },
+    {
+      "antecedents": [
+        "Architecto Alimentação"
+      ],
+      "consequents": [
+        "Fugiat Eletrónica"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 3.207
+    },
+    {
+      "antecedents": [
+        "Repellendus Vestuário"
+      ],
+      "consequents": [
+        "Doloremque Mobiliário"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 3.1
+    },
+    {
+      "antecedents": [
+        "Consequuntur Mobiliário"
+      ],
+      "consequents": [
+        "Consequuntur Alimentação"
+      ],
+      "support": 0.009,
+      "confidence": 0.211,
+      "lift": 3.046
+    }
+  ],
+  "Categoria": [
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário",
+        "Vestuário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.007,
+      "confidence": 1.0,
+      "lift": 2.127
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.014,
+      "confidence": 0.75,
+      "lift": 1.596
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.021,
+      "confidence": 0.643,
+      "lift": 1.368
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.041,
+      "confidence": 0.581,
+      "lift": 1.235
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.039,
+      "confidence": 0.567,
+      "lift": 1.206
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.014,
+      "confidence": 0.545,
+      "lift": 1.16
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.021,
+      "confidence": 0.529,
+      "lift": 1.344
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.021,
+      "confidence": 0.5,
+      "lift": 1.323
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Vestuário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 1.323
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Mobiliário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 1.269
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.023,
+      "confidence": 0.476,
+      "lift": 1.209
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.032,
+      "confidence": 0.467,
+      "lift": 1.184
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.032,
+      "confidence": 0.452,
+      "lift": 1.195
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.041,
+      "confidence": 0.45,
+      "lift": 0.957
+    },
+    {
+      "antecedents": [
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.065,
+      "confidence": 0.444,
+      "lift": 0.946
+    },
+    {
+      "antecedents": [
+        "Serviços",
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.023,
+      "confidence": 0.435,
+      "lift": 0.925
+    },
+    {
+      "antecedents": [
+        "Serviços",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.06,
+      "confidence": 0.433,
+      "lift": 0.922
+    },
+    {
+      "antecedents": [
+        "Serviços"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.175,
+      "confidence": 0.429,
+      "lift": 0.913
+    },
+    {
+      "antecedents": [
+        "Eletrónica"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.101,
+      "confidence": 0.427,
+      "lift": 0.909
+    },
+    {
+      "antecedents": [
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.159,
+      "confidence": 0.421,
+      "lift": 0.895
+    },
+    {
+      "antecedents": [
+        "Serviços",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.053,
+      "confidence": 0.418,
+      "lift": 1.061
+    },
+    {
+      "antecedents": [
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.161,
+      "confidence": 0.409,
+      "lift": 0.871
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.041,
+      "confidence": 0.409,
+      "lift": 1.038
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.041,
+      "confidence": 0.409,
+      "lift": 1.003
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.065,
+      "confidence": 0.406,
+      "lift": 1.03
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.065,
+      "confidence": 0.4,
+      "lift": 1.059
+    },
+    {
+      "antecedents": [
+        "Eletrónica"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.092,
+      "confidence": 0.388,
+      "lift": 0.952
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.039,
+      "confidence": 0.386,
+      "lift": 1.022
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Vestuário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.023,
+      "confidence": 0.385,
+      "lift": 1.018
+    },
+    {
+      "antecedents": [
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.145,
+      "confidence": 0.384,
+      "lift": 0.975
+    },
+    {
+      "antecedents": [
+        "Serviços",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.053,
+      "confidence": 0.383,
+      "lift": 1.014
+    },
+    {
+      "antecedents": [
+        "Serviços",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Alimentação"
+      ],
+      "support": 0.048,
+      "confidence": 0.382,
+      "lift": 0.812
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Alimentação",
+        "Vestuário"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 2.325
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 0.952
+    },
+    {
+      "antecedents": [
+        "Alimentação"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.175,
+      "confidence": 0.373,
+      "lift": 0.913
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.06,
+      "confidence": 0.371,
+      "lift": 0.911
+    },
+    {
+      "antecedents": [
+        "Vestuário"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.145,
+      "confidence": 0.368,
+      "lift": 0.975
+    },
+    {
+      "antecedents": [
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.053,
+      "confidence": 0.365,
+      "lift": 0.895
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.023,
+      "confidence": 0.357,
+      "lift": 0.876
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.025,
+      "confidence": 0.355,
+      "lift": 0.87
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.014,
+      "confidence": 0.353,
+      "lift": 0.865
+    },
+    {
+      "antecedents": [
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.138,
+      "confidence": 0.351,
+      "lift": 0.86
+    },
+    {
+      "antecedents": [
+        "Alimentação"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.161,
+      "confidence": 0.343,
+      "lift": 0.871
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Serviços"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.06,
+      "confidence": 0.342,
+      "lift": 0.868
+    },
+    {
+      "antecedents": [
+        "Serviços"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.138,
+      "confidence": 0.339,
+      "lift": 0.86
+    },
+    {
+      "antecedents": [
+        "Alimentação"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.159,
+      "confidence": 0.338,
+      "lift": 0.895
+    },
+    {
+      "antecedents": [
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.127,
+      "confidence": 0.335,
+      "lift": 0.822
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Serviços"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.014,
+      "confidence": 0.333,
+      "lift": 0.882
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Serviços"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.014,
+      "confidence": 0.333,
+      "lift": 0.846
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.014,
+      "confidence": 0.333,
+      "lift": 0.817
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário",
+        "Vestuário",
+        "Alimentação"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.007,
+      "confidence": 0.333,
+      "lift": 0.817
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.021,
+      "confidence": 0.321,
+      "lift": 1.354
+    },
+    {
+      "antecedents": [
+        "Serviços"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.127,
+      "confidence": 0.311,
+      "lift": 0.822
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.048,
+      "confidence": 0.304,
+      "lift": 0.746
+    },
+    {
+      "antecedents": [
+        "Eletrónica"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.071,
+      "confidence": 0.301,
+      "lift": 0.764
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Alimentação",
+        "Vestuário"
+      ],
+      "support": 0.021,
+      "confidence": 0.3,
+      "lift": 1.86
+    },
+    {
+      "antecedents": [
+        "Mobiliário",
+        "Vestuário",
+        "Serviços",
+        "Alimentação"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.264
+    },
+    {
+      "antecedents": [
+        "Eletrónica"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.069,
+      "confidence": 0.291,
+      "lift": 0.771
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "support": 0.021,
+      "confidence": 0.29,
+      "lift": 1.826
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.014,
+      "confidence": 0.286,
+      "lift": 1.204
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Serviços"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.048,
+      "confidence": 0.276,
+      "lift": 0.731
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços"
+      ],
+      "consequents": [
+        "Vestuário"
+      ],
+      "support": 0.025,
+      "confidence": 0.275,
+      "lift": 0.698
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.715
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Serviços",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Mobiliário"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 0.722
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.018,
+      "confidence": 0.267,
+      "lift": 0.654
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.041,
+      "confidence": 0.257,
+      "lift": 1.083
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Mobiliário"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.039,
+      "confidence": 0.246,
+      "lift": 1.038
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Serviços"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.041,
+      "confidence": 0.237,
+      "lift": 0.998
+    },
+    {
+      "antecedents": [
+        "Alimentação",
+        "Vestuário",
+        "Serviços"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.014,
+      "confidence": 0.231,
+      "lift": 0.972
+    },
+    {
+      "antecedents": [
+        "Serviços"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.092,
+      "confidence": 0.226,
+      "lift": 0.952
+    },
+    {
+      "antecedents": [
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.032,
+      "confidence": 0.222,
+      "lift": 0.936
+    },
+    {
+      "antecedents": [
+        "Alimentação"
+      ],
+      "consequents": [
+        "Eletrónica"
+      ],
+      "support": 0.101,
+      "confidence": 0.216,
+      "lift": 0.909
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Alimentação",
+        "Serviços"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.224
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "consequents": [
+        "Serviços"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 0.525
+    },
+    {
+      "antecedents": [
+        "Eletrónica",
+        "Alimentação"
+      ],
+      "consequents": [
+        "Mobiliário",
+        "Vestuário"
+      ],
+      "support": 0.021,
+      "confidence": 0.205,
+      "lift": 1.409
+    }
+  ],
+  "Subcategoria": [
+    {
+      "antecedents": [
+        "Sub A",
+        "Sub B"
+      ],
+      "consequents": [
+        "Sub C"
+      ],
+      "support": 0.122,
+      "confidence": 0.552,
+      "lift": 0.874
+    },
+    {
+      "antecedents": [
+        "Sub A"
+      ],
+      "consequents": [
+        "Sub C"
+      ],
+      "support": 0.327,
+      "confidence": 0.546,
+      "lift": 0.865
+    },
+    {
+      "antecedents": [
+        "Sub B"
+      ],
+      "consequents": [
+        "Sub C"
+      ],
+      "support": 0.228,
+      "confidence": 0.538,
+      "lift": 0.852
+    },
+    {
+      "antecedents": [
+        "Sub C",
+        "Sub B"
+      ],
+      "consequents": [
+        "Sub A"
+      ],
+      "support": 0.122,
+      "confidence": 0.535,
+      "lift": 0.894
+    },
+    {
+      "antecedents": [
+        "Sub B"
+      ],
+      "consequents": [
+        "Sub A"
+      ],
+      "support": 0.221,
+      "confidence": 0.522,
+      "lift": 0.871
+    },
+    {
+      "antecedents": [
+        "Sub C"
+      ],
+      "consequents": [
+        "Sub A"
+      ],
+      "support": 0.327,
+      "confidence": 0.518,
+      "lift": 0.865
+    },
+    {
+      "antecedents": [
+        "Sub A",
+        "Sub C"
+      ],
+      "consequents": [
+        "Sub B"
+      ],
+      "support": 0.122,
+      "confidence": 0.373,
+      "lift": 0.88
+    },
+    {
+      "antecedents": [
+        "Sub A"
+      ],
+      "consequents": [
+        "Sub B"
+      ],
+      "support": 0.221,
+      "confidence": 0.369,
+      "lift": 0.871
+    },
+    {
+      "antecedents": [
+        "Sub C"
+      ],
+      "consequents": [
+        "Sub B"
+      ],
+      "support": 0.228,
+      "confidence": 0.361,
+      "lift": 0.852
+    },
+    {
+      "antecedents": [
+        "Sub B"
+      ],
+      "consequents": [
+        "Sub A",
+        "Sub C"
+      ],
+      "support": 0.122,
+      "confidence": 0.288,
+      "lift": 0.88
+    },
+    {
+      "antecedents": [
+        "Sub A"
+      ],
+      "consequents": [
+        "Sub C",
+        "Sub B"
+      ],
+      "support": 0.122,
+      "confidence": 0.204,
+      "lift": 0.894
+    }
+  ],
+  "Marca": [
+    {
+      "antecedents": [
+        "Azevedo Loureiro Lda."
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.014,
+      "confidence": 0.316,
+      "lift": 2.323
+    },
+    {
+      "antecedents": [
+        "Leal Valente Lda."
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.014,
+      "confidence": 0.3,
+      "lift": 2.207
+    },
+    {
+      "antecedents": [
+        "Faria"
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.014,
+      "confidence": 0.286,
+      "lift": 2.102
+    },
+    {
+      "antecedents": [
+        "Lourenço e Filhos"
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.012,
+      "confidence": 0.263,
+      "lift": 1.936
+    },
+    {
+      "antecedents": [
+        "Freitas Carneiro S.A."
+      ],
+      "consequents": [
+        "Vieira S/A"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 5.425
+    },
+    {
+      "antecedents": [
+        "Oliveira Amorim e Filhos"
+      ],
+      "consequents": [
+        "Sá"
+      ],
+      "support": 0.012,
+      "confidence": 0.25,
+      "lift": 4.932
+    },
+    {
+      "antecedents": [
+        "Torres Moreira e Filhos"
+      ],
+      "consequents": [
+        "Pacheco"
+      ],
+      "support": 0.009,
+      "confidence": 0.25,
+      "lift": 2.712
+    },
+    {
+      "antecedents": [
+        "Ramos Pacheco S.A."
+      ],
+      "consequents": [
+        "Ribeiro"
+      ],
+      "support": 0.009,
+      "confidence": 0.25,
+      "lift": 2.26
+    },
+    {
+      "antecedents": [
+        "Matias e Filhos"
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.012,
+      "confidence": 0.238,
+      "lift": 1.751
+    },
+    {
+      "antecedents": [
+        "Jesus"
+      ],
+      "consequents": [
+        "Pacheco"
+      ],
+      "support": 0.009,
+      "confidence": 0.235,
+      "lift": 2.553
+    },
+    {
+      "antecedents": [
+        "Neto"
+      ],
+      "consequents": [
+        "Rodrigues Domingues S/A"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 4.552
+    },
+    {
+      "antecedents": [
+        "Neto"
+      ],
+      "consequents": [
+        "Teixeira"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 4.355
+    },
+    {
+      "antecedents": [
+        "Sá"
+      ],
+      "consequents": [
+        "Oliveira Amorim e Filhos"
+      ],
+      "support": 0.012,
+      "confidence": 0.227,
+      "lift": 4.932
+    },
+    {
+      "antecedents": [
+        "Pinto"
+      ],
+      "consequents": [
+        "Moura"
+      ],
+      "support": 0.009,
+      "confidence": 0.222,
+      "lift": 3.326
+    },
+    {
+      "antecedents": [
+        "Barros Mendes S/A"
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.009,
+      "confidence": 0.222,
+      "lift": 1.635
+    },
+    {
+      "antecedents": [
+        "Rocha Assunção Lda."
+      ],
+      "consequents": [
+        "Batista Loureiro e Filhos"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 4.227
+    },
+    {
+      "antecedents": [
+        "Rocha S.A."
+      ],
+      "consequents": [
+        "Moura"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 3.207
+    },
+    {
+      "antecedents": [
+        "Azevedo Loureiro Lda."
+      ],
+      "consequents": [
+        "Ribeiro"
+      ],
+      "support": 0.009,
+      "confidence": 0.211,
+      "lift": 1.904
+    },
+    {
+      "antecedents": [
+        "Lourenço e Filhos"
+      ],
+      "consequents": [
+        "Ribeiro"
+      ],
+      "support": 0.009,
+      "confidence": 0.211,
+      "lift": 1.904
+    },
+    {
+      "antecedents": [
+        "Henriques"
+      ],
+      "consequents": [
+        "Baptista"
+      ],
+      "support": 0.012,
+      "confidence": 0.2,
+      "lift": 2.019
+    },
+    {
+      "antecedents": [
+        "Henriques"
+      ],
+      "consequents": [
+        "Freitas"
+      ],
+      "support": 0.012,
+      "confidence": 0.2,
+      "lift": 1.471
+    }
+  ],
+  "Descrição": [
+    {
+      "antecedents": [
+        "Voluptatibus magnam quidem necessitatibus necessitatibus quos"
+      ],
+      "consequents": [
+        "Dolore neque ad repellendus incidunt quasi"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 5.425
+    },
+    {
+      "antecedents": [
+        "Doloribus soluta voluptatum culpa sit laudantium"
+      ],
+      "consequents": [
+        "Consequatur molestiae quaerat unde nam eaque"
+      ],
+      "support": 0.012,
+      "confidence": 0.25,
+      "lift": 4.932
+    },
+    {
+      "antecedents": [
+        "Deserunt doloribus velit cum distinctio recusandae"
+      ],
+      "consequents": [
+        "Non architecto dolorum corporis quis voluptatem"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 4.552
+    },
+    {
+      "antecedents": [
+        "Deserunt doloribus velit cum distinctio recusandae"
+      ],
+      "consequents": [
+        "Iste aliquam voluptatum id in quibusdam"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 4.355
+    },
+    {
+      "antecedents": [
+        "Consequatur molestiae quaerat unde nam eaque"
+      ],
+      "consequents": [
+        "Doloribus soluta voluptatum culpa sit laudantium"
+      ],
+      "support": 0.012,
+      "confidence": 0.227,
+      "lift": 4.932
+    },
+    {
+      "antecedents": [
+        "Culpa laudantium nemo consequuntur soluta harum"
+      ],
+      "consequents": [
+        "Mollitia veniam possimus perspiciatis facilis dolorem"
+      ],
+      "support": 0.009,
+      "confidence": 0.222,
+      "lift": 3.326
+    },
+    {
+      "antecedents": [
+        "Cum similique ex consequuntur eos quibusdam"
+      ],
+      "consequents": [
+        "Minima culpa explicabo aut impedit incidunt"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 4.227
+    },
+    {
+      "antecedents": [
+        "Aperiam ipsum ex officia aperiam omnis"
+      ],
+      "consequents": [
+        "Mollitia veniam possimus perspiciatis facilis dolorem"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 3.207
+    },
+    {
+      "antecedents": [
+        "Soluta minima atque nemo molestiae distinctio"
+      ],
+      "consequents": [
+        "Vel hic architecto veritatis ipsam atque"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 3.1
+    },
+    {
+      "antecedents": [
+        "Veritatis illo quo quos laudantium reiciendis"
+      ],
+      "consequents": [
+        "Optio ut nemo quae itaque asperiores"
+      ],
+      "support": 0.009,
+      "confidence": 0.211,
+      "lift": 3.046
+    }
+  ],
+  "AtributosEspecíficos": [
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Verde, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.8,
+      "lift": 5.986
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.8,
+      "lift": 5.182
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.75,
+      "lift": 3.829
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.75,
+      "lift": 3.829
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: L",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.014,
+      "confidence": 0.667,
+      "lift": 3.111
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Verde, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.6,
+      "lift": 3.064
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.014,
+      "confidence": 0.6,
+      "lift": 2.83
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.6,
+      "lift": 2.83
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.6,
+      "lift": 2.8
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.5,
+      "lift": 5.564
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "support": 0.009,
+      "confidence": 0.5,
+      "lift": 5.564
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 3.288
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 3.239
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 2.359
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S",
+        "Cor: Preto, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 2.359
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.016,
+      "confidence": 0.5,
+      "lift": 2.333
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S",
+        "Cor: Preto, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.5,
+      "lift": 2.333
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.016,
+      "confidence": 0.467,
+      "lift": 2.201
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.012,
+      "confidence": 0.455,
+      "lift": 2.321
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.012,
+      "confidence": 0.455,
+      "lift": 2.144
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.012,
+      "confidence": 0.455,
+      "lift": 2.121
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 3.207
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 3.207
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.906
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: L"
+      ],
+      "support": 0.014,
+      "confidence": 0.429,
+      "lift": 2.906
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.776
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.776
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: M",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.776
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.014,
+      "confidence": 0.429,
+      "lift": 2.657
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.657
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: L",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.188
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.188
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.022
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.0
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.429,
+      "lift": 2.0
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.016,
+      "confidence": 0.412,
+      "lift": 2.553
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.016,
+      "confidence": 0.412,
+      "lift": 2.102
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.009,
+      "confidence": 0.4,
+      "lift": 2.042
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 4.173
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 4.173
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 2.806
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 2.806
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 2.466
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 2.429
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: L",
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 2.325
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 1.915
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 1.915
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 1.915
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 1.769
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 1.75
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.375,
+      "lift": 1.75
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: L",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.016,
+      "confidence": 0.368,
+      "lift": 2.423
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.016,
+      "confidence": 0.368,
+      "lift": 1.719
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.364,
+      "lift": 2.391
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.009,
+      "confidence": 0.364,
+      "lift": 1.697
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.012,
+      "confidence": 0.357,
+      "lift": 1.685
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: L",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.333,
+      "lift": 2.192
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.333,
+      "lift": 2.192
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.333,
+      "lift": 1.702
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.333,
+      "lift": 1.572
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: M",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.333,
+      "lift": 1.556
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.012,
+      "confidence": 0.333,
+      "lift": 2.159
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.009,
+      "confidence": 0.333,
+      "lift": 1.556
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: L",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "support": 0.014,
+      "confidence": 0.316,
+      "lift": 2.109
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.012,
+      "confidence": 0.312,
+      "lift": 1.596
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.046,
+      "confidence": 0.312,
+      "lift": 1.474
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.308,
+      "lift": 2.023
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.973
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.943
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.943
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.943
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: M"
+      ],
+      "support": 0.014,
+      "confidence": 0.3,
+      "lift": 1.943
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.415
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.3,
+      "lift": 1.4
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.286,
+      "lift": 1.879
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.009,
+      "confidence": 0.286,
+      "lift": 1.771
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.025,
+      "confidence": 0.282,
+      "lift": 1.316
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 7.891
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 6.963
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: L",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 3.035
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 2.041
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 2.041
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.849
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.821
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.793
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.767
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.767
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: L",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.691
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.273,
+      "lift": 1.273
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.044,
+      "confidence": 0.271,
+      "lift": 1.267
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.267,
+      "lift": 1.995
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.267,
+      "lift": 1.727
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.009,
+      "confidence": 0.267,
+      "lift": 1.362
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Azul, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.009,
+      "confidence": 0.267,
+      "lift": 1.258
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.012,
+      "confidence": 0.263,
+      "lift": 1.705
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.039,
+      "confidence": 0.258,
+      "lift": 1.202
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 1.695
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 1.619
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 1.619
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.25,
+      "lift": 1.55
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.009,
+      "confidence": 0.25,
+      "lift": 1.179
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.032,
+      "confidence": 0.241,
+      "lift": 1.232
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.037,
+      "confidence": 0.239,
+      "lift": 1.114
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "support": 0.009,
+      "confidence": 0.235,
+      "lift": 1.571
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.235,
+      "lift": 1.524
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.018,
+      "confidence": 0.235,
+      "lift": 1.098
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M",
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 2.568
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 1.431
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.231,
+      "lift": 1.178
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.035,
+      "confidence": 0.227,
+      "lift": 1.472
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.035,
+      "confidence": 0.227,
+      "lift": 1.16
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.03,
+      "confidence": 0.224,
+      "lift": 1.452
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.035,
+      "confidence": 0.224,
+      "lift": 1.472
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.044,
+      "confidence": 0.224,
+      "lift": 1.054
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: L"
+      ],
+      "support": 0.046,
+      "confidence": 0.217,
+      "lift": 1.474
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "support": 0.032,
+      "confidence": 0.215,
+      "lift": 1.005
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 2.385
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 2.385
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 2.067
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.603
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.431
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S",
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.431
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: L"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.431
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Preto, Tamanho: S"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.388
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.329
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.329
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.007,
+      "confidence": 0.214,
+      "lift": 1.011
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.032,
+      "confidence": 0.212,
+      "lift": 1.315
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: XL",
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.009,
+      "confidence": 0.211,
+      "lift": 1.384
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.032,
+      "confidence": 0.209,
+      "lift": 0.986
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.044,
+      "confidence": 0.207,
+      "lift": 1.054
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Verde, Tamanho: M"
+      ],
+      "support": 0.016,
+      "confidence": 0.206,
+      "lift": 0.971
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.018,
+      "confidence": 0.205,
+      "lift": 1.535
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: S"
+      ],
+      "support": 0.018,
+      "confidence": 0.205,
+      "lift": 1.535
+    },
+    {
+      "antecedents": [
+        "Cor: Preto, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.018,
+      "confidence": 0.205,
+      "lift": 1.047
+    },
+    {
+      "antecedents": [
+        "Cor: Verde, Tamanho: S"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.018,
+      "confidence": 0.205,
+      "lift": 1.047
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: L"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.044,
+      "confidence": 0.204,
+      "lift": 1.267
+    },
+    {
+      "antecedents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: S"
+      ],
+      "support": 0.032,
+      "confidence": 0.2,
+      "lift": 1.315
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Azul, Tamanho: XL"
+      ],
+      "support": 0.021,
+      "confidence": 0.2,
+      "lift": 1.24
+    },
+    {
+      "antecedents": [
+        "Cor: Vermelho, Tamanho: M"
+      ],
+      "consequents": [
+        "Cor: Vermelho, Tamanho: XL"
+      ],
+      "support": 0.021,
+      "confidence": 0.2,
+      "lift": 1.021
+    }
+  ]
+}

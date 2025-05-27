@@ -70,7 +70,7 @@ def export_json(obj, path: Path):
         json.dump(obj, f, indent=2, ensure_ascii=False)
 
 def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
-                  min_support=0.02, min_confidence=0.3):
+                  min_support=0.005, min_confidence=0.2):
     base = Path(base_path) / f"empresa_id_{empresa_id}"
     dados = base / "dados_importados"
     saida = base / "campanhas" / f"campanha_id_{campanha_id}"
@@ -152,6 +152,6 @@ if __name__ == "__main__":
     empresa = int(sys.argv[1])
     campanha = int(sys.argv[2])
     base_dir = sys.argv[3] if len(sys.argv) > 3 else "dados_smart_crm"
-    min_sup = float(sys.argv[4]) if len(sys.argv) > 4 else 0.02
-    min_conf = float(sys.argv[5]) if len(sys.argv) > 5 else 0.3
+    min_sup = float(sys.argv[4]) if len(sys.argv) > 4 else 0.005
+    min_conf = float(sys.argv[5]) if len(sys.argv) > 5 else 0.2
     cross_selling(base_dir, empresa, campanha, min_sup, min_conf)
