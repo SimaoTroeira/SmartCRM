@@ -79,36 +79,9 @@
       </div>
     </div>
 
-    <!-- Estatísticas -->
-    <div class="card-resultados">
-      <h3 class="text-xl font-semibold mb-3 text-blue-700">📊 Estatísticas de Churn</h3>
-      <table class="min-w-full bg-white border border-gray-200 text-sm">
-        <tbody>
-          <tr>
-            <td class="border px-4 py-2 font-medium text-gray-700">Total de Clientes</td>
-            <td class="border px-4 py-2">{{ estatisticas.total_clientes }}</td>
-          </tr>
-          <tr>
-            <td class="border px-4 py-2 font-medium text-gray-700">Média do Score de Churn</td>
-            <td class="border px-4 py-2">{{ estatisticas.media_score_churn }}</td>
-          </tr>
-          <tr>
-            <td class="border px-4 py-2 font-medium text-gray-700 align-top">Distribuição de Risco</td>
-            <td class="border px-4 py-2">
-              <table class="w-full text-sm">
-                <tbody>
-                  <tr v-for="(count, tipo) in estatisticas.distribuicao" :key="tipo">
-                    <td class="pr-4">{{ tipo }}</td>
-                    <td>{{ count }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Sugestões de Ação -->
+    <ChurnSuggestions :clientes="clientes" />
 
-    </div>
   </div>
 </template>
 
@@ -116,6 +89,8 @@
 import { ref, watch, computed } from 'vue'
 import PieChart from './PieChart.vue'
 import BarChart from './BarChart.vue'
+import ChurnSuggestions from './ChurnSuggestions.vue'
+
 import axios from 'axios'
 
 const props = defineProps({
@@ -124,13 +99,12 @@ const props = defineProps({
   campanhaId: [String, Number]
 })
 
-const estatisticas = ref(null)
 const clientes = ref([])
 const graficoSelecionado = ref('pizza')
 
 const dadosPizza = ref([])
 const dadosBarras = ref([])
-const dadosProntos = computed(() => clientes.value.length && dadosPizza.value.length && dadosBarras.value.length && estatisticas.value !== null)
+const dadosProntos = computed(() => clientes.value.length && dadosPizza.value.length && dadosBarras.value.length)
 
 const tituloVisualizacao = computed(() =>
   graficoSelecionado.value === 'pizza'
@@ -210,8 +184,6 @@ watch(
       } else {
         console.warn('Resposta inesperada ao buscar clientes churn:', data)
       }
-
-      estatisticas.value = props.results.estatisticas || {}
     } catch (e) {
       console.error('Erro ao buscar clientes churn:', e)
     }

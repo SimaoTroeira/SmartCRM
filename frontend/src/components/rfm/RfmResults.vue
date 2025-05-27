@@ -40,7 +40,7 @@
 
     <!-- Clientes Segmentados -->
     <div class="card-resultados">
-      <h3 class="text-xl font-semibold mb-3 text-blue-700">Clientes Segmentados</h3>
+      <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Clientes Segmentados</h3>
 
       <div class="controles-tabela-clientes mb-4">
         <button @click="resetarOrdenacao" class="btn-reset-custom">
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Tabela Resumo -->
-    <div class="card-resultados">
+    <div class="card-resultados no-min-height">
       <h3 class="text-xl font-semibold mb-3 text-blue-700">Tabela</h3>
       <p class="text-sm text-gray-600 mb-2">Apresenta dados estatísticos por cluster.</p>
       <p class="text-sm text-gray-500 mb-4">{{ descricao }}</p>
@@ -111,6 +111,10 @@
         </table>
       </div>
     </div>
+
+    <!-- Sugestões de Ação -->
+    <RfmSuggestions :clusters-resumo="results" :clientes-segmentados="clientesSegmentados" />
+
   </div>
 </template>
 
@@ -120,6 +124,7 @@ import ScatterPlot from './ScatterPlot.vue'
 import ScatterPlotPCA from './ScatterPlotPCA.vue'
 import RadarPlot from './RadarPlot.vue'
 import RegioesBarChart from './RegioesBarChart.vue'
+import RfmSuggestions from './RfmSuggestions.vue'
 
 const segmentoFiltro = ref('')
 const colunaOrdenada = ref('')
@@ -274,4 +279,11 @@ const dadosProntos = computed(() => {
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
+
+.no-min-height {
+  min-height: auto !important;
+  padding-bottom: 1 !important;
+}
+
+
 </style>

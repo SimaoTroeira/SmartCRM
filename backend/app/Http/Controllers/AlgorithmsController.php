@@ -51,7 +51,6 @@ class AlgorithmsController extends Controller
 
         $filenameMap = [
             'rfm' => 'resultados_rfm.json',
-            'churn' => 'resultados_churn.json',
             'recommendation' => 'recomendacoes_produto.json',
         ];
 
@@ -75,7 +74,7 @@ class AlgorithmsController extends Controller
     public function obterResultadoComplementar($campanhaId, Request $request)
     {
         $tipo = $request->query('tipo');
-        $algoritmo = $request->query('algoritmo', 'rfm'); // valor padrão
+        $algoritmo = $request->query('algoritmo', 'rfm');
 
         $map = [
             'rfm' => [
@@ -85,12 +84,10 @@ class AlgorithmsController extends Controller
             ],
             'churn' => [
                 'clientes' => 'clientes_churn.json',
-                'estatisticas' => 'estatisticas_churn.json',
             ],
             'recommendation' => [
                 'produto' => 'recomendacoes_produto.json'
             ],
-            // outros algoritmos no futuro
         ];
 
         if (!isset($map[$algoritmo][$tipo])) {
@@ -119,11 +116,9 @@ class AlgorithmsController extends Controller
         return response()->json($data);
     }
 
-
-
     public function verificarColunas($campanhaId, Request $request)
     {
-        $algoritmo = $request->query('algoritmo', 'rfm'); // default para RFM
+        $algoritmo = $request->query('algoritmo', 'rfm');
 
         if ($algoritmo === 'recomendacao') {
             $algoritmo = 'recommendation';
@@ -180,7 +175,6 @@ class AlgorithmsController extends Controller
 
         $basePath = config('smartcrm.storage_path');
         $dadosPath = $basePath . "/empresa_id_{$empresaId}/dados_importados";
-        // $dadosPath = $dadosPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/dados_importados";
 
         if (!File::exists($dadosPath)) {
             return response()->json(['error' => 'Pasta de dados não encontrada.'], 404);
@@ -204,7 +198,6 @@ class AlgorithmsController extends Controller
                         $colunas = array_keys($primeiraLinha);
                         $nomeSemExtensao = pathinfo($filename, PATHINFO_FILENAME);
                         $ficheiros_presentes[$nomeSemExtensao] = $colunas;
-
 
                         if (isset($requisitos[$nomeSemExtensao . '.json'])) {
                             foreach ($requisitos[$filename] as $grupo) {
@@ -239,7 +232,6 @@ class AlgorithmsController extends Controller
                 $ficheiros_em_falta[] = $semExt;
             }
         }
-
 
         return response()->json([
             'ficheiros_presentes' => $ficheiros_presentes,

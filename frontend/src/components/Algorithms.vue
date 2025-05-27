@@ -92,6 +92,7 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
@@ -246,6 +247,15 @@ const fetchResults = async () => {
     showResults.value = false
 
     try {
+        if (selectedAlgorithm.value === 'churn') {
+            const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
+            results.value = res.data
+            descricao.value = 'Previsão de churn baseada em recência, frequência, valor e tempo como cliente.'
+            showResults.value = true
+            toast.info('Resultados de churn carregados com sucesso.')
+            return
+        }
+
         const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
 
         if (selectedAlgorithm.value === 'rfm') {
@@ -255,14 +265,6 @@ const fetchResults = async () => {
                 return
             }
             results.value = res.data.dados
-            descricao.value = res.data.descricao || ''
-        } else if (selectedAlgorithm.value === 'churn') {
-            if (!res.data?.estatisticas) {
-                toast.error('O algoritmo ainda não foi executado para esta campanha.')
-                loading.value = false
-                return
-            }
-            results.value = res.data
             descricao.value = res.data.descricao || ''
         } else if (selectedAlgorithm.value === 'recommendation') {
             if (!Array.isArray(res.data)) {

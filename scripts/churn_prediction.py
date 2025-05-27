@@ -45,7 +45,6 @@ def churn_prediction(base_path, empresa_id, campanha_id):
     resultados = []
     for _, cliente in df_clientes.iterrows():
         cliente_id = cliente["ClienteID"]
-        # Cálculo da recência baseado nas vendas, se disponíveis
         dias_desde_ultima = None
         if not df_vendas.empty:
             vendas_cliente = df_vendas[df_vendas["ClienteID"] == cliente_id]
@@ -55,7 +54,6 @@ def churn_prediction(base_path, empresa_id, campanha_id):
                     ultima_compra_real = datas.max()
                     dias_desde_ultima = (datetime.today() - ultima_compra_real).days
 
-        # Fallback: usar UltimaCompra do clientes.json
         if dias_desde_ultima is None:
             dias_desde_ultima = calcular_dias(cliente.get("UltimaCompra"))
 
@@ -65,7 +63,6 @@ def churn_prediction(base_path, empresa_id, campanha_id):
         total_compras = cliente.get("TotalCompras", np.nan)
         valor_total = cliente.get("ValorTotalGasto", np.nan)
 
-        # Frequência de compras baseada em vendas.json
         if not df_vendas.empty:
             vendas_cliente = df_vendas[df_vendas["ClienteID"] == cliente_id]
             if not vendas_cliente.empty and "DataVenda" in vendas_cliente.columns:
@@ -80,7 +77,6 @@ def churn_prediction(base_path, empresa_id, campanha_id):
         else:
             freq_mensal = total_compras / (tempo_cliente / 30) if tempo_cliente and total_compras else 0
 
-        # Normalizações
         recencia_norm = min(dias_desde_ultima or 0, 365) / 365
         tempo_cliente_norm = min(tempo_cliente or 0, 365 * 5) / (365 * 5)
         freq_norm = min(freq_mensal, 10) / 10
@@ -91,7 +87,6 @@ def churn_prediction(base_path, empresa_id, campanha_id):
         frequencia_risco = 1 - freq_norm
         valor_risco = 1 - valor_norm
 
-
         score = (
             pesos["recencia"] * recencia_risco +
             pesos["tempo_cliente"] * tempo_cliente_risco +
@@ -99,10 +94,8 @@ def churn_prediction(base_path, empresa_id, campanha_id):
             pesos["valor"] * valor_risco
         )
 
-        # Se o cliente tem recência baixa, frequência >= 3 e valor >= X, força Baixo Risco
         if dias_desde_ultima <= 30 and freq_mensal >= 3 and (valor_total or 0) >= 1000:
-            score = 0  # força Baixo Risco
-
+            score = 0
 
         resultado = {
             "ClienteID": cliente_id,
@@ -117,14 +110,11 @@ def churn_prediction(base_path, empresa_id, campanha_id):
 
         resultados.append(resultado)
 
-    # Usar ScoreChurnRaw diretamente
     for r in resultados:
         r["ScoreChurn"] = round(r["ScoreChurnRaw"], 4)
 
-
     df_resultados = pd.DataFrame(resultados)
 
-    # Exemplo usando percentis dinâmicos:
     p33 = df_resultados["ScoreChurn"].quantile(0.33)
     p66 = df_resultados["ScoreChurn"].quantile(0.66)
 
@@ -135,28 +125,12 @@ def churn_prediction(base_path, empresa_id, campanha_id):
             return "Médio Risco"
         return "Baixo Risco"
 
-
-
     df_resultados["Classificacao"] = df_resultados["ScoreChurn"].apply(classificar)
 
-    # Estatísticas
-    stats = {
-        "total_clientes": len(df_resultados),
-        "media_score_churn": round(df_resultados["ScoreChurn"].mean(), 4),
-        "distribuicao": df_resultados["Classificacao"].value_counts().to_dict(),
-    }
-
-    # Exportar
     with open(campanha_path / "clientes_churn.json", "w", encoding="utf-8") as f:
         json.dump(df_resultados.to_dict(orient="records"), f, indent=2, ensure_ascii=False)
 
-    with open(campanha_path / "resultados_churn.json", "w", encoding="utf-8") as f:
-        json.dump({
-            "descricao": "Predição de churn baseada em recência, frequência, valor e tempo como cliente.",
-            "estatisticas": stats,
-        }, f, indent=2, ensure_ascii=False)
-
-    print("Ficheiros gerados:\n- clientes_churn.json\n- resultados_churn.json")
+    print("Ficheiro gerado:\n- clientes_churn.json")
 
 
 if __name__ == "__main__":
