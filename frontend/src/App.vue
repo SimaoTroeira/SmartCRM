@@ -29,6 +29,12 @@
                 <i class="bi bi-diagram-3 me-2"></i> Algoritmos
               </a>
             </li>
+            <li v-if="isAuthenticated" class="nav-item">
+              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToReports">
+                <i class="bi bi-file-earmark-bar-graph me-2"></i> Relatórios e Exportações
+              </a>
+            </li>
+
             <!-- Separador flexível entre esquerda e direita -->
             <li class="flex-grow-1"></li>
 
@@ -84,27 +90,25 @@ import axios from 'axios'
 import { ref, onMounted } from 'vue'
 
 const authStore = useAuthStore();
-const { isAuthenticated } = storeToRefs(authStore); // <- Torna reativo
+const { isAuthenticated } = storeToRefs(authStore);
 const router = useRouter();
 
 const user = ref({})
 
 const loadUser = async () => {
-  if (!authStore.isAuthenticated) return; // <- evita chamada sem autenticação
+  if (!authStore.isAuthenticated) return;
 
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/user');
     user.value = response.data;
   } catch (error) {
     user.value = {};
-    // Podes opcionalmente deslogar se o token for inválido
     if (error.response?.status === 401) {
       authStore.logout();
       router.push({ name: 'Login' });
     }
   }
 };
-
 
 onMounted(() => {
   loadUser()
@@ -114,10 +118,9 @@ router.afterEach(() => {
   if (authStore.isAuthenticated) {
     loadUser();
   } else {
-    user.value = {}; // limpa se não autenticado
+    user.value = {};
   }
 });
-
 
 const handleLogout = () => {
   authStore.logout();
@@ -136,13 +139,13 @@ const redirectToCampaign = () => {
 const redirectToAlgorithms = () => {
   router.push({ name: 'Algorithms' });
 };
+const redirectToReports = () => {
+  router.push({ name: 'Reports' });
+};
 </script>
-
 
 <style>
 @import "./assets/dashboard.css";
-
-/* dashboard.css */
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -194,7 +197,6 @@ body {
   background-color: #ffffff;
 }
 
-
 main {
   padding-top: 1rem;
   padding-bottom: 4rem;
@@ -214,6 +216,4 @@ main {
   width: auto !important;
   max-width: 100%;
 }
-
-
 </style>

@@ -14,7 +14,7 @@ def detectar_ficheiros_vendas(dados_path: Path):
     return list(dados_path.glob("*vendas*.json"))
 
 def mapear_colunas(df: pd.DataFrame):
-    df = df.loc[:, ~df.columns.duplicated()]  # 🔧 Remove colunas duplicadas
+    df = df.loc[:, ~df.columns.duplicated()]  #  Remove colunas duplicadas
     cols = {c: c for c in df.columns}
     for c in df.columns:
         lc = c.lower()
@@ -27,7 +27,7 @@ def mapear_colunas(df: pd.DataFrame):
 def ler_vendas(dados_path: Path) -> pd.DataFrame:
     files = detectar_ficheiros_vendas(dados_path)
     if not files:
-        print("❌ Nenhum ficheiro de vendas encontrado em", dados_path)
+        print(" Nenhum ficheiro de vendas encontrado em", dados_path)
         sys.exit(1)
     dfs = []
     for fp in files:
@@ -37,7 +37,7 @@ def ler_vendas(dados_path: Path) -> pd.DataFrame:
         except Exception as e:
             print(f"[WARN] falha ao ler {fp.name}: {e}")
     if not dfs:
-        print("❌ Todos os ficheiros de vendas falharam ao ler.")
+        print(" Todos os ficheiros de vendas falharam ao ler.")
         sys.exit(1)
     df = pd.concat(dfs, ignore_index=True)
     return mapear_colunas(df)
@@ -45,13 +45,13 @@ def ler_vendas(dados_path: Path) -> pd.DataFrame:
 def ler_produtos(dados_path: Path) -> pd.DataFrame:
     fp = next(dados_path.glob("*produtos*.json"), None)
     if not fp:
-        print("❌ produtos.json não encontrado em", dados_path)
+        print(" produtos.json não encontrado em", dados_path)
         sys.exit(1)
     try:
         df = pd.read_json(fp)
         return mapear_colunas(df)
     except Exception as e:
-        print(f"❌ falha ao ler {fp.name}: {e}")
+        print(f" falha ao ler {fp.name}: {e}")
         sys.exit(1)
 
 def preparar_basket(df: pd.DataFrame, chave: str, item: str) -> pd.DataFrame:
@@ -81,25 +81,25 @@ def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
     produtos = ler_produtos(dados)
 
     # --- DEBUG ---
-    print("🧪 Colunas vendas:", vendas.columns.tolist())
-    print("🧪 Colunas produtos:", produtos.columns.tolist())
+    print(" Colunas vendas:", vendas.columns.tolist())
+    print(" Colunas produtos:", produtos.columns.tolist())
 
-    print("🧪 Tipos ProdutoID:")
+    print(" Tipos ProdutoID:")
     print("  - vendas:", vendas["ProdutoID"].dtype)
     print("  - produtos:", produtos["ProdutoID"].dtype)
 
-    print("🧪 Exemplo ProdutoID em vendas:", vendas["ProdutoID"].head(3).tolist())
-    print("🧪 Exemplo ProdutoID em produtos:", produtos["ProdutoID"].head(3).tolist())
+    print(" Exemplo ProdutoID em vendas:", vendas["ProdutoID"].head(3).tolist())
+    print(" Exemplo ProdutoID em produtos:", produtos["ProdutoID"].head(3).tolist())
 
-    print("👥 Clientes únicos:", vendas["ClienteID"].nunique())
-    print("🛒 Total linhas vendas:", len(vendas))
+    print(" Clientes únicos:", vendas["ClienteID"].nunique())
+    print(" Total linhas vendas:", len(vendas))
     # -------------
 
     if not {"ClienteID", "ProdutoID"}.issubset(vendas.columns):
-        print("❌ Coluna ClienteID ou ProdutoID ausente em vendas.")
+        print(" Coluna ClienteID ou ProdutoID ausente em vendas.")
         sys.exit(1)
     if "ProdutoID" not in produtos.columns:
-        print("❌ Coluna ProdutoID ausente em produtos.")
+        print(" Coluna ProdutoID ausente em produtos.")
         sys.exit(1)
 
     # Força os tipos para string para garantir merge correto
@@ -107,10 +107,10 @@ def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
     produtos["ProdutoID"] = produtos["ProdutoID"].astype(str)
 
     # 2. Merge com produtos válidos
-    produtos = produtos.drop_duplicates(subset="ProdutoID")  # 🔧 evita problemas de join
+    produtos = produtos.drop_duplicates(subset="ProdutoID")  #  evita problemas de join
     df = vendas.merge(produtos, on="ProdutoID", how="left")
     if df["ProdutoID"].isna().all():
-        print("❌ Nenhuma correspondência entre vendas e produtos.")
+        print(" Nenhuma correspondência entre vendas e produtos.")
         sys.exit(1)
 
     # 3. Produto → Produto
@@ -125,7 +125,7 @@ def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
         out_prod = dfp.round(3).to_dict(orient='records')
 
     export_json(out_prod, saida / "recomendacoes_produto.json")
-    print(f"✅ produtos: {len(out_prod)} regras exportadas.")
+    print(f" produtos: {len(out_prod)} regras exportadas.")
 
     # 4. Atributos categóricos
     cat_cols = [c for c in df.select_dtypes(include="object").columns
@@ -141,7 +141,7 @@ def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
             dfa['consequents'] = dfa['consequents'].apply(list)
             arr = dfa.round(3).to_dict(orient='records')
         attr_out[col] = arr
-        print(f"✅ {col}: {len(arr)} regras.")
+        print(f" {col}: {len(arr)} regras.")
 
     export_json(attr_out, saida / "recomendacoes_attr.json")
 

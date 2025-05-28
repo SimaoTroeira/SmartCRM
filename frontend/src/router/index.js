@@ -12,6 +12,7 @@ import Campaign from '../components/campaigns/Campaign.vue';
 import CompanyDetails from '../components/companies/CompanyDetails.vue';
 import CampaignDetails from '../components/campaigns/CampaignDetails.vue';
 import Algorithms from '../components/Algorithms.vue';
+import Reports from '../components/reports/Reports.vue';
 
 const routes = [
   {
@@ -63,7 +64,7 @@ const routes = [
     path: '/companies/:id',
     name: 'CompanyDetails',
     component: CompanyDetails,
-  },  
+  },
   {
     path: '/campaigns/:id',
     name: 'CampaignDetails',
@@ -79,8 +80,14 @@ const routes = [
     path: '/algorithms',
     name: 'Algorithms',
     component: Algorithms,
-  }
-  
+  },
+  {
+    path: '/reports',
+    name: 'Reports',
+    component: Reports,
+  },
+
+
   // Adicionar outras rotas aqui
 ];
 

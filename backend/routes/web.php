@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/exportar/rfm/{campanhaId}', [ExportController::class, 'exportarRfm']);
+    Route::get('/exportar/churn/{campanhaId}', [ExportController::class, 'exportarChurn']);
+    Route::get('/exportar/recommendation/{campanhaId}', [ExportController::class, 'exportarRecommendation']);
 });

@@ -5,13 +5,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\AlgorithmsController;
 use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\CompanyInviteController;
 use App\Http\Controllers\UserCompanyRoleController;
-use App\Http\Controllers\AlgorithmsController;
 
 
 /*
@@ -87,5 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/algoritmos/resultados/{campanhaId}', [AlgorithmsController::class, 'obterResultadoPrincipal']);
     Route::get('/algoritmos/resultados_complementares/{campanhaId}', [AlgorithmsController::class, 'obterResultadoComplementar']);
     Route::get('/algoritmos/verificar_colunas/{campanhaId}', [AlgorithmsController::class, 'verificarColunas']);
+
+    //PDF EXPORT NA WEB.PHP
 
 });
