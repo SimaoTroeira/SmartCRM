@@ -1,127 +1,123 @@
 <template>
-  <div v-if="regras.length" class="space-y-6">
-    <!-- Card: Tabela de Regras -->
-    <div class="card-resultados mb-6">
-      <div class="mb-2">
-        <h3 class="text-2xl font-semibold text-blue-700">📦 Recomendações de Cross-Selling</h3>
-        <p class="text-sm text-gray-600 mt-1">
-          Identifica produtos frequentemente comprados juntos, com métricas de suporte, confiança e lift.
-        </p>
-      </div>
-
-      <!-- Controles de Visualização -->
-      <div class="flex items-center gap-4 mb-4">
-        <label class="font-medium text-sm">Ordenar por:</label>
-        <select v-model="colunaOrdenada" class="form-control border px-2 py-1 text-sm rounded w-40">
-          <option value="">Nenhuma</option>
-          <option value="support">Suporte</option>
-          <option value="confidence">Confiança</option>
-          <option value="lift">Lift</option>
-        </select>
-        <label class="font-medium text-sm">Limite linhas:</label>
-        <input v-model.number="limiteLinhas" type="number" min="1" class="border rounded px-2 py-1 text-sm w-20" />
-      </div>
-
-      <!-- Tabela de Regras -->
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200 text-sm">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-2 border">Antecedentes</th>
-              <th class="px-4 py-2 border">Consequentes</th>
-              <th class="px-4 py-2 border cursor-pointer" @click="ordenarPor('support')">Suporte</th>
-              <th class="px-4 py-2 border cursor-pointer" @click="ordenarPor('confidence')">Confiança</th>
-              <th class="px-4 py-2 border cursor-pointer" @click="ordenarPor('lift')">Lift</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(regra, idx) in regrasOrdenadas" :key="idx" class="hover:bg-gray-50">
-              <td class="px-4 py-2 border">{{ regra.antecedents.join(', ') }}</td>
-              <td class="px-4 py-2 border">{{ regra.consequents.join(', ') }}</td>
-              <td class="px-4 py-2 border">{{ formatPercent(regra.support) }}</td>
-              <td class="px-4 py-2 border">{{ formatPercent(regra.confidence) }}</td>
-              <td class="px-4 py-2 border">{{ regra.lift.toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="space-y-8">
+    <!-- Produto→Produto -->
+    <div v-if="prodRules.length" class="card-resultados">
+      <h3 class="text-xl font-semibold mb-2">
+        📦 Cross-Selling (Produto→Produto)
+      </h3>
+      <ControlsTable :coluna-ordenada.sync="colunaOrdenadaProd" :ordem-crescente.sync="ordemCrescenteProd"
+        :limite-linhas.sync="limiteLinhasProd" />
+      <RulesTable :regras="regrasOrdenadasProd" :format-percent="formatPercent" />
+    </div>
+    <div v-else class="italic text-gray-500">
+      Sem regras de produto–produto.
     </div>
 
-    <!-- Card: Aviso sem Regras -->
+    <!-- Atributos -->
+    <div v-for="(lista, atributo) in attrRules" :key="atributo" class="card-resultados">
+      <h3 class="text-xl font-semibold mb-2">
+        🔖 Recomendações via “{{ atributo }}”
+      </h3>
+      <ControlsTable :coluna-ordenada.sync="colunaOrdenadaAttr[atributo]"
+        :ordem-crescente.sync="ordemCrescenteAttr[atributo]" :limite-linhas.sync="limiteLinhasAttr[atributo]" />
+      <RulesTable :regras="regrasOrdenadasAttr[atributo]" :format-percent="formatPercent" />
+      <div v-if="!lista.length" class="italic text-gray-500 mt-2">
+        Nenhuma regra encontrada para {{ atributo }}.
+      </div>
+    </div>
   </div>
-  <div v-else class="text-gray-500 italic">Nenhuma regra de associação encontrada para esta campanha.</div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios'
 
+import ControlsTable from '@/components/recommendation/ControlsTable.vue'
+import RulesTable from '@/components/recommendation/RulesTable.vue'
+
 const props = defineProps({
-  empresaId: { type: Number, required: true },
   campanhaId: { type: Number, required: true }
 })
 
-const regras = ref([])
-const colunaOrdenada = ref('')
-const ordemCrescente = ref(false)
-const limiteLinhas = ref(20)
+const prodRules = ref([])
+const attrRules = reactive({})
 
-async function carregarRegras() {
-  try {
-    const url = `/algoritmos/resultados_complementares/${props.campanhaId}?algoritmo=recommendation&tipo=produto`
-    console.log('[DEBUG] Requisição para:', url)
+const colunaOrdenadaProd = ref('')
+const ordemCrescenteProd = ref(false)
+const limiteLinhasProd = ref(20)
 
-    const res = await axios.get(url)
-    
-    console.log('[DEBUG] Resposta da API:', res)
-    console.log('[DEBUG] Dados da API:', res.data)
-
-    if (!Array.isArray(res.data)) {
-      console.warn('[WARNING] Dados recebidos não são um array!')
-      regras.value = []
-    } else {
-      // Opcional: verificação dos dados individuais
-      res.data.forEach((regra, idx) => {
-        if (!Array.isArray(regra.antecedents) || !Array.isArray(regra.consequents)) {
-          console.warn(`[WARNING] Regra ${idx} com antecedents ou consequents que não são arrays`, regra)
-        }
-      })
-      regras.value = res.data
-    }
-  } catch (e) {
-    console.error('[ERROR] Erro ao carregar regras:', e)
-    regras.value = []
-  }
-}
-
-
-onMounted(carregarRegras)
-
-function ordenarPor(col) {
-  if (colunaOrdenada.value === col) ordemCrescente.value = !ordemCrescente.value
-  else {
-    colunaOrdenada.value = col
-    ordemCrescente.value = false
-  }
-}
-
-const regrasOrdenadas = computed(() => {
-  let arr = [...regras.value]
-  if (colunaOrdenada.value) {
-    arr.sort((a, b) => ordemCrescente.value
-      ? a[colunaOrdenada.value] - b[colunaOrdenada.value]
-      : b[colunaOrdenada.value] - a[colunaOrdenada.value]
-    )
-  }
-  return arr.slice(0, limiteLinhas.value)
-})
+const colunaOrdenadaAttr = reactive({})
+const ordemCrescenteAttr = reactive({})
+const limiteLinhasAttr = reactive({})
 
 const formatPercent = v => `${(v * 100).toFixed(1)}%`
+
+async function carregarTudo() {
+  const pd = await axios.get(`/algoritmos/resultados_complementares/${props.campanhaId}?algoritmo=recommendation&tipo=produto`)
+  prodRules.value = Array.isArray(pd.data) ? pd.data : []
+
+  const ar = await axios.get(`/algoritmos/resultados_complementares/${props.campanhaId}?algoritmo=recommendation&tipo=atributos`)
+  Object.assign(attrRules, ar.data)
+
+  Object.keys(ar.data).forEach(key => {
+    colunaOrdenadaAttr[key] = ''
+    ordemCrescenteAttr[key] = false
+    limiteLinhasAttr[key] = 10
+  })
+}
+
+onMounted(carregarTudo)
+
+const regrasOrdenadasProd = computed(() => {
+  const col = colunaOrdenadaProd.value
+  const ordem = ordemCrescenteProd.value
+
+  if (!col) return prodRules.value.slice(0, limiteLinhasProd.value)
+
+  return [...prodRules.value]
+    .sort((a, b) => {
+      const valA = typeof a[col] === 'string' ? parseFloat(a[col]) : a[col]
+      const valB = typeof b[col] === 'string' ? parseFloat(b[col]) : b[col]
+      return ordem ? valA - valB : valB - valA
+    })
+    .slice(0, limiteLinhasProd.value)
+})
+
+
+const regrasOrdenadasAttr = computed(() => {
+  const resultado = {}
+
+  for (const [atributo, lista] of Object.entries(attrRules)) {
+    const col = colunaOrdenadaAttr[atributo]
+    const ordem = ordemCrescenteAttr[atributo]
+    const limite = limiteLinhasAttr[atributo]
+
+    if (!col) {
+      resultado[atributo] = lista.slice(0, limite)
+      continue
+    }
+
+    resultado[atributo] = [...lista]
+      .sort((a, b) => {
+        const valA = typeof a[col] === 'string' ? parseFloat(a[col]) : a[col]
+        const valB = typeof b[col] === 'string' ? parseFloat(b[col]) : b[col]
+        return ordem ? valA - valB : valB - valA
+      })
+      .slice(0, limite)
+  }
+
+  return resultado
+})
+
+
 </script>
 
 <style scoped>
-.card-resultados { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); padding: 24px; }
-.controles-tabela-clientes { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
-.btn-reset-custom { background-color: white; border: 2px solid #2563eb; color: #2563eb; padding: 6px 16px; border-radius: 6px; cursor: pointer; }
-.btn-reset-custom:hover { background-color: #e0ecff; }
+.card-resultados {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: .5rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
 </style>
