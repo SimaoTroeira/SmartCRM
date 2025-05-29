@@ -15,12 +15,25 @@
 
             <div v-else class="space-y-4">
                 <!-- Dropdowns -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div>
+                        <label class="block mb-1 font-medium">Selecione uma empresa:</label>
+                        <select v-model="selectedCompanyId" class="form-control w-full max-w-xs">
+                            <option disabled value="">-- Escolha uma empresa --</option>
+                            <option v-for="company in companies" :key="company.id" :value="company.id"
+                                :disabled="company.status === 'Inativo'">
+                                {{ company.name }}
+                                <span v-if="company.status === 'Inativo'">(Desativada)</span>
+                            </option>
+                        </select>
+                    </div>
+
                     <div>
                         <label class="block mb-1 font-medium">Selecione uma campanha:</label>
-                        <select v-model="selectedCampaignId" class="form-control w-full max-w-xs">
+                        <select v-model="selectedCampaignId" class="form-control w-full max-w-xs"
+                            :disabled="!selectedCompanyId">
                             <option disabled value="">-- Escolha uma campanha --</option>
-                            <option v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
+                            <option v-for="campaign in campanhasDaCompany" :key="campaign.id" :value="campaign.id">
                                 {{ campaign.name }}
                             </option>
                         </select>
@@ -37,18 +50,21 @@
                     </div>
                 </div>
 
+
+
                 <AlgorithmWizard v-if="mostrarWizard && selectedCampaignId && selectedAlgorithm"
                     :campanha-id="selectedCampaignId" :algoritmo="selectedAlgorithm" @valido="handleValid"
                     class="mt-10 mb-6" />
 
                 <!-- Botões -->
                 <div class="mt-10 mb-6 flex flex-wrap gap-4 border-b border-gray-300 pb-4">
-                    <button class="executar-btn" :disabled="!selectedCampaignId || !selectedAlgorithm || loading"
+                    <button class="executar-btn"
+                        :disabled="!selectedCampaignId || !selectedAlgorithm || loading || empresaInativa"
                         @click="reiniciarWizard">
                         Executar algoritmo
                     </button>
-                    <button class="visualizar-btn" :disabled="!selectedCampaignId || !selectedAlgorithm"
-                        @click="fetchResults">
+                    <button class="visualizar-btn"
+                        :disabled="!selectedCampaignId || !selectedAlgorithm || empresaInativa" @click="fetchResults">
                         Visualizar resultados
                     </button>
                 </div>
@@ -65,7 +81,8 @@
                         comprar.
                     </p>
                     <p v-else-if="selectedAlgorithm === 'recommendation'" class="text-sm text-gray-700">
-                        A <strong>Recomendação de Cross-Selling</strong> identifica produtos frequentemente comprados juntos,
+                        A <strong>Recomendação de Cross-Selling</strong> identifica produtos frequentemente comprados
+                        juntos,
                         usando análise de regras de associação (Apriori).
                     </p>
                 </div>
@@ -83,13 +100,16 @@
                     <ChurnResults v-if="selectedAlgorithm === 'churn'" :results="results" :descricao="descricao"
                         :campanha-id="selectedCampaignId" />
 
-                    <RecommendResults v-else-if="selectedAlgorithm === 'recommendation'" :results="results" :descricao="descricao" 
-                        :empresa-id="empresaId" :campanha-id="selectedCampaignId" />
+                    <RecommendResults v-else-if="selectedAlgorithm === 'recommendation'" :results="results"
+                        :descricao="descricao" :empresa-id="empresaId" :campanha-id="selectedCampaignId" />
 
                 </div>
             </div>
         </div>
     </div>
+    <FloatingPanel :companies="companies" :campaigns="campaigns" :selectedCompanyId="selectedCompanyId"
+        :selectedCampaignId="selectedCampaignId" :selectedAlgorithm="selectedAlgorithm" />
+
 </template>
 
 
@@ -98,15 +118,18 @@ import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import AlgorithmWizard from '@/components/AlgorithmWizard.vue'
-
+import FloatingPanel from '@/components/FloatingPanel.vue'
 import RfmResults from '@/components/rfm/RfmResults.vue'
 import ChurnResults from '@/components/churn/ChurnResults.vue'
 import RecommendResults from '@/components/recommendation/RecommendResults.vue'
 
 
+const companies = ref([])
+const selectedCompanyId = ref('')
 
 const campaigns = ref([])
 const campaignsLoaded = ref(false)
+
 const selectedCampaignId = ref('')
 const selectedAlgorithm = ref('rfm')
 const results = ref([])
@@ -121,11 +144,22 @@ const clientesSegmentados = ref([])
 const scatterClientes = ref([])
 const scatterRegioes = ref([])
 
+
 // Computed para obter company_id da campanha selecionada
 const empresaId = computed(() => {
     const camp = campaigns.value.find(c => c.id === selectedCampaignId.value)
     return camp ? camp.company_id : null
 })
+
+const fetchCompanies = async () => {
+    try {
+        const res = await axios.get('http://127.0.0.1:8000/api/companies') // endpoint deve devolver apenas companies associadas ao user
+        companies.value = res.data || []
+    } catch (error) {
+        toast.error('Erro ao carregar empresas.')
+    }
+}
+
 
 const fetchCampaigns = async () => {
     try {
@@ -138,20 +172,40 @@ const fetchCampaigns = async () => {
     }
 }
 
-onMounted(() => {
-    fetchCampaigns().then(() => {
-        const campanhaGuardada = localStorage.getItem('selectedCampaignId')
-        const algoritmoGuardado = localStorage.getItem('selectedAlgorithm')
+let campaignStoredTemp = null
 
-        if (campanhaGuardada && campaigns.value.find(c => c.id === parseInt(campanhaGuardada))) {
-            selectedCampaignId.value = parseInt(campanhaGuardada)
+onMounted(() => {
+    fetchCompanies()
+    fetchCampaigns().then(() => {
+        const algorithmStored = localStorage.getItem('selectedAlgorithm')
+        const companyStored = localStorage.getItem('selectedCompanyId')
+        campaignStoredTemp = localStorage.getItem('selectedCampaignId') // guardar temporariamente
+
+        if (companyStored && companies.value.find(c => c.id === parseInt(companyStored))) {
+            selectedCompanyId.value = parseInt(companyStored)
         }
 
-        if (algoritmoGuardado && ['rfm', 'churn', 'recommendation'].includes(algoritmoGuardado)) {
-            selectedAlgorithm.value = algoritmoGuardado
+        if (algorithmStored && ['rfm', 'churn', 'recommendation'].includes(algorithmStored)) {
+            selectedAlgorithm.value = algorithmStored
         }
     })
 })
+
+const empresaSelecionada = computed(() => {
+    return companies.value.find(c => c.id === parseInt(selectedCompanyId.value))
+})
+
+const empresaInativa = computed(() => {
+    return empresaSelecionada.value?.status === 'Inativo'
+})
+
+
+const campanhasDaCompany = computed(() => {
+    return campaigns.value.filter(c => {
+        return c.company_id === parseInt(selectedCompanyId.value) && c.status !== 'Inativo'
+    })
+})
+
 
 const handleValid = (value) => {
     valid.value = value
@@ -170,6 +224,12 @@ function reiniciarWizard() {
 
 const runAlgorithm = async () => {
     if (!selectedCampaignId.value || !selectedAlgorithm.value) return
+
+    if (empresaInativa.value) {
+        toast.warning('Esta empresa está desativada. Não é possível executar algoritmos.')
+        return
+    }
+
     mostrarWizard.value = true
     loading.value = true
     errorMessage.value = ''
@@ -190,6 +250,7 @@ const runAlgorithm = async () => {
     }
 }
 
+
 const esperarResultados = async (tentativas = 0) => {
     const maxTentativas = 20
     const intervalo = 3000
@@ -199,7 +260,7 @@ const esperarResultados = async (tentativas = 0) => {
 
         const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
         const isChurnOk = selectedAlgorithm.value === 'churn' && res.data?.estatisticas
-        const isRecOk   = selectedAlgorithm.value === 'recommendation' && Array.isArray(res.data) //dif?
+        const isRecOk = selectedAlgorithm.value === 'recommendation' && Array.isArray(res.data) //dif?
 
         if (isRfmOk || isChurnOk || isRecOk) {
             results.value = res.data
@@ -240,6 +301,11 @@ const esperarResultados = async (tentativas = 0) => {
 
 const fetchResults = async () => {
     if (!selectedCampaignId.value || !selectedAlgorithm.value) return
+
+    if (empresaInativa.value) {
+        toast.warning('Esta empresa está desativada. Não é possível visualizar resultados.')
+        return
+    }
 
     loading.value = true
     errorMessage.value = ''
@@ -313,6 +379,7 @@ watch([selectedCampaignId, selectedAlgorithm], () => {
     clientesSegmentados.value = []
 })
 
+
 watch(selectedCampaignId, (novo) => {
     localStorage.setItem('selectedCampaignId', novo || '')
 })
@@ -320,6 +387,30 @@ watch(selectedCampaignId, (novo) => {
 watch(selectedAlgorithm, (novo) => {
     localStorage.setItem('selectedAlgorithm', novo || '')
 })
+
+watch(selectedCompanyId, () => {
+    selectedCampaignId.value = ''
+    localStorage.setItem('selectedCompanyId', selectedCompanyId.value || '')
+
+    const empresa = companies.value.find(c => c.id === parseInt(selectedCompanyId.value))
+    if (empresa?.status === 'Inativo') {
+        toast.warning('Esta empresa está desativada. Não é possível executar algoritmos nem ver resultados.')
+    }
+})
+
+
+watch([selectedCompanyId, campaignsLoaded], ([companyId, loaded]) => {
+    if (
+        campaignStoredTemp &&
+        companyId &&
+        loaded &&
+        campaigns.value.find(c => c.id === parseInt(campaignStoredTemp) && c.company_id === parseInt(companyId))
+    ) {
+        selectedCampaignId.value = parseInt(campaignStoredTemp)
+        campaignStoredTemp = null
+    }
+})
+
 
 </script>
 

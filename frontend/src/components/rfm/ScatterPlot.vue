@@ -2,19 +2,32 @@
   <div class="radar-container">
     <!-- Botão + Checkboxes juntos em linha compacta -->
     <div class="top-bar">
-      <button @click="resetZoom" class="btn-reset">Repor Zoom</button>
+      <div class="toolbar-row">
+        <button @click="resetZoom" class="btn-reset">Repor Zoom</button>
 
-      <div class="checkboxes">
-        <label v-for="(visivel, nome) in gruposVisiveis" :key="nome"
-          :style="{ backgroundColor: coresFixas[nome] || '#ccc' }">
-          <input type="checkbox" v-model="gruposVisiveis[nome]" />
-          {{ nome }}
-        </label>
+        <div class="checkboxes">
+          <label v-for="(visivel, nome) in gruposVisiveis" :key="nome"
+            :style="{ backgroundColor: coresFixas[nome] || '#ccc' }">
+            <input type="checkbox" v-model="gruposVisiveis[nome]" />
+            {{ nome }}
+          </label>
+        </div>
       </div>
     </div>
 
+
     <!-- Gráfico -->
     <Scatter ref="chartComponent" v-if="modo === 'clientes'" :data="chartData" :options="chartOptions" />
+    <!-- Tooltip abaixo do gráfico -->
+    <div class="legend-info">
+      <p><strong>Recência</strong>: Mede quantos dias passaram desde a última compra do cliente. Valores mais baixos
+        indicam clientes mais recentes.</p>
+      <p><strong>Frequência</strong>: Refere-se ao número total de compras feitas. Valores mais altos representam
+        clientes mais regulares.</p>
+      <p><strong>Valor Monetário</strong>: Corresponde ao total gasto pelos clientes. Quanto maior, maior o valor
+        financeiro do cliente para a empresa.</p>
+    </div>
+
   </div>
 </template>
 
@@ -162,7 +175,7 @@ const chartOptions = computed(() => ({
       max: 1.1,
       title: {
         display: true,
-        text: 'Valor Monetário (normalizado)'
+        text: 'Valor Monetário'
       },
       ticks: { stepSize: 0.1 },
       grid: { color: '#e0e0e0' }
@@ -195,11 +208,12 @@ function resetZoom() {
 
 .top-bar {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 12px;
   padding: 0 4px;
 }
+
 
 .checkboxes {
   display: flex;
@@ -234,4 +248,35 @@ function resetZoom() {
 .btn-reset:hover {
   background-color: #e0ecff;
 }
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.legend-info {
+  font-size: 0.75rem;
+  color: #555;
+  background-color: #f8f8f8;
+  padding: 10px 16px;
+  border-left: 4px solid #2563eb;
+  border-radius: 4px;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: 90%;
+  max-width: 900px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.legend-info p {
+  margin: 4px 0;
+}
+
 </style>

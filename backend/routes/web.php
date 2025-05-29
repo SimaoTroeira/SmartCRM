@@ -13,8 +13,3 @@ use App\Http\Controllers\ExportController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/exportar/rfm/{campanhaId}', [ExportController::class, 'exportarRfm']);
-    Route::get('/exportar/churn/{campanhaId}', [ExportController::class, 'exportarChurn']);
-    Route::get('/exportar/recommendation/{campanhaId}', [ExportController::class, 'exportarRecommendation']);
-});

@@ -29,11 +29,6 @@
                 <i class="bi bi-diagram-3 me-2"></i> Algoritmos
               </a>
             </li>
-            <li v-if="isAuthenticated" class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToReports">
-                <i class="bi bi-file-earmark-bar-graph me-2"></i> Relatórios e Exportações
-              </a>
-            </li>
 
             <!-- Separador flexível entre esquerda e direita -->
             <li class="flex-grow-1"></li>
@@ -139,9 +134,7 @@ const redirectToCampaign = () => {
 const redirectToAlgorithms = () => {
   router.push({ name: 'Algorithms' });
 };
-const redirectToReports = () => {
-  router.push({ name: 'Reports' });
-};
+
 </script>
 
 <style>

@@ -13,6 +13,13 @@
         <div class="radar-box">
             <Radar :data="radarData" :options="radarOptions" />
         </div>
+        <!-- Tooltip explicativa abaixo do gráfico -->
+        <div class="legend-info">
+            <p><strong>Valores próximos ou iguais a 100%</strong>: Indicam que os clientes do segmento têm uma
+                distribuição dos valores equilibrada na respetiva métrica.</p>
+            <p><strong>Valores próximos ou iguais a 0%</strong>: Sugerem que os clientes na respetiva métrica estão muito concentrados numa ou em poucas áreas, criando isolamentos.</p>
+        </div>
+
 
     </div>
 </template>
@@ -111,6 +118,14 @@ const radarData = computed(() => ({
 const radarOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+        padding: {
+            top: 10,
+            right: 0,
+            bottom: 0, // <- isto remove o espaço inferior
+            left: 0
+        }
+    },
     plugins: {
         legend: {
             display: false
@@ -138,15 +153,17 @@ const radarOptions = {
         }
     }
 }
+
 </script>
 
 <style scoped>
 .radar-container {
-  max-width: 900px; /* mesmo valor dos outros gráficos */
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    max-width: 900px;
+    /* mesmo valor dos outros gráficos */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 
@@ -172,14 +189,36 @@ const radarOptions = {
 .radar-box {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 16px;
+  padding: 16px 16px 8px 16px;
   background-color: #fff;
   width: 100%;
-  height: 400px; /* ou 480px se preferires mais altura */
+  height: 300px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 0px; /* estava 100px — reduzido! */
 }
+
+.radar-box canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.legend-info {
+  font-size: 0.75rem;
+  color: #555;
+  background-color: #f8f8f8;
+  padding: 10px 16px;
+  border-left: 4px solid #2563eb;
+  border-radius: 4px;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: 90%;
+  max-width: 900px;
+  margin-top: 8px; /* mais perto do radar-box */
+  margin-bottom: 16px; /* afasta do fundo */
+}
+
 
 </style>

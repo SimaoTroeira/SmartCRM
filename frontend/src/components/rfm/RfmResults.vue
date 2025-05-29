@@ -22,20 +22,32 @@
         <div v-if="modoVisualizacao === 'clientes'" class="flex items-center gap-2">
           <label class="font-medium text-sm">Tipo de gráfico:</label>
           <select v-model="submodoClientes" class="form-control border px-2 py-1 text-sm rounded w-48">
-            <option value="normal">Gráfico Normal</option>
             <option value="pca">Gráfico PCA</option>
+            <option value="normal">Gráfico Normal</option>
             <option value="radar">Gráfico Radar</option>
+          </select>
+        </div>
+
+        <!-- Submodo para regiões -->
+        <div v-else-if="modoVisualizacao === 'regioes'" class="flex items-center gap-2">
+          <label class="font-medium text-sm">Tipo de gráfico:</label>
+          <select v-model="submodoRegioes" class="form-control border px-2 py-1 text-sm rounded w-48">
+            <option value="barras">Gráfico de Barras</option>
+            <option value="mapa">Mapa de Portugal</option>
           </select>
         </div>
       </div>
 
-      <ScatterPlot v-if="modoVisualizacao === 'clientes' && submodoClientes === 'normal'"
-        :scatter-clientes="scatterClientes" :scatter-regioes="scatterRegioes" />
       <ScatterPlotPCA v-if="modoVisualizacao === 'clientes' && submodoClientes === 'pca'"
         :scatter-clientes="scatterClientes" />
+      <ScatterPlot v-if="modoVisualizacao === 'clientes' && submodoClientes === 'normal'"
+        :scatter-clientes="scatterClientes" :scatter-regioes="scatterRegioes" />
       <RadarPlot v-if="modoVisualizacao === 'clientes' && submodoClientes === 'radar'"
         :scatter-clientes="scatterClientes" />
-      <RegioesBarChart v-else-if="modoVisualizacao === 'regioes'" :scatter-regioes="scatterRegioes" />
+
+      <RegioesBarChart v-if="modoVisualizacao === 'regioes' && submodoRegioes === 'barras'"
+        :scatter-regioes="scatterRegioes" />
+      <PortugalMap v-if="modoVisualizacao === 'regioes' && submodoRegioes === 'mapa'" :dados-regioes="scatterRegioes" />
     </div>
 
     <!-- Clientes Segmentados -->
@@ -61,6 +73,8 @@
             class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
         </div>
       </div>
+
+      <p class="text-sm text-gray-600 mb-2">Total de clientes: {{ totalClientes }}</p>
 
       <div class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200 text-sm">
@@ -114,7 +128,6 @@
 
     <!-- Sugestões de Ação -->
     <RfmSuggestions :clusters-resumo="results" :clientes-segmentados="clientesSegmentados" />
-
   </div>
 </template>
 
@@ -124,6 +137,7 @@ import ScatterPlot from './ScatterPlot.vue'
 import ScatterPlotPCA from './ScatterPlotPCA.vue'
 import RadarPlot from './RadarPlot.vue'
 import RegioesBarChart from './RegioesBarChart.vue'
+import PortugalMap from './PortugalMap.vue'
 import RfmSuggestions from './RfmSuggestions.vue'
 
 const segmentoFiltro = ref('')
@@ -132,7 +146,8 @@ const ordemCrescente = ref(true)
 const limiteLinhas = ref(10)
 
 const modoVisualizacao = ref('clientes')
-const submodoClientes = ref('normal')
+const submodoClientes = ref('pca')
+const submodoRegioes = ref('barras')
 
 const props = defineProps({
   results: Array,
@@ -142,27 +157,41 @@ const props = defineProps({
   scatterRegioes: Array
 })
 
+
+const totalClientes = computed(() => props.clientesSegmentados.length)
+
 const tituloVisualizacao = computed(() => {
   if (modoVisualizacao.value === 'clientes') {
     if (submodoClientes.value === 'pca') return '🎯 Dispersão dos Clientes com PCA'
     if (submodoClientes.value === 'radar') return '📊 Comparação Média dos Segmentos'
     return '📌 Dispersão dos Clientes'
   }
-  return '🌍 Produtos Mais Comprados por Região'
+
+  if (submodoRegioes.value === 'mapa') {
+    return '🗺️ Mapa Interativo de Segmentação por Região'
+  }
+
+  return '📊 Produtos Mais Comprados por Região'
 })
 
 const descricaoVisualizacao = computed(() => {
   if (modoVisualizacao.value === 'clientes') {
     if (submodoClientes.value === 'pca') {
-      return 'Este gráfico aplica Análise de Componentes Principais (PCA) para condensar múltiplas variáveis dos clientes em dois eixos principais — PCA 1 e PCA 2. Estes eixos representam as direções de maior variação nos dados, facilitando a visualização de padrões e agrupamentos complexos. Clientes com comportamentos semelhantes estão mais próximos entre si.'
+      return 'Este gráfico aplica Análise de Componentes Principais (PCA) para condensar múltiplas variáveis dos clientes em dois eixos principais — PCA 1 e PCA 2. Estes eixos representam as direções de maior variação nos dados, facilitando a visualização de padrões e agrupamentos complexos. Clientes com comportamentos semelhantes estão mais próximos entre si. As duas dimensões encontram-se normalizadas entre 0 e 1.'
     }
     if (submodoClientes.value === 'radar') {
-      return 'Este gráfico mostra a média de Recência, Frequência e Valor Monetário para cada segmento, permitindo comparar o perfil médio de cada grupo de clientes de forma visual e intuitiva.'
+      return 'Este gráfico mostra como o algoritmo de segmentação RFM classifica cada cluster. Os valores de cada métrica são normalizados entre 0% e 100% para cada segmento consoante a distribuição dos valores em toda a população de clientes analisada.'
     }
-    return 'Este gráfico mostra agrupamentos de clientes com base nos seus padrões de compra através da segmentação RFM. A direção vertical tende a refletir o tempo desde a última compra. A horizontal, o valor das compras. O tamanho dos pontos representa a frequência de compras, enquanto as cores representam diferentes segmentos de clientes (como Campeões, Em Risco, etc.).'
+    return 'Este gráfico mostra agrupamentos de clientes com base nos seus padrões de compra através da segmentação RFM. A direção vertical tende a refletir o tempo desde a última compra. A horizontal, o valor das compras. O tamanho dos pontos representa a frequência de compras, enquanto as cores representam diferentes segmentos de clientes (como Campeões, Em Risco, etc.). As três dimensões encontram-se normalizadas entre 0 e 1.'
   }
+
+  if (submodoRegioes.value === 'mapa') {
+    return 'Este mapa mostra a distribuição dos diferentes segmentos de clientes em cada distrito de Portugal. As cores representam os segmentos dominantes em cada região, facilitando a identificação de áreas com maior concentração de clientes valiosos, em risco ou inativos.'
+  }
+
   return 'Este gráfico mostra as regiões com os produtos mais comprados. Cada barra representa a região e o seu produto mais popular, com base no volume e valor de vendas. As cores nas barras indicam a proporção de clientes pertencentes a diferentes segmentos (como Campeões, Em Risco, etc.).'
 })
+
 
 const nomeColunasCluster = {
   Cluster: "Cluster",
@@ -228,6 +257,7 @@ const dadosProntos = computed(() => {
 </script>
 
 
+
 <style scoped>
 .controles-tabela-clientes {
   display: flex;
@@ -284,6 +314,4 @@ const dadosProntos = computed(() => {
   min-height: auto !important;
   padding-bottom: 1 !important;
 }
-
-
 </style>

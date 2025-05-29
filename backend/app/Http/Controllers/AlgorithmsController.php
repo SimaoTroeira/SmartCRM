@@ -30,8 +30,13 @@ class AlgorithmsController extends Controller
 
         $campanhaId = $request->input('campanha_id');
         $campanha = Campaign::with('company')->findOrFail($campanhaId);
-        $empresaId = $campanha->company->id;
+        $empresa = $campanha->company;
 
+        if ($empresa->status === 'Inativo') {
+            return response()->json(['error' => 'A empresa está desativada. Não é possível executar algoritmos.'], 403);
+        }
+
+        $empresaId = $empresa->id;
         $script = $scriptMap[$algoritmo];
 
         Log::info("Disparando script {$script} para empresa {$empresaId}, campanha {$campanhaId}");
@@ -59,8 +64,13 @@ class AlgorithmsController extends Controller
         }
 
         $campanha = Campaign::with('company')->findOrFail($campanhaId);
-        $empresaId = $campanha->company->id;
+        $empresa = $campanha->company;
 
+        if ($empresa->status === 'Inativo') {
+            return response()->json(['error' => 'A empresa está desativada. Não é possível obter resultados.'], 403);
+        }
+
+        $empresaId = $empresa->id;
         $basePath = config('smartcrm.storage_path');
         $jsonPath = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/" . $filenameMap[$algoritmo];
 
@@ -97,8 +107,13 @@ class AlgorithmsController extends Controller
         }
 
         $campanha = Campaign::with('company')->findOrFail($campanhaId);
-        $empresaId = $campanha->company->id;
+        $empresa = $campanha->company;
 
+        if ($empresa->status === 'Inativo') {
+            return response()->json(['error' => 'A empresa está desativada. Não é possível obter resultados complementares.'], 403);
+        }
+
+        $empresaId = $empresa->id;
         $basePath  = config('smartcrm.storage_path');
         $jsonPath  = $basePath . "/empresa_id_{$empresaId}/campanhas/campanha_id_{$campanhaId}/{$map[$algoritmo][$tipo]}";
 
@@ -111,9 +126,11 @@ class AlgorithmsController extends Controller
         $conteudo = File::get($jsonPath);
         Log::info("Conteúdo lido (primeiros 200 caracteres): " . substr($conteudo, 0, 200));
         $data = json_decode($conteudo, true);
+
         if (empty($data)) {
             Log::warning("Ficheiro lido com sucesso, mas sem dados interpretáveis. Caminho: {$jsonPath}");
         }
+
         return response()->json($data);
     }
 
@@ -127,41 +144,17 @@ class AlgorithmsController extends Controller
 
         $requisitosPorAlgoritmo = [
             'rfm' => [
-                'vendas.json' => [
-                    ['ClienteID'],
-                    ['ValorTotal'],
-                ],
-                'clientes.json' => [
-                    ['ClienteID'],
-                    ['Regiao'],
-                ],
-                'produtos.json' => [
-                    ['ProdutoID'],
-                    ['NomeProduto'],
-                    ['Categoria'],
-                    ['Marca'],
-                ],
+                'vendas.json' => [['ClienteID'], ['ValorTotal']],
+                'clientes.json' => [['ClienteID'], ['Regiao']],
+                'produtos.json' => [['ProdutoID'], ['NomeProduto'], ['Categoria'], ['Marca']],
             ],
             'churn' => [
-                'clientes.json' => [
-                    ['ClienteID'],
-                    ['DataCadastro'],
-                    ['UltimaCompra'],
-                    ['TotalCompras'],
-                    ['ValorTotalGasto'],
-                ],
-                'vendas.json' => [
-                    ['ClienteID'],
-                    ['DataVenda'],
-                ],
+                'clientes.json' => [['ClienteID'], ['DataCadastro'], ['UltimaCompra'], ['TotalCompras'], ['ValorTotalGasto']],
+                'vendas.json' => [['ClienteID'], ['DataVenda']],
             ],
             'recommendation' => [
-                'vendas.json' => [
-                    ['ClienteID'],
-                ],
-                'produtos.json' => [
-                    ['ProdutoID'],
-                ],
+                'vendas.json' => [['ClienteID']],
+                'produtos.json' => [['ProdutoID']],
             ],
         ];
 
