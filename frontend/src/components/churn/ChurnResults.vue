@@ -73,7 +73,9 @@
               <td class="border px-4 py-2">{{ cliente.ScoreChurn }}</td>
               <td class="border px-4 py-2">{{ cliente.Classificacao }}</td>
               <td class="border px-4 py-2">{{ cliente.Regiao ?? '-' }}</td>
+              <td class="border px-4 py-2">{{ cliente.Localidade ?? '-' }}</td> <!-- 👈 nova coluna -->
             </tr>
+
           </tbody>
         </table>
       </div>
@@ -123,8 +125,10 @@ const colunasTabela = [
   { key: 'Nome', label: 'Nome' },
   { key: 'ScoreChurn', label: 'ScoreChurn' },
   { key: 'Classificacao', label: 'Classificação' },
-  { key: 'Regiao', label: 'Região' }
+  { key: 'Regiao', label: 'Região' },
+  { key: 'Localidade', label: 'Localidade' }
 ]
+
 
 const filtroRisco = ref('')
 const colunaOrdenada = ref('')

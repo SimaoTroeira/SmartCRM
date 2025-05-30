@@ -58,7 +58,10 @@ def churn_prediction(base_path, empresa_id, campanha_id):
             dias_desde_ultima = calcular_dias(cliente.get("UltimaCompra"))
 
         tempo_cliente = calcular_dias(cliente.get("DataCadastro"))
-        regiao = cliente.get("Regiao") or cliente.get("Localidade") or cliente.get("Cidade") or cliente.get("Distrito") or cliente.get("País")
+        regiao = cliente.get("Regiao") or cliente.get("Distrito") or cliente.get("País") or "Desconhecido"
+        distrito = cliente.get("Distrito") or cliente.get("Regiao") or cliente.get("País") or "Desconhecido"
+        localidade = cliente.get("Localidade") or cliente.get("Cidade") or "Desconhecido"
+
 
         total_compras = cliente.get("TotalCompras", np.nan)
         valor_total = cliente.get("ValorTotalGasto", np.nan)
@@ -105,8 +108,12 @@ def churn_prediction(base_path, empresa_id, campanha_id):
             "FrequenciaMensal": round(freq_mensal, 2),
             "ValorTotalGasto": round(valor_total or 0, 2),
             "ScoreChurnRaw": round(score, 4),
-            "Regiao": regiao or "Desconhecido"
+            "Regiao": regiao,
+            "Distrito": distrito,
+            "Localidade": localidade
         }
+        resultado["ScoreChurn"] = round(score, 4)
+
 
         resultados.append(resultado)
 
