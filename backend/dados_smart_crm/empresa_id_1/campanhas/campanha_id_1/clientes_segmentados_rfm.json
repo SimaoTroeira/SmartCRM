@@ -1,0 +1,3908 @@
+[
+  {
+    "ClienteID": 1,
+    "Recência": 533,
+    "Frequência": 1,
+    "Monetário": 250.53,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Carminho Lopes"
+  },
+  {
+    "ClienteID": 2,
+    "Recência": 226,
+    "Frequência": 1,
+    "Monetário": 860.43,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Paulo Pacheco"
+  },
+  {
+    "ClienteID": 3,
+    "Recência": 165,
+    "Frequência": 2,
+    "Monetário": 2196.14,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Sara Pires-Moreira"
+  },
+  {
+    "ClienteID": 4,
+    "Recência": 139,
+    "Frequência": 3,
+    "Monetário": 5977.38,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Bianca Sousa"
+  },
+  {
+    "ClienteID": 5,
+    "Recência": 612,
+    "Frequência": 1,
+    "Monetário": 1031.87,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Freitas"
+  },
+  {
+    "ClienteID": 6,
+    "Recência": 93,
+    "Frequência": 2,
+    "Monetário": 5060.43,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Íris de Assunção"
+  },
+  {
+    "ClienteID": 7,
+    "Recência": 52,
+    "Frequência": 3,
+    "Monetário": 3103.95,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Lourenço"
+  },
+  {
+    "ClienteID": 8,
+    "Recência": 112,
+    "Frequência": 3,
+    "Monetário": 1029.26,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Silva"
+  },
+  {
+    "ClienteID": 9,
+    "Recência": 113,
+    "Frequência": 3,
+    "Monetário": 2402.62,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Magalhães Lda."
+  },
+  {
+    "ClienteID": 10,
+    "Recência": 182,
+    "Frequência": 5,
+    "Monetário": 5084.59,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Ribeiro"
+  },
+  {
+    "ClienteID": 11,
+    "Recência": 295,
+    "Frequência": 4,
+    "Monetário": 7471.1,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Vitória Torres"
+  },
+  {
+    "ClienteID": 12,
+    "Recência": 216,
+    "Frequência": 2,
+    "Monetário": 1362.85,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Caetana Melo"
+  },
+  {
+    "ClienteID": 13,
+    "Recência": 172,
+    "Frequência": 4,
+    "Monetário": 7436.48,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Ivan Mota"
+  },
+  {
+    "ClienteID": 14,
+    "Recência": 331,
+    "Frequência": 2,
+    "Monetário": 3132.57,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Miranda"
+  },
+  {
+    "ClienteID": 15,
+    "Recência": 319,
+    "Frequência": 1,
+    "Monetário": 4452.84,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Moura"
+  },
+  {
+    "ClienteID": 16,
+    "Recência": 190,
+    "Frequência": 4,
+    "Monetário": 4101.95,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rita de Baptista"
+  },
+  {
+    "ClienteID": 17,
+    "Recência": 84,
+    "Frequência": 2,
+    "Monetário": 4379.32,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Andreia Pereira"
+  },
+  {
+    "ClienteID": 18,
+    "Recência": 312,
+    "Frequência": 1,
+    "Monetário": 80.78,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Tomé Henriques"
+  },
+  {
+    "ClienteID": 19,
+    "Recência": 442,
+    "Frequência": 2,
+    "Monetário": 1376.35,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Esteves S/A"
+  },
+  {
+    "ClienteID": 20,
+    "Recência": 261,
+    "Frequência": 1,
+    "Monetário": 1183.79,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Batista Pires S.A."
+  },
+  {
+    "ClienteID": 21,
+    "Recência": 719,
+    "Frequência": 1,
+    "Monetário": 103.68,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Nádia da Araújo"
+  },
+  {
+    "ClienteID": 23,
+    "Recência": 17,
+    "Frequência": 5,
+    "Monetário": 7192.76,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Amaral"
+  },
+  {
+    "ClienteID": 24,
+    "Recência": 47,
+    "Frequência": 4,
+    "Monetário": 4659.37,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rodrigues"
+  },
+  {
+    "ClienteID": 25,
+    "Recência": 1,
+    "Frequência": 3,
+    "Monetário": 7197.42,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Torres S/A"
+  },
+  {
+    "ClienteID": 26,
+    "Recência": 190,
+    "Frequência": 2,
+    "Monetário": 971.58,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Jorge Cruz"
+  },
+  {
+    "ClienteID": 28,
+    "Recência": 1,
+    "Frequência": 1,
+    "Monetário": 584.87,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Monteiro"
+  },
+  {
+    "ClienteID": 29,
+    "Recência": 554,
+    "Frequência": 2,
+    "Monetário": 2827.85,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Marques Ferreira e Filhos"
+  },
+  {
+    "ClienteID": 30,
+    "Recência": 156,
+    "Frequência": 1,
+    "Monetário": 1048.01,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Mendes Fernandes Lda."
+  },
+  {
+    "ClienteID": 32,
+    "Recência": 44,
+    "Frequência": 2,
+    "Monetário": 1535.12,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Morais"
+  },
+  {
+    "ClienteID": 34,
+    "Recência": 255,
+    "Frequência": 1,
+    "Monetário": 70.5,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Eduardo Gomes"
+  },
+  {
+    "ClienteID": 35,
+    "Recência": 191,
+    "Frequência": 2,
+    "Monetário": 1204.9,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Jesus S.A."
+  },
+  {
+    "ClienteID": 36,
+    "Recência": 88,
+    "Frequência": 2,
+    "Monetário": 2383.37,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Lúcia Correia"
+  },
+  {
+    "ClienteID": 37,
+    "Recência": 410,
+    "Frequência": 1,
+    "Monetário": 603.39,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Valente Henriques S.A."
+  },
+  {
+    "ClienteID": 38,
+    "Recência": 305,
+    "Frequência": 2,
+    "Monetário": 4002.69,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rafaela Pereira"
+  },
+  {
+    "ClienteID": 39,
+    "Recência": 204,
+    "Frequência": 2,
+    "Monetário": 4162.53,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pires"
+  },
+  {
+    "ClienteID": 40,
+    "Recência": 33,
+    "Frequência": 3,
+    "Monetário": 2286.99,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "António Antunes"
+  },
+  {
+    "ClienteID": 41,
+    "Recência": 323,
+    "Frequência": 3,
+    "Monetário": 3727.5,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Silva Sousa S/A"
+  },
+  {
+    "ClienteID": 42,
+    "Recência": 254,
+    "Frequência": 1,
+    "Monetário": 3827.38,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rita Correia"
+  },
+  {
+    "ClienteID": 43,
+    "Recência": 23,
+    "Frequência": 8,
+    "Monetário": 10610.38,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Torres"
+  },
+  {
+    "ClienteID": 44,
+    "Recência": 294,
+    "Frequência": 2,
+    "Monetário": 1743.46,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Luana Araújo"
+  },
+  {
+    "ClienteID": 46,
+    "Recência": 116,
+    "Frequência": 3,
+    "Monetário": 2961.96,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Bryan Maia"
+  },
+  {
+    "ClienteID": 47,
+    "Recência": 15,
+    "Frequência": 1,
+    "Monetário": 2378.1,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Micael Rodrigues"
+  },
+  {
+    "ClienteID": 48,
+    "Recência": 147,
+    "Frequência": 6,
+    "Monetário": 5227.08,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rafael Vaz"
+  },
+  {
+    "ClienteID": 49,
+    "Recência": 727,
+    "Frequência": 1,
+    "Monetário": 1166.87,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Helena Azevedo"
+  },
+  {
+    "ClienteID": 50,
+    "Recência": 90,
+    "Frequência": 3,
+    "Monetário": 2965.98,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cardoso"
+  },
+  {
+    "ClienteID": 51,
+    "Recência": 467,
+    "Frequência": 2,
+    "Monetário": 2071.39,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Freitas"
+  },
+  {
+    "ClienteID": 52,
+    "Recência": 31,
+    "Frequência": 2,
+    "Monetário": 4181.92,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Esteves"
+  },
+  {
+    "ClienteID": 53,
+    "Recência": 572,
+    "Frequência": 1,
+    "Monetário": 2723.21,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Núria Pinheiro"
+  },
+  {
+    "ClienteID": 54,
+    "Recência": 38,
+    "Frequência": 1,
+    "Monetário": 2669.0,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Guerreiro"
+  },
+  {
+    "ClienteID": 55,
+    "Recência": 46,
+    "Frequência": 1,
+    "Monetário": 634.62,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "William Campos"
+  },
+  {
+    "ClienteID": 57,
+    "Recência": 251,
+    "Frequência": 1,
+    "Monetário": 1215.65,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Juliana Ramos"
+  },
+  {
+    "ClienteID": 58,
+    "Recência": 26,
+    "Frequência": 3,
+    "Monetário": 3255.67,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Nascimento"
+  },
+  {
+    "ClienteID": 59,
+    "Recência": 146,
+    "Frequência": 3,
+    "Monetário": 4793.94,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rui Figueiredo"
+  },
+  {
+    "ClienteID": 61,
+    "Recência": 139,
+    "Frequência": 1,
+    "Monetário": 199.8,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Marcos Amorim"
+  },
+  {
+    "ClienteID": 62,
+    "Recência": 31,
+    "Frequência": 1,
+    "Monetário": 2530.63,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Castro Sá S.A."
+  },
+  {
+    "ClienteID": 63,
+    "Recência": 243,
+    "Frequência": 2,
+    "Monetário": 1419.04,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Leite"
+  },
+  {
+    "ClienteID": 64,
+    "Recência": 125,
+    "Frequência": 4,
+    "Monetário": 8183.9,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cunha Miranda Lda."
+  },
+  {
+    "ClienteID": 65,
+    "Recência": 362,
+    "Frequência": 2,
+    "Monetário": 2706.74,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Bruno Silva"
+  },
+  {
+    "ClienteID": 66,
+    "Recência": 141,
+    "Frequência": 3,
+    "Monetário": 4227.46,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Bruno Ramos"
+  },
+  {
+    "ClienteID": 67,
+    "Recência": 11,
+    "Frequência": 2,
+    "Monetário": 838.67,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Tomás Freitas"
+  },
+  {
+    "ClienteID": 68,
+    "Recência": 418,
+    "Frequência": 3,
+    "Monetário": 4662.03,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Benedita Marques"
+  },
+  {
+    "ClienteID": 69,
+    "Recência": 267,
+    "Frequência": 2,
+    "Monetário": 2503.77,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Inês Castro"
+  },
+  {
+    "ClienteID": 70,
+    "Recência": 311,
+    "Frequência": 3,
+    "Monetário": 5385.73,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Amélia Alves"
+  },
+  {
+    "ClienteID": 71,
+    "Recência": 118,
+    "Frequência": 3,
+    "Monetário": 4150.45,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Iara Oliveira"
+  },
+  {
+    "ClienteID": 72,
+    "Recência": 220,
+    "Frequência": 1,
+    "Monetário": 120.25,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Figueiredo Pinto S/A"
+  },
+  {
+    "ClienteID": 73,
+    "Recência": 35,
+    "Frequência": 3,
+    "Monetário": 1286.58,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Igor Nogueira-Moreira"
+  },
+  {
+    "ClienteID": 74,
+    "Recência": 359,
+    "Frequência": 1,
+    "Monetário": 2458.52,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Mauro Anjos"
+  },
+  {
+    "ClienteID": 75,
+    "Recência": 657,
+    "Frequência": 1,
+    "Monetário": 207.93,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Azevedo Gonçalves S/A"
+  },
+  {
+    "ClienteID": 76,
+    "Recência": 185,
+    "Frequência": 3,
+    "Monetário": 2072.73,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Margarida Maia"
+  },
+  {
+    "ClienteID": 77,
+    "Recência": 363,
+    "Frequência": 1,
+    "Monetário": 2391.25,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Fonseca"
+  },
+  {
+    "ClienteID": 78,
+    "Recência": 234,
+    "Frequência": 2,
+    "Monetário": 1649.25,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Carvalho Lda."
+  },
+  {
+    "ClienteID": 79,
+    "Recência": 248,
+    "Frequência": 3,
+    "Monetário": 2216.0,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Campos"
+  },
+  {
+    "ClienteID": 81,
+    "Recência": 251,
+    "Frequência": 3,
+    "Monetário": 3887.88,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pinheiro Sousa S.A."
+  },
+  {
+    "ClienteID": 82,
+    "Recência": 128,
+    "Frequência": 3,
+    "Monetário": 4687.35,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Valente e Filhos"
+  },
+  {
+    "ClienteID": 83,
+    "Recência": 148,
+    "Frequência": 1,
+    "Monetário": 2236.61,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Madalena Macedo"
+  },
+  {
+    "ClienteID": 84,
+    "Recência": 466,
+    "Frequência": 1,
+    "Monetário": 898.01,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Bruna Branco"
+  },
+  {
+    "ClienteID": 85,
+    "Recência": 189,
+    "Frequência": 5,
+    "Monetário": 6557.12,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Vicente Fernandes"
+  },
+  {
+    "ClienteID": 86,
+    "Recência": 361,
+    "Frequência": 1,
+    "Monetário": 469.05,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Isabel Silva"
+  },
+  {
+    "ClienteID": 87,
+    "Recência": 135,
+    "Frequência": 2,
+    "Monetário": 1553.82,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Paulo Fernandes"
+  },
+  {
+    "ClienteID": 88,
+    "Recência": 253,
+    "Frequência": 4,
+    "Monetário": 3222.93,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Anita do Melo"
+  },
+  {
+    "ClienteID": 89,
+    "Recência": 315,
+    "Frequência": 2,
+    "Monetário": 3751.05,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pinto Ribeiro Lda."
+  },
+  {
+    "ClienteID": 90,
+    "Recência": 178,
+    "Frequência": 1,
+    "Monetário": 171.21,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Gomes"
+  },
+  {
+    "ClienteID": 91,
+    "Recência": 142,
+    "Frequência": 2,
+    "Monetário": 3759.43,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pires Machado Lda."
+  },
+  {
+    "ClienteID": 92,
+    "Recência": 376,
+    "Frequência": 1,
+    "Monetário": 3166.33,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Francisca Tavares"
+  },
+  {
+    "ClienteID": 93,
+    "Recência": 432,
+    "Frequência": 4,
+    "Monetário": 5271.02,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Miriam Magalhães"
+  },
+  {
+    "ClienteID": 94,
+    "Recência": 62,
+    "Frequência": 2,
+    "Monetário": 3162.38,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Matias Cunha Lda."
+  },
+  {
+    "ClienteID": 96,
+    "Recência": 58,
+    "Frequência": 2,
+    "Monetário": 3639.18,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Lorena Santos"
+  },
+  {
+    "ClienteID": 97,
+    "Recência": 267,
+    "Frequência": 3,
+    "Monetário": 5078.64,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Álvaro Costa"
+  },
+  {
+    "ClienteID": 98,
+    "Recência": 118,
+    "Frequência": 4,
+    "Monetário": 5388.15,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Coelho Reis S.A."
+  },
+  {
+    "ClienteID": 99,
+    "Recência": 489,
+    "Frequência": 3,
+    "Monetário": 1821.41,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Álvaro Pires"
+  },
+  {
+    "ClienteID": 101,
+    "Recência": 57,
+    "Frequência": 3,
+    "Monetário": 5159.09,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Yasmin Batista"
+  },
+  {
+    "ClienteID": 102,
+    "Recência": 293,
+    "Frequência": 1,
+    "Monetário": 442.55,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Fabiana Lima-Vicente"
+  },
+  {
+    "ClienteID": 103,
+    "Recência": 700,
+    "Frequência": 1,
+    "Monetário": 934.78,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Castro Mota S.A."
+  },
+  {
+    "ClienteID": 106,
+    "Recência": 5,
+    "Frequência": 5,
+    "Monetário": 3663.0,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Rafaela Vieira"
+  },
+  {
+    "ClienteID": 107,
+    "Recência": 159,
+    "Frequência": 4,
+    "Monetário": 6972.14,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Fabiana Rodrigues"
+  },
+  {
+    "ClienteID": 108,
+    "Recência": 297,
+    "Frequência": 2,
+    "Monetário": 2633.19,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nascimento Lda."
+  },
+  {
+    "ClienteID": 109,
+    "Recência": 506,
+    "Frequência": 1,
+    "Monetário": 2486.97,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pires Marques S.A."
+  },
+  {
+    "ClienteID": 110,
+    "Recência": 450,
+    "Frequência": 2,
+    "Monetário": 2079.66,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Vieira Morais Lda."
+  },
+  {
+    "ClienteID": 111,
+    "Recência": 361,
+    "Frequência": 3,
+    "Monetário": 4079.13,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rui Lima"
+  },
+  {
+    "ClienteID": 112,
+    "Recência": 258,
+    "Frequência": 1,
+    "Monetário": 447.62,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Brito S/A"
+  },
+  {
+    "ClienteID": 113,
+    "Recência": 275,
+    "Frequência": 2,
+    "Monetário": 1836.13,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Igor Ribeiro"
+  },
+  {
+    "ClienteID": 114,
+    "Recência": 549,
+    "Frequência": 2,
+    "Monetário": 2251.55,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Vera-Emma Anjos"
+  },
+  {
+    "ClienteID": 115,
+    "Recência": 156,
+    "Frequência": 3,
+    "Monetário": 7699.12,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Anjos e Filhos"
+  },
+  {
+    "ClienteID": 116,
+    "Recência": 402,
+    "Frequência": 2,
+    "Monetário": 6404.06,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Kyara Nunes"
+  },
+  {
+    "ClienteID": 117,
+    "Recência": 384,
+    "Frequência": 2,
+    "Monetário": 1806.75,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rodrigues Cruz S.A."
+  },
+  {
+    "ClienteID": 118,
+    "Recência": 47,
+    "Frequência": 5,
+    "Monetário": 5431.7,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Gabriel Cunha-Magalhães"
+  },
+  {
+    "ClienteID": 119,
+    "Recência": 266,
+    "Frequência": 3,
+    "Monetário": 4559.26,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Almeida Lda."
+  },
+  {
+    "ClienteID": 120,
+    "Recência": 60,
+    "Frequência": 4,
+    "Monetário": 2128.7,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cristiano Jesus"
+  },
+  {
+    "ClienteID": 121,
+    "Recência": 322,
+    "Frequência": 2,
+    "Monetário": 2185.36,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pinheiro"
+  },
+  {
+    "ClienteID": 124,
+    "Recência": 74,
+    "Frequência": 2,
+    "Monetário": 872.72,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Oliveira"
+  },
+  {
+    "ClienteID": 125,
+    "Recência": 382,
+    "Frequência": 2,
+    "Monetário": 1570.79,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rúben Magalhães"
+  },
+  {
+    "ClienteID": 126,
+    "Recência": 29,
+    "Frequência": 3,
+    "Monetário": 5000.58,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Diego Amorim"
+  },
+  {
+    "ClienteID": 127,
+    "Recência": 114,
+    "Frequência": 4,
+    "Monetário": 4735.67,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Fabiana do Gomes"
+  },
+  {
+    "ClienteID": 128,
+    "Recência": 264,
+    "Frequência": 1,
+    "Monetário": 3001.67,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nascimento"
+  },
+  {
+    "ClienteID": 129,
+    "Recência": 218,
+    "Frequência": 1,
+    "Monetário": 617.99,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Tomé Macedo"
+  },
+  {
+    "ClienteID": 130,
+    "Recência": 407,
+    "Frequência": 3,
+    "Monetário": 7179.52,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Fábio Pereira"
+  },
+  {
+    "ClienteID": 131,
+    "Recência": 257,
+    "Frequência": 1,
+    "Monetário": 1162.42,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Reis"
+  },
+  {
+    "ClienteID": 132,
+    "Recência": 116,
+    "Frequência": 2,
+    "Monetário": 4942.2,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Andrade Lda."
+  },
+  {
+    "ClienteID": 133,
+    "Recência": 167,
+    "Frequência": 3,
+    "Monetário": 4389.43,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Marcos Morais-Marques"
+  },
+  {
+    "ClienteID": 134,
+    "Recência": 307,
+    "Frequência": 3,
+    "Monetário": 3896.56,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Vera Valente"
+  },
+  {
+    "ClienteID": 135,
+    "Recência": 318,
+    "Frequência": 1,
+    "Monetário": 3058.37,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Margarida Silva"
+  },
+  {
+    "ClienteID": 136,
+    "Recência": 40,
+    "Frequência": 3,
+    "Monetário": 1889.41,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Luna-Ema Amaral"
+  },
+  {
+    "ClienteID": 138,
+    "Recência": 16,
+    "Frequência": 1,
+    "Monetário": 3218.29,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Nascimento Martins e Filhos"
+  },
+  {
+    "ClienteID": 139,
+    "Recência": 245,
+    "Frequência": 2,
+    "Monetário": 3725.15,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Cunha Ferreira S.A."
+  },
+  {
+    "ClienteID": 141,
+    "Recência": 457,
+    "Frequência": 1,
+    "Monetário": 834.62,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Sofia Teixeira-Pinto"
+  },
+  {
+    "ClienteID": 142,
+    "Recência": 236,
+    "Frequência": 3,
+    "Monetário": 1724.49,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pedro Lima"
+  },
+  {
+    "ClienteID": 143,
+    "Recência": 195,
+    "Frequência": 3,
+    "Monetário": 2616.98,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Gustavo Macedo"
+  },
+  {
+    "ClienteID": 144,
+    "Recência": 190,
+    "Frequência": 1,
+    "Monetário": 848.75,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Iara Vaz"
+  },
+  {
+    "ClienteID": 145,
+    "Recência": 59,
+    "Frequência": 3,
+    "Monetário": 1067.21,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Nelson Mendes"
+  },
+  {
+    "ClienteID": 147,
+    "Recência": 349,
+    "Frequência": 2,
+    "Monetário": 3602.11,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Jesus S.A."
+  },
+  {
+    "ClienteID": 148,
+    "Recência": 8,
+    "Frequência": 2,
+    "Monetário": 1609.63,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Larissa Morais-Loureiro"
+  },
+  {
+    "ClienteID": 149,
+    "Recência": 284,
+    "Frequência": 4,
+    "Monetário": 5675.82,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Moura S/A"
+  },
+  {
+    "ClienteID": 150,
+    "Recência": 8,
+    "Frequência": 2,
+    "Monetário": 1438.02,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Andrade S/A"
+  },
+  {
+    "ClienteID": 151,
+    "Recência": 165,
+    "Frequência": 2,
+    "Monetário": 504.95,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Sofia Branco"
+  },
+  {
+    "ClienteID": 152,
+    "Recência": 258,
+    "Frequência": 1,
+    "Monetário": 1630.83,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Paulo Domingues"
+  },
+  {
+    "ClienteID": 153,
+    "Recência": 238,
+    "Frequência": 2,
+    "Monetário": 5051.93,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Mota"
+  },
+  {
+    "ClienteID": 154,
+    "Recência": 592,
+    "Frequência": 1,
+    "Monetário": 1238.52,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Cruz"
+  },
+  {
+    "ClienteID": 155,
+    "Recência": 212,
+    "Frequência": 3,
+    "Monetário": 7975.07,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Costa Pinho S/A"
+  },
+  {
+    "ClienteID": 157,
+    "Recência": 88,
+    "Frequência": 4,
+    "Monetário": 7624.59,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Afonso de Cruz"
+  },
+  {
+    "ClienteID": 158,
+    "Recência": 214,
+    "Frequência": 4,
+    "Monetário": 4037.07,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Maria Andrade"
+  },
+  {
+    "ClienteID": 159,
+    "Recência": 581,
+    "Frequência": 3,
+    "Monetário": 2130.03,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Iara Simões"
+  },
+  {
+    "ClienteID": 160,
+    "Recência": 588,
+    "Frequência": 1,
+    "Monetário": 1589.64,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Santiago Teixeira-Correia"
+  },
+  {
+    "ClienteID": 163,
+    "Recência": 20,
+    "Frequência": 1,
+    "Monetário": 1296.94,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Neto S.A."
+  },
+  {
+    "ClienteID": 166,
+    "Recência": 6,
+    "Frequência": 2,
+    "Monetário": 2560.64,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Marta Branco"
+  },
+  {
+    "ClienteID": 167,
+    "Recência": 55,
+    "Frequência": 2,
+    "Monetário": 3625.81,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Violeta do Marques"
+  },
+  {
+    "ClienteID": 168,
+    "Recência": 248,
+    "Frequência": 4,
+    "Monetário": 7005.13,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Barbosa e Filhos"
+  },
+  {
+    "ClienteID": 169,
+    "Recência": 57,
+    "Frequência": 1,
+    "Monetário": 379.41,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Ângelo Costa"
+  },
+  {
+    "ClienteID": 170,
+    "Recência": 185,
+    "Frequência": 3,
+    "Monetário": 2685.1,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Lara Araújo"
+  },
+  {
+    "ClienteID": 172,
+    "Recência": 12,
+    "Frequência": 3,
+    "Monetário": 5681.56,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Mário Pereira"
+  },
+  {
+    "ClienteID": 173,
+    "Recência": 125,
+    "Frequência": 3,
+    "Monetário": 4392.84,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rocha"
+  },
+  {
+    "ClienteID": 174,
+    "Recência": 128,
+    "Frequência": 1,
+    "Monetário": 541.16,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Emanuel Matos"
+  },
+  {
+    "ClienteID": 175,
+    "Recência": 350,
+    "Frequência": 1,
+    "Monetário": 3297.17,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Campos S.A."
+  },
+  {
+    "ClienteID": 176,
+    "Recência": 29,
+    "Frequência": 3,
+    "Monetário": 4083.74,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Santos"
+  },
+  {
+    "ClienteID": 177,
+    "Recência": 380,
+    "Frequência": 4,
+    "Monetário": 7845.85,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Renato Borges"
+  },
+  {
+    "ClienteID": 178,
+    "Recência": 603,
+    "Frequência": 2,
+    "Monetário": 3084.38,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Francisco Brito"
+  },
+  {
+    "ClienteID": 180,
+    "Recência": 189,
+    "Frequência": 2,
+    "Monetário": 3282.26,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Guerreiro"
+  },
+  {
+    "ClienteID": 181,
+    "Recência": 373,
+    "Frequência": 2,
+    "Monetário": 3256.67,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gustavo Neto"
+  },
+  {
+    "ClienteID": 182,
+    "Recência": 469,
+    "Frequência": 1,
+    "Monetário": 1177.42,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Matos Assunção Lda."
+  },
+  {
+    "ClienteID": 183,
+    "Recência": 102,
+    "Frequência": 2,
+    "Monetário": 3632.66,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Leite"
+  },
+  {
+    "ClienteID": 184,
+    "Recência": 188,
+    "Frequência": 3,
+    "Monetário": 5808.67,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Figueiredo"
+  },
+  {
+    "ClienteID": 187,
+    "Recência": 91,
+    "Frequência": 2,
+    "Monetário": 5213.82,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Amaral S/A"
+  },
+  {
+    "ClienteID": 188,
+    "Recência": 440,
+    "Frequência": 1,
+    "Monetário": 851.39,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Tavares"
+  },
+  {
+    "ClienteID": 189,
+    "Recência": 354,
+    "Frequência": 1,
+    "Monetário": 509.78,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Mota Santos S.A."
+  },
+  {
+    "ClienteID": 190,
+    "Recência": 128,
+    "Frequência": 3,
+    "Monetário": 3413.84,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rui Cardoso"
+  },
+  {
+    "ClienteID": 191,
+    "Recência": 110,
+    "Frequência": 4,
+    "Monetário": 2987.25,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Gil Reis"
+  },
+  {
+    "ClienteID": 192,
+    "Recência": 249,
+    "Frequência": 1,
+    "Monetário": 543.11,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Andrade"
+  },
+  {
+    "ClienteID": 194,
+    "Recência": 505,
+    "Frequência": 2,
+    "Monetário": 841.75,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Santos"
+  },
+  {
+    "ClienteID": 195,
+    "Recência": 239,
+    "Frequência": 4,
+    "Monetário": 2231.35,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Fernandes Neto S.A."
+  },
+  {
+    "ClienteID": 196,
+    "Recência": 493,
+    "Frequência": 1,
+    "Monetário": 3009.58,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Marques"
+  },
+  {
+    "ClienteID": 198,
+    "Recência": 58,
+    "Frequência": 5,
+    "Monetário": 7039.03,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Frederico Rodrigues-Figueiredo"
+  },
+  {
+    "ClienteID": 199,
+    "Recência": 91,
+    "Frequência": 3,
+    "Monetário": 860.52,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Alícia Macedo"
+  },
+  {
+    "ClienteID": 200,
+    "Recência": 504,
+    "Frequência": 1,
+    "Monetário": 169.75,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Nascimento"
+  },
+  {
+    "ClienteID": 201,
+    "Recência": 277,
+    "Frequência": 3,
+    "Monetário": 2926.33,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Diana de Abreu"
+  },
+  {
+    "ClienteID": 203,
+    "Recência": 154,
+    "Frequência": 1,
+    "Monetário": 118.38,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Camila Pires"
+  },
+  {
+    "ClienteID": 204,
+    "Recência": 60,
+    "Frequência": 2,
+    "Monetário": 507.49,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Cruz Lda."
+  },
+  {
+    "ClienteID": 205,
+    "Recência": 57,
+    "Frequência": 2,
+    "Monetário": 1878.78,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Gonçalves"
+  },
+  {
+    "ClienteID": 206,
+    "Recência": 132,
+    "Frequência": 3,
+    "Monetário": 3570.34,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rodrigues Borges S.A."
+  },
+  {
+    "ClienteID": 207,
+    "Recência": 347,
+    "Frequência": 1,
+    "Monetário": 344.28,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Laura Matias"
+  },
+  {
+    "ClienteID": 208,
+    "Recência": 191,
+    "Frequência": 1,
+    "Monetário": 731.68,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Pacheco e Filhos"
+  },
+  {
+    "ClienteID": 209,
+    "Recência": 469,
+    "Frequência": 1,
+    "Monetário": 1350.63,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pilar Morais"
+  },
+  {
+    "ClienteID": 210,
+    "Recência": 129,
+    "Frequência": 4,
+    "Monetário": 1719.96,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Marques S/A"
+  },
+  {
+    "ClienteID": 211,
+    "Recência": 76,
+    "Frequência": 1,
+    "Monetário": 236.72,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Pacheco Lda."
+  },
+  {
+    "ClienteID": 212,
+    "Recência": 216,
+    "Frequência": 1,
+    "Monetário": 3433.01,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Victória Leal"
+  },
+  {
+    "ClienteID": 213,
+    "Recência": 70,
+    "Frequência": 6,
+    "Monetário": 4163.99,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Figueiredo"
+  },
+  {
+    "ClienteID": 214,
+    "Recência": 277,
+    "Frequência": 1,
+    "Monetário": 376.92,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Afonso Barros"
+  },
+  {
+    "ClienteID": 215,
+    "Recência": 44,
+    "Frequência": 6,
+    "Monetário": 7752.41,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Mateus Gomes"
+  },
+  {
+    "ClienteID": 216,
+    "Recência": 242,
+    "Frequência": 1,
+    "Monetário": 721.54,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Vicente"
+  },
+  {
+    "ClienteID": 217,
+    "Recência": 37,
+    "Frequência": 3,
+    "Monetário": 4164.35,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Sebastião Carvalho"
+  },
+  {
+    "ClienteID": 218,
+    "Recência": 218,
+    "Frequência": 4,
+    "Monetário": 2853.17,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Simão Carvalho-Matos"
+  },
+  {
+    "ClienteID": 219,
+    "Recência": 272,
+    "Frequência": 3,
+    "Monetário": 3119.58,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Barbosa Lda."
+  },
+  {
+    "ClienteID": 222,
+    "Recência": 271,
+    "Frequência": 2,
+    "Monetário": 4599.81,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Isabel Nascimento"
+  },
+  {
+    "ClienteID": 223,
+    "Recência": 17,
+    "Frequência": 4,
+    "Monetário": 6958.67,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Vieira"
+  },
+  {
+    "ClienteID": 224,
+    "Recência": 72,
+    "Frequência": 4,
+    "Monetário": 7338.74,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Domingues Miranda Lda."
+  },
+  {
+    "ClienteID": 225,
+    "Recência": 53,
+    "Frequência": 2,
+    "Monetário": 1369.4,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Soares"
+  },
+  {
+    "ClienteID": 226,
+    "Recência": 161,
+    "Frequência": 1,
+    "Monetário": 1030.47,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Costa Macedo Lda."
+  },
+  {
+    "ClienteID": 227,
+    "Recência": 508,
+    "Frequência": 1,
+    "Monetário": 1077.18,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Matos"
+  },
+  {
+    "ClienteID": 229,
+    "Recência": 191,
+    "Frequência": 2,
+    "Monetário": 3825.42,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Ramos"
+  },
+  {
+    "ClienteID": 230,
+    "Recência": 47,
+    "Frequência": 3,
+    "Monetário": 3430.21,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Nunes e Filhos"
+  },
+  {
+    "ClienteID": 231,
+    "Recência": 43,
+    "Frequência": 1,
+    "Monetário": 894.05,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Melo"
+  },
+  {
+    "ClienteID": 232,
+    "Recência": 398,
+    "Frequência": 2,
+    "Monetário": 2742.74,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Lourenço"
+  },
+  {
+    "ClienteID": 233,
+    "Recência": 707,
+    "Frequência": 1,
+    "Monetário": 307.69,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Moreira"
+  },
+  {
+    "ClienteID": 234,
+    "Recência": 410,
+    "Frequência": 2,
+    "Monetário": 1715.87,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rocha"
+  },
+  {
+    "ClienteID": 235,
+    "Recência": 725,
+    "Frequência": 1,
+    "Monetário": 644.49,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Machado"
+  },
+  {
+    "ClienteID": 236,
+    "Recência": 366,
+    "Frequência": 3,
+    "Monetário": 10566.89,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Marques"
+  },
+  {
+    "ClienteID": 239,
+    "Recência": 172,
+    "Frequência": 2,
+    "Monetário": 1121.64,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Xavier Barbosa"
+  },
+  {
+    "ClienteID": 240,
+    "Recência": 271,
+    "Frequência": 2,
+    "Monetário": 1917.34,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Salvador Neto"
+  },
+  {
+    "ClienteID": 241,
+    "Recência": 108,
+    "Frequência": 3,
+    "Monetário": 2657.38,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Letícia Gonçalves"
+  },
+  {
+    "ClienteID": 242,
+    "Recência": 50,
+    "Frequência": 3,
+    "Monetário": 5922.49,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Samuel Batista"
+  },
+  {
+    "ClienteID": 243,
+    "Recência": 247,
+    "Frequência": 1,
+    "Monetário": 500.49,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Machado"
+  },
+  {
+    "ClienteID": 244,
+    "Recência": 701,
+    "Frequência": 1,
+    "Monetário": 347.71,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Antunes Lda."
+  },
+  {
+    "ClienteID": 247,
+    "Recência": 411,
+    "Frequência": 1,
+    "Monetário": 3463.31,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Ricardo Andrade"
+  },
+  {
+    "ClienteID": 248,
+    "Recência": 681,
+    "Frequência": 1,
+    "Monetário": 354.45,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Nuno Brito"
+  },
+  {
+    "ClienteID": 249,
+    "Recência": 381,
+    "Frequência": 2,
+    "Monetário": 4128.94,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Tiago Araújo"
+  },
+  {
+    "ClienteID": 250,
+    "Recência": 53,
+    "Frequência": 2,
+    "Monetário": 3724.25,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Leonor Azevedo"
+  },
+  {
+    "ClienteID": 251,
+    "Recência": 115,
+    "Frequência": 2,
+    "Monetário": 3402.31,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nunes Barros S.A."
+  },
+  {
+    "ClienteID": 252,
+    "Recência": 321,
+    "Frequência": 2,
+    "Monetário": 772.78,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rodrigo Moura"
+  },
+  {
+    "ClienteID": 253,
+    "Recência": 51,
+    "Frequência": 2,
+    "Monetário": 799.98,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Juliana Neves"
+  },
+  {
+    "ClienteID": 254,
+    "Recência": 219,
+    "Frequência": 2,
+    "Monetário": 5201.69,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Kelly Gonçalves-Faria"
+  },
+  {
+    "ClienteID": 255,
+    "Recência": 657,
+    "Frequência": 1,
+    "Monetário": 667.95,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Valentina Garcia"
+  },
+  {
+    "ClienteID": 256,
+    "Recência": 340,
+    "Frequência": 1,
+    "Monetário": 668.59,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Afonso Campos"
+  },
+  {
+    "ClienteID": 257,
+    "Recência": 36,
+    "Frequência": 1,
+    "Monetário": 805.66,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Batista Moreira e Filhos"
+  },
+  {
+    "ClienteID": 258,
+    "Recência": 285,
+    "Frequência": 1,
+    "Monetário": 482.18,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Castro Lda."
+  },
+  {
+    "ClienteID": 259,
+    "Recência": 120,
+    "Frequência": 2,
+    "Monetário": 3774.92,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Campos"
+  },
+  {
+    "ClienteID": 260,
+    "Recência": 67,
+    "Frequência": 3,
+    "Monetário": 933.07,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Lima Magalhães S/A"
+  },
+  {
+    "ClienteID": 261,
+    "Recência": 45,
+    "Frequência": 3,
+    "Monetário": 2766.45,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Rui Jesus"
+  },
+  {
+    "ClienteID": 262,
+    "Recência": 29,
+    "Frequência": 3,
+    "Monetário": 5686.93,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Fabiana Carneiro-Figueiredo"
+  },
+  {
+    "ClienteID": 264,
+    "Recência": 25,
+    "Frequência": 1,
+    "Monetário": 1291.29,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Salvador do Castro"
+  },
+  {
+    "ClienteID": 266,
+    "Recência": 360,
+    "Frequência": 1,
+    "Monetário": 1013.13,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Kévim Garcia"
+  },
+  {
+    "ClienteID": 267,
+    "Recência": 227,
+    "Frequência": 1,
+    "Monetário": 220.65,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Ismael Castro"
+  },
+  {
+    "ClienteID": 268,
+    "Recência": 38,
+    "Frequência": 4,
+    "Monetário": 7063.48,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Ângelo Rodrigues"
+  },
+  {
+    "ClienteID": 269,
+    "Recência": 220,
+    "Frequência": 5,
+    "Monetário": 7379.87,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Nádia-Irina Leite"
+  },
+  {
+    "ClienteID": 270,
+    "Recência": 14,
+    "Frequência": 5,
+    "Monetário": 7062.88,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Lopes"
+  },
+  {
+    "ClienteID": 272,
+    "Recência": 273,
+    "Frequência": 2,
+    "Monetário": 3242.93,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Maia"
+  },
+  {
+    "ClienteID": 273,
+    "Recência": 317,
+    "Frequência": 3,
+    "Monetário": 3706.72,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Matos"
+  },
+  {
+    "ClienteID": 274,
+    "Recência": 62,
+    "Frequência": 1,
+    "Monetário": 727.97,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Adriana-Gabriela Vieira"
+  },
+  {
+    "ClienteID": 275,
+    "Recência": 200,
+    "Frequência": 4,
+    "Monetário": 4005.95,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "João Ferreira"
+  },
+  {
+    "ClienteID": 276,
+    "Recência": 106,
+    "Frequência": 4,
+    "Monetário": 8655.27,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Luísa Miranda"
+  },
+  {
+    "ClienteID": 277,
+    "Recência": 413,
+    "Frequência": 2,
+    "Monetário": 2491.74,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gabriel Valente-Garcia"
+  },
+  {
+    "ClienteID": 278,
+    "Recência": 88,
+    "Frequência": 1,
+    "Monetário": 2027.57,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Madalena de Martins"
+  },
+  {
+    "ClienteID": 279,
+    "Recência": 457,
+    "Frequência": 5,
+    "Monetário": 4487.29,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Marques S/A"
+  },
+  {
+    "ClienteID": 280,
+    "Recência": 94,
+    "Frequência": 2,
+    "Monetário": 2487.95,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nogueira"
+  },
+  {
+    "ClienteID": 282,
+    "Recência": 518,
+    "Frequência": 3,
+    "Monetário": 5136.46,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Rafael Lima"
+  },
+  {
+    "ClienteID": 284,
+    "Recência": 106,
+    "Frequência": 3,
+    "Monetário": 2080.96,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Matos"
+  },
+  {
+    "ClienteID": 287,
+    "Recência": 62,
+    "Frequência": 3,
+    "Monetário": 6326.85,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Campos Araújo Lda."
+  },
+  {
+    "ClienteID": 288,
+    "Recência": 503,
+    "Frequência": 2,
+    "Monetário": 1386.2,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Ariana Pereira"
+  },
+  {
+    "ClienteID": 289,
+    "Recência": 387,
+    "Frequência": 2,
+    "Monetário": 2989.37,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Paiva Figueiredo S/A"
+  },
+  {
+    "ClienteID": 290,
+    "Recência": 75,
+    "Frequência": 1,
+    "Monetário": 2339.76,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Loureiro"
+  },
+  {
+    "ClienteID": 291,
+    "Recência": 5,
+    "Frequência": 1,
+    "Monetário": 698.13,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Gonçalves Lda."
+  },
+  {
+    "ClienteID": 292,
+    "Recência": 15,
+    "Frequência": 3,
+    "Monetário": 1944.97,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Kyara Magalhães"
+  },
+  {
+    "ClienteID": 293,
+    "Recência": 267,
+    "Frequência": 3,
+    "Monetário": 3914.15,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Moreira"
+  },
+  {
+    "ClienteID": 294,
+    "Recência": 35,
+    "Frequência": 2,
+    "Monetário": 2943.34,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Martins Cruz e Filhos"
+  },
+  {
+    "ClienteID": 295,
+    "Recência": 31,
+    "Frequência": 2,
+    "Monetário": 2152.64,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Inês Lopes"
+  },
+  {
+    "ClienteID": 296,
+    "Recência": 92,
+    "Frequência": 4,
+    "Monetário": 2867.16,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Miranda Branco Lda."
+  },
+  {
+    "ClienteID": 297,
+    "Recência": 120,
+    "Frequência": 4,
+    "Monetário": 2934.59,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Mélanie Pires-Matos"
+  },
+  {
+    "ClienteID": 298,
+    "Recência": 391,
+    "Frequência": 2,
+    "Monetário": 2705.64,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Carneiro"
+  },
+  {
+    "ClienteID": 299,
+    "Recência": 119,
+    "Frequência": 3,
+    "Monetário": 4185.91,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cristiano Lourenço"
+  },
+  {
+    "ClienteID": 300,
+    "Recência": 77,
+    "Frequência": 3,
+    "Monetário": 3145.0,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Eduardo Silva"
+  },
+  {
+    "ClienteID": 302,
+    "Recência": 59,
+    "Frequência": 1,
+    "Monetário": 755.58,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Artur Lourenço"
+  },
+  {
+    "ClienteID": 303,
+    "Recência": 264,
+    "Frequência": 4,
+    "Monetário": 8726.26,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Teixeira Campos S/A"
+  },
+  {
+    "ClienteID": 304,
+    "Recência": 200,
+    "Frequência": 1,
+    "Monetário": 290.78,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Nair Barbosa"
+  },
+  {
+    "ClienteID": 305,
+    "Recência": 473,
+    "Frequência": 3,
+    "Monetário": 1724.91,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Fernando Vieira"
+  },
+  {
+    "ClienteID": 306,
+    "Recência": 168,
+    "Frequência": 2,
+    "Monetário": 1163.23,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Tavares"
+  },
+  {
+    "ClienteID": 307,
+    "Recência": 631,
+    "Frequência": 1,
+    "Monetário": 1715.07,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Eva Castro"
+  },
+  {
+    "ClienteID": 308,
+    "Recência": 620,
+    "Frequência": 1,
+    "Monetário": 2036.16,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Soares"
+  },
+  {
+    "ClienteID": 309,
+    "Recência": 98,
+    "Frequência": 2,
+    "Monetário": 2840.98,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gomes"
+  },
+  {
+    "ClienteID": 310,
+    "Recência": 9,
+    "Frequência": 4,
+    "Monetário": 10718.88,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Mota Domingues S.A."
+  },
+  {
+    "ClienteID": 311,
+    "Recência": 4,
+    "Frequência": 3,
+    "Monetário": 2422.46,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Leonor Barbosa"
+  },
+  {
+    "ClienteID": 312,
+    "Recência": 724,
+    "Frequência": 1,
+    "Monetário": 2715.2,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Emanuel Faria"
+  },
+  {
+    "ClienteID": 313,
+    "Recência": 332,
+    "Frequência": 3,
+    "Monetário": 2507.94,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Moura"
+  },
+  {
+    "ClienteID": 314,
+    "Recência": 126,
+    "Frequência": 1,
+    "Monetário": 3080.85,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Fonseca Costa S/A"
+  },
+  {
+    "ClienteID": 315,
+    "Recência": 235,
+    "Frequência": 3,
+    "Monetário": 1467.07,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Lucas Neves"
+  },
+  {
+    "ClienteID": 316,
+    "Recência": 325,
+    "Frequência": 2,
+    "Monetário": 2093.33,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Ismael da Campos"
+  },
+  {
+    "ClienteID": 317,
+    "Recência": 107,
+    "Frequência": 3,
+    "Monetário": 2435.91,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Bruno Pacheco"
+  },
+  {
+    "ClienteID": 318,
+    "Recência": 460,
+    "Frequência": 2,
+    "Monetário": 280.55,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Henriques Lda."
+  },
+  {
+    "ClienteID": 319,
+    "Recência": 113,
+    "Frequência": 3,
+    "Monetário": 2544.42,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Vaz Castro Lda."
+  },
+  {
+    "ClienteID": 320,
+    "Recência": 199,
+    "Frequência": 1,
+    "Monetário": 1117.33,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Marques"
+  },
+  {
+    "ClienteID": 322,
+    "Recência": 406,
+    "Frequência": 3,
+    "Monetário": 5466.93,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Nuno Rocha"
+  },
+  {
+    "ClienteID": 323,
+    "Recência": 463,
+    "Frequência": 2,
+    "Monetário": 4649.28,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Melo"
+  },
+  {
+    "ClienteID": 324,
+    "Recência": 452,
+    "Frequência": 1,
+    "Monetário": 1422.04,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Fonseca"
+  },
+  {
+    "ClienteID": 325,
+    "Recência": 342,
+    "Frequência": 4,
+    "Monetário": 5535.64,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Magalhães"
+  },
+  {
+    "ClienteID": 326,
+    "Recência": 75,
+    "Frequência": 4,
+    "Monetário": 4632.52,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cunha e Filhos"
+  },
+  {
+    "ClienteID": 327,
+    "Recência": 372,
+    "Frequência": 2,
+    "Monetário": 6094.19,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Duarte Morais"
+  },
+  {
+    "ClienteID": 329,
+    "Recência": 615,
+    "Frequência": 1,
+    "Monetário": 300.21,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Matias Coelho S/A"
+  },
+  {
+    "ClienteID": 330,
+    "Recência": 95,
+    "Frequência": 3,
+    "Monetário": 4869.0,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pinho S.A."
+  },
+  {
+    "ClienteID": 331,
+    "Recência": 153,
+    "Frequência": 5,
+    "Monetário": 6376.26,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Barbosa"
+  },
+  {
+    "ClienteID": 332,
+    "Recência": 253,
+    "Frequência": 2,
+    "Monetário": 3204.14,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Mia Neto"
+  },
+  {
+    "ClienteID": 334,
+    "Recência": 54,
+    "Frequência": 3,
+    "Monetário": 3230.87,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Vieira S.A."
+  },
+  {
+    "ClienteID": 335,
+    "Recência": 221,
+    "Frequência": 2,
+    "Monetário": 2829.49,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Freitas"
+  },
+  {
+    "ClienteID": 336,
+    "Recência": 273,
+    "Frequência": 3,
+    "Monetário": 2943.25,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Nunes"
+  },
+  {
+    "ClienteID": 338,
+    "Recência": 245,
+    "Frequência": 1,
+    "Monetário": 2242.49,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Mélanie Borges"
+  },
+  {
+    "ClienteID": 339,
+    "Recência": 602,
+    "Frequência": 1,
+    "Monetário": 1536.16,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gabriela Fernandes"
+  },
+  {
+    "ClienteID": 340,
+    "Recência": 11,
+    "Frequência": 4,
+    "Monetário": 6207.12,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Baptista Pacheco Lda."
+  },
+  {
+    "ClienteID": 341,
+    "Recência": 573,
+    "Frequência": 1,
+    "Monetário": 142.05,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Vicente Pacheco Lda."
+  },
+  {
+    "ClienteID": 342,
+    "Recência": 326,
+    "Frequência": 4,
+    "Monetário": 1919.36,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Miranda"
+  },
+  {
+    "ClienteID": 344,
+    "Recência": 80,
+    "Frequência": 1,
+    "Monetário": 282.07,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Moreira Matos S/A"
+  },
+  {
+    "ClienteID": 345,
+    "Recência": 728,
+    "Frequência": 1,
+    "Monetário": 1152.27,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gomes S.A."
+  },
+  {
+    "ClienteID": 346,
+    "Recência": 245,
+    "Frequência": 1,
+    "Monetário": 1260.98,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nogueira"
+  },
+  {
+    "ClienteID": 347,
+    "Recência": 221,
+    "Frequência": 4,
+    "Monetário": 6067.89,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Sá Pacheco Lda."
+  },
+  {
+    "ClienteID": 348,
+    "Recência": 19,
+    "Frequência": 7,
+    "Monetário": 17186.99,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Emanuel Morais"
+  },
+  {
+    "ClienteID": 349,
+    "Recência": 6,
+    "Frequência": 2,
+    "Monetário": 961.43,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Eva Lima"
+  },
+  {
+    "ClienteID": 350,
+    "Recência": 153,
+    "Frequência": 1,
+    "Monetário": 2412.83,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Lia Matias"
+  },
+  {
+    "ClienteID": 351,
+    "Recência": 679,
+    "Frequência": 1,
+    "Monetário": 3134.95,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Torres"
+  },
+  {
+    "ClienteID": 352,
+    "Recência": 3,
+    "Frequência": 3,
+    "Monetário": 5277.04,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Carneiro"
+  },
+  {
+    "ClienteID": 355,
+    "Recência": 52,
+    "Frequência": 1,
+    "Monetário": 357.31,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Soares S.A."
+  },
+  {
+    "ClienteID": 356,
+    "Recência": 73,
+    "Frequência": 2,
+    "Monetário": 2131.95,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Carvalho S.A."
+  },
+  {
+    "ClienteID": 357,
+    "Recência": 371,
+    "Frequência": 2,
+    "Monetário": 2636.88,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Miguel Antunes"
+  },
+  {
+    "ClienteID": 358,
+    "Recência": 603,
+    "Frequência": 2,
+    "Monetário": 785.24,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pedro Correia"
+  },
+  {
+    "ClienteID": 359,
+    "Recência": 572,
+    "Frequência": 2,
+    "Monetário": 929.47,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Francisca do Vicente"
+  },
+  {
+    "ClienteID": 360,
+    "Recência": 378,
+    "Frequência": 2,
+    "Monetário": 4694.28,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pilar Gonçalves"
+  },
+  {
+    "ClienteID": 361,
+    "Recência": 304,
+    "Frequência": 2,
+    "Monetário": 2498.91,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Lima"
+  },
+  {
+    "ClienteID": 363,
+    "Recência": 319,
+    "Frequência": 2,
+    "Monetário": 453.71,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Almeida"
+  },
+  {
+    "ClienteID": 364,
+    "Recência": 493,
+    "Frequência": 3,
+    "Monetário": 1345.95,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Luana-Francisca Abreu"
+  },
+  {
+    "ClienteID": 365,
+    "Recência": 546,
+    "Frequência": 1,
+    "Monetário": 1394.83,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Rodrigues S/A"
+  },
+  {
+    "ClienteID": 366,
+    "Recência": 147,
+    "Frequência": 2,
+    "Monetário": 5247.38,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Naiara Castro"
+  },
+  {
+    "ClienteID": 368,
+    "Recência": 374,
+    "Frequência": 1,
+    "Monetário": 199.63,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Simões Lda."
+  },
+  {
+    "ClienteID": 369,
+    "Recência": 11,
+    "Frequência": 3,
+    "Monetário": 955.53,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Pinto"
+  },
+  {
+    "ClienteID": 370,
+    "Recência": 518,
+    "Frequência": 2,
+    "Monetário": 1861.15,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Núria de Costa"
+  },
+  {
+    "ClienteID": 371,
+    "Recência": 317,
+    "Frequência": 1,
+    "Monetário": 102.91,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Cunha Amorim S.A."
+  },
+  {
+    "ClienteID": 372,
+    "Recência": 338,
+    "Frequência": 1,
+    "Monetário": 623.72,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Vaz"
+  },
+  {
+    "ClienteID": 373,
+    "Recência": 35,
+    "Frequência": 3,
+    "Monetário": 2541.13,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Filipa Antunes"
+  },
+  {
+    "ClienteID": 374,
+    "Recência": 13,
+    "Frequência": 5,
+    "Monetário": 5918.11,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Carneiro"
+  },
+  {
+    "ClienteID": 375,
+    "Recência": 406,
+    "Frequência": 1,
+    "Monetário": 631.97,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Nelson Ribeiro"
+  },
+  {
+    "ClienteID": 376,
+    "Recência": 173,
+    "Frequência": 3,
+    "Monetário": 5077.69,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cunha Nascimento e Filhos"
+  },
+  {
+    "ClienteID": 377,
+    "Recência": 316,
+    "Frequência": 2,
+    "Monetário": 1393.07,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Márcio Batista"
+  },
+  {
+    "ClienteID": 378,
+    "Recência": 532,
+    "Frequência": 1,
+    "Monetário": 3638.27,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Batista"
+  },
+  {
+    "ClienteID": 379,
+    "Recência": 518,
+    "Frequência": 2,
+    "Monetário": 2803.21,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nunes Marques Lda."
+  },
+  {
+    "ClienteID": 380,
+    "Recência": 338,
+    "Frequência": 1,
+    "Monetário": 1993.39,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Ema do Matos"
+  },
+  {
+    "ClienteID": 381,
+    "Recência": 15,
+    "Frequência": 5,
+    "Monetário": 5902.49,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Pinho Fonseca S.A."
+  },
+  {
+    "ClienteID": 382,
+    "Recência": 213,
+    "Frequência": 1,
+    "Monetário": 1460.21,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Juliana Gaspar"
+  },
+  {
+    "ClienteID": 383,
+    "Recência": 177,
+    "Frequência": 1,
+    "Monetário": 777.73,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Flor Correia"
+  },
+  {
+    "ClienteID": 385,
+    "Recência": 90,
+    "Frequência": 5,
+    "Monetário": 5601.82,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Nogueira S/A"
+  },
+  {
+    "ClienteID": 386,
+    "Recência": 72,
+    "Frequência": 1,
+    "Monetário": 1755.04,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gabriela do Azevedo"
+  },
+  {
+    "ClienteID": 387,
+    "Recência": 271,
+    "Frequência": 2,
+    "Monetário": 2281.76,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Isabela Castro-Campos"
+  },
+  {
+    "ClienteID": 389,
+    "Recência": 541,
+    "Frequência": 1,
+    "Monetário": 703.84,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Jaime Martins"
+  },
+  {
+    "ClienteID": 390,
+    "Recência": 197,
+    "Frequência": 2,
+    "Monetário": 1994.67,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Brito e Filhos"
+  },
+  {
+    "ClienteID": 391,
+    "Recência": 204,
+    "Frequência": 2,
+    "Monetário": 976.51,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Magalhães"
+  },
+  {
+    "ClienteID": 392,
+    "Recência": 227,
+    "Frequência": 2,
+    "Monetário": 4323.68,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Carminho Garcia"
+  },
+  {
+    "ClienteID": 393,
+    "Recência": 46,
+    "Frequência": 6,
+    "Monetário": 5549.41,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Mélanie Castro"
+  },
+  {
+    "ClienteID": 394,
+    "Recência": 228,
+    "Frequência": 2,
+    "Monetário": 3299.35,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Gustavo do Barros"
+  },
+  {
+    "ClienteID": 395,
+    "Recência": 151,
+    "Frequência": 3,
+    "Monetário": 3547.19,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Paiva S/A"
+  },
+  {
+    "ClienteID": 396,
+    "Recência": 138,
+    "Frequência": 5,
+    "Monetário": 4890.21,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Fernandes Carneiro S/A"
+  },
+  {
+    "ClienteID": 397,
+    "Recência": 80,
+    "Frequência": 2,
+    "Monetário": 1507.4,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Isabela Moreira"
+  },
+  {
+    "ClienteID": 398,
+    "Recência": 348,
+    "Frequência": 5,
+    "Monetário": 3849.78,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Ivan Coelho"
+  },
+  {
+    "ClienteID": 400,
+    "Recência": 13,
+    "Frequência": 5,
+    "Monetário": 4321.22,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Neto"
+  },
+  {
+    "ClienteID": 401,
+    "Recência": 628,
+    "Frequência": 1,
+    "Monetário": 409.52,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Andrade Rocha e Filhos"
+  },
+  {
+    "ClienteID": 402,
+    "Recência": 485,
+    "Frequência": 1,
+    "Monetário": 173.89,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Paulo da Figueiredo"
+  },
+  {
+    "ClienteID": 403,
+    "Recência": 8,
+    "Frequência": 3,
+    "Monetário": 3144.56,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Simões S/A"
+  },
+  {
+    "ClienteID": 404,
+    "Recência": 719,
+    "Frequência": 1,
+    "Monetário": 2310.86,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Lourenço Alves-Leal"
+  },
+  {
+    "ClienteID": 405,
+    "Recência": 11,
+    "Frequência": 2,
+    "Monetário": 2779.86,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Isabela Torres"
+  },
+  {
+    "ClienteID": 406,
+    "Recência": 313,
+    "Frequência": 3,
+    "Monetário": 1951.86,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Magalhães"
+  },
+  {
+    "ClienteID": 407,
+    "Recência": 266,
+    "Frequência": 1,
+    "Monetário": 740.5,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Amaral"
+  },
+  {
+    "ClienteID": 408,
+    "Recência": 603,
+    "Frequência": 1,
+    "Monetário": 2364.18,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Silva Lda."
+  },
+  {
+    "ClienteID": 410,
+    "Recência": 106,
+    "Frequência": 2,
+    "Monetário": 2310.45,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Freitas"
+  },
+  {
+    "ClienteID": 411,
+    "Recência": 718,
+    "Frequência": 1,
+    "Monetário": 1190.11,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Dinis Abreu"
+  },
+  {
+    "ClienteID": 412,
+    "Recência": 51,
+    "Frequência": 2,
+    "Monetário": 996.91,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Loureiro S/A"
+  },
+  {
+    "ClienteID": 413,
+    "Recência": 96,
+    "Frequência": 2,
+    "Monetário": 564.59,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Paiva"
+  },
+  {
+    "ClienteID": 414,
+    "Recência": 81,
+    "Frequência": 1,
+    "Monetário": 134.45,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Fernandes S.A."
+  },
+  {
+    "ClienteID": 415,
+    "Recência": 83,
+    "Frequência": 5,
+    "Monetário": 7050.86,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Andrade S/A"
+  },
+  {
+    "ClienteID": 417,
+    "Recência": 108,
+    "Frequência": 2,
+    "Monetário": 1309.13,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Oliveira"
+  },
+  {
+    "ClienteID": 418,
+    "Recência": 232,
+    "Frequência": 4,
+    "Monetário": 6894.0,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Lucas Pereira"
+  },
+  {
+    "ClienteID": 419,
+    "Recência": 85,
+    "Frequência": 2,
+    "Monetário": 975.89,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Vicente"
+  },
+  {
+    "ClienteID": 420,
+    "Recência": 247,
+    "Frequência": 4,
+    "Monetário": 2748.37,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Sérgio Nascimento-Fonseca"
+  },
+  {
+    "ClienteID": 421,
+    "Recência": 490,
+    "Frequência": 2,
+    "Monetário": 1066.91,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Inês Sá"
+  },
+  {
+    "ClienteID": 422,
+    "Recência": 354,
+    "Frequência": 2,
+    "Monetário": 1431.2,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Cláudio Torres"
+  },
+  {
+    "ClienteID": 423,
+    "Recência": 6,
+    "Frequência": 5,
+    "Monetário": 5730.82,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Alves S/A"
+  },
+  {
+    "ClienteID": 424,
+    "Recência": 284,
+    "Frequência": 2,
+    "Monetário": 4102.8,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Mota S.A."
+  },
+  {
+    "ClienteID": 425,
+    "Recência": 174,
+    "Frequência": 2,
+    "Monetário": 302.57,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Vieira Magalhães e Filhos"
+  },
+  {
+    "ClienteID": 427,
+    "Recência": 292,
+    "Frequência": 2,
+    "Monetário": 876.44,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Figueiredo"
+  },
+  {
+    "ClienteID": 428,
+    "Recência": 479,
+    "Frequência": 1,
+    "Monetário": 3390.42,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Tiago de Oliveira"
+  },
+  {
+    "ClienteID": 429,
+    "Recência": 92,
+    "Frequência": 2,
+    "Monetário": 1751.43,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Azevedo S.A."
+  },
+  {
+    "ClienteID": 430,
+    "Recência": 367,
+    "Frequência": 1,
+    "Monetário": 564.7,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Ângela Macedo"
+  },
+  {
+    "ClienteID": 431,
+    "Recência": 47,
+    "Frequência": 1,
+    "Monetário": 488.31,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Márcio Moura"
+  },
+  {
+    "ClienteID": 432,
+    "Recência": 27,
+    "Frequência": 3,
+    "Monetário": 2743.63,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Ariana Leite"
+  },
+  {
+    "ClienteID": 433,
+    "Recência": 205,
+    "Frequência": 1,
+    "Monetário": 314.77,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Ramos"
+  },
+  {
+    "ClienteID": 434,
+    "Recência": 104,
+    "Frequência": 3,
+    "Monetário": 4804.41,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Catarina Fernandes"
+  },
+  {
+    "ClienteID": 435,
+    "Recência": 250,
+    "Frequência": 1,
+    "Monetário": 2427.7,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Jorge Matos"
+  },
+  {
+    "ClienteID": 436,
+    "Recência": 706,
+    "Frequência": 1,
+    "Monetário": 1189.69,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Lucas Ferreira"
+  },
+  {
+    "ClienteID": 437,
+    "Recência": 177,
+    "Frequência": 4,
+    "Monetário": 3115.89,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pacheco"
+  },
+  {
+    "ClienteID": 439,
+    "Recência": 190,
+    "Frequência": 2,
+    "Monetário": 3264.5,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Araújo"
+  },
+  {
+    "ClienteID": 440,
+    "Recência": 127,
+    "Frequência": 2,
+    "Monetário": 1010.96,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Ismael Esteves-Anjos"
+  },
+  {
+    "ClienteID": 441,
+    "Recência": 297,
+    "Frequência": 3,
+    "Monetário": 3321.61,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Soares e Filhos"
+  },
+  {
+    "ClienteID": 442,
+    "Recência": 536,
+    "Frequência": 1,
+    "Monetário": 979.06,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Torres Vicente S/A"
+  },
+  {
+    "ClienteID": 443,
+    "Recência": 18,
+    "Frequência": 3,
+    "Monetário": 2054.35,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Carolina Torres"
+  },
+  {
+    "ClienteID": 444,
+    "Recência": 508,
+    "Frequência": 2,
+    "Monetário": 1938.49,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Leonor Coelho"
+  },
+  {
+    "ClienteID": 445,
+    "Recência": 91,
+    "Frequência": 4,
+    "Monetário": 7273.01,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Renata Gaspar"
+  },
+  {
+    "ClienteID": 446,
+    "Recência": 369,
+    "Frequência": 4,
+    "Monetário": 4515.19,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Benjamim Sousa"
+  },
+  {
+    "ClienteID": 447,
+    "Recência": 96,
+    "Frequência": 5,
+    "Monetário": 4581.56,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Clara-Alice Andrade"
+  },
+  {
+    "ClienteID": 448,
+    "Recência": 349,
+    "Frequência": 2,
+    "Monetário": 1417.63,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Cardoso Oliveira S.A."
+  },
+  {
+    "ClienteID": 449,
+    "Recência": 92,
+    "Frequência": 2,
+    "Monetário": 3252.9,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Isabel Paiva"
+  },
+  {
+    "ClienteID": 450,
+    "Recência": 3,
+    "Frequência": 1,
+    "Monetário": 1777.12,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Loureiro"
+  },
+  {
+    "ClienteID": 452,
+    "Recência": 231,
+    "Frequência": 3,
+    "Monetário": 3591.95,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Fernando Neves"
+  },
+  {
+    "ClienteID": 453,
+    "Recência": 129,
+    "Frequência": 3,
+    "Monetário": 1855.06,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Yasmin de Guerreiro"
+  },
+  {
+    "ClienteID": 454,
+    "Recência": 11,
+    "Frequência": 3,
+    "Monetário": 2976.36,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Eva Melo"
+  },
+  {
+    "ClienteID": 456,
+    "Recência": 103,
+    "Frequência": 1,
+    "Monetário": 1727.26,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Loureiro Lda."
+  },
+  {
+    "ClienteID": 457,
+    "Recência": 470,
+    "Frequência": 1,
+    "Monetário": 257.45,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Eduarda Costa"
+  },
+  {
+    "ClienteID": 458,
+    "Recência": 570,
+    "Frequência": 2,
+    "Monetário": 2000.67,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Silva"
+  },
+  {
+    "ClienteID": 459,
+    "Recência": 444,
+    "Frequência": 1,
+    "Monetário": 1661.48,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Matos e Filhos"
+  },
+  {
+    "ClienteID": 460,
+    "Recência": 308,
+    "Frequência": 4,
+    "Monetário": 3486.29,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Lisandro Abreu"
+  },
+  {
+    "ClienteID": 461,
+    "Recência": 446,
+    "Frequência": 1,
+    "Monetário": 1511.67,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Pinto"
+  },
+  {
+    "ClienteID": 462,
+    "Recência": 351,
+    "Frequência": 1,
+    "Monetário": 2427.07,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Hugo Castro"
+  },
+  {
+    "ClienteID": 463,
+    "Recência": 205,
+    "Frequência": 3,
+    "Monetário": 3298.55,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Catarina Pereira"
+  },
+  {
+    "ClienteID": 464,
+    "Recência": 43,
+    "Frequência": 3,
+    "Monetário": 3894.55,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Álvaro Mendes-Guerreiro"
+  },
+  {
+    "ClienteID": 465,
+    "Recência": 539,
+    "Frequência": 1,
+    "Monetário": 560.58,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Gonçalves Paiva S/A"
+  },
+  {
+    "ClienteID": 466,
+    "Recência": 476,
+    "Frequência": 4,
+    "Monetário": 5819.06,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Alexandra Garcia"
+  },
+  {
+    "ClienteID": 467,
+    "Recência": 120,
+    "Frequência": 4,
+    "Monetário": 10129.67,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pires Macedo S.A."
+  },
+  {
+    "ClienteID": 468,
+    "Recência": 252,
+    "Frequência": 3,
+    "Monetário": 1943.65,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Branco Macedo e Filhos"
+  },
+  {
+    "ClienteID": 469,
+    "Recência": 148,
+    "Frequência": 1,
+    "Monetário": 204.83,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "André Vieira"
+  },
+  {
+    "ClienteID": 470,
+    "Recência": 51,
+    "Frequência": 1,
+    "Monetário": 4123.53,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Gustavo Mota"
+  },
+  {
+    "ClienteID": 471,
+    "Recência": 48,
+    "Frequência": 2,
+    "Monetário": 3109.56,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Miranda Costa S.A."
+  },
+  {
+    "ClienteID": 472,
+    "Recência": 470,
+    "Frequência": 2,
+    "Monetário": 2801.62,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Micael Gaspar"
+  },
+  {
+    "ClienteID": 473,
+    "Recência": 430,
+    "Frequência": 2,
+    "Monetário": 1414.39,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Diego Cruz"
+  },
+  {
+    "ClienteID": 475,
+    "Recência": 129,
+    "Frequência": 4,
+    "Monetário": 4726.87,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pereira"
+  },
+  {
+    "ClienteID": 476,
+    "Recência": 204,
+    "Frequência": 3,
+    "Monetário": 4256.09,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Pereira"
+  },
+  {
+    "ClienteID": 477,
+    "Recência": 388,
+    "Frequência": 1,
+    "Monetário": 655.47,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Torres"
+  },
+  {
+    "ClienteID": 478,
+    "Recência": 114,
+    "Frequência": 4,
+    "Monetário": 3673.26,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "André Leal"
+  },
+  {
+    "ClienteID": 479,
+    "Recência": 638,
+    "Frequência": 1,
+    "Monetário": 510.88,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Emília-Caetana Martins"
+  },
+  {
+    "ClienteID": 480,
+    "Recência": 177,
+    "Frequência": 3,
+    "Monetário": 6224.06,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Valente"
+  },
+  {
+    "ClienteID": 481,
+    "Recência": 47,
+    "Frequência": 1,
+    "Monetário": 2755.98,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Lopes"
+  },
+  {
+    "ClienteID": 482,
+    "Recência": 563,
+    "Frequência": 3,
+    "Monetário": 5821.56,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Nunes"
+  },
+  {
+    "ClienteID": 483,
+    "Recência": 308,
+    "Frequência": 3,
+    "Monetário": 4306.83,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Cunha Henriques e Filhos"
+  },
+  {
+    "ClienteID": 484,
+    "Recência": 703,
+    "Frequência": 1,
+    "Monetário": 260.51,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Rocha Lda."
+  },
+  {
+    "ClienteID": 485,
+    "Recência": 399,
+    "Frequência": 2,
+    "Monetário": 334.09,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Maia S.A."
+  },
+  {
+    "ClienteID": 486,
+    "Recência": 194,
+    "Frequência": 2,
+    "Monetário": 861.97,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Faria"
+  },
+  {
+    "ClienteID": 488,
+    "Recência": 34,
+    "Frequência": 1,
+    "Monetário": 291.22,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Soraia Cunha"
+  },
+  {
+    "ClienteID": 489,
+    "Recência": 179,
+    "Frequência": 2,
+    "Monetário": 1808.43,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Nascimento"
+  },
+  {
+    "ClienteID": 490,
+    "Recência": 341,
+    "Frequência": 1,
+    "Monetário": 513.65,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Paiva S/A"
+  },
+  {
+    "ClienteID": 491,
+    "Recência": 295,
+    "Frequência": 2,
+    "Monetário": 1942.74,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Barbosa Lda."
+  },
+  {
+    "ClienteID": 492,
+    "Recência": 9,
+    "Frequência": 3,
+    "Monetário": 2595.89,
+    "Cluster": 2,
+    "Segmento": "Clientes Valiosos",
+    "Nome": "Faria Lda."
+  },
+  {
+    "ClienteID": 493,
+    "Recência": 256,
+    "Frequência": 1,
+    "Monetário": 610.18,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Henriques Domingues S.A."
+  },
+  {
+    "ClienteID": 495,
+    "Recência": 613,
+    "Frequência": 1,
+    "Monetário": 640.63,
+    "Cluster": 0,
+    "Segmento": "Em Risco",
+    "Nome": "Reis Barbosa Lda."
+  },
+  {
+    "ClienteID": 496,
+    "Recência": 174,
+    "Frequência": 6,
+    "Monetário": 5639.45,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Costa"
+  },
+  {
+    "ClienteID": 497,
+    "Recência": 624,
+    "Frequência": 1,
+    "Monetário": 2636.61,
+    "Cluster": 3,
+    "Segmento": "Clientes Regulares",
+    "Nome": "Luca Simões"
+  },
+  {
+    "ClienteID": 498,
+    "Recência": 81,
+    "Frequência": 3,
+    "Monetário": 6795.47,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Isabel Matias"
+  },
+  {
+    "ClienteID": 500,
+    "Recência": 222,
+    "Frequência": 4,
+    "Monetário": 6381.54,
+    "Cluster": 1,
+    "Segmento": "Campeões",
+    "Nome": "Afonso Gonçalves-Melo"
+  }
+]
