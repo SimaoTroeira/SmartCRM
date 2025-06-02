@@ -45,7 +45,7 @@
                             <option disabled value="">-- Escolha um algoritmo --</option>
                             <option value="rfm">Segmentação RFM</option>
                             <option value="churn">Previsão de Churn</option>
-                            <option value="recommendation">Recomendação</option>
+                            <option value="recommendation">Recomendação Apriori</option>
                         </select>
                     </div>
                 </div>
@@ -96,9 +96,12 @@
 
                     <RfmResults v-if="selectedAlgorithm === 'rfm'" :results="results" :descricao="descricao"
                         :clientes-segmentados="clientesSegmentados" :scatter-clientes="scatterClientes"
-                        :scatter-regioes="scatterRegioes" />
+                        :scatter-regioes="scatterRegioes" :nome-empresa="empresaSelecionada?.name"
+                        :nome-campanha="campanhaSelecionada?.name" />
+
                     <ChurnResults v-if="selectedAlgorithm === 'churn'" :results="results" :descricao="descricao"
-                        :campanha-id="selectedCampaignId" />
+                        :campanha-id="selectedCampaignId" :nome-empresa="empresaSelecionada?.name"
+                        :nome-campanha="campanhaSelecionada?.name" />
 
                     <RecommendResults v-else-if="selectedAlgorithm === 'recommendation'" :results="results"
                         :descricao="descricao" :empresa-id="empresaId" :campanha-id="selectedCampaignId" />
@@ -198,6 +201,11 @@ const empresaSelecionada = computed(() => {
 const empresaInativa = computed(() => {
     return empresaSelecionada.value?.status === 'Inativo'
 })
+
+const campanhaSelecionada = computed(() => {
+    return campaigns.value.find(c => c.id === parseInt(selectedCampaignId.value))
+})
+
 
 
 const campanhasDaCompany = computed(() => {

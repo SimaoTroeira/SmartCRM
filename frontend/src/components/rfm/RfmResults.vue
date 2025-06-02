@@ -1,5 +1,6 @@
 <template>
   <div v-if="dadosProntos" class="space-y-10">
+
     <!-- Controlo de visualização -->
     <div class="card-resultados mb-6">
       <div class="mb-2">
@@ -52,59 +53,79 @@
 
     <!-- Clientes Segmentados -->
     <div class="card-resultados">
-      <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Clientes Segmentados</h3>
-
-      <div class="controles-tabela-clientes mb-4">
-        <button @click="resetarOrdenacao" class="btn-reset-custom">
-          Repor ordenação
+      <div class="cabecalho-clientes mb-4">
+        <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Segmentação RFM dos Clientes </h3>
+        <button @click="exportarParaExcel" class="btn-exportar">
+          📥 Exportar Excel
         </button>
-
-        <div class="filtro-box">
-          <label class="text-sm font-medium">Filtrar por segmento:</label>
-          <select v-model="segmentoFiltro" class="form-control border border-gray-300 rounded px-2 py-1 text-sm w-64">
-            <option value="">Todos</option>
-            <option v-for="seg in segmentosUnicos" :key="seg">{{ seg }}</option>
-          </select>
-        </div>
-
-        <div class="limite-box">
-          <label class="text-sm font-medium text-gray-700 mr-2">Linhas por página:</label>
-          <input v-model.number="limiteLinhas" type="number" min="1"
-            class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
-        </div>
       </div>
 
-      <p class="text-sm text-gray-600 mb-2">Total de clientes: {{ totalClientes }}</p>
 
-      <div class="overflow-x-auto">
-        <table class="min-w-full table-auto border border-gray-200 text-sm">
-          <thead class="bg-gray-100">
-            <tr>
-              <th v-for="key in Object.keys(clientesSegmentados[0])" :key="key" v-if="key !== 'ClienteID'"
-                @click="ordenarPor(key)" class="cursor-pointer px-4 py-2 border hover:bg-gray-100 select-none">
-                {{ key === 'Nome' ? 'Nome do Cliente' : key }}
-                <span v-if="colunaOrdenada === key">
-                  {{ ordemCrescente ? '▲' : '▼' }}
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in clientesFiltrados" :key="index">
-              <td v-for="(val, key) in item" :key="key" v-if="key !== 'ClienteID'" class="px-4 py-2 border">
-                {{ val }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- ENVOLVER tudo abaixo num container centralizado -->
+      <div class="conteudo-centrado">
+        <div class="controles-tabela-clientes mb-4">
+          <button @click="resetarOrdenacao" class="btn-reset-custom">
+            Repor ordenação
+          </button>
+
+          <div class="filtro-box">
+            <label class="text-sm font-medium">Filtrar por segmento:</label>
+            <select v-model="segmentoFiltro" class="form-control border border-gray-300 rounded px-2 py-1 text-sm w-64">
+              <option value="">Todos</option>
+              <option v-for="seg in segmentosUnicos" :key="seg">{{ seg }}</option>
+            </select>
+          </div>
+
+          <div class="limite-box">
+            <label class="text-sm font-medium text-gray-700 mr-2">Linhas por página:</label>
+            <input v-model.number="limiteLinhas" type="number" min="1"
+              class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
+          </div>
+        </div>
+
+        <p class="text-sm text-gray-600 mb-2">Total de clientes: {{ totalClientes }}</p>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full table-auto border border-gray-200 text-sm">
+            <thead class="bg-gray-100">
+              <tr>
+                <th v-for="key in Object.keys(clientesSegmentados[0])" :key="key" v-if="key !== 'ClienteID'"
+                  @click="ordenarPor(key)" class="cursor-pointer px-4 py-2 border hover:bg-gray-100 select-none">
+                  {{ key === 'Nome' ? 'Nome do Cliente' : key }}
+                  <span v-if="colunaOrdenada === key">
+                    {{ ordemCrescente ? '▲' : '▼' }}
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in clientesFiltrados" :key="index">
+                <td v-for="(val, key) in item" :key="key" v-if="key !== 'ClienteID'" class="px-4 py-2 border">
+                  {{ val }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
     <!-- Tabela Resumo -->
     <div class="card-resultados no-min-height">
-      <h3 class="text-xl font-semibold mb-3 text-blue-700">Tabela</h3>
+      <div class="cabecalho-clientes mb-4">
+        <h3 class="text-xl font-semibold text-blue-700">📈 Tabela de Segmentos</h3>
+        <div class="flex gap-2">
+          <button @click="exportarSegmentosParaExcel" class="btn-exportar">
+            📥 Exportar Excel
+          </button>
+          <ExportPdfRfm :nome-empresa="nomeEmpresa" :nome-campanha="nomeCampanha" :resumo="resumoEstatisticas"
+            :sugestoes="sugestoesRfm" />
+        </div>
+      </div>
+
       <p class="text-sm text-gray-600 mb-2">Apresenta dados estatísticos por cluster.</p>
       <p class="text-sm text-gray-500 mb-4">{{ descricao }}</p>
+
 
       <div class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200 text-sm">
@@ -133,12 +154,15 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import * as XLSX from 'xlsx'
 import ScatterPlot from './ScatterPlot.vue'
 import ScatterPlotPCA from './ScatterPlotPCA.vue'
 import RadarPlot from './RadarPlot.vue'
 import RegioesBarChart from './RegioesBarChart.vue'
 import PortugalMap from './PortugalMap.vue'
 import RfmSuggestions from './RfmSuggestions.vue'
+
+
 
 const segmentoFiltro = ref('')
 const colunaOrdenada = ref('')
@@ -154,7 +178,9 @@ const props = defineProps({
   descricao: String,
   clientesSegmentados: Array,
   scatterClientes: Array,
-  scatterRegioes: Array
+  scatterRegioes: Array,
+  nomeEmpresa: String,
+  nomeCampanha: String
 })
 
 
@@ -254,6 +280,62 @@ function resetarOrdenacao() {
 const dadosProntos = computed(() => {
   return props.results.length && props.clientesSegmentados.length
 })
+
+
+function exportarParaExcel() {
+  const data = props.clientesSegmentados.map(cliente => {
+    const clone = { ...cliente }
+    //delete clone.ClienteID
+    return clone
+  })
+
+  const worksheet = XLSX.utils.json_to_sheet(data)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Clientes Segmentados')
+
+  const nomeEmpresa = normalizarNome(props.nomeEmpresa)
+  const nomeCampanha = normalizarNome(props.nomeCampanha)
+  const nomeFicheiro = `${nomeEmpresa}_${nomeCampanha}_Clientes_Rfm.xlsx`
+
+  XLSX.writeFile(workbook, nomeFicheiro)
+}
+
+function exportarSegmentosParaExcel() {
+  if (!props.results || !props.results.length) return
+
+  // Remapeia o nome das colunas
+  const dados = props.results.map(row => {
+    const linha = {}
+    for (const [key, val] of Object.entries(row)) {
+      const nomeColuna = nomeColunasCluster[key] || key
+      linha[nomeColuna] = formatarValor(key, val)
+    }
+    return linha
+  })
+
+  const worksheet = XLSX.utils.json_to_sheet(dados)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Segmentos RFM')
+
+  const nomeEmpresa = normalizarNome(props.nomeEmpresa)
+  const nomeCampanha = normalizarNome(props.nomeCampanha)
+  const nomeFicheiro = `${nomeEmpresa}_${nomeCampanha}_TabelaBasicaSegmentos_Rfm.xlsx`
+
+  XLSX.writeFile(workbook, nomeFicheiro)
+}
+
+
+function normalizarNome(nome) {
+  if (!nome) return 'desconhecido'
+
+  return nome
+    .normalize('NFD')                         // separa acentos das letras
+    .replace(/[\u0300-\u036f]/g, '')          // remove os acentos
+    .replace(/ç/g, 'c')                       // substitui ç manualmente
+    .replace(/[^a-zA-Z0-9]/g, '')             // remove tudo que não for letra ou número
+}
+
+
 </script>
 
 
@@ -313,5 +395,33 @@ const dadosProntos = computed(() => {
 .no-min-height {
   min-height: auto !important;
   padding-bottom: 1 !important;
+}
+
+.btn-exportar {
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-exportar:hover {
+  background-color: #1e40af;
+}
+
+.cabecalho-clientes {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.conteudo-centrado {
+  max-width: 900px;
+  margin: 0 auto;
 }
 </style>

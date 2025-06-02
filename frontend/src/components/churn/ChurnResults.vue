@@ -33,56 +33,64 @@
 
     <!-- Lista de Clientes -->
     <div class="card-resultados">
-      <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Risco de cancelamento por cliente</h3>
-
-      <div class="controles-tabela-clientes mb-4">
-        <button @click="resetarOrdenacao" class="btn-reset-custom">Repor ordenação</button>
-
-        <div class="filtro-box">
-          <label class="text-sm font-medium">Filtrar por risco:</label>
-          <select v-model="filtroRisco" class="form-control border border-gray-300 rounded px-2 py-1 text-sm w-64">
-            <option value="">Todos</option>
-            <option v-for="tipo in tiposRisco" :key="tipo">{{ tipo }}</option>
-          </select>
-        </div>
-
-        <div class="limite-box">
-          <label class="text-sm font-medium text-gray-700 mr-2">Linhas por página:</label>
-          <input v-model.number="limiteLinhas" type="number" min="1"
-            class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
-        </div>
+      <div class="cabecalho-clientes mb-4">
+        <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Risco de cancelamento por cliente</h3>
+        <button @click="exportarParaExcel" class="btn-exportar">
+          📥 Exportar Excel
+        </button>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200 text-sm">
-          <thead>
-            <tr class="bg-gray-100 text-left">
-              <th v-for="col in colunasTabela" :key="col.key" @click="ordenarPor(col.key)"
-                class="cursor-pointer px-4 py-2 border hover:bg-gray-100 select-none">
-                {{ col.label }}
-                <span v-if="colunaOrdenada === col.key">
-                  {{ ordemCrescente ? '▲' : '▼' }}
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="cliente in clientesFiltrados" :key="cliente.ClienteID" class="hover:bg-gray-50">
-              <td class="border px-4 py-2">{{ cliente.ClienteID }}</td>
-              <td class="border px-4 py-2">{{ cliente.Nome || '-' }}</td>
-              <td class="border px-4 py-2">{{ cliente.ScoreChurn }}</td>
-              <td class="border px-4 py-2">{{ cliente.Classificacao }}</td>
-              <td class="border px-4 py-2">{{ cliente.Regiao ?? '-' }}</td>
-              <td class="border px-4 py-2">{{ cliente.Localidade ?? '-' }}</td> <!-- 👈 nova coluna -->
-            </tr>
+      <div class="conteudo-centrado">
+        <div class="controles-tabela-clientes mb-4">
+          <button @click="resetarOrdenacao" class="btn-reset-custom">Repor ordenação</button>
 
-          </tbody>
-        </table>
+          <div class="filtro-box">
+            <label class="text-sm font-medium">Filtrar por risco:</label>
+            <select v-model="filtroRisco" class="form-control border border-gray-300 rounded px-2 py-1 text-sm w-64">
+              <option value="">Todos</option>
+              <option v-for="tipo in tiposRisco" :key="tipo">{{ tipo }}</option>
+            </select>
+          </div>
+
+          <div class="limite-box">
+            <label class="text-sm font-medium text-gray-700 mr-2">Linhas por página:</label>
+            <input v-model.number="limiteLinhas" type="number" min="1"
+              class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 mb-2">Total de clientes: {{ clientesFiltrados.length }}</p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full table-auto border border-gray-200 text-sm">
+            <thead class="bg-gray-100">
+              <tr>
+                <th v-for="col in colunasTabela" :key="col.key" @click="ordenarPor(col.key)"
+                  class="cursor-pointer px-4 py-2 border hover:bg-gray-100 select-none">
+                  {{ col.label }}
+                  <span v-if="colunaOrdenada === col.key">
+                    {{ ordemCrescente ? '▲' : '▼' }}
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="cliente in clientesFiltrados" :key="cliente.ClienteID" class="hover:bg-gray-50">
+                <td class="border px-4 py-2">{{ cliente.ClienteID }}</td>
+                <td class="border px-4 py-2">{{ cliente.Nome || '-' }}</td>
+                <td class="border px-4 py-2">{{ cliente.ScoreChurn }}</td>
+                <td class="border px-4 py-2">{{ cliente.Classificacao }}</td>
+                <td class="border px-4 py-2">{{ cliente.Regiao ?? '-' }}</td>
+                <td class="border px-4 py-2">{{ cliente.Localidade ?? '-' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
 
     <!-- Sugestões de Ação -->
-    <ChurnSuggestions :clientes="clientes" />
+    <ChurnSuggestions :clientes="clientes" :nomeEmpresa="nomeEmpresa" :nomeCampanha="nomeCampanha" />
+
 
   </div>
 </template>
@@ -98,8 +106,11 @@ import axios from 'axios'
 const props = defineProps({
   results: Object,
   descricao: String,
-  campanhaId: [String, Number]
+  campanhaId: [String, Number],
+  nomeEmpresa: String,
+  nomeCampanha: String
 })
+
 
 const clientes = ref([])
 const graficoSelecionado = ref('pizza')
@@ -220,6 +231,33 @@ function prepararGraficos() {
 
   dadosBarras.value = Object.values(mapa)
 }
+
+async function exportarParaExcel() {
+  if (!clientes.value.length) return
+
+  const XLSX = await import('xlsx')
+  const data = clientes.value.map(c => ({ ...c }))
+  const worksheet = XLSX.utils.json_to_sheet(data)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Risco de Cancelamento')
+
+  // Usar props ou valores disponíveis
+  const nomeEmpresaLimpo = (props.nomeEmpresa || 'Empresa')
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remover acentos
+    .replace(/\s+/g, '') // remover espaços
+    .replace(/[^a-zA-Z0-9]/g, '') // remover outros símbolos
+
+  const nomeCampanhaLimpo = (props.nomeCampanha || 'Campanha')
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+
+  const nomeFicheiro = `${nomeEmpresaLimpo}_${nomeCampanhaLimpo}_RiscoCancelamento_Churn.xlsx`
+
+  XLSX.writeFile(workbook, nomeFicheiro)
+}
+
+
 </script>
 
 <style scoped>
@@ -260,5 +298,33 @@ function prepararGraficos() {
 
 .btn-reset-custom:hover {
   background-color: #e0ecff;
+}
+
+.cabecalho-clientes {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.btn-exportar {
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-exportar:hover {
+  background-color: #1e40af;
+}
+
+.conteudo-centrado {
+  max-width: 900px;
+  margin: 0 auto;
 }
 </style>
