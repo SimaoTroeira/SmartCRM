@@ -91,6 +91,12 @@
     <!-- Sugestões de Ação -->
     <ChurnSuggestions :clientes="clientes" :nomeEmpresa="nomeEmpresa" :nomeCampanha="nomeCampanha" />
 
+    <!-- Botão de exportação no fundo da página -->
+    <div class="card-resultados card-pequeno text-center mt-10">
+      <h3 class="text-base font-medium text-gray-700 mb-2">Exportar Relatório PDF</h3>
+      <ExportPdfChurn :nome-empresa="props.nomeEmpresa" :nome-campanha="props.nomeCampanha" :dados-pizza="dadosPizza"
+        :dados-barras="dadosBarras" :clientes="clientes" />
+    </div>
 
   </div>
 </template>
@@ -100,6 +106,7 @@ import { ref, watch, computed } from 'vue'
 import PieChart from './PieChart.vue'
 import BarChart from './BarChart.vue'
 import ChurnSuggestions from './ChurnSuggestions.vue'
+import ExportPdfChurn from './ExportPdfChurn.vue'
 
 import axios from 'axios'
 
@@ -327,4 +334,18 @@ async function exportarParaExcel() {
   max-width: 900px;
   margin: 0 auto;
 }
+
+.card-pequeno {
+  padding: 12px 16px;
+  min-height: auto;
+  box-shadow: none;
+  border-radius: 8px;
+  background-color: #f9fafb;
+}
+
+.card-pequeno h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
 </style>

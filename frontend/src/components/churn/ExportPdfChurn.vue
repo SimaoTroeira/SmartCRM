@@ -1,0 +1,259 @@
+<template>
+  <div>
+    <button class="btn-exportar-pdf" @click="abrirModal">
+      🧾 Exportar PDF
+    </button>
+
+    <dialog ref="dialogRef" class="modal-exportar">
+      <div class="modal-conteudo">
+        <button class="fechar" @click="fecharModal">✖</button>
+        <h2 class="titulo-modal">Exportar Relatório PDF</h2>
+
+        <div class="mt-4 space-y-2">
+          <div class="text-sm font-medium">Selecionar gráficos para exportar:</div>
+          <div class="flex flex-col gap-1">
+            <label><input type="checkbox" v-model="graficosSelecionados" value="pizza" /> Gráfico Pizza</label>
+            <label><input type="checkbox" v-model="graficosSelecionados" value="barras" /> Gráfico de Barras</label>
+          </div>
+
+          <div class="mt-2">
+            <label>
+              <input type="checkbox" v-model="incluirSugestoes" />
+              Incluir sugestões de ação
+            </label>
+          </div>
+
+          <button class="btn-confirmar" @click="gerarPdf" :disabled="aGerar">
+            <span v-if="!aGerar">📄 Gerar Relatório</span>
+            <span v-else>⏳ A gerar PDF...</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Conteúdo invisível -->
+    <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
+      <div v-if="graficosSelecionados.includes('pizza')">
+        <div ref="pizzaRef">
+          <h4>Distribuição de Risco</h4>
+          <PieChart :data="dadosPizza" />
+        </div>
+      </div>
+      <div v-if="graficosSelecionados.includes('barras')">
+        <div ref="barrasRef">
+          <h4>Risco por Região</h4>
+          <BarChart :data="dadosBarras" :x-key="'Regiao'" :y-keys="['Alto Risco', 'Médio Risco', 'Baixo Risco']" />
+        </div>
+      </div>
+      <div ref="sugestoesRef" v-show="incluirSugestoes">
+        <ChurnSuggestions :clientes="clientes" :nomeEmpresa="nomeEmpresa" :nomeCampanha="nomeCampanha" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, nextTick } from 'vue'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import PieChart from './PieChart.vue'
+import BarChart from './BarChart.vue'
+import ChurnSuggestions from './ChurnSuggestions.vue'
+
+const props = defineProps({
+  nomeEmpresa: String,
+  nomeCampanha: String,
+  dadosPizza: Array,
+  dadosBarras: Array,
+  clientes: Array,
+  descricaoPizza: String,
+  descricaoBarras: String
+})
+
+
+
+const dialogRef = ref(null)
+const graficosSelecionados = ref([])
+const incluirSugestoes = ref(true)
+const aGerar = ref(false)
+
+const pizzaRef = ref(null)
+const barrasRef = ref(null)
+const sugestoesRef = ref(null)
+
+const refObjs = {
+  pizza: pizzaRef,
+  barras: barrasRef,
+  sugestoes: sugestoesRef
+}
+
+function abrirModal() {
+  dialogRef.value?.showModal()
+}
+
+function fecharModal() {
+  dialogRef.value?.close()
+}
+
+function obterDescricao(grafico) {
+  if (grafico === 'pizza') {
+    return 'Este gráfico mostra a proporção de clientes em cada categoria de risco de churn (Alto, Médio ou Baixo). É útil para compreender rapidamente a saúde geral da base de clientes e identificar se há uma concentração perigosa de clientes em risco de abandono.'
+  } else if (grafico === 'barras') {
+    return 'Este gráfico apresenta o número de clientes por região, segmentados de acordo com o seu nível de risco de churn. Permite identificar áreas geográficas com maior concentração de clientes em risco, ajudando na definição de estratégias regionais de retenção.'
+  }
+  return ''
+}
+
+
+async function gerarPdf() {
+  if (!graficosSelecionados.value.length) return
+  aGerar.value = true
+
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' })
+  let y = 40
+
+  const normalizar = (str) => str.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]/g, '')
+  const nomeFicheiro = `${normalizar(props.nomeEmpresa)}_${normalizar(props.nomeCampanha)}_Churn_Relatorio.pdf`
+
+  doc.setFontSize(18)
+  doc.setFont('Helvetica', 'bold')
+  doc.text(props.nomeEmpresa, 40, y)
+  y += 24
+  doc.setFontSize(14)
+  doc.setFont('Helvetica', 'normal')
+  doc.text(props.nomeCampanha, 40, y)
+  y += 24
+
+  doc.setFontSize(12)
+  doc.setFont('Helvetica', 'italic')
+  doc.text('Algoritmo: Predição de Churn (Risco de Cancelamento)', 40, y)
+  y += 40
+
+  await nextTick()
+
+  for (const grafico of graficosSelecionados.value) {
+    const refElemento = refObjs[grafico]
+    const wrapper = refElemento?.value?.$el || refElemento?.value
+    if (!wrapper) continue
+
+    await new Promise(r => setTimeout(r, 800))
+    const canvas = wrapper.querySelector('canvas')
+
+    const titulo = grafico === 'pizza' ? 'Distribuição de Risco' : 'Risco por Região'
+    const descricao = obterDescricao(grafico)
+
+    if (y + 100 > 750) {
+      doc.addPage()
+      y = 40
+    }
+
+    doc.setFontSize(16)
+    doc.setFont('Helvetica', 'bold')
+    doc.text(titulo, 40, y)
+    y += 20
+
+    if (descricao) {
+      doc.setFontSize(12)
+      doc.setFont('Helvetica', 'normal')
+      const linhas = doc.splitTextToSize(descricao, 500)
+      doc.text(linhas, 40, y)
+      y += linhas.length * 16 + 10
+    }
+
+    if (canvas) {
+      const canvasImagem = await html2canvas(canvas)
+      const imgData = canvasImagem.toDataURL('image/png')
+      const imgWidth = 500
+      const imgHeight = (canvasImagem.height * imgWidth) / canvasImagem.width
+
+      if (y + imgHeight > 750) {
+        doc.addPage()
+        y = 40
+      }
+
+      doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
+      y += imgHeight + 30
+    }
+  }
+
+  if (incluirSugestoes.value && sugestoesRef.value) {
+    await nextTick()
+    await new Promise(r => setTimeout(r, 1000))
+
+    const canvas = await html2canvas(sugestoesRef.value)
+    const imgData = canvas.toDataURL('image/png')
+    const imgWidth = 500
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+    if (y + imgHeight > 750) {
+      doc.addPage()
+      y = 40
+    }
+
+    doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
+    y += imgHeight + 30
+  }
+
+  doc.save(nomeFicheiro)
+  aGerar.value = false
+}
+</script>
+
+<style scoped>
+.btn-exportar-pdf {
+  background-color: #10b981;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+}
+
+.modal-exportar {
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90vw;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-conteudo {
+  padding: 24px;
+  position: relative;
+  background: white;
+}
+
+.fechar {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 18px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.titulo-modal {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.btn-confirmar {
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-top: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-confirmar:hover {
+  background-color: #1d4ed8;
+}
+</style>
