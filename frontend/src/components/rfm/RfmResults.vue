@@ -118,8 +118,6 @@
           <button @click="exportarSegmentosParaExcel" class="btn-exportar">
             📥 Exportar Excel
           </button>
-          <ExportPdfRfm :nome-empresa="nomeEmpresa" :nome-campanha="nomeCampanha" :resumo="resumoEstatisticas"
-            :sugestoes="sugestoesRfm" />
         </div>
       </div>
 
@@ -148,7 +146,17 @@
     </div>
 
     <!-- Sugestões de Ação -->
-    <RfmSuggestions :clusters-resumo="results" :clientes-segmentados="clientesSegmentados" />
+    <RfmSuggestions ref="sugestoesVisiveis" :clientes-segmentados="clientesSegmentados" />
+
+
+    <!-- Botão de exportação no fundo da página -->
+    <div class="card-resultados card-pequeno text-center mt-10">
+      <h3 class="text-base font-medium text-gray-700 mb-2">Exportar Relatório PDF</h3>
+      <ExportPdfRfm :nome-empresa="nomeEmpresa" :nome-campanha="nomeCampanha" :scatter-clientes="scatterClientes"
+        :scatter-regioes="scatterRegioes" :clientes-segmentados="clientesSegmentados" />
+
+    </div>
+
   </div>
 </template>
 
@@ -161,6 +169,8 @@ import RadarPlot from './RadarPlot.vue'
 import RegioesBarChart from './RegioesBarChart.vue'
 import PortugalMap from './PortugalMap.vue'
 import RfmSuggestions from './RfmSuggestions.vue'
+import ExportPdfRfm from './ExportPdfRfm.vue'
+
 
 
 
@@ -180,7 +190,12 @@ const props = defineProps({
   scatterClientes: Array,
   scatterRegioes: Array,
   nomeEmpresa: String,
-  nomeCampanha: String
+  nomeCampanha: String,
+  sugestoesRfm: {
+    type: Array,
+    default: () => []
+  }
+
 })
 
 
@@ -423,5 +438,23 @@ function normalizarNome(nome) {
 .conteudo-centrado {
   max-width: 900px;
   margin: 0 auto;
+}
+
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.card-pequeno {
+  padding: 12px 16px;
+  min-height: auto;
+  box-shadow: none;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  /* cinza claro */
+}
+
+.card-pequeno h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
 }
 </style>
