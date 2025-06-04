@@ -8,11 +8,11 @@
 
       <!-- Controles + Exportar PDF -->
       <div class="flex flex-wrap items-center gap-4 mb-4">
-        <ControlsTable
+        <!-- <ControlsTable
           :coluna-ordenada.sync="colunaOrdenadaProd"
           :ordem-crescente.sync="ordemCrescenteProd"
           :limite-linhas.sync="limiteLinhasProd"
-        />
+        /> -->
         <ExportPdfRecommend :dados="regrasOrdenadasProd" nome="Regras Produto-Produto" />
       </div>
 
@@ -48,11 +48,11 @@
       </h3>
 
       <div class="flex flex-wrap items-center gap-4 mb-4">
-        <ControlsTable
+        <!-- <ControlsTable
           :coluna-ordenada.sync="colunaOrdenadaAttr[atributo]"
           :ordem-crescente.sync="ordemCrescenteAttr[atributo]"
           :limite-linhas.sync="limiteLinhasAttr[atributo]"
-        />
+        /> -->
         <ExportPdfRecommend :dados="regrasOrdenadasAttr[atributo]" :nome="`Regras por ${atributo}`" />
       </div>
 
@@ -89,7 +89,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios'
-import ControlsTable from '@/components/recommendation/ControlsTable.vue'
+// import ControlsTable from '@/components/recommendation/ControlsTable.vue'
 import ExportPdfRecommend from '@/components/recommendation/ExportPdfRecommend.vue'
 
 const props = defineProps({ campanhaId: { type: Number, required: true } })
