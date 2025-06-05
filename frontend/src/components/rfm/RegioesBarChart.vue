@@ -66,15 +66,30 @@ watchEffect(() => {
   })
 })
 
+// 1. Ordenar regiões por valor total dos segmentos visíveis
+const regioesOrdenadas = computed(() => {
+  return [...props.scatterRegioes]
+    .map(regiao => {
+      const totalVisivel = todosSegmentos.value
+        .filter(seg => segmentosVisiveis.value[seg])
+        .reduce((soma, seg) => soma + ((regiao[seg] || 0) / 
+          (todosSegmentos.value.reduce((acc, s) => acc + (regiao[s] || 0), 0) || 1) 
+          * regiao.ValorTotal), 0)
+      return { ...regiao, totalVisivel }
+    })
+    .sort((a, b) => b.totalVisivel - a.totalVisivel)
+})
+
+// 2. Gerar datasets com base na ordem nova
 const filteredDatasets = computed(() =>
   todosSegmentos.value
     .filter(seg => segmentosVisiveis.value[seg])
     .map(segmento => ({
       label: segmento,
-      data: props.scatterRegioes.map(r => {
-        const totalClientesSegmento = r[segmento] || 0
-        const totalClientes = todosSegmentos.value.reduce((acc, seg) => acc + (r[seg] || 0), 0)
-        const percentagem = totalClientes ? (totalClientesSegmento / totalClientes) : 0
+      data: regioesOrdenadas.value.map(r => {
+        const totalSegmento = r[segmento] || 0
+        const total = todosSegmentos.value.reduce((acc, seg) => acc + (r[seg] || 0), 0)
+        const percentagem = total ? totalSegmento / total : 0
         return percentagem * r.ValorTotal
       }),
       backgroundColor: coresPorSegmento[segmento] || '#ccc',
@@ -82,10 +97,12 @@ const filteredDatasets = computed(() =>
     }))
 )
 
+// 3. Atualizar os labels
 const chartData = computed(() => ({
-  labels: props.scatterRegioes.map(r => r.Regiao),
+  labels: regioesOrdenadas.value.map(r => r.Regiao),
   datasets: filteredDatasets.value
 }))
+
 
 const chartOptions = {
   responsive: true,
@@ -94,7 +111,7 @@ const chartOptions = {
     tooltip: {
       callbacks: {
         label: function (ctx) {
-          const regiao = props.scatterRegioes[ctx.dataIndex]
+          const regiao = regioesOrdenadas.value[ctx.dataIndex]
           const segmento = ctx.dataset.label
           const valorSegmento = ctx.parsed.y
           const totalClientesSegmento = regiao[segmento] || 0

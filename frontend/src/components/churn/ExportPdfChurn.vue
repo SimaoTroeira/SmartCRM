@@ -14,6 +14,7 @@
           <div class="flex flex-col gap-1">
             <label><input type="checkbox" v-model="graficosSelecionados" value="pizza" /> Gráfico Pizza</label>
             <label><input type="checkbox" v-model="graficosSelecionados" value="barras" /> Gráfico de Barras</label>
+            <label><input type="checkbox" v-model="graficosSelecionados" value="mapa" /> Mapa de Portugal</label>
           </div>
 
           <div class="mt-2">
@@ -33,18 +34,41 @@
 
     <!-- Conteúdo invisível -->
     <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
-      <div v-if="graficosSelecionados.includes('pizza')">
+      <div v-show="graficosSelecionados.includes('pizza')">
         <div ref="pizzaRef">
           <h4>Distribuição de Risco</h4>
           <PieChart :data="dadosPizza" />
         </div>
       </div>
-      <div v-if="graficosSelecionados.includes('barras')">
+      <div v-show="graficosSelecionados.includes('barras')">
         <div ref="barrasRef">
           <h4>Risco por Região</h4>
           <BarChart :data="dadosBarras" :x-key="'Regiao'" :y-keys="['Alto Risco', 'Médio Risco', 'Baixo Risco']" />
         </div>
       </div>
+      <!-- Mapa: renderizado dentro do viewport com opacity 0 -->
+      <div v-show="graficosSelecionados.includes('mapa')"
+        style="position: fixed; top: 0; left: 0; opacity: 0; pointer-events: none; z-index: -1;">
+        <div ref="mapaRef" style="width: 1000px; height: 600px;">
+          <h4>Risco no Mapa</h4>
+
+          <!-- Legenda manual antes do mapa -->
+          <div style="display: flex; gap: 10px; margin-bottom: 10px; font-size: 12px;">
+            <div><span
+                style="background-color: #f87171; width: 12px; height: 12px; display: inline-block; margin-right: 4px;"></span>
+              Alto Risco</div>
+            <div><span
+                style="background-color: #facc15; width: 12px; height: 12px; display: inline-block; margin-right: 4px;"></span>
+              Médio Risco</div>
+            <div><span
+                style="background-color: #4ade80; width: 12px; height: 12px; display: inline-block; margin-right: 4px;"></span>
+              Baixo Risco</div>
+          </div>
+
+          <PortugalMapChurn :dados-regioes="dadosBarras" />
+        </div>
+      </div>
+
       <div ref="sugestoesRef" v-show="incluirSugestoes">
         <ChurnSuggestions :clientes="clientes" :nomeEmpresa="nomeEmpresa" :nomeCampanha="nomeCampanha" />
       </div>
@@ -58,6 +82,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import PieChart from './PieChart.vue'
 import BarChart from './BarChart.vue'
+import PortugalMapChurn from './PortugalMapChurn.vue'
 import ChurnSuggestions from './ChurnSuggestions.vue'
 
 const props = defineProps({
@@ -66,11 +91,8 @@ const props = defineProps({
   dadosPizza: Array,
   dadosBarras: Array,
   clientes: Array,
-  descricaoPizza: String,
-  descricaoBarras: String
+  refMapa: Object
 })
-
-
 
 const dialogRef = ref(null)
 const graficosSelecionados = ref([])
@@ -79,11 +101,13 @@ const aGerar = ref(false)
 
 const pizzaRef = ref(null)
 const barrasRef = ref(null)
+const mapaRef = ref(null)
 const sugestoesRef = ref(null)
 
 const refObjs = {
   pizza: pizzaRef,
   barras: barrasRef,
+  mapa: mapaRef,
   sugestoes: sugestoesRef
 }
 
@@ -100,10 +124,11 @@ function obterDescricao(grafico) {
     return 'Este gráfico mostra a proporção de clientes em cada categoria de risco de churn (Alto, Médio ou Baixo). É útil para compreender rapidamente a saúde geral da base de clientes e identificar se há uma concentração perigosa de clientes em risco de abandono.'
   } else if (grafico === 'barras') {
     return 'Este gráfico apresenta o número de clientes por região, segmentados de acordo com o seu nível de risco de churn. Permite identificar áreas geográficas com maior concentração de clientes em risco, ajudando na definição de estratégias regionais de retenção.'
+  } else if (grafico === 'mapa') {
+    return 'Este mapa destaca visualmente a distribuição de risco de cancelamento por região em Portugal. Permite identificar geograficamente as áreas mais afetadas e apoiar estratégias localizadas.'
   }
   return ''
 }
-
 
 async function gerarPdf() {
   if (!graficosSelecionados.value.length) return
@@ -112,7 +137,7 @@ async function gerarPdf() {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' })
   let y = 40
 
-  const normalizar = (str) => str.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]/g, '')
+  const normalizar = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '')
   const nomeFicheiro = `${normalizar(props.nomeEmpresa)}_${normalizar(props.nomeCampanha)}_Churn_Relatorio.pdf`
 
   doc.setFontSize(18)
@@ -130,16 +155,14 @@ async function gerarPdf() {
   y += 40
 
   await nextTick()
+  await new Promise(r => setTimeout(r, 1000))
 
   for (const grafico of graficosSelecionados.value) {
     const refElemento = refObjs[grafico]
     const wrapper = refElemento?.value?.$el || refElemento?.value
     if (!wrapper) continue
 
-    await new Promise(r => setTimeout(r, 800))
-    const canvas = wrapper.querySelector('canvas')
-
-    const titulo = grafico === 'pizza' ? 'Distribuição de Risco' : 'Risco por Região'
+    const titulo = wrapper.querySelector('h4')?.innerText || ''
     const descricao = obterDescricao(grafico)
 
     if (y + 100 > 750) {
@@ -152,19 +175,29 @@ async function gerarPdf() {
     doc.text(titulo, 40, y)
     y += 20
 
-    if (descricao) {
-      doc.setFontSize(12)
-      doc.setFont('Helvetica', 'normal')
-      const linhas = doc.splitTextToSize(descricao, 500)
-      doc.text(linhas, 40, y)
-      y += linhas.length * 16 + 10
+    doc.setFontSize(12)
+    doc.setFont('Helvetica', 'normal')
+    const linhas = doc.splitTextToSize(descricao, 500)
+    doc.text(linhas, 40, y)
+    y += linhas.length * 16 + 10
+
+    let imagemCapturada
+    try {
+      const canvas = wrapper.querySelector('canvas')
+      if (canvas) {
+        imagemCapturada = await html2canvas(canvas, { scale: 2 })
+      } else {
+        imagemCapturada = await html2canvas(wrapper, { scale: 2 })
+      }
+    } catch (e) {
+      console.error(`Erro ao capturar ${grafico}:`, e)
+      continue
     }
 
-    if (canvas) {
-      const canvasImagem = await html2canvas(canvas)
-      const imgData = canvasImagem.toDataURL('image/png')
+    if (imagemCapturada) {
+      const imgData = imagemCapturada.toDataURL('image/png')
       const imgWidth = 500
-      const imgHeight = (canvasImagem.height * imgWidth) / canvasImagem.width
+      const imgHeight = (imagemCapturada.height * imgWidth) / imagemCapturada.width
 
       if (y + imgHeight > 750) {
         doc.addPage()
@@ -172,6 +205,26 @@ async function gerarPdf() {
       }
 
       doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
+
+      if (grafico === 'mapa') {
+        // Legenda sobre a imagem do mapa
+        const legendaX = 50
+        let legendaY = y + 20
+        const legendaItens = [
+          { cor: '#f87171', texto: 'Alto Risco' },
+          { cor: '#facc15', texto: 'Médio Risco' },
+          { cor: '#4ade80', texto: 'Baixo Risco' }
+        ]
+        for (const item of legendaItens) {
+          doc.setFillColor(item.cor)
+          doc.rect(legendaX, legendaY, 10, 10, 'F')
+          doc.setTextColor(0)
+          doc.setFontSize(10)
+          doc.text(item.texto, legendaX + 15, legendaY + 9)
+          legendaY += 16
+        }
+      }
+
       y += imgHeight + 30
     }
   }
@@ -180,7 +233,7 @@ async function gerarPdf() {
     await nextTick()
     await new Promise(r => setTimeout(r, 1000))
 
-    const canvas = await html2canvas(sugestoesRef.value)
+    const canvas = await html2canvas(sugestoesRef.value, { scale: 2 })
     const imgData = canvas.toDataURL('image/png')
     const imgWidth = 500
     const imgHeight = (canvas.height * imgWidth) / canvas.width
@@ -198,6 +251,7 @@ async function gerarPdf() {
   aGerar.value = false
 }
 </script>
+
 
 <style scoped>
 .btn-exportar-pdf {

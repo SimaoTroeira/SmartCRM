@@ -5,7 +5,6 @@
             <button class="btn-toggle-modo" @click="alternarModoValorTotal">
                 {{ modoValorTotal ? '📌 Modo Clusters' : '📊 Modo Valor Total' }}
             </button>
-            <button class="btn-reset-zoom" @click="resetZoom">🔄 Repor Zoom</button>
         </div>
 
         <!-- Checkboxes por segmento -->
@@ -17,8 +16,16 @@
             </label>
         </div>
 
-        <!-- Mapa -->
+        <!-- Mapa principal (Continente) -->
         <v-chart ref="vChartRef" class="echart-map" :option="chartOptions" autoresize @ready="onChartReady" />
+
+        <!-- Mini-mapa: Açores -->
+        <v-chart class="mini-map mini-acores" :option="acoresOptions" autoresize />
+
+        <!-- Mini-mapa: Madeira -->
+        <v-chart class="mini-map mini-madeira" :option="madeiraOptions" autoresize />
+
+
     </div>
 
 </template>
@@ -35,6 +42,7 @@ import geoJson from '@/assets/portugal-distritos.json'
 echarts.use([MapChart, TooltipComponent, VisualMapComponent, CanvasRenderer])
 echarts.registerMap('portugal', geoJson)
 
+
 const props = defineProps({
     dadosRegioes: Array
 })
@@ -42,7 +50,7 @@ const props = defineProps({
 const vChartRef = ref(null)
 const chartInstance = ref(null)
 const chartOptions = ref({})
-const zoomLevel = ref(1.2)
+const zoomLevel = ref(2.5)
 const modoValorTotal = ref(false)
 
 const coresPorSegmento = {
@@ -84,10 +92,154 @@ function alternarModoValorTotal() {
     }
 }
 
-function resetZoom() {
-    zoomLevel.value = 1.2
-    chartOptions.value = { ...chartOptions.value }
+
+const acoresOptions = computed(() => {
+    const valores = props.dadosRegioes.map(r => r.ValorTotal || 0)
+    const min = Math.min(...valores)
+    const max = Math.max(...valores)
+
+    return {
+        visualMap: modoValorTotal.value
+            ? {
+                min,
+                max,
+                right: 5,
+                top: 10,
+                calculable: false,
+                show: false, // escondido no mini-mapa
+                inRange: {
+                    color: ['#aec7e8', '#084594']
+                }
+            }
+            : undefined,
+        series: [{
+            type: 'map',
+            map: 'portugal',
+            roam: false,
+            zoom: 4.5,
+            center: [-28, 38], // foca nos Açores
+            label: {
+                show: true,
+                fontSize: 10
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontWeight: 'bold'
+                }
+            },
+            data: dadosFiltradosParaIlha('Açores')
+        }],
+        tooltip: {
+            trigger: 'item',
+            formatter: params => {
+                const { name, value, data } = params
+                if (modoValorTotal.value) {
+                    return `<strong>${name}</strong><br/>Valor Total: €${value?.toLocaleString('pt-PT')}`
+                }
+                const segmentos = todosSegmentos.value.filter(s => data?.[s] > 0 && segmentosVisiveis.value[s])
+                const lines = segmentos.length
+                    ? segmentos.map(c => `${c}: ${data[c]}`).join('<br/>')
+                    : 'Sem dados de cluster'
+                return `
+                    <strong>${name}</strong><br/>
+                    Valor Total: €${value?.toLocaleString('pt-PT')}<br/>
+                    ${lines}`
+            }
+        }
+    }
+})
+
+
+const madeiraOptions = computed(() => {
+    const valores = props.dadosRegioes.map(r => r.ValorTotal || 0)
+    const min = Math.min(...valores)
+    const max = Math.max(...valores)
+
+    return {
+        visualMap: modoValorTotal.value
+            ? {
+                min,
+                max,
+                right: 5,
+                top: 10,
+                calculable: false,
+                show: false, // escondido no mini-mapa
+                inRange: {
+                    color: ['#aec7e8', '#084594']
+                }
+            }
+            : undefined,
+        series: [{
+            type: 'map',
+            map: 'portugal',
+            roam: false,
+            zoom: 6,
+            center: [-17, 32.7], // foca na Madeira
+            label: {
+                show: true,
+                fontSize: 10
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontWeight: 'bold'
+                }
+            },
+            data: dadosFiltradosParaIlha('Madeira')
+        }],
+        tooltip: {
+            trigger: 'item',
+            formatter: params => {
+                const { name, value, data } = params
+                if (modoValorTotal.value) {
+                    return `<strong>${name}</strong><br/>Valor Total: €${value?.toLocaleString('pt-PT')}`
+                }
+                const segmentos = todosSegmentos.value.filter(s => data?.[s] > 0 && segmentosVisiveis.value[s])
+                const lines = segmentos.length
+                    ? segmentos.map(c => `${c}: ${data[c]}`).join('<br/>')
+                    : 'Sem dados de cluster'
+                return `
+                    <strong>${name}</strong><br/>
+                    Valor Total: €${value?.toLocaleString('pt-PT')}<br/>
+                    ${lines}`
+            }
+        }
+    }
+})
+
+
+
+function dadosFiltradosParaIlha(nome) {
+    return props.dadosRegioes
+        .filter(r => r.Regiao === nome)
+        .map(r => {
+            const segmentos = todosSegmentos.value.reduce((acc, key) => {
+                acc[key] = r[key] || 0
+                return acc
+            }, {})
+
+            const dominante = Object.entries(segmentos)
+                .filter(([s]) => segmentosVisiveis.value[s])
+                .sort((a, b) => b[1] - a[1])[0]?.[0]
+
+            const base = {
+                name: r.Regiao,
+                value: r.ValorTotal || 0,
+                ...segmentos
+            }
+
+            if (!modoValorTotal.value) {
+                base.itemStyle = {
+                    areaColor: dominante ? coresPorSegmento[dominante] : '#ccc'
+                }
+            }
+
+            return base
+        })
 }
+
+
 
 function onChartReady(chart) {
     chartInstance.value = chart
@@ -122,6 +274,8 @@ onMounted(() => {
             }
         })
 
+
+
         chartOptions.value = {
             tooltip: {
                 trigger: 'item',
@@ -144,7 +298,7 @@ onMounted(() => {
                 ? {
                     min: Math.min(...valores.map(v => v.value)),
                     max: Math.max(...valores.map(v => v.value)),
-                    left: 'left',
+                    right: 11,
                     top: 'bottom',
                     text: ['Mais Valor', 'Menos Valor'],
                     inRange: {
@@ -153,13 +307,15 @@ onMounted(() => {
                     calculable: true
                 }
                 : undefined,
+
             series: [
                 {
                     name: 'Regiões',
                     type: 'map',
                     map: 'portugal',
-                    roam: true,
-                    zoom: chartInstance.value?.getOption()?.series?.[0]?.zoom ?? zoomLevel.value,
+                    roam: false,
+                    zoom: zoomLevel.value,
+                    center: [-12, 39.5],
                     label: {
                         show: true,
                         fontSize: 10
@@ -173,14 +329,7 @@ onMounted(() => {
         }
     })
 
-    const chartDom = vChartRef.value?.$el;
-    if (chartDom) {
-        chartDom.addEventListener('wheel', (event) => {
-            if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-                event.preventDefault();
-            }
-        }, { passive: false });
-    }
+
 })
 </script>
 
@@ -194,6 +343,7 @@ onMounted(() => {
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     background-color: white;
+    position: relative; /* mantém para os mini-mapas */
 }
 
 /* Botões em linha horizontal */
@@ -247,4 +397,31 @@ onMounted(() => {
     width: 100%;
     height: 440px;
 }
+
+.mini-map {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border: 1px solid #ddd;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.mini-acores {
+    top: 150px;
+    left: 10px;
+}
+
+.mini-madeira {
+    bottom: 10px;
+    left: 10px;
+}
+
+
+.portugal-map-container {
+    position: relative;
+}
+
+
 </style>

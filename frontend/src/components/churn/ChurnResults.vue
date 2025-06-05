@@ -18,6 +18,7 @@
         <select v-model="graficoSelecionado" class="form-control border px-2 py-1 text-sm rounded w-48">
           <option value="pizza">Distribuição de Risco</option>
           <option value="barras">Risco por Região</option>
+          <option value="mapa">Risco no Mapa</option>
         </select>
       </div>
 
@@ -27,6 +28,9 @@
       </div>
       <div v-else-if="graficoSelecionado === 'barras' && dadosBarras.length">
         <BarChart :data="dadosBarras" :x-key="'Regiao'" :y-keys="['Alto Risco', 'Médio Risco', 'Baixo Risco']" />
+      </div>
+      <div v-else-if="graficoSelecionado === 'mapa' && dadosBarras.length">
+        <PortugalMapChurn :dados-regioes="dadosBarras" ref="mapaRef" />
       </div>
       <div v-else class="text-gray-500 italic">Sem dados suficientes para gráfico.</div>
     </div>
@@ -58,7 +62,11 @@
               class="border border-gray-300 rounded px-2 py-1 text-sm w-20" />
           </div>
         </div>
-        <p class="text-sm text-gray-600 mb-2">Total de clientes: {{ clientesFiltrados.length }}</p>
+        <p class="text-sm text-gray-600 mb-2">
+          Total de clientes: {{ clientes.length }}
+          <span v-if="clientesFiltrados.length !== clientes.length"></span>
+        </p>
+
         <div class="overflow-x-auto">
           <table class="min-w-full table-auto border border-gray-200 text-sm">
             <thead class="bg-gray-100">
@@ -95,11 +103,12 @@
     <div class="card-resultados card-pequeno text-center mt-10">
       <h3 class="text-base font-medium text-gray-700 mb-2">Exportar Relatório PDF</h3>
       <ExportPdfChurn :nome-empresa="props.nomeEmpresa" :nome-campanha="props.nomeCampanha" :dados-pizza="dadosPizza"
-        :dados-barras="dadosBarras" :clientes="clientes" />
+        :dados-barras="dadosBarras" :clientes="clientes" :ref-mapa="mapaRef" />
     </div>
 
   </div>
 </template>
+
 
 <script setup>
 import { ref, watch, computed } from 'vue'
@@ -107,6 +116,7 @@ import PieChart from './PieChart.vue'
 import BarChart from './BarChart.vue'
 import ChurnSuggestions from './ChurnSuggestions.vue'
 import ExportPdfChurn from './ExportPdfChurn.vue'
+import PortugalMapChurn from './PortugalMapChurn.vue'
 
 import axios from 'axios'
 
@@ -118,7 +128,7 @@ const props = defineProps({
   nomeCampanha: String
 })
 
-
+const mapaComponent = PortugalMapChurn
 const clientes = ref([])
 const graficoSelecionado = ref('pizza')
 
@@ -126,17 +136,30 @@ const dadosPizza = ref([])
 const dadosBarras = ref([])
 const dadosProntos = computed(() => clientes.value.length && dadosPizza.value.length && dadosBarras.value.length)
 
-const tituloVisualizacao = computed(() =>
-  graficoSelecionado.value === 'pizza'
-    ? '🥧 Distribuição de Risco'
-    : '📊 Risco por Região'
-)
-
-const descricaoVisualizacao = computed(() =>
-  graficoSelecionado.value === 'pizza'
-    ? 'Este gráfico mostra a proporção de clientes em cada categoria de risco de churn (Alto, Médio ou Baixo). É útil para compreender rapidamente a saúde geral da base de clientes e identificar se há uma concentração perigosa de clientes em risco de abandono.'
-    : 'Este gráfico apresenta o número de clientes por região, segmentados de acordo com o seu nível de risco de churn. Permite identificar áreas geográficas com maior concentração de clientes em risco, ajudando na definição de estratégias regionais de retenção.'
-)
+const tituloVisualizacao = computed(() => {
+  switch (graficoSelecionado.value) {
+    case 'pizza':
+      return '🥧 Distribuição de Risco'
+    case 'barras':
+      return '📊 Risco por Região'
+    case 'mapa':
+      return '🗺️ Risco no Mapa de Portugal'
+    default:
+      return ''
+  }
+})
+const descricaoVisualizacao = computed(() => {
+  switch (graficoSelecionado.value) {
+    case 'pizza':
+      return 'Este gráfico mostra a proporção de clientes em cada categoria de risco de churn (Alto, Médio ou Baixo). É útil para compreender rapidamente a saúde geral da base de clientes e identificar se há uma concentração perigosa de clientes em risco de abandono.'
+    case 'barras':
+      return 'Este gráfico apresenta o número de clientes por região, segmentados de acordo com o seu nível de risco de churn. Permite identificar áreas geográficas com maior concentração de clientes em risco, ajudando na definição de estratégias regionais de retenção.'
+    case 'mapa':
+      return 'Este mapa interativo mostra o risco de cancelamento de clientes por região em Portugal. Cada cor representa o segmento de risco predominante em cada área (alto, médio ou baixo), facilitando a identificação de zonas críticas que exigem intervenção prioritária.'
+    default:
+      return ''
+  }
+})
 
 const colunasTabela = [
   { key: 'ClienteID', label: 'ClienteID' },
@@ -347,5 +370,4 @@ async function exportarParaExcel() {
   font-size: 1rem;
   margin-bottom: 8px;
 }
-
 </style>

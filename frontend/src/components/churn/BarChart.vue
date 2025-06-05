@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <Bar :data="chartData" :options="options" />
-  </div>
+    <div>
+        <Bar :data="chartData" :options="options" />
+    </div>
 </template>
 
 <script setup>
@@ -27,15 +27,30 @@ const props = defineProps({
 const cores = ['#f87171', '#facc15', '#4ade80'] // Vermelho, amarelo, verde
 
 const chartData = computed(() => {
-    return {
-        labels: props.data.map(d => d[props.xKey]),
-        datasets: props.yKeys.map((key, index) => ({
-            label: key,
-            data: props.data.map(d => d[key] || 0),
-            backgroundColor: cores[index % cores.length]
-        }))
-    }
+    if (!props.data || props.data.length === 0) return { labels: [], datasets: [] }
+
+    const xKey = props.xKey
+    const yKeys = props.yKeys
+
+    // Usar o primeiro yKey como critério de ordenação
+    const keyPrincipal = yKeys[0]
+
+    // Ordenar os dados com base no valor do primeiro yKey (decrescente)
+    const dataOrdenada = [...props.data].sort((a, b) => {
+        return (b[keyPrincipal] || 0) - (a[keyPrincipal] || 0)
+    })
+
+    const labels = dataOrdenada.map(d => d[xKey])
+
+    const datasets = yKeys.map((key, index) => ({
+        label: key,
+        data: dataOrdenada.map(d => d[key] || 0),
+        backgroundColor: cores[index % cores.length]
+    }))
+
+    return { labels, datasets }
 })
+
 
 const options = {
     responsive: true,

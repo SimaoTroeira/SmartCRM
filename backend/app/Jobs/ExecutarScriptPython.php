@@ -22,8 +22,8 @@ class ExecutarScriptPython implements ShouldQueue
 
     public function handle(): void
     {
-        // $scriptPath = base_path("../scripts/{$this->script}");
-        $scriptPath = base_path("scripts/{$this->script}");
+        $scriptPath = base_path("../scripts/{$this->script}");
+        //$scriptPath = base_path("scripts/{$this->script}");
         $basePath = config('smartcrm.storage_path');
 
         $comando = "python \"$scriptPath\" {$this->empresaId} {$this->campanhaId} \"$basePath\" 2>&1";
