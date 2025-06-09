@@ -7,7 +7,7 @@
       </p>
 
       <div v-for="(sugestao, index) in sugestoes" :key="index" class="mb-6">
-        <h4 class="text-md font-semibold text-gray-800 mb-1">{{ sugestao.emoji }} {{ sugestao.classificacao }}</h4>
+        <h4 class="text-md font-semibold text-gray-800 mb-1">{{ sugestao.classificacao }}</h4>
         <ul class="list-disc list-inside text-sm text-gray-700">
           <li v-for="(ponto, i) in sugestao.pontos" :key="i">{{ ponto }}</li>
         </ul>
@@ -18,7 +18,7 @@
 
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watchEffect, defineExpose } from 'vue'
 
 const props = defineProps({
   clientes: Array,
@@ -26,18 +26,20 @@ const props = defineProps({
   nomeCampanha: String
 })
 
+// Criar sugestoes como ref para poder expor
+const sugestoes = ref([])
 
-const sugestoes = computed(() => {
+// Atualizar dinamicamente as sugestões sempre que os clientes mudarem
+watchEffect(() => {
   const clientes = props.clientes || []
 
   const alto = clientes.filter(c => c.Classificacao === 'Alto Risco').length
   const medio = clientes.filter(c => c.Classificacao === 'Médio Risco').length
   const baixo = clientes.filter(c => c.Classificacao === 'Baixo Risco').length
 
-  return [
+  sugestoes.value = [
     {
       classificacao: 'Alto Risco',
-      emoji: '🚨',
       pontos: [
         `${alto} clientes encontram-se numa situação crítica, com elevada probabilidade de abandono.`,
         'Implemente campanhas urgentes com ofertas altamente apelativas e com prazo limitado.',
@@ -47,7 +49,6 @@ const sugestoes = computed(() => {
     },
     {
       classificacao: 'Médio Risco',
-      emoji: '⚠️',
       pontos: [
         `${medio} clientes demonstram sinais de possível desinteresse ou afastamento iminente.`,
         'Mantenha o envolvimento através de comunicações com valor claro, como dicas úteis ou recomendações personalizadas.',
@@ -57,7 +58,6 @@ const sugestoes = computed(() => {
     },
     {
       classificacao: 'Baixo Risco',
-      emoji: '✅',
       pontos: [
         `${baixo} clientes apresentam baixo risco de churn e demonstram fidelização.`,
         'Reforce a lealdade através de programas de pontos, campanhas VIP ou acesso antecipado a novidades.',
@@ -68,7 +68,10 @@ const sugestoes = computed(() => {
   ]
 })
 
+// Expor para uso externo (ex: exportação PDF)
+defineExpose({ sugestoes })
 </script>
+
 
 <style scoped>
 .card-resultados {

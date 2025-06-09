@@ -38,9 +38,9 @@
     <!-- Lista de Clientes -->
     <div class="card-resultados">
       <div class="cabecalho-clientes mb-4">
-        <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Risco de cancelamento por cliente</h3>
+        <h3 class="text-xl font-semibold mb-3 text-blue-700">Risco de cancelamento por cliente</h3>
         <button @click="exportarParaExcel" class="btn-exportar">
-          📥 Exportar Excel
+          Exportar Excel
         </button>
       </div>
 
@@ -139,11 +139,11 @@ const dadosProntos = computed(() => clientes.value.length && dadosPizza.value.le
 const tituloVisualizacao = computed(() => {
   switch (graficoSelecionado.value) {
     case 'pizza':
-      return '🥧 Distribuição de Risco'
+      return 'Distribuição de Risco'
     case 'barras':
-      return '📊 Risco por Região'
+      return 'Risco por Região'
     case 'mapa':
-      return '🗺️ Risco no Mapa de Portugal'
+      return 'Risco no Mapa de Portugal'
     default:
       return ''
   }

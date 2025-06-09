@@ -1,26 +1,41 @@
 <template>
-
   <div class="space-y-8">
-
+    <!-- Regras Produto → Produto -->
     <div v-if="regrasOrdenadasProd.length" class="card-resultados">
-      <h3 class="text-xl font-semibold mb-2">📦 Cross-Selling (Produto→Produto)</h3>
+      <div class="cabecalho-clientes mb-4">
+        <div class="titulo-reset">
+          <h3 class="text-xl font-semibold text-blue-700">Cross-Selling (Produto→Produto)</h3>
+          <button @click="resetarOrdenacaoProd" class="btn-reset-custom">Repor ordenação</button>
+        </div>
+        <div class="acoes-clientes">
+          <button @click="exportarParaExcel" class="btn-exportar">Exportar para Excel</button>
+        </div>
+      </div>
 
       <div class="overflow-auto">
-
-        <div class="mb-4">
-          <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" @click="exportarParaExcel">
-            Exportar para Excel
-          </button>
-        </div>
-
         <table class="min-w-full text-sm border">
           <thead class="bg-gray-100">
             <tr>
               <th class="px-3 py-2 border">Antecedentes</th>
               <th class="px-3 py-2 border">Consequentes</th>
-              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorProd('support')">Suporte (%)</th>
-              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorProd('confidence')">Confiança (%)</th>
-              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorProd('lift')">Lift</th>
+              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorProd('support')">
+                Suporte (%)
+                <span v-if="colunaOrdenadaProd === 'support'">
+                  {{ ordemCrescenteProd ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorProd('confidence')">
+                Confiança (%)
+                <span v-if="colunaOrdenadaProd === 'confidence'">
+                  {{ ordemCrescenteProd ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorProd('lift')">
+                Lift
+                <span v-if="colunaOrdenadaProd === 'lift'">
+                  {{ ordemCrescenteProd ? '▲' : '▼' }}
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -46,15 +61,17 @@
       </div>
     </div>
 
+    <!-- Regras por Atributo -->
     <div v-for="(regras, atributo) in regrasOrdenadasAttr" :key="atributo" class="card-resultados">
-      <h3 class="text-xl font-semibold mb-2">🔖 Recomendações via "{{ atributo }}"</h3>
-
-      <div class="mb-4">
-        <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" @click="exportarParaExcel">
-          Exportar para Excel
-        </button>
+      <div class="cabecalho-clientes mb-4">
+        <div class="titulo-reset">
+          <h3 class="text-xl font-semibold text-blue-700">Recomendações via "{{ atributo }}"</h3>
+          <button @click="resetarOrdenacaoAttr(atributo)" class="btn-reset-custom">Repor ordenação</button>
+        </div>
+        <div class="acoes-clientes">
+          <button @click="exportarAtributoParaExcel(atributo, regras)" class="btn-exportar">Exportar para Excel</button>
+        </div>
       </div>
-
 
       <div class="overflow-auto">
         <table class="min-w-full text-sm border">
@@ -62,10 +79,24 @@
             <tr>
               <th class="px-3 py-2 border">Antecedentes</th>
               <th class="px-3 py-2 border">Consequentes</th>
-              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorAttr(atributo, 'support')">Suporte (%)</th>
-              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorAttr(atributo, 'confidence')">Confiança (%)
+              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorAttr(atributo, 'support')">
+                Suporte (%)
+                <span v-if="colunaOrdenadaAttr[atributo] === 'support'">
+                  {{ ordemCrescenteAttr[atributo] ? '▲' : '▼' }}
+                </span>
               </th>
-              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorAttr(atributo, 'lift')">Lift</th>
+              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorAttr(atributo, 'confidence')">
+                Confiança (%)
+                <span v-if="colunaOrdenadaAttr[atributo] === 'confidence'">
+                  {{ ordemCrescenteAttr[atributo] ? '▲' : '▼' }}
+                </span>
+              </th>
+              <th class="px-3 py-2 border cursor-pointer" @click="ordenarPorAttr(atributo, 'lift')">
+                Lift
+                <span v-if="colunaOrdenadaAttr[atributo] === 'lift'">
+                  {{ ordemCrescenteAttr[atributo] ? '▲' : '▼' }}
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -83,7 +114,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios'
@@ -92,8 +122,11 @@ const props = defineProps({
   campanhaId: { type: Number, required: true },
   results: Array,
   descricao: String,
-  empresaId: [String, Number]
+  empresaId: [String, Number],
+  nomeEmpresa: String,
+  nomeCampanha: String
 })
+
 
 const prodRulesRaw = ref([])
 const attrRules = reactive({})
@@ -111,6 +144,14 @@ const formatPercent = v => (v * 100).toFixed(1)
 
 function traduzir(lista) {
   return lista.map(id => produtosMap.value[id] || id)
+}
+
+
+function normalizarNome(nome) {
+  return (nome || '')
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+    .replace(/[^a-zA-Z0-9]/g, '') // Remove tudo menos letras e números
 }
 
 const regrasOrdenadasProd = computed(() => {
@@ -206,9 +247,42 @@ function exportarParaExcel() {
 
   const wb = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(wb, ws, "Regras de Produto")
-  XLSX.writeFile(wb, "regras_produto.xlsx")
+
+  const empresa = normalizarNome(props.nomeEmpresa)
+  const campanha = normalizarNome(props.nomeCampanha)
+  const nomeFicheiro = `${empresa}_${campanha}_Recomendacao_Produtos.xlsx`
+
+  XLSX.writeFile(wb, nomeFicheiro)
+}
+function exportarAtributoParaExcel(atributo, regras) {
+  const ws = XLSX.utils.json_to_sheet(regras.map(r => ({
+    Antecedentes: traduzir(r.antecedents).join(", "),
+    Consequentes: traduzir(r.consequents).join(", "),
+    Suporte: (r.support * 100).toFixed(1) + "%",
+    Confiança: (r.confidence * 100).toFixed(1) + "%",
+    Lift: r.lift.toFixed(2)
+  })))
+
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, `Regras - ${atributo}`)
+
+  const empresa = normalizarNome(props.nomeEmpresa)
+  const campanha = normalizarNome(props.nomeCampanha)
+  const tipo = normalizarNome(atributo)
+  const nomeFicheiro = `${empresa}_${campanha}_Recomendacao_${tipo}.xlsx`
+
+  XLSX.writeFile(wb, nomeFicheiro)
 }
 
+function resetarOrdenacaoProd() {
+  colunaOrdenadaProd.value = ''
+  ordemCrescenteProd.value = false
+}
+
+function resetarOrdenacaoAttr(attr) {
+  colunaOrdenadaAttr[attr] = ''
+  ordemCrescenteAttr[attr] = false
+}
 
 onMounted(carregarTudo)
 </script>
@@ -222,5 +296,59 @@ onMounted(carregarTudo)
   border-radius: .5rem;
   padding: 1.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.btn-exportar {
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-exportar:hover {
+  background-color: #1e40af;
+}
+
+.btn-reset-custom {
+  background-color: white;
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-reset-custom:hover {
+  background-color: #e0ecff;
+}
+
+.cabecalho-clientes {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.titulo-reset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.acoes-clientes {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="btn-exportar-pdf" @click="abrirModal">
-      🧾 Exportar PDF
+      Exportar PDF
     </button>
 
     <dialog ref="dialogRef" class="modal-exportar">
@@ -25,8 +25,8 @@
           </div>
 
           <button class="btn-confirmar" @click="gerarPdf" :disabled="aGerar">
-            <span v-if="!aGerar">📄 Gerar Relatório</span>
-            <span v-else>⏳ A gerar PDF...</span>
+            <span v-if="!aGerar">Gerar Relatório</span>
+            <span v-else>A gerar PDF...</span>
           </button>
         </div>
       </div>
@@ -69,8 +69,10 @@
         </div>
       </div>
 
-      <div ref="sugestoesRef" v-show="incluirSugestoes">
-        <ChurnSuggestions :clientes="clientes" :nomeEmpresa="nomeEmpresa" :nomeCampanha="nomeCampanha" />
+      <!-- Sugestões invisíveis mas renderizadas corretamente -->
+      <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
+        <ChurnSuggestions ref="churnSuggestionsRef" :clientes="clientes" :nomeEmpresa="nomeEmpresa"
+          :nomeCampanha="nomeCampanha" />
       </div>
     </div>
   </div>
@@ -94,6 +96,7 @@ const props = defineProps({
   refMapa: Object
 })
 
+const churnSuggestionsRef = ref(null)
 const dialogRef = ref(null)
 const graficosSelecionados = ref([])
 const incluirSugestoes = ref(true)
@@ -137,7 +140,7 @@ async function gerarPdf() {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' })
   let y = 40
 
-  const normalizar = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '')
+  const normalizar = (str) => str.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]/g, '')
   const nomeFicheiro = `${normalizar(props.nomeEmpresa)}_${normalizar(props.nomeCampanha)}_Churn_Relatorio.pdf`
 
   doc.setFontSize(18)
@@ -229,29 +232,47 @@ async function gerarPdf() {
     }
   }
 
-  if (incluirSugestoes.value && sugestoesRef.value) {
-    await nextTick()
-    await new Promise(r => setTimeout(r, 1000))
+  if (incluirSugestoes.value && churnSuggestionsRef.value?.sugestoes?.length) {
+    const sugestoes = churnSuggestionsRef.value.sugestoes
 
-    const canvas = await html2canvas(sugestoesRef.value, { scale: 2 })
-    const imgData = canvas.toDataURL('image/png')
-    const imgWidth = 500
-    const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-    if (y + imgHeight > 750) {
+    if (y + 200 > 750) {
       doc.addPage()
       y = 40
     }
 
-    doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
-    y += imgHeight + 30
+    doc.setFontSize(16)
+    doc.setFont('Helvetica', 'bold')
+    doc.text('Sugestões de Ação', 40, y)
+    y += 20
+
+    doc.setFontSize(12)
+    doc.setFont('Helvetica', 'normal')
+
+    for (const { classificacao, pontos } of sugestoes) {
+      if (y + 80 > 750) {
+        doc.addPage()
+        y = 40
+      }
+
+      doc.setFont('Helvetica', 'bold')
+      doc.text(classificacao, 40, y)
+      y += 16
+
+      doc.setFont('Helvetica', 'normal')
+      for (const ponto of pontos) {
+        const linhas = doc.splitTextToSize(`• ${ponto}`, 500)
+        doc.text(linhas, 50, y)
+        y += linhas.length * 14 + 4
+      }
+
+      y += 10
+    }
   }
 
   doc.save(nomeFicheiro)
   aGerar.value = false
 }
 </script>
-
 
 <style scoped>
 .btn-exportar-pdf {

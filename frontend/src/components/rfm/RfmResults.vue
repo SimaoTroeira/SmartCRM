@@ -54,9 +54,9 @@
     <!-- Clientes Segmentados -->
     <div class="card-resultados">
       <div class="cabecalho-clientes mb-4">
-        <h3 class="text-xl font-semibold mb-3 text-blue-700">🧑‍💼 Segmentação RFM dos Clientes </h3>
+        <h3 class="text-xl font-semibold mb-3 text-blue-700">Segmentação RFM dos Clientes </h3>
         <button @click="exportarParaExcel" class="btn-exportar">
-          📥 Exportar Excel
+          Exportar Excel
         </button>
       </div>
 
@@ -113,10 +113,10 @@
     <!-- Tabela Resumo -->
     <div class="card-resultados no-min-height">
       <div class="cabecalho-clientes mb-4">
-        <h3 class="text-xl font-semibold text-blue-700">📈 Tabela de Segmentos</h3>
+        <h3 class="text-xl font-semibold text-blue-700">Tabela de Segmentos</h3>
         <div class="flex gap-2">
           <button @click="exportarSegmentosParaExcel" class="btn-exportar">
-            📥 Exportar Excel
+            Exportar Excel
           </button>
         </div>
       </div>
@@ -203,16 +203,16 @@ const totalClientes = computed(() => props.clientesSegmentados.length)
 
 const tituloVisualizacao = computed(() => {
   if (modoVisualizacao.value === 'clientes') {
-    if (submodoClientes.value === 'pca') return '🎯 Dispersão dos Clientes com PCA'
-    if (submodoClientes.value === 'radar') return '📊 Comparação Média dos Segmentos'
-    return '📌 Dispersão dos Clientes'
+    if (submodoClientes.value === 'pca') return 'Dispersão dos Clientes com PCA'
+    if (submodoClientes.value === 'radar') return 'Comparação Média dos Segmentos'
+    return 'Dispersão dos Clientes'
   }
 
   if (submodoRegioes.value === 'mapa') {
-    return '🗺️ Mapa Interativo de Segmentação por Região'
+    return 'Mapa Interativo de Segmentação por Região'
   }
 
-  return '📊 Produtos Mais Comprados por Região'
+  return 'Produtos Mais Comprados por Região'
 })
 
 const descricaoVisualizacao = computed(() => {
