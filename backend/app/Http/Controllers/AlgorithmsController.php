@@ -192,9 +192,9 @@ class AlgorithmsController extends Controller
                         $colunas = array_keys($primeiraLinha);
                         $nomeSemExtensao = pathinfo($filename, PATHINFO_FILENAME);
                         $ficheiros_presentes[$nomeSemExtensao] = $colunas;
-
-                        if (isset($requisitos[$nomeSemExtensao . '.json'])) {
-                            foreach ($requisitos[$filename] as $grupo) {
+                        $ficheiroChave = $nomeSemExtensao . '.json';
+                        if (isset($requisitos[$ficheiroChave])) {
+                            foreach ($requisitos[$ficheiroChave] as $grupo) {
                                 $encontrado = false;
                                 foreach ($grupo as $alternativa) {
                                     if (in_array($alternativa, $colunas)) {
@@ -231,6 +231,7 @@ class AlgorithmsController extends Controller
             'ficheiros_presentes' => $ficheiros_presentes,
             'ficheiros_em_falta' => array_values($ficheiros_em_falta),
             'colunas_em_falta' => $colunas_em_falta,
+            'expectativas' => $requisitos
         ]);
     }
 }

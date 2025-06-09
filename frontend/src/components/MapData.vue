@@ -43,11 +43,40 @@
         </select>
       </div>
     </div>
-
     <!-- Wizard de validação -->
-    <div v-if="selectedCompanyId" class="mt-4 max-w-4xl">
-      <AlgorithmWizard :campanha-id="selectedCompanyId" algoritmo="rfm" mostrar-so-card />
+    <AlgorithmWizard :campanha-id="selectedCompanyId" algoritmo="rfm" mostrar-so-card @faltas="guardarFaltas" />
+
+    <!-- Bloco condicional: mostra só a descrição da tabela selecionada -->
+    <div v-if="fileType" class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl mt-4">
+      <h5 class="text-lg font-semibold mb-2">Tabelas e colunas esperadas:</h5>
+
+      <ul class="ml-4 list-disc text-gray-600 text-sm">
+        <li v-if="fileType === 'vendas'">
+          📄 <strong>vendas</strong>
+          <ul class="ml-4 list-disc">
+            <li>ClienteID</li>
+            <li>ValorTotal</li>
+          </ul>
+        </li>
+        <li v-else-if="fileType === 'clientes'">
+          📄 <strong>clientes</strong>
+          <ul class="ml-4 list-disc">
+            <li>ClienteID</li>
+            <li>Regiao</li>
+          </ul>
+        </li>
+        <li v-else-if="fileType === 'produtos'">
+          📄 <strong>produtos</strong>
+          <ul class="ml-4 list-disc">
+            <li>ProdutoID</li>
+            <li>NomeProduto</li>
+            <li>Categoria</li>
+            <li>Marca</li>
+          </ul>
+        </li>
+      </ul>
     </div>
+
 
     <!-- Tabela de Mapeamento -->
     <div class="overflow-x-auto mb-4 mt-4">
@@ -92,6 +121,8 @@
         </tbody>
       </table>
     </div>
+    <DataNormalizer v-if="prepararNormalizacao" :rows="tableData" :mapped-columns="mappedColumns" :file-type="fileType"
+      @normalizado="guardarDadosNormalizados" @erro="handleErroNormalizacao" />
 
     <!-- Ações -->
     <div class="mt-10 flex justify-end gap-2">
@@ -107,6 +138,8 @@
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
 import AlgorithmWizard from './AlgorithmWizard.vue';
+import DataNormalizer from './DataNormalizer.vue';
+
 
 const toast = useToast();
 
@@ -135,6 +168,8 @@ export default {
       startMonth: '',
       endMonth: '',
       onlyYear: '',
+      prepararNormalizacao: false,
+      faltas: null,
     };
   },
   created() {
@@ -184,7 +219,7 @@ export default {
         toast.error('Preencha todos os campos obrigatórios.');
         return;
       }
-
+      this.prepararNormalizacao = true;
       const rows = this.tableData.map(row => {
         const obj = {};
         this.headers.forEach((header, index) => {
@@ -241,8 +276,41 @@ export default {
     cancel() {
       this.$emit('close');
     },
+    async guardarDadosNormalizados(dados) {
+      const nomeFinal = this.gerarNomeFicheiro();
+
+      try {
+        await axios.post('/import/mapped-data', {
+          table_name: nomeFinal,
+          data: dados,
+          types: this.columnTypes,
+          company_id: this.selectedCompanyId,
+        }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+
+        this.$emit('close');
+        toast.success('Tabela guardada com sucesso.');
+      } catch (err) {
+        alert('Erro ao guardar: ' + err.message);
+      } finally {
+        this.prepararNormalizacao = false;
+      }
+
+      localStorage.setItem('lastSelectedCompanyId', this.selectedCompanyId);
+    },
+    handleErroNormalizacao() {
+      this.prepararNormalizacao = false;
+    },
+    guardarFaltas(dados) {
+      this.faltas = dados;
+    },
+
   }
+
 };
+
+
 </script>
 
 <style scoped>

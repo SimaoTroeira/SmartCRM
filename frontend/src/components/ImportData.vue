@@ -11,7 +11,6 @@
         <input type="file" id="fileInput" class="hidden" @change="handleFileUpload"
           accept=".csv, .xls, .xlsx, .zip, .json">
       </div>
-
       <!-- Dropdown para selecionar ficheiro dentro do ZIP -->
       <div v-if="zipFiles.length > 0" class="mb-4">
         <label for="fileSelect">Selecione um ficheiro:</label>
@@ -33,16 +32,27 @@
         <p>Esta tabela contém {{ rowCount }} linhas e {{ columnCount }} colunas.</p>
       </div>
 
-      <!-- Botões de Reset e Mapear no topo esquerdo -->
-      <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-start gap-2">
-        <button @click="resetSorting"
-          class="px-2 py-1 bg-red-600 rounded-lg text-black font-semibold hover:bg-red-700 text-sm">
-          Repor Ordem
-        </button>
-        <button @click="openMapDialog"
-          class="px-2 py-1 bg-blue-600 rounded-lg text-black font-semibold hover:bg-blue-700 text-sm">
-          Importar esta Tabela
-        </button>
+      <!-- Botões de Reset, Importar e dropdown da folha -->
+      <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-between items-center gap-4">
+        <div class="flex gap-2">
+          <button @click="resetSorting"
+            class="px-2 py-1 bg-red-600 rounded-lg text-black font-semibold hover:bg-red-700 text-sm">
+            Repor Ordem
+          </button>
+          <button @click="openMapDialog"
+            class="px-2 py-1 bg-blue-600 rounded-lg text-black font-semibold hover:bg-blue-700 text-sm">
+            Importar esta Tabela
+          </button>
+        </div>
+
+        <!-- Dropdown de folhas do Excel -->
+        <div v-if="sheetNames.length" class="flex items-center gap-2">
+          <label for="sheetSelect" class="font-medium">Folha:</label>
+          <select id="sheetSelect" v-model="selectedSheet" @change="loadSelectedSheet"
+            class="border border-gray-300 p-2 rounded">
+            <option v-for="name in sheetNames" :key="name" :value="name">{{ name }}</option>
+          </select>
+        </div>
       </div>
 
       <!-- Barra de rolagem horizontal acima da tabela -->
@@ -147,6 +157,9 @@ export default {
       zipFiles: [],
       selectedZipFile: "",
       zipFileData: {},
+      sheetNames: [],
+      selectedSheet: '',
+      workbook: null, // novo para armazenar workbook Excel
     };
   },
   computed: {
@@ -220,9 +233,11 @@ export default {
       reader.onload = (e) => {
         setTimeout(() => {
           const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: "array" });
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
+          this.workbook = XLSX.read(data, { type: "array" });
+          this.sheetNames = this.workbook.SheetNames;
+          this.selectedSheet = this.sheetNames[0] || '';
+          const sheetName = this.workbook.SheetNames[0];
+          const sheet = this.workbook.Sheets[sheetName];
           const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
           if (jsonData.length) {
@@ -246,6 +261,22 @@ export default {
       };
 
       reader.readAsArrayBuffer(file);
+    },
+
+    loadSelectedSheet() {
+      if (!this.workbook || !this.selectedSheet) return;
+      const sheet = this.workbook.Sheets[this.selectedSheet];
+      const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      if (jsonData.length) {
+        this.headers = jsonData[0];
+        this.tableData = jsonData.slice(1).map(row =>
+          row.map((cell, index) => this.convertExcelDate(cell, this.headers[index]))
+        );
+        this.originalData = JSON.parse(JSON.stringify(this.tableData));
+        this.rowCount = this.tableData.length;
+        this.columnCount = this.headers.length;
+        this.tableName = this.selectedSheet;
+      }
     },
 
     processJSONFile(file) {
@@ -349,6 +380,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style scoped>
