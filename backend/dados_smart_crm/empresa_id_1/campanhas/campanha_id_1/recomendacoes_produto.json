@@ -1,10 +1,10 @@
 [
   {
     "antecedents": [
-      "32"
+      "Expedita Mobiliário"
     ],
     "consequents": [
-      "1"
+      "Alias Alimentação"
     ],
     "support": 0.007,
     "confidence": 0.25,
@@ -12,10 +12,10 @@
   },
   {
     "antecedents": [
-      "7"
+      "Facere Mobiliário"
     ],
     "consequents": [
-      "28"
+      "Quam Vestuário"
     ],
     "support": 0.012,
     "confidence": 0.25,
@@ -23,10 +23,10 @@
   },
   {
     "antecedents": [
-      "11"
+      "Exercitationem Eletrónica"
     ],
     "consequents": [
-      "45"
+      "Esse Serviços"
     ],
     "support": 0.007,
     "confidence": 0.231,
@@ -34,10 +34,10 @@
   },
   {
     "antecedents": [
-      "11"
+      "Exercitationem Eletrónica"
     ],
     "consequents": [
-      "33"
+      "Dignissimos Serviços"
     ],
     "support": 0.007,
     "confidence": 0.231,
@@ -45,10 +45,10 @@
   },
   {
     "antecedents": [
-      "28"
+      "Quam Vestuário"
     ],
     "consequents": [
-      "7"
+      "Facere Mobiliário"
     ],
     "support": 0.012,
     "confidence": 0.227,
@@ -56,10 +56,10 @@
   },
   {
     "antecedents": [
-      "8"
+      "Perferendis Serviços"
     ],
     "consequents": [
-      "30"
+      "Fugiat Eletrónica"
     ],
     "support": 0.009,
     "confidence": 0.222,
@@ -67,10 +67,10 @@
   },
   {
     "antecedents": [
-      "15"
+      "Placeat Serviços"
     ],
     "consequents": [
-      "49"
+      "Facere Vestuário"
     ],
     "support": 0.007,
     "confidence": 0.214,
@@ -78,10 +78,10 @@
   },
   {
     "antecedents": [
-      "46"
+      "Architecto Alimentação"
     ],
     "consequents": [
-      "30"
+      "Fugiat Eletrónica"
     ],
     "support": 0.007,
     "confidence": 0.214,
@@ -89,10 +89,10 @@
   },
   {
     "antecedents": [
-      "4"
+      "Repellendus Vestuário"
     ],
     "consequents": [
-      "12"
+      "Doloremque Mobiliário"
     ],
     "support": 0.007,
     "confidence": 0.214,
@@ -100,10 +100,10 @@
   },
   {
     "antecedents": [
-      "47"
+      "Consequuntur Mobiliário"
     ],
     "consequents": [
-      "25"
+      "Consequuntur Alimentação"
     ],
     "support": 0.009,
     "confidence": 0.211,

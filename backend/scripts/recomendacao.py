@@ -117,12 +117,31 @@ def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
     basket_prod = preparar_basket(df, "ClienteID", "ProdutoID")
     rules_prod = gerar_regras(basket_prod, min_support, min_confidence)
 
+    # out_prod = []
+    # if not rules_prod.empty:
+    #     dfp = rules_prod[['antecedents', 'consequents', 'support', 'confidence', 'lift']].copy()
+    #     dfp['antecedents'] = dfp['antecedents'].apply(list)
+    #     dfp['consequents'] = dfp['consequents'].apply(list)
+    #     out_prod = dfp.round(3).to_dict(orient='records')
     out_prod = []
     if not rules_prod.empty:
         dfp = rules_prod[['antecedents', 'consequents', 'support', 'confidence', 'lift']].copy()
         dfp['antecedents'] = dfp['antecedents'].apply(list)
         dfp['consequents'] = dfp['consequents'].apply(list)
-        out_prod = dfp.round(3).to_dict(orient='records')
+        dfp = dfp.round(3)
+
+    # Criar mapa ProdutoID → NomeProduto
+    produto_map = dict(zip(produtos["ProdutoID"], produtos["NomeProduto"]))
+
+    def substituir_ids_por_nomes(lst):
+        return [produto_map.get(pid, pid) for pid in lst]
+
+    dfp['antecedents'] = dfp['antecedents'].apply(substituir_ids_por_nomes)
+    dfp['consequents'] = dfp['consequents'].apply(substituir_ids_por_nomes)
+
+    out_prod = dfp.to_dict(orient='records')
+
+
 
     export_json(out_prod, saida / "recomendacoes_produto.json")
     print(f" produtos: {len(out_prod)} regras exportadas.")
