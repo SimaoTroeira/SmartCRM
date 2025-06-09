@@ -174,10 +174,10 @@
   "Categoria": [
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
         "Vestuário",
-        "Mobiliário",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -188,9 +188,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Serviços",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -201,9 +201,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Vestuário",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -214,8 +214,8 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Eletrónica"
+        "Eletrónica",
+        "Vestuário"
       ],
       "consequents": [
         "Alimentação"
@@ -226,8 +226,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Eletrónica"
+        "Eletrónica",
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -238,9 +238,9 @@
     },
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
-        "Vestuário",
-        "Eletrónica"
+        "Vestuário"
       ],
       "consequents": [
         "Alimentação"
@@ -251,9 +251,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -264,9 +264,9 @@
     },
     {
       "antecedents": [
-        "Vestuário",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Vestuário"
       ],
       "consequents": [
         "Mobiliário"
@@ -277,10 +277,10 @@
     },
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
         "Vestuário",
-        "Alimentação",
-        "Eletrónica"
+        "Alimentação"
       ],
       "consequents": [
         "Mobiliário"
@@ -291,10 +291,10 @@
     },
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
         "Alimentação",
-        "Mobiliário",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -305,9 +305,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
         "Serviços",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -318,8 +318,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Eletrónica"
+        "Eletrónica",
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -330,8 +330,8 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Eletrónica"
+        "Eletrónica",
+        "Vestuário"
       ],
       "consequents": [
         "Mobiliário"
@@ -342,8 +342,8 @@
     },
     {
       "antecedents": [
-        "Serviços",
-        "Eletrónica"
+        "Eletrónica",
+        "Serviços"
       ],
       "consequents": [
         "Alimentação"
@@ -354,8 +354,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Vestuário"
+        "Vestuário",
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -366,9 +366,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Serviços",
         "Vestuário",
-        "Serviços"
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -424,8 +424,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Serviços"
+        "Serviços",
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -447,8 +447,8 @@
     },
     {
       "antecedents": [
-        "Alimentação",
-        "Eletrónica"
+        "Eletrónica",
+        "Alimentação"
       ],
       "consequents": [
         "Vestuário"
@@ -459,8 +459,8 @@
     },
     {
       "antecedents": [
-        "Alimentação",
-        "Eletrónica"
+        "Eletrónica",
+        "Alimentação"
       ],
       "consequents": [
         "Serviços"
@@ -471,8 +471,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -483,8 +483,8 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Alimentação"
+        "Alimentação",
+        "Vestuário"
       ],
       "consequents": [
         "Mobiliário"
@@ -506,8 +506,8 @@
     },
     {
       "antecedents": [
-        "Alimentação",
-        "Eletrónica"
+        "Eletrónica",
+        "Alimentação"
       ],
       "consequents": [
         "Mobiliário"
@@ -554,8 +554,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Serviços"
+        "Serviços",
+        "Mobiliário"
       ],
       "consequents": [
         "Alimentação"
@@ -566,13 +566,13 @@
     },
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
-        "Mobiliário",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
-        "Vestuário",
-        "Alimentação"
+        "Alimentação",
+        "Vestuário"
       ],
       "support": 0.007,
       "confidence": 0.375,
@@ -580,9 +580,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Serviços",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Vestuário"
@@ -604,8 +604,8 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Alimentação"
+        "Alimentação",
+        "Vestuário"
       ],
       "consequents": [
         "Serviços"
@@ -627,8 +627,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Vestuário"
+        "Vestuário",
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -639,9 +639,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Alimentação",
         "Vestuário",
-        "Alimentação"
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -652,8 +652,8 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Eletrónica"
+        "Eletrónica",
+        "Vestuário"
       ],
       "consequents": [
         "Serviços"
@@ -664,9 +664,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -744,9 +744,9 @@
     },
     {
       "antecedents": [
-        "Serviços",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Serviços"
       ],
       "consequents": [
         "Mobiliário"
@@ -757,9 +757,9 @@
     },
     {
       "antecedents": [
-        "Serviços",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Serviços"
       ],
       "consequents": [
         "Vestuário"
@@ -770,9 +770,9 @@
     },
     {
       "antecedents": [
-        "Vestuário",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Vestuário"
       ],
       "consequents": [
         "Serviços"
@@ -783,10 +783,10 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Vestuário",
+        "Eletrónica",
         "Alimentação",
-        "Eletrónica"
+        "Vestuário",
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -797,9 +797,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Alimentação",
         "Vestuário",
-        "Alimentação"
+        "Mobiliário"
       ],
       "consequents": [
         "Eletrónica"
@@ -821,8 +821,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -844,12 +844,12 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Eletrónica"
+        "Eletrónica",
+        "Mobiliário"
       ],
       "consequents": [
-        "Vestuário",
-        "Alimentação"
+        "Alimentação",
+        "Vestuário"
       ],
       "support": 0.021,
       "confidence": 0.3,
@@ -859,8 +859,8 @@
       "antecedents": [
         "Serviços",
         "Vestuário",
-        "Mobiliário",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "consequents": [
         "Eletrónica"
@@ -882,12 +882,12 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Eletrónica"
+        "Eletrónica",
+        "Vestuário"
       ],
       "consequents": [
-        "Mobiliário",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "support": 0.021,
       "confidence": 0.29,
@@ -895,9 +895,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
         "Serviços",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "consequents": [
         "Eletrónica"
@@ -920,8 +920,8 @@
     },
     {
       "antecedents": [
-        "Serviços",
-        "Eletrónica"
+        "Eletrónica",
+        "Serviços"
       ],
       "consequents": [
         "Vestuário"
@@ -932,13 +932,13 @@
     },
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
-        "Vestuário",
-        "Eletrónica"
+        "Vestuário"
       ],
       "consequents": [
-        "Mobiliário",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "support": 0.007,
       "confidence": 0.273,
@@ -946,9 +946,9 @@
     },
     {
       "antecedents": [
+        "Eletrónica",
         "Serviços",
-        "Vestuário",
-        "Eletrónica"
+        "Vestuário"
       ],
       "consequents": [
         "Mobiliário"
@@ -959,8 +959,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Eletrónica"
+        "Eletrónica",
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -971,8 +971,8 @@
     },
     {
       "antecedents": [
-        "Vestuário",
-        "Alimentação"
+        "Alimentação",
+        "Vestuário"
       ],
       "consequents": [
         "Eletrónica"
@@ -983,8 +983,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Alimentação"
+        "Alimentação",
+        "Mobiliário"
       ],
       "consequents": [
         "Eletrónica"
@@ -1008,8 +1008,8 @@
     {
       "antecedents": [
         "Serviços",
-        "Vestuário",
-        "Alimentação"
+        "Alimentação",
+        "Vestuário"
       ],
       "consequents": [
         "Eletrónica"
@@ -1031,8 +1031,8 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
-        "Vestuário"
+        "Vestuário",
+        "Mobiliário"
       ],
       "consequents": [
         "Eletrónica"
@@ -1054,9 +1054,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Vestuário",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços",
@@ -1068,9 +1068,9 @@
     },
     {
       "antecedents": [
-        "Mobiliário",
+        "Eletrónica",
         "Vestuário",
-        "Eletrónica"
+        "Mobiliário"
       ],
       "consequents": [
         "Serviços"
@@ -1081,12 +1081,12 @@
     },
     {
       "antecedents": [
-        "Alimentação",
-        "Eletrónica"
+        "Eletrónica",
+        "Alimentação"
       ],
       "consequents": [
-        "Mobiliário",
-        "Vestuário"
+        "Vestuário",
+        "Mobiliário"
       ],
       "support": 0.021,
       "confidence": 0.205,
@@ -1130,8 +1130,8 @@
     },
     {
       "antecedents": [
-        "Sub C",
-        "Sub B"
+        "Sub B",
+        "Sub C"
       ],
       "consequents": [
         "Sub A"
@@ -1213,8 +1213,8 @@
         "Sub A"
       ],
       "consequents": [
-        "Sub C",
-        "Sub B"
+        "Sub B",
+        "Sub C"
       ],
       "support": 0.122,
       "confidence": 0.204,
@@ -1605,9 +1605,9 @@
     },
     {
       "antecedents": [
+        "Cor: Preto, Tamanho: S",
         "Cor: Azul, Tamanho: L",
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: XL"
@@ -1618,8 +1618,8 @@
     },
     {
       "antecedents": [
-        "Cor: Preto, Tamanho: L",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Preto, Tamanho: L"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -1642,8 +1642,8 @@
     },
     {
       "antecedents": [
-        "Cor: Preto, Tamanho: M",
-        "Cor: Verde, Tamanho: L"
+        "Cor: Verde, Tamanho: L",
+        "Cor: Preto, Tamanho: M"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -1654,9 +1654,9 @@
     },
     {
       "antecedents": [
+        "Cor: Preto, Tamanho: S",
         "Cor: Azul, Tamanho: L",
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -1667,9 +1667,9 @@
     },
     {
       "antecedents": [
+        "Cor: Preto, Tamanho: S",
         "Cor: Vermelho, Tamanho: XL",
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -1704,8 +1704,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -1716,8 +1716,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: XL",
-        "Cor: Azul, Tamanho: S"
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: S"
@@ -1728,8 +1728,8 @@
     },
     {
       "antecedents": [
-        "Cor: Preto, Tamanho: M",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Preto, Tamanho: M"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -1752,8 +1752,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: S",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Azul, Tamanho: S"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -1788,8 +1788,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: XL"
@@ -1800,8 +1800,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -1812,8 +1812,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -2017,8 +2017,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Azul, Tamanho: S"
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: XL"
@@ -2029,8 +2029,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: XL"
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: S"
@@ -2065,8 +2065,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: XL"
+        "Cor: Preto, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: S"
@@ -2077,8 +2077,8 @@
     },
     {
       "antecedents": [
-        "Cor: Preto, Tamanho: L",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2101,8 +2101,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Vermelho, Tamanho: M"
+        "Cor: Vermelho, Tamanho: M",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: XL"
@@ -2149,8 +2149,8 @@
     },
     {
       "antecedents": [
-        "Cor: Preto, Tamanho: L",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Preto, Tamanho: L"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -2185,8 +2185,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2209,8 +2209,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2221,8 +2221,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -2244,8 +2244,8 @@
     },
     {
       "antecedents": [
-        "Cor: Preto, Tamanho: L",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Preto, Tamanho: L"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2256,8 +2256,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Vermelho, Tamanho: M"
+        "Cor: Vermelho, Tamanho: M",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2280,8 +2280,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Vermelho, Tamanho: M"
+        "Cor: Vermelho, Tamanho: M",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -2328,8 +2328,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: L"
@@ -2340,8 +2340,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: XL"
@@ -2375,8 +2375,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Verde, Tamanho: L"
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2387,8 +2387,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Verde, Tamanho: L"
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: S"
@@ -2399,8 +2399,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Azul, Tamanho: S"
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: S"
@@ -2435,8 +2435,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Verde, Tamanho: L"
+        "Cor: Verde, Tamanho: L",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -2447,8 +2447,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Azul, Tamanho: S"
+        "Cor: Azul, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -2493,8 +2493,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L",
@@ -2506,8 +2506,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L",
@@ -2531,8 +2531,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: S"
@@ -2543,8 +2543,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: S"
@@ -2555,8 +2555,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: L"
@@ -2567,8 +2567,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: L"
@@ -2579,8 +2579,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: S"
@@ -2603,8 +2603,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Verde, Tamanho: L"
+        "Cor: Verde, Tamanho: L",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: S"
@@ -2627,8 +2627,8 @@
     },
     {
       "antecedents": [
-        "Cor: Vermelho, Tamanho: XL",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Vermelho, Tamanho: XL"
       ],
       "consequents": [
         "Cor: Azul, Tamanho: L"
@@ -2650,8 +2650,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: S",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: S"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: S"
@@ -2674,8 +2674,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: S",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: S"
       ],
       "consequents": [
         "Cor: Vermelho, Tamanho: XL"
@@ -2721,8 +2721,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: L"
@@ -2745,8 +2745,8 @@
     },
     {
       "antecedents": [
-        "Cor: Verde, Tamanho: M",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Verde, Tamanho: M"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: M"
@@ -2769,8 +2769,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: L",
-        "Cor: Preto, Tamanho: S"
+        "Cor: Preto, Tamanho: S",
+        "Cor: Azul, Tamanho: L"
       ],
       "consequents": [
         "Cor: Verde, Tamanho: M"
@@ -3008,8 +3008,8 @@
     },
     {
       "antecedents": [
-        "Cor: Azul, Tamanho: S",
-        "Cor: Azul, Tamanho: XL"
+        "Cor: Azul, Tamanho: XL",
+        "Cor: Azul, Tamanho: S"
       ],
       "consequents": [
         "Cor: Preto, Tamanho: L"
