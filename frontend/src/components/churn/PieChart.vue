@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <Doughnut :data="chartData" :options="options" />
-  </div>
+    <div>
+        <Doughnut :data="chartData" :options="options" />
+    </div>
 </template>
 
 <script setup>
@@ -20,13 +20,17 @@ const props = defineProps({
     data: Array
 })
 
-const cores = ['#f87171', '#facc15', '#4ade80',]
+const corPorRisco = {
+    'Alto Risco': '#f87171',   // vermelho
+    'Médio Risco': '#facc15',  // amarelo
+    'Baixo Risco': '#4ade80'   // verde
+}
 
 const chartData = {
     labels: props.data.map(d => d.name),
     datasets: [{
         data: props.data.map(d => d.value),
-        backgroundColor: cores.slice(0, props.data.length)
+        backgroundColor: props.data.map(d => corPorRisco[d.name] || '#d1d5db') // cinza como fallback
     }]
 }
 
@@ -38,8 +42,8 @@ const options = {
             display: true,
             text: 'Distribuição de Risco de Churn',
             font: {
-                    size: 14
-                }
+                size: 14
+            }
         },
         legend: {
             position: 'bottom',
