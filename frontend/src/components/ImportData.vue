@@ -319,34 +319,47 @@ export default {
       reader.readAsText(file);
     },
 
-    convertExcelDate(excelDate, columnName = '') {
-      const lowerCol = columnName.toLowerCase();
-      const isDateCol = /data|date|hora|nascimento|criado|cadastro/i.test(lowerCol);
+    convertExcelDate(value, columnName = '') {
+      const col = columnName.trim().toLowerCase();
 
-      // Trata números como datas, mesmo se o nome da coluna não indicar
-      if (typeof excelDate === 'number' && excelDate > 25569 && excelDate < 2958465) {
-        const correctedDate = (excelDate - 25569) * 86400 * 1000;
-        const date = new Date(correctedDate);
-        return date.toISOString().split('T')[0];
+      const allowedDateCols = ['datacadastro', 'data nascimento', 'ultimacompra', 'datavenda'];
+      const isDateCol = allowedDateCols.includes(col.replace(/\s+/g, ''));
+
+      // Se for número e for coluna de data
+      if (typeof value === 'number' && isDateCol) {
+        if (value > 25569 && value < 60000) {
+          const date = new Date((value - 25569) * 86400 * 1000);
+          return this.formatDate(date);
+        }
       }
 
-      // Também tenta converter strings que pareçam datas
-      if (typeof excelDate === 'string') {
-        const parsed = Date.parse(excelDate);
-        if (!isNaN(parsed)) {
+      // Se for string parecida com data
+      if (typeof value === 'string') {
+        if (isDateCol && !isNaN(value)) {
+          const num = parseFloat(value);
+          if (num > 25569 && num < 60000) {
+            const date = new Date((num - 25569) * 86400 * 1000);
+            return this.formatDate(date);
+          }
+        }
+
+        const parsed = Date.parse(value);
+        if (isDateCol && !isNaN(parsed)) {
           const date = new Date(parsed);
-          return date.toISOString().split('T')[0];
-        }
-        // tenta forçar conversão de número como string (ex: "45034")
-        if (!isNaN(Number(excelDate)) && Number(excelDate) > 25569 && Number(excelDate) < 2958465) {
-          const correctedDate = (Number(excelDate) - 25569) * 86400 * 1000;
-          const date = new Date(correctedDate);
-          return date.toISOString().split('T')[0];
+          return this.formatDate(date);
         }
       }
 
-      return excelDate;
+      return value;
     },
+
+    formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;  // yyyy-mm-dd
+    }
+    ,
 
     sortTable(index) {
       // Se a coluna clicada for a mesma, inverte a direção

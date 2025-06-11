@@ -42,7 +42,7 @@
           <ul class="ml-4 list-disc">
             <li>ClienteID</li>
             <li>ValorTotal</li>
-            <li>DataCompra</li>
+            <li>DataVenda</li>
             <li>ProdutoID</li>
           </ul>
         </li>
