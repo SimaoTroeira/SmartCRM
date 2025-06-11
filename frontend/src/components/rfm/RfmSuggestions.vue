@@ -6,7 +6,7 @@
     </p>
 
     <div v-for="(sugestao, index) in sugestoesFiltradas" :key="index" class="mb-6">
-      <h4 class="text-md font-semibold text-gray-800 mb-1">{{ sugestao.emoji }} {{ sugestao.segmento }}</h4>
+      <h4 class="text-md font-semibold text-gray-800 mb-1">{{ sugestao.segmento }}</h4>
       <ul class="list-disc list-inside text-sm text-gray-700">
         <li v-for="(ponto, i) in sugestao.pontos" :key="i">{{ ponto }}</li>
       </ul>
@@ -16,7 +16,8 @@
 
 
 <script setup>
-import { computed } from 'vue'
+import { computed, defineExpose } from 'vue'
+
 
 const props = defineProps({
   clientesSegmentados: Array
@@ -45,7 +46,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Campeões"]) {
     sugestoes.push({
       segmento: 'Campeões',
-      emoji: '🏆',
       pontos: [
         `${contagem["Campeões"]} clientes fazem parte dos melhores da sua base de dados.`,
         'Campanha recomendada: Campanha de Fidelização.',
@@ -58,7 +58,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Clientes Valiosos"]) {
     sugestoes.push({
       segmento: 'Clientes Valiosos',
-      emoji: '💎',
       pontos: [
         `${contagem["Clientes Valiosos"]} clientes com histórico de valor significativo.`,
         'Campanha recomendada: Campanha de Manutenção Premium.',
@@ -71,7 +70,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Clientes Regulares"]) {
     sugestoes.push({
       segmento: 'Clientes Regulares',
-      emoji: '🔁',
       pontos: [
         `${contagem["Clientes Regulares"]} clientes compram de forma consistente.`,
         'Campanha recomendada: Campanha de Recompensa por Frequência.',
@@ -84,7 +82,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Em Risco"]) {
     sugestoes.push({
       segmento: 'Em Risco',
-      emoji: '⚠️',
       pontos: [
         `${contagem["Em Risco"]} clientes demonstram sinais de afastamento.`,
         'Campanha recomendada: Campanha de Reativação.',
@@ -97,7 +94,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Clientes Perdidos"]) {
     sugestoes.push({
       segmento: 'Clientes Perdidos',
-      emoji: '❌',
       pontos: [
         `${contagem["Clientes Perdidos"]} clientes deixaram de comprar há bastante tempo.`,
         'Campanha recomendada: Campanha de Última Tentativa.',
@@ -110,7 +106,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Pouca Frequência"]) {
     sugestoes.push({
       segmento: 'Pouca Frequência',
-      emoji: '📉',
       pontos: [
         `${contagem["Pouca Frequência"]} clientes compram de forma esporádica.`,
         'Campanha recomendada: Campanha de Estímulo à Repetição.',
@@ -123,7 +118,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Baixo Valor"]) {
     sugestoes.push({
       segmento: 'Baixo Valor',
-      emoji: '🪙',
       pontos: [
         `${contagem["Baixo Valor"]} clientes têm um volume de compras reduzido.`,
         'Campanha recomendada: Campanha de Optimização de Custos.',
@@ -136,7 +130,6 @@ const sugestoesFiltradas = computed(() => {
   if (contagem["Inativos"]) {
     sugestoes.push({
       segmento: 'Inativos',
-      emoji: '🛑',
       pontos: [
         `${contagem["Inativos"]} clientes não demonstram actividade há bastante tempo.`,
         'Campanha recomendada: Campanha de Reengajamento Total.',
@@ -148,6 +141,11 @@ const sugestoesFiltradas = computed(() => {
 
   return sugestoes
 })
+
+defineExpose({
+  sugestoesFiltradas
+})
+
 </script>
 
 

@@ -104,8 +104,8 @@
                         :nome-campanha="campanhaSelecionada?.name" />
 
                     <RecommendResults v-else-if="selectedAlgorithm === 'recommendation'" :results="results"
-                        :descricao="descricao" :empresa-id="empresaId" :campanha-id="selectedCampaignId" />
-
+                        :descricao="descricao" :empresa-id="empresaId" :campanha-id="selectedCampaignId"
+                        :nome-empresa="empresaSelecionada?.name" :nome-campanha="campanhaSelecionada?.name" />
                 </div>
             </div>
         </div>
@@ -258,41 +258,53 @@ const runAlgorithm = async () => {
     }
 }
 
-
 const esperarResultados = async (tentativas = 0) => {
     const maxTentativas = 20
     const intervalo = 3000
 
     try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
-
-        const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
-        const isChurnOk = selectedAlgorithm.value === 'churn' && res.data?.estatisticas
-        const isRecOk = selectedAlgorithm.value === 'recommendation' && Array.isArray(res.data) //dif?
-
-        if (isRfmOk || isChurnOk || isRecOk) {
-            results.value = res.data
-            descricao.value = selectedAlgorithm.value === 'recommendation' ? '' : (res.data.descricao || '')
-            // descricao.value = res.data.descricao || ''
-            showResults.value = true
-
-            const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
-
-
-            if (empresaId && selectedAlgorithm.value === 'rfm') {
-                const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
-                clientesSegmentados.value = resClientes.data || []
-
-                const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
-                scatterClientes.value = resScatterClientes.data || []
-
-                const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
-                scatterRegioes.value = resScatterRegioes.data || []
+        if (selectedAlgorithm.value === 'churn') {
+            const churnRes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
+            if (Array.isArray(churnRes.data) && churnRes.data.length > 0) {
+                results.value = churnRes.data
+                descricao.value = 'Previsão de churn baseada em recência, frequência, valor e tempo como cliente.'
+                showResults.value = true
+                toast.success('Resultados carregados automaticamente.')
+                loading.value = false
+                return
             }
+        } else {
+            const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
 
-            toast.success('Resultados carregados automaticamente.')
-            loading.value = false
-            return
+            const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
+            const isRecOk = selectedAlgorithm.value === 'recommendation' && Array.isArray(res.data)
+
+            if (isRfmOk || isRecOk) {
+                if (selectedAlgorithm.value === 'rfm') {
+                    results.value = res.data.dados || []
+                    descricao.value = res.data.descricao || ''
+
+                    const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
+                    if (empresaId) {
+                        const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
+                        clientesSegmentados.value = resClientes.data || []
+
+                        const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
+                        scatterClientes.value = resScatterClientes.data || []
+
+                        const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+                        scatterRegioes.value = resScatterRegioes.data || []
+                    }
+                } else if (selectedAlgorithm.value === 'recommendation') {
+                    results.value = res.data || []
+                    descricao.value = ''
+                }
+
+                showResults.value = true
+                toast.success('Resultados carregados automaticamente.')
+                loading.value = false
+                return
+            }
         }
     } catch (err) {
         console.error('Erro ao buscar resultados:', err)
@@ -301,7 +313,7 @@ const esperarResultados = async (tentativas = 0) => {
     if (tentativas < maxTentativas) {
         setTimeout(() => esperarResultados(tentativas + 1), intervalo)
     } else {
-        toast.warning('Os resultados ainda não estão prontos. Tente novamente mais tarde.')
+        toast.error('Os resultados ainda não estão prontos ou houve uma falha. Tente novamente mais tarde.')
         loading.value = false
     }
 }
@@ -324,12 +336,20 @@ const fetchResults = async () => {
     try {
         if (selectedAlgorithm.value === 'churn') {
             const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
+
+            if (!Array.isArray(res.data) || res.data.length === 0) {
+                toast.error('O algoritmo ainda não foi executado para esta campanha.')
+                loading.value = false
+                return
+            }
+
             results.value = res.data
             descricao.value = 'Previsão de churn baseada em recência, frequência, valor e tempo como cliente.'
             showResults.value = true
             toast.info('Resultados de churn carregados com sucesso.')
             return
         }
+
 
         const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
 

@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <!-- Tipo de Ficheiro e Ação -->
+    <!-- Tipo de Ficheiro -->
     <div class="inline-flex items-center gap-4 mt-4">
       <div class="flex flex-col">
         <label class="font-bold mb-1">Qual destes ficheiros corresponde ao que importou? </label>
@@ -18,17 +18,6 @@
           <option value="clientes">Clientes</option>
           <option value="produtos">Produtos</option>
         </select>
-      </div>
-
-      <!-- Se for vendas, mostrar seletores -->
-      <div class="flex flex-col" v-if="fileType === 'vendas'">
-        <label class="font-bold mb-1">Período das vendas (opcional):</label>
-        <div class="flex gap-2">
-          <input type="month" v-model="startMonth" class="p-2 border rounded w-48" placeholder="De">
-          <input type="month" v-model="endMonth" class="p-2 border rounded w-48" placeholder="Até">
-          <input type="number" v-model="onlyYear" placeholder="Ou apenas ano" class="p-2 border rounded w-36" min="2000"
-            max="2099">
-        </div>
       </div>
     </div>
 
@@ -44,9 +33,38 @@
       </div>
     </div>
 
-    <!-- Wizard de validação -->
-    <div v-if="selectedCompanyId" class="mt-4 max-w-4xl">
-      <AlgorithmWizard :campanha-id="selectedCompanyId" algoritmo="rfm" mostrar-so-card />
+    <!-- Bloco condicional: mostra as colunas esperadas por tipo de ficheiro -->
+    <div v-if="fileType" class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl mt-4">
+      <h5 class="text-lg font-semibold mb-2">Tabelas e colunas esperadas:</h5>
+      <ul class="ml-4 list-disc text-gray-600 text-sm">
+        <li v-if="fileType === 'vendas'">
+          📄 <strong>vendas</strong>
+          <ul class="ml-4 list-disc">
+            <li>ClienteID</li>
+            <li>ValorTotal</li>
+            <li>DataVenda</li>
+            <li>ProdutoID</li>
+          </ul>
+        </li>
+        <li v-else-if="fileType === 'clientes'">
+          📄 <strong>clientes</strong>
+          <ul class="ml-4 list-disc">
+            <li>ClienteID</li>
+            <li>DataCadastro</li>
+            <li>Regiao</li>
+          </ul>
+        </li>
+        <li v-else-if="fileType === 'produtos'">
+          📄 <strong>produtos</strong>
+          <ul class="ml-4 list-disc">
+            <li>ProdutoID</li>
+            <li>NomeProduto</li>
+            <li>Categoria</li>
+            <li>Marca</li>
+          </ul>
+        </li>
+      </ul>
+
     </div>
 
     <!-- Tabela de Mapeamento -->
@@ -63,8 +81,7 @@
                   :disabled="rejectedColumns[index]">
                 <label class="text-left text-xs mt-2">Tipo de Dado:</label>
                 <select v-model="columnTypes[index]" class="p-1 border rounded w-full"
-                  :class="{ 'coluna-rejeitada': rejectedColumns[index] }" :disabled="rejectedColumns[index]"
-                  @change="autoDetectType(index)">
+                  :class="{ 'coluna-rejeitada': rejectedColumns[index] }" :disabled="rejectedColumns[index]">
                   <option value="text">Texto</option>
                   <option value="number">Número</option>
                   <option value="date">Data</option>
@@ -108,6 +125,7 @@ import axios from 'axios';
 import { useToast } from 'vue-toastification';
 import AlgorithmWizard from './AlgorithmWizard.vue';
 
+
 const toast = useToast();
 
 const monthMap = [
@@ -135,6 +153,8 @@ export default {
       startMonth: '',
       endMonth: '',
       onlyYear: '',
+      prepararNormalizacao: false,
+      faltas: null,
     };
   },
   created() {
@@ -184,7 +204,7 @@ export default {
         toast.error('Preencha todos os campos obrigatórios.');
         return;
       }
-
+      this.prepararNormalizacao = true;
       const rows = this.tableData.map(row => {
         const obj = {};
         this.headers.forEach((header, index) => {
@@ -215,34 +235,17 @@ export default {
       localStorage.setItem('lastSelectedCompanyId', this.selectedCompanyId);
     },
     gerarNomeFicheiro() {
-      let nome = this.fileType;
-
-      if (this.fileType === 'vendas') {
-        if (this.onlyYear && !this.startMonth && !this.endMonth) {
-          nome += `_${this.onlyYear}`;
-        } else if (this.startMonth && this.endMonth) {
-          const [anoIni, mesIni] = this.startMonth.split('-');
-          const [anoFim, mesFim] = this.endMonth.split('-');
-
-          if (anoIni === anoFim) {
-            const nomeMesIni = monthMap[parseInt(mesIni) - 1].slice(0, 3);
-            const nomeMesFim = monthMap[parseInt(mesFim) - 1].slice(0, 3);
-            nome += `_${nomeMesIni}-${nomeMesFim}${anoIni}`;
-          } else {
-            const nomeMesIni = monthMap[parseInt(mesIni) - 1].slice(0, 3);
-            const nomeMesFim = monthMap[parseInt(mesFim) - 1].slice(0, 3);
-            nome += `_${nomeMesIni}${anoIni}-${nomeMesFim}${anoFim}`;
-          }
-        }
-      }
-
-      return nome;
+      return this.fileType;
     },
     cancel() {
       this.$emit('close');
     },
+
   }
+
 };
+
+
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="btn-exportar-pdf" @click="abrirModal">
-      🧾 Exportar PDF
+      Exportar PDF
     </button>
 
     <dialog ref="dialogRef" class="modal-exportar">
@@ -27,8 +27,8 @@
           </div>
 
           <button class="btn-confirmar" @click="gerarPdf" :disabled="aGerar">
-            <span v-if="!aGerar">📄 Gerar Relatório</span>
-            <span v-else>⏳ A gerar PDF...</span>
+            <span v-if="!aGerar">Gerar Relatório</span>
+            <span v-else>A gerar PDF...</span>
           </button>
         </div>
       </div>
@@ -38,43 +38,57 @@
     <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
       <div v-if="graficosSelecionados.includes('pca')">
         <div ref="pcaRef">
-          <h4>Gráfico PCA</h4>
+          <h4>{{ descricoesGraficos.pca.titulo }}</h4>
+          <p>{{ descricoesGraficos.pca.descricao }}</p>
           <ScatterPlotPCA :scatter-clientes="scatterClientes" />
         </div>
       </div>
       <div v-if="graficosSelecionados.includes('normal')">
         <div ref="normalRef">
-          <h4>Gráfico Normal</h4>
+          <h4>{{ descricoesGraficos.normal.titulo }}</h4>
+          <p>{{ descricoesGraficos.normal.descricao }}</p>
           <ScatterPlot :scatter-clientes="scatterClientes" :scatter-regioes="scatterRegioes" />
         </div>
       </div>
       <div v-if="graficosSelecionados.includes('radar')">
         <div ref="radarRef">
-          <h4>Gráfico Radar</h4>
+          <h4>{{ descricoesGraficos.radar.titulo }}</h4>
+          <p>{{ descricoesGraficos.radar.descricao }}</p>
           <RadarPlot :scatter-clientes="scatterClientes" />
         </div>
       </div>
       <div v-if="graficosSelecionados.includes('barras')">
         <div ref="barrasRef">
-          <h4>Gráfico de Barras</h4>
+          <h4>{{ descricoesGraficos.barras.titulo }}</h4>
+          <p>{{ descricoesGraficos.barras.descricao }}</p>
           <RegioesBarChart :scatter-regioes="scatterRegioes" />
         </div>
       </div>
       <div v-if="graficosSelecionados.includes('mapa')">
         <div ref="mapaRef">
-          <h4>Mapa de Portugal</h4>
-          <PortugalMap :dados-regioes="scatterRegioes" />
+          <h4>{{ descricoesGraficos.mapa.titulo }}</h4>
+          <p>{{ descricoesGraficos.mapa.descricao }}</p>
+          <div style="display: inline-block; padding: 10px; border: 1px solid #ccc;">
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; font-size: 12px;">
+              <div v-for="(cor, segmento) in coresSegmentos" :key="segmento">
+                <span
+                  :style="{ backgroundColor: cor, width: '12px', height: '12px', display: 'inline-block', marginRight: '4px', borderRadius: '2px' }"></span>
+                {{ segmento }}
+              </div>
+            </div>
+            <PortugalMap :dados-regioes="scatterRegioes" />
+          </div>
         </div>
       </div>
-      <div ref="sugestoesRef" v-show="incluirSugestoes">
-        <RfmSuggestions :clientes-segmentados="props.clientesSegmentados" />
-      </div>
     </div>
+
+    <RfmSuggestions ref="sugestoesRef" :clientes-segmentados="props.clientesSegmentados" style="display: none;" />
   </div>
 </template>
 
+
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import ScatterPlot from './ScatterPlot.vue'
@@ -88,6 +102,7 @@ const dialogRef = ref(null)
 const graficosSelecionados = ref([])
 const aGerar = ref(false)
 const incluirSugestoes = ref(true)
+const sugestoesRef = ref(null)
 
 const props = defineProps({
   nomeEmpresa: String,
@@ -95,6 +110,13 @@ const props = defineProps({
   scatterClientes: Array,
   scatterRegioes: Array,
   clientesSegmentados: Array
+})
+
+
+const segmentosPresentes = computed(() => {
+  const clientes = props.clientesSegmentados || []
+  const unicos = new Set(clientes.map(c => c.Segmento))
+  return [...unicos].filter(s => !!coresSegmentos[s])
 })
 
 function abrirModal() {
@@ -105,28 +127,27 @@ function fecharModal() {
   dialogRef.value?.close()
 }
 
-
 const descricoesGraficos = {
-    pca: {
-        titulo: 'Gráfico PCA',
-        descricao: `Este gráfico aplica Análise de Componentes Principais (PCA) para condensar múltiplas variáveis dos clientes em dois eixos principais — PCA 1 e PCA 2. Estes eixos representam as direções de maior variação nos dados, facilitando a visualização de padrões e agrupamentos complexos. Clientes com comportamentos semelhantes estão mais próximos entre si. As duas dimensões encontram-se normalizadas entre 0 e 1.`
-    },
-    normal: {
-        titulo: 'Gráfico Normal',
-        descricao: `Gráfico de dispersão com base em métricas RFM originais. Permite visualizar padrões diretamente sobre as dimensões Recência, Frequência e Monetário, antes de qualquer redução de dimensionalidade.`
-    },
-    radar: {
-        titulo: 'Gráfico Radar',
-        descricao: `Compara visualmente os diferentes clusters com base nos três pilares do RFM: Recência (tempo desde a última compra), Frequência (número de compras) e Valor Monetário (gasto total).`
-    },
-    barras: {
-        titulo: 'Gráfico de Barras',
-        descricao: `Mostra a distribuição dos clientes por região e por segmento/cluster. É útil para perceber a concentração geográfica de certos perfis.`
-    },
-    mapa: {
-        titulo: 'Mapa de Portugal',
-        descricao: `Representação geográfica dos clusters por distrito ou região, oferecendo uma visão espacial da segmentação dos clientes no território nacional.`
-    }
+  pca: {
+    titulo: 'Gráfico PCA',
+    descricao: 'Este gráfico aplica Análise de Componentes Principais (PCA).'
+  },
+  normal: {
+    titulo: 'Gráfico Normal',
+    descricao: 'Gráfico de dispersão com base em métricas RFM originais...'
+  },
+  radar: {
+    titulo: 'Gráfico Radar',
+    descricao: 'Compara visualmente os diferentes clusters com base nos três pilares do RFM.'
+  },
+  barras: {
+    titulo: 'Gráfico de Barras',
+    descricao: 'Mostra a distribuição dos clientes por região e por segmento/cluster.'
+  },
+  mapa: {
+    titulo: 'Mapa de Portugal',
+    descricao: 'Representação geográfica dos clusters por distrito ou região.'
+  }
 }
 
 const pcaRef = ref(null)
@@ -134,146 +155,122 @@ const normalRef = ref(null)
 const radarRef = ref(null)
 const barrasRef = ref(null)
 const mapaRef = ref(null)
-const sugestoesRef = ref(null)
 
 const refObjs = {
-    pca: pcaRef,
-    normal: normalRef,
-    radar: radarRef,
-    barras: barrasRef,
-    mapa: mapaRef,
-    sugestoes: sugestoesRef
+  pca: pcaRef,
+  normal: normalRef,
+  radar: radarRef,
+  barras: barrasRef,
+  mapa: mapaRef
 }
 
-
 function normalizarNome(nome) {
-    if (!nome) return 'desconhecido'
-    return nome
-        .normalize('NFD')
-        .replace(/[̀-ͯ]/g, '')
-        .replace(/ç/g, 'c')
-        .replace(/[^a-zA-Z0-9]/g, '')
+  if (!nome) return 'desconhecido'
+  return nome
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\u00e7/g, 'c')
+    .replace(/[^a-zA-Z0-9]/g, '')
 }
 
 async function gerarPdf() {
-    if (!graficosSelecionados.value.length) return
-    aGerar.value = true
+  if (!graficosSelecionados.value.length) return
+  aGerar.value = true
 
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' })
-    let y = 40
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' })
+  let y = 40
 
-    const nomeEmpresaLimpo = normalizarNome(props.nomeEmpresa)
-    const nomeCampanhaLimpo = normalizarNome(props.nomeCampanha)
-    const nomeFicheiro = `${nomeEmpresaLimpo}_${nomeCampanhaLimpo}_Rfm_Relatorio.pdf`
+  const nomeEmpresaLimpo = normalizarNome(props.nomeEmpresa)
+  const nomeCampanhaLimpo = normalizarNome(props.nomeCampanha)
+  const nomeFicheiro = `${nomeEmpresaLimpo}_${nomeCampanhaLimpo}_Rfm_Relatorio.pdf`
+
+  doc.setFontSize(18)
+  doc.setFont('Helvetica', 'bold')
+  doc.text(props.nomeEmpresa, 40, y)
+  y += 24
+  doc.setFontSize(14)
+  doc.setFont('Helvetica', 'normal')
+  doc.text(props.nomeCampanha, 40, y)
+  y += 24
+  doc.setFontSize(12)
+  doc.setFont('Helvetica', 'italic')
+  doc.text('Algoritmo: Análise RFM', 40, y)
+  y += 40
+
+  await nextTick()
+
+  for (const grafico of graficosSelecionados.value) {
+    const refElemento = refObjs[grafico]
+    const wrapper = refElemento?.value?.$el || refElemento?.value
+    if (!wrapper) continue
+
+    await new Promise(resolve => setTimeout(resolve, 800))
+    const canvasImagem = await html2canvas(wrapper, {
+      scale: 2,
+      useCORS: true
+    })
+    const imgData = canvasImagem.toDataURL('image/png')
+
+    // 🔧 Ajuste de tamanho personalizado para o mapa
+    const imgWidth = grafico === 'mapa' ? 520 : 500
+    const imgHeight = (canvasImagem.height * imgWidth) / canvasImagem.width
+
+    if (y + imgHeight > 750) {
+      doc.addPage()
+      y = 40
+    }
+
+    doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
+    y += imgHeight + 30
+  }
 
 
+  if (incluirSugestoes.value && sugestoesRef.value?.sugestoesFiltradas) {
+    const sugestoes = sugestoesRef.value.sugestoesFiltradas
 
-    doc.setFontSize(18)
+    doc.addPage()
+    y = 40
+
+    doc.setFontSize(16)
     doc.setFont('Helvetica', 'bold')
-    doc.text(props.nomeEmpresa, 40, y)
-    y += 24
-    doc.setFontSize(14)
-    doc.setFont('Helvetica', 'normal')
-    doc.text(props.nomeCampanha, 40, y)
-    y += 24
+    doc.text('Sugestões de Ação', 40, y)
+    y += 20
 
     doc.setFontSize(12)
-    doc.setFont('Helvetica', 'italic')
-    doc.text('Algoritmo: Análise RFM', 40, y)
-    y += 40
+    doc.setFont('Helvetica', 'normal')
+    const introducao = 'Recomendações de campanhas com base nos segmentos identificados pela análise RFM. Estas sugestões visam melhorar o relacionamento com os clientes e maximizar o seu valor ao longo do tempo.'
+    const introLinhas = doc.splitTextToSize(introducao, 500)
+    doc.text(introLinhas, 40, y)
+    y += introLinhas.length * 16 + 10
 
+    for (const sugestao of sugestoes) {
+      if (y > 750) {
+        doc.addPage()
+        y = 40
+      }
 
-    await nextTick()
+      doc.setFont('Helvetica', 'bold')
+      doc.setFontSize(13)
+      doc.text(sugestao.segmento, 40, y)
+      y += 18
 
-    for (const grafico of graficosSelecionados.value) {
-        const refElemento = refObjs[grafico]
-        const wrapper = refElemento?.value?.$el || refElemento?.value
-        if (!wrapper) continue
-
-        await new Promise(resolve => setTimeout(resolve, 800))
-        const canvas = wrapper.querySelector('canvas')
-
-        const { titulo, descricao } = descricoesGraficos[grafico] || { titulo: '', descricao: '' }
-
-        // Página nova se necessário
-        if (y + 100 > 750) {
-            doc.addPage()
-            y = 40
+      doc.setFont('Helvetica', 'normal')
+      doc.setFontSize(11)
+      for (const ponto of sugestao.pontos) {
+        const linhas = doc.splitTextToSize('• ' + ponto, 500)
+        if (y + linhas.length * 14 > 750) {
+          doc.addPage()
+          y = 40
         }
-
-        // Título e descrição principal
-        doc.setFontSize(16)
-        doc.setFont('Helvetica', 'bold')
-        doc.text(titulo, 40, y)
-        y += 20
-
-        doc.setFontSize(12)
-        doc.setFont('Helvetica', 'normal')
-        const linhas = doc.splitTextToSize(descricao, 500)
-        doc.text(linhas, 40, y)
-        y += linhas.length * 16 + 10
-
-        // ➕ Textos adicionais visíveis no DOM (<p> e <li>)
-        const paragrafos = Array.from(wrapper.querySelectorAll('p')).map(p => p.innerText.trim())
-        const listas = Array.from(wrapper.querySelectorAll('li')).map(li => '• ' + li.innerText.trim())
-        const textosAdicionais = [...paragrafos, ...listas]
-
-        for (const texto of textosAdicionais) {
-            const extraLinhas = doc.splitTextToSize(texto, 500)
-            if (y + extraLinhas.length * 16 > 750) {
-                doc.addPage()
-                y = 40
-            }
-            doc.setFont('Helvetica', 'normal')
-            doc.setFontSize(11)
-            doc.text(extraLinhas, 50, y)
-            y += extraLinhas.length * 14 + 5
-        }
-
-        // Imagem do gráfico
-        if (canvas) {
-            const canvasImagem = await html2canvas(canvas)
-            const imgData = canvasImagem.toDataURL('image/png')
-
-            const imgWidth = 500
-            const imgHeight = (canvasImagem.height * imgWidth) / canvasImagem.width
-
-            if (y + imgHeight > 750) {
-                doc.addPage()
-                y = 40
-            }
-
-            doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
-            y += imgHeight + 30
-        }
+        doc.text(linhas, 50, y)
+        y += linhas.length * 14 + 4
+      }
+      y += 10
     }
+  }
 
-
-    if (incluirSugestoes.value && sugestoesRef.value) {
-        const sugestoesWrapper = sugestoesRef.value
-
-        await nextTick()
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        const canvas = await html2canvas(sugestoesWrapper)
-        const imgData = canvas.toDataURL('image/png')
-
-        const imgWidth = 500
-        const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-        if (y + imgHeight > 750) {
-            doc.addPage()
-            y = 40
-        }
-        doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
-        y += imgHeight + 30
-    }
-
-
-
-
-    doc.save(nomeFicheiro)
-    aGerar.value = false
+  doc.save(nomeFicheiro)
+  aGerar.value = false
 }
 </script>
 
@@ -330,6 +327,7 @@ async function gerarPdf() {
   border: none;
   cursor: pointer;
 }
+
 .btn-confirmar:hover {
   background-color: #1d4ed8;
 }
