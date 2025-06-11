@@ -165,12 +165,21 @@ def cross_selling(base_path: str, empresa_id: int, campanha_id: int,
     export_json(attr_out, saida / "recomendacoes_attr.json")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Uso: python recomendacao.py <empresa_id> <campanha_id> [base_path] [min_sup] [min_conf]")
-        sys.exit(1)
-    empresa = int(sys.argv[1])
-    campanha = int(sys.argv[2])
-    base_dir = sys.argv[3] if len(sys.argv) > 3 else "dados_smart_crm"
-    min_sup = float(sys.argv[4]) if len(sys.argv) > 4 else 0.005
-    min_conf = float(sys.argv[5]) if len(sys.argv) > 5 else 0.2
-    cross_selling(base_dir, empresa, campanha, min_sup, min_conf)
+    try:
+        print("Script recomendacao.py iniciado.")
+        print(f"Argumentos recebidos: {sys.argv}")
+
+        if len(sys.argv) < 3:
+            print("Uso: python recomendacao.py <empresa_id> <campanha_id> [base_path] [min_sup] [min_conf]")
+            sys.exit(1)
+
+        empresa = int(sys.argv[1])
+        campanha = int(sys.argv[2])
+        base_dir = sys.argv[3] if len(sys.argv) > 3 else "dados_smart_crm"
+        min_sup = float(sys.argv[4]) if len(sys.argv) > 4 else 0.005
+        min_conf = float(sys.argv[5]) if len(sys.argv) > 5 else 0.2
+
+        cross_selling(base_dir, empresa, campanha, min_sup, min_conf)
+        print("Script terminado com sucesso.")
+    except Exception as e:
+        print(f"[ERRO AO INICIAR SCRIPT]: {e}")
