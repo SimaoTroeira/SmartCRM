@@ -15,7 +15,19 @@ class Company extends Model
         'sector',
         'status',
         'submitted',
+        'company_type',
+        'website',
+        'email_contact',
+        'phone_contact',
+        'nif',
+        'country',
+        'city',
+        'founded_year',
+        'num_employees',
+        'revenue_range',
+        'notes',
     ];
+
 
     public function userCompanyRoles()
     {

@@ -1,17 +1,17 @@
 <template>
   <div class="company">
-    <!-- Enquanto carrega -->
+
     <div v-if="!roleLoaded || !companiesLoaded">
       <h3 class="text-xl font-semibold mb-4 text-gray-600">
         A carregar empresas<span class="dot-anim"></span>
       </h3>
     </div>
-    <!-- Conteúdo completo -->
+
     <div v-else>
       <h2 class="text-xl font-semibold mb-4">
         {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'Lista de Empresas:' }}
       </h2>
-      <!-- Filtros para o SuperAdmin -->
+
       <div v-if="userRole === 'SA' && companies.length > 0" class="filters-container mb-4 flex gap-4">
         <div>
           <label class="block font-medium mb-1">Filtrar por estado</label>
@@ -22,17 +22,17 @@
           </select>
         </div>
       </div>
-      <!-- Botão de registrar empresa -->
+
       <div v-if="userRole !== 'SA'" class="mb-4 ">
         <button @click="showDialog = true" class="btn btn-primary">
           Registar nova empresa
         </button>
       </div>
-      <!-- Mensagem: ainda não há nenhuma empresa no sistema -->
+
       <div v-if="companies.length === 0" class="text-gray-500 mb-4">
         Ainda não há empresas registadas.
       </div>
-      <!-- Mensagem: há empresas mas nenhuma corresponde aos filtros -->
+
       <div v-else-if="filteredCompanies.length === 0" class="text-gray-500 mb-4">
         Nenhuma empresa corresponde aos filtros aplicados.
       </div>
@@ -63,7 +63,6 @@
                 </span>
               </td>
 
-              <!-- Coluna para Company Admin pedir validação -->
               <td v-if="userRole !== 'SA'" class="px-4 py-2 border text-center">
                 <span v-if="company.status === 'Ativo'" class="text-green-600 font-medium">
                   Pedido aceite
@@ -90,7 +89,6 @@
           </tbody>
         </table>
       </div>
-      <!-- Paginação -->
       <div v-if="filteredCompanies.length > 0" class="pagination-left mt-4 gap-4 items-center">
         <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">
           Anterior
@@ -114,27 +112,106 @@
       </div>
     </div>
     <div v-if="showDialog && userRole !== 'SA'"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
-      <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
-        :class="{ 'scale-100 opacity-100': showDialog, 'scale-95 opacity-0': !showDialog }">
-        <h3 class="text-lg font-bold mb-4">Registar nova empresa</h3>
-        <form @submit.prevent="registerCompany">
-          <div class="mb-3">
-            <label class="block font-medium">Nome da Empresa</label>
-            <input v-model="companyForm.name" class="form-control" required />
-          </div>
-          <div class="mb-3">
-            <label class="block font-medium">Setor</label>
-            <input v-model="companyForm.sector" class="form-control" required />
-          </div>
-          <div class="flex justify-end gap-2">
-            <button type="button" @click="showDialog = false" class="btn btn-secondary text-white">Cancelar</button>
-            <button type="submit" class="btn btn-success text-white">Registar</button>
-          </div>
-        </form>
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 transition-all duration-300 ease-in-out">
+      <div class="modal-wrapper">
+        <h3 class="text-lg font-bold mb-4 text-center">Registar nova empresa</h3>
+
+        <div class="modal-scroll">
+          <fieldset class="mb-6">
+            <legend class="section-title">Informações Gerais</legend>
+
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-6">
+                <label class="label">Nome da Empresa</label>
+                <input v-model="companyForm.name" class="form-control" required />
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">Setor de atividade</label>
+                <input v-model="companyForm.sector" class="form-control" required />
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">Tipo de Empresa</label>
+                <select v-model="companyForm.company_type" class="form-control" required>
+                  <option disabled value="">Selecione…</option>
+                  <option value="Freelancer">Freelancer</option>
+                  <option value="Startup">Startup</option>
+                  <option value="PME">PME</option>
+                  <option value="Corporação">Corporação</option>
+                </select>
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">Website</label>
+                <input v-model="companyForm.website" class="form-control" type="url" placeholder="https://…" />
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="section-title">Contactos e Outros Dados</legend>
+
+            <div class="grid grid-cols-12 gap-4">
+              <div class="col-span-6">
+                <label class="label">NIF</label>
+                <input v-model="companyForm.nif" class="form-control" />
+              </div>
+              <div class="col-span-6">
+                <label class="label">Telefone</label>
+                <input v-model="companyForm.phone_contact" class="form-control" />
+              </div>
+              <div class="col-span-6">
+                <label class="label">Email</label>
+                <input v-model="companyForm.email_contact" class="form-control" type="email" />
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">País</label>
+                <input v-model="companyForm.country" class="form-control" />
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">Cidade</label>
+                <input v-model="companyForm.city" class="form-control" />
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">Ano da Fundação</label>
+                <input v-model="companyForm.founded_year" class="form-control" type="number" min="1800" max="2099" />
+              </div>
+
+              <div class="col-span-6">
+                <label class="label">Número de colaboradores</label>
+                <input v-model="companyForm.num_employees" class="form-control" type="number" min="1" />
+              </div>
+
+              <div class="col-span-12">
+                <label class="label">Intervalo de faturação</label>
+                <select v-model="companyForm.revenue_range" class="form-control">
+                  <option disabled value="">Selecione…</option>
+                  <option value="0-1M">0-1 M €</option>
+                  <option value="1M-10M">1-10 M €</option>
+                  <option value="10M-100M">10-100 M €</option>
+                  <option value="100M+">+100 M €</option>
+                </select>
+              </div>
+
+              <div class="col-span-12">
+                <label class="label">Notas Internas</label>
+                <textarea v-model="companyForm.notes" class="form-control" rows="3"></textarea>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" @click="showDialog = false" class="btn btn-secondary text-white">Cancelar</button>
+          <button type="submit" class="btn btn-success text-white" @click="registerCompany">Registar</button>
+        </div>
       </div>
     </div>
-    <!-- Modal de Aceitação -->
+
     <div v-if="showAcceptModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -158,7 +235,7 @@
       </div>
     </div>
   </div>
-  <!-- Modal de Desativação -->
+
   <div v-if="showDeactivateModal"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
     <div class="bg-white p-6 rounded-lg shadow-md w-96 transform transition-all duration-300"
@@ -183,7 +260,22 @@ const showDialog = ref(false);
 const showAcceptModal = ref(false);
 const companyToAccept = ref(null);
 const companies = ref([]);
-const companyForm = ref({ name: '', sector: '' });
+const companyForm = ref({
+  name: '',
+  sector: '',
+  company_type: '',
+  website: '',
+  email_contact: '',
+  phone_contact: '',
+  nif: '',
+  country: '',
+  city: '',
+  founded_year: '',
+  num_employees: '',
+  revenue_range: '',
+  notes: '',
+});
+
 const userRole = ref('');
 const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
@@ -197,8 +289,6 @@ const companyToSubmit = ref(null);
 const showDeactivateModal = ref(false);
 const companyToDeactivate = ref(null);
 
-
-// Atualiza empresas e papel do usuário
 const refreshAll = async () => {
   await fetchCompanies();
   await fetchUserRole();
@@ -253,18 +343,15 @@ const registerCompany = async () => {
     companyForm.value = { name: '', sector: '' };
     await refreshAll();
   } catch (error) {
-  if (error.response?.data?.error) {
-    // Mensagem personalizada vinda diretamente do backend
-    toast.error(error.response.data.error);
-  } else if (error.response?.data?.errors) {
-    // Mensagens de validação padrão do Laravel (422)
-    toast.error('Já existe uma empresa registada com esse nome.');
-    toast.error(firstError);
-  } else {
-    // Fallback
-    toast.error('Erro ao registrar empresa. Verifique os dados inseridos.');
+    if (error.response?.data?.error) {
+      toast.error(error.response.data.error);
+    } else if (error.response?.data?.errors) {
+      toast.error('Já existe uma empresa registada com esse nome.');
+      toast.error(firstError);
+    } else {
+      toast.error('Erro ao registrar empresa. Verifique os dados inseridos.');
+    }
   }
-}
 
 
 };
@@ -309,13 +396,11 @@ const closeAcceptModal = () => {
   showAcceptModal.value = false;
 };
 
-// Abre modal de confirmação
 const openSubmitModal = (companyId) => {
   companyToSubmit.value = companyId;
   showSubmitModal.value = true;
 };
 
-// Fecha modal de confirmação
 const closeSubmitModal = () => {
   companyToSubmit.value = null;
   showSubmitModal.value = false;
@@ -366,70 +451,55 @@ onMounted(refreshAll);
 </script>
 
 <style scoped>
-/* Estilo para o botão */
 .btn-primary {
   background-color: #4CAF50;
-  /* Verde para o botão de registro */
   color: white;
-  /* Cor do texto do botão */
 }
 
 .btn-primary:hover {
   background-color: #45a049;
-  /* Tom mais escuro de verde no hover */
 }
 
 .btn-success {
   background-color: #28a745;
-  /* Verde para salvar */
   color: white;
-  /* Cor do texto do botão */
 }
 
 .btn-success:hover {
   background-color: #218838;
-  /* Tom mais escuro de verde no hover */
 }
 
 .btn-secondary {
   background-color: #3659f4;
-  /* Vermelho para cancelar */
   color: white;
-  /* Cor do texto do botão */
 }
 
 .btn-secondary:hover {
   background-color: #357be5;
-  /* Tom mais escuro de vermelho no hover */
 }
 
 .btn-remove {
   background-color: #dc3545 !important;
-  /* Vermelho para excluir */
   color: white !important;
 }
 
 .btn-remove:hover {
   background-color: #c82333 !important;
-  /* Tom mais escuro de vermelho no hover */
 }
 
-
-/* Estilo para o formulário */
 .form-control {
   width: 100%;
   padding: 8px 12px;
   margin-top: 4px;
   border-radius: 4px;
   border: 1px solid #ddd;
+  text-align: center;
 }
 
-/* Estilo para o fundo do modal */
 .bg-opacity-50 {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Centralização do modal */
 .fixed {
   position: fixed;
 }
@@ -445,7 +515,6 @@ onMounted(refreshAll);
   z-index: 50;
 }
 
-/* Estilo do modal */
 .bg-white {
   background-color: white;
 }
@@ -466,14 +535,12 @@ onMounted(refreshAll);
   width: 24rem;
 }
 
-/* Adicionando flex para centralizar o modal corretamente */
 .flex {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Animação do modal */
 .scale-95 {
   transform: scale(0.95);
   opacity: 0;
@@ -505,6 +572,24 @@ onMounted(refreshAll);
   margin-left: 0;
 }
 
+.modal-wrapper {
+  background: white;
+  padding: 1rem 2rem 1.5rem 2rem;
+  /* top, right, bottom, left */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  max-width: 90vw;
+  max-height: 85vh;
+  transform: scale(1);
+  opacity: 1;
+  overflow: hidden;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+
 @keyframes dots {
   0% {
     content: "";
@@ -526,5 +611,36 @@ onMounted(refreshAll);
 .dot-anim::after {
   content: ".";
   animation: dots 1.2s steps(3, end) infinite;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-container {
+  width: 600px;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-scroll {
+  overflow-y: auto;
+  max-height: calc(80vh - 96px);
+  padding-right: 4px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  background: #fff;
 }
 </style>

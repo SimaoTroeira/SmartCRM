@@ -71,7 +71,19 @@ class CompanyController extends Controller
                 'sector' => $validated['sector'],
                 'status' => 'Inativo',
                 'submitted' => false,
+                'company_type' => $request->company_type,
+                'website' => $request->website,
+                'nif' => $request->nif,
+                'phone_contact' => $request->phone_contact,
+                'email_contact' => $request->email_contact,
+                'country' => $request->country,
+                'city' => $request->city,
+                'founded_year' => $request->founded_year,
+                'num_employees' => $request->num_employees,
+                'revenue_range' => $request->revenue_range,
+                'notes' => $request->notes,
             ]);
+
 
             DB::table('user_company_roles')->insert([
                 'user_id' => Auth::id(),
@@ -151,9 +163,21 @@ class CompanyController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:companies,name',
             'sector' => 'required|string|max:255',
+            'company_type' => 'nullable|string|max:50',
+            'website' => 'nullable|url|max:255',
+            'nif' => 'nullable|string|max:20',
+            'phone_contact' => 'nullable|string|max:20',
+            'email_contact' => 'nullable|email|max:255',
+            'country' => 'nullable|string|max:100',
+            'city' => 'nullable|string|max:100',
+            'founded_year' => 'nullable|integer|min:1800|max:2099',
+            'num_employees' => 'nullable|integer|min:1',
+            'revenue_range' => 'nullable|string|max:50',
+            'notes' => 'nullable|string',
         ]);
+
 
         $company->update($validated);
 
@@ -245,13 +269,13 @@ class CompanyController extends Controller
             $companyFolderName = 'empresa_id_' . $company->id;
             $companyPath = $basePath . DIRECTORY_SEPARATOR . $companyFolderName;
 
-            Log::info("Base path real: " . realpath(config('smartcrm.storage_path'))); 
+            Log::info("Base path real: " . realpath(config('smartcrm.storage_path')));
 
             if (!File::exists($companyPath)) {
                 File::makeDirectory($companyPath, 0755, true);
             }
 
-            Log::info("File exists? " . (File::exists(config('smartcrm.storage_path')) ? 'yes' : 'no'));   
+            Log::info("File exists? " . (File::exists(config('smartcrm.storage_path')) ? 'yes' : 'no'));
 
             foreach (['campanhas', 'dados_importados'] as $sub) {
                 $subPath = $companyPath . DIRECTORY_SEPARATOR . $sub;

@@ -18,10 +18,27 @@
       <h2 class="text-2xl font-bold mb-4 text-left">{{ company.name }}</h2>
 
       <!-- Descrição -->
-      <div class="pb-4">
+      <!-- Detalhes -->
+      <div class="pb-4 grid grid-cols-2 gap-4">
         <p><strong>Setor:</strong> {{ company.sector }}</p>
         <p><strong>Estado Atual:</strong> {{ company.status }}</p>
+        <p><strong>Tipo de Empresa:</strong> {{ company.company_type || '—' }}</p>
+        <p><strong>Website:</strong>
+          <a v-if="company.website" :href="company.website" target="_blank"
+            class="text-blue-600 underline hover:text-blue-800">{{ company.website }}</a>
+          <span v-else>—</span>
+        </p>
+        <p><strong>NIF:</strong> {{ company.nif || '—' }}</p>
+        <p><strong>Telefone:</strong> {{ company.phone_contact || '—' }}</p>
+        <p><strong>Email:</strong> {{ company.email_contact || '—' }}</p>
+        <p><strong>País:</strong> {{ company.country || '—' }}</p>
+        <p><strong>Cidade:</strong> {{ company.city || '—' }}</p>
+        <p><strong>Ano da Fundação:</strong> {{ company.founded_year || '—' }}</p>
+        <p><strong>Nº de Empregados:</strong> {{ company.num_employees || '—' }}</p>
+        <p><strong>Faixa de Receita:</strong> {{ company.revenue_range || '—' }}</p>
+        <p class="col-span-2"><strong>Notas Internas:</strong><br>{{ company.notes || '—' }}</p>
       </div>
+
 
       <hr class="border-t border-gray-300 my-6" />
 
