@@ -121,25 +121,37 @@
             <legend class="section-title">Informações Gerais</legend>
 
             <div class="grid grid-cols-12 gap-4">
+              <!-- Nome -->
               <div class="col-span-6">
                 <label class="label">Nome da Empresa</label>
-                <input v-model="companyForm.name" class="form-control" required />
+                <input v-model="companyForm.name" class="form-control" />
+                <p v-if="companyFormErrors.name" class="text-red-600 text-sm mt-1">
+                  {{ companyFormErrors.name }}
+                </p>
               </div>
 
+              <!-- Setor -->
               <div class="col-span-6">
                 <label class="label">Setor de atividade</label>
-                <input v-model="companyForm.sector" class="form-control" required />
+                <input v-model="companyForm.sector" class="form-control" />
+                <p v-if="companyFormErrors.sector" class="text-red-600 text-sm mt-1">
+                  {{ companyFormErrors.sector }}
+                </p>
               </div>
 
+              <!-- Tipo de Empresa (já tens quase pronto) -->
               <div class="col-span-6">
-                <label class="label">Tipo de Empresa</label>
-                <select v-model="companyForm.company_type" class="form-control" required>
+                <label class="label">Tipo de Empresa <span class="text-red-600">*</span></label>
+                <select v-model="companyForm.company_type" class="form-control">
                   <option disabled value="">Selecione…</option>
                   <option value="Freelancer">Freelancer</option>
                   <option value="Startup">Startup</option>
                   <option value="PME">PME</option>
                   <option value="Corporação">Corporação</option>
                 </select>
+                <p v-if="companyFormErrors.company_type" class="text-red-600 text-sm mt-1">
+                  {{ companyFormErrors.company_type }}
+                </p>
               </div>
 
               <div class="col-span-6">
@@ -276,6 +288,12 @@ const companyForm = ref({
   notes: '',
 });
 
+const companyFormErrors = ref({
+  name: '',
+  sector: '',
+  company_type: '',
+});
+
 const userRole = ref('');
 const roleLoaded = ref(false);
 const filterState = ref(localStorage.getItem('filterState') || 'Todos');
@@ -334,27 +352,59 @@ const fetchCompanies = async () => {
   }
 };
 
-
 const registerCompany = async () => {
+  // Resetar mensagens de erro
+  companyFormErrors.value = {
+    name: '',
+    sector: '',
+    company_type: '',
+  };
+
+  // Validação manual
+  let valid = true;
+
+  if (!companyForm.value.name) {
+    companyFormErrors.value.name = 'O nome da empresa é obrigatório.';
+    valid = false;
+  }
+
+  if (!companyForm.value.sector) {
+    companyFormErrors.value.sector = 'O setor de atividade é obrigatório.';
+    valid = false;
+  }
+
+  if (!companyForm.value.company_type) {
+    companyFormErrors.value.company_type = 'Por favor, selecione o tipo de empresa.';
+    valid = false;
+  }
+
+  if (!valid) return;
+
   try {
     await axios.post('http://127.0.0.1:8000/api/companies', companyForm.value);
     toast.success('Empresa registrada com sucesso!');
     showDialog.value = false;
-    companyForm.value = { name: '', sector: '' };
+    companyForm.value = {
+      name: '',
+      sector: '',
+      company_type: '',
+      website: '',
+      email_contact: '',
+      phone_contact: '',
+      nif: '',
+      country: '',
+      city: '',
+      founded_year: '',
+      num_employees: '',
+      revenue_range: '',
+      notes: '',
+    };
     await refreshAll();
   } catch (error) {
-    if (error.response?.data?.error) {
-      toast.error(error.response.data.error);
-    } else if (error.response?.data?.errors) {
-      toast.error('Já existe uma empresa registada com esse nome.');
-      toast.error(firstError);
-    } else {
-      toast.error('Erro ao registrar empresa. Verifique os dados inseridos.');
-    }
+    toast.error('Erro ao registrar empresa.');
   }
-
-
 };
+
 
 const acceptCompany = async () => {
   try {

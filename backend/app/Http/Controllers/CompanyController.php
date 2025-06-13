@@ -53,7 +53,19 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:companies,name',
             'sector' => 'required|string|max:255',
+            'company_type' => 'required|in:Freelancer,Startup,PME,Corporação',
+            'website' => 'nullable|url|max:255',
+            'nif' => 'nullable|string|max:20',
+            'phone_contact' => 'nullable|string|max:20',
+            'email_contact' => 'nullable|email|max:255',
+            'country' => 'nullable|string|max:100',
+            'city' => 'nullable|string|max:100',
+            'founded_year' => 'nullable|integer|min:1800|max:2099',
+            'num_employees' => 'nullable|integer|min:1',
+            'revenue_range' => 'nullable|string|max:50',
+            'notes' => 'nullable|string',
         ]);
+
 
         if (Company::where('name', $validated['name'])->exists()) {
             return response()->json(['error' => 'Já existe uma empresa com esse nome.'], 422);
@@ -66,23 +78,13 @@ class CompanyController extends Controller
         DB::beginTransaction();
 
         try {
-            $company = Company::create([
-                'name' => $validated['name'],
-                'sector' => $validated['sector'],
-                'status' => 'Inativo',
-                'submitted' => false,
-                'company_type' => $request->company_type,
-                'website' => $request->website,
-                'nif' => $request->nif,
-                'phone_contact' => $request->phone_contact,
-                'email_contact' => $request->email_contact,
-                'country' => $request->country,
-                'city' => $request->city,
-                'founded_year' => $request->founded_year,
-                'num_employees' => $request->num_employees,
-                'revenue_range' => $request->revenue_range,
-                'notes' => $request->notes,
-            ]);
+            $company = Company::create(array_merge(
+                $validated,
+                [
+                    'status' => 'Inativo',
+                    'submitted' => false
+                ]
+            ));
 
 
             DB::table('user_company_roles')->insert([
@@ -165,7 +167,7 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:companies,name',
             'sector' => 'required|string|max:255',
-            'company_type' => 'nullable|string|max:50',
+            'company_type' => 'required|string|max:50',
             'website' => 'nullable|url|max:255',
             'nif' => 'nullable|string|max:20',
             'phone_contact' => 'nullable|string|max:20',
