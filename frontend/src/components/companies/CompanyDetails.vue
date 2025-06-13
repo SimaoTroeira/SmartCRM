@@ -34,8 +34,8 @@
         <p><strong>País:</strong> {{ company.country || '—' }}</p>
         <p><strong>Cidade:</strong> {{ company.city || '—' }}</p>
         <p><strong>Ano da Fundação:</strong> {{ company.founded_year || '—' }}</p>
-        <p><strong>Nº de Empregados:</strong> {{ company.num_employees || '—' }}</p>
-        <p><strong>Faixa de Receita:</strong> {{ company.revenue_range || '—' }}</p>
+        <p><strong>Número de colaboradores:</strong> {{ company.num_employees || '—' }}</p>
+        <p><strong>Intervalo de faturação:</strong> {{ company.revenue_range || '—' }}</p>
         <p class="col-span-2"><strong>Notas Internas:</strong><br>{{ company.notes || '—' }}</p>
       </div>
 
