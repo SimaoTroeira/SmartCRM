@@ -182,9 +182,11 @@
                 <option disabled value="">Selecione…</option>
                 <option value="Freelancer">Freelancer</option>
                 <option value="Startup">Startup</option>
-                <option value="PME">PME</option>
+                <option value="ME">Média Empresa</option>
+                <option value="PE">Pequena Empresa</option>
                 <option value="Corporação">Corporação</option>
               </select>
+
             </div>
 
             <div class="col-span-6">
