@@ -159,23 +159,105 @@
     </dialog>
 
     <!-- Dialog de Edição -->
-    <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Editar Empresa</h3>
+    <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-[700px] max-w-[95vw]">
+      <h3 class="text-xl font-bold mb-4 text-center">Editar Empresa</h3>
       <form @submit.prevent="updateCompany">
-        <div class="mb-3">
-          <label class="block font-medium">Nome da Empresa</label>
-          <input v-model="editCompany.name" class="form-control w-full border px-2 py-1" required />
-        </div>
-        <div class="mb-3">
-          <label class="block font-medium">Setor</label>
-          <input v-model="editCompany.sector" class="form-control w-full border px-2 py-1" required />
-        </div>
-        <div class="flex justify-end gap-2">
+        <fieldset class="mb-6">
+          <legend class="section-title mb-2">Informações Gerais</legend>
+
+          <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-6">
+              <label class="label">Nome da Empresa <span class="text-red-600">*</span></label>
+              <input v-model="editCompany.name" class="form-control" required />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Setor de atividade <span class="text-red-600">*</span></label>
+              <input v-model="editCompany.sector" class="form-control" required />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Tipo de Empresa <span class="text-red-600">*</span></label>
+              <select v-model="editCompany.company_type" class="form-control" required>
+                <option disabled value="">Selecione…</option>
+                <option value="Freelancer">Freelancer</option>
+                <option value="Startup">Startup</option>
+                <option value="PME">PME</option>
+                <option value="Corporação">Corporação</option>
+              </select>
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Website</label>
+              <input v-model="editCompany.website" class="form-control" type="url" placeholder="https://…" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="section-title mb-2">Contactos e Outros Dados</legend>
+
+          <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-6">
+              <label class="label">NIF</label>
+              <input v-model="editCompany.nif" class="form-control" />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Telefone</label>
+              <input v-model="editCompany.phone_contact" class="form-control" />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Email</label>
+              <input v-model="editCompany.email_contact" class="form-control" type="email" />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">País</label>
+              <input v-model="editCompany.country" class="form-control" />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Cidade</label>
+              <input v-model="editCompany.city" class="form-control" />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Ano da Fundação</label>
+              <input v-model="editCompany.founded_year" class="form-control" type="number" min="1800" max="2099" />
+            </div>
+
+            <div class="col-span-6">
+              <label class="label">Número de colaboradores</label>
+              <input v-model="editCompany.num_employees" class="form-control" type="number" min="1" />
+            </div>
+
+            <div class="col-span-12">
+              <label class="label">Intervalo de faturação</label>
+              <select v-model="editCompany.revenue_range" class="form-control">
+                <option disabled value="">Selecione…</option>
+                <option value="0-1M">0-1 M €</option>
+                <option value="1M-10M">1-10 M €</option>
+                <option value="10M-100M">10-100 M €</option>
+                <option value="100M+">+100 M €</option>
+              </select>
+            </div>
+
+            <div class="col-span-12">
+              <label class="label">Notas Internas</label>
+              <textarea v-model="editCompany.notes" class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="flex justify-end gap-3 mt-6">
           <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
           <button type="submit" class="btn btn-success">Guardar alterações</button>
         </div>
       </form>
     </dialog>
+
 
     <!-- Dialog de Apagar -->
     <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
@@ -289,7 +371,18 @@ const openEditModal = (c) => {
   editCompany.value = {
     id: c.id,
     name: c.name,
-    sector: c.sector
+    sector: c.sector,
+    company_type: c.company_type,
+    website: c.website,
+    nif: c.nif,
+    phone_contact: c.phone_contact,
+    email_contact: c.email_contact,
+    country: c.country,
+    city: c.city,
+    founded_year: c.founded_year,
+    num_employees: c.num_employees,
+    revenue_range: c.revenue_range,
+    notes: c.notes
   };
   editDialog.value?.showModal();
 };
@@ -320,12 +413,25 @@ const updateCompany = async () => {
     await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, {
       name: editCompany.value.name,
       sector: editCompany.value.sector,
+      company_type: editCompany.value.company_type,
+      website: editCompany.value.website,
+      nif: editCompany.value.nif,
+      phone_contact: editCompany.value.phone_contact,
+      email_contact: editCompany.value.email_contact,
+      country: editCompany.value.country,
+      city: editCompany.value.city,
+      founded_year: editCompany.value.founded_year,
+      num_employees: editCompany.value.num_employees,
+      revenue_range: editCompany.value.revenue_range,
+      notes: editCompany.value.notes
     });
+
     toast.success('Empresa atualizada com sucesso!');
     closeEditModal();
-    await fetchCompany();
-  } catch {
+    await fetchCompany(); // Atualiza os dados
+  } catch (error) {
     toast.error('Erro ao atualizar empresa.');
+    console.error(error);
   }
 };
 
