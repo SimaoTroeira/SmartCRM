@@ -40,32 +40,75 @@
         <li v-if="fileType === 'vendas'">
           📄 <strong>vendas</strong>
           <ul class="ml-4 list-disc">
-            <li>ClienteID</li>
-            <li>ValorTotal</li>
-            <li>DataVenda</li>
-            <li>ProdutoID</li>
+            <li><strong>Colunas principais (obrigatórias):</strong>
+              <ul class="ml-4 list-disc">
+                <li v-for="col in ['ClienteID', 'ProdutoID', 'Quantidade', 'PreçoUnitário', 'ValorTotal']" :key="col">
+                  <span :class="mappedColumns.includes(col) ? 'text-green-700 font-semibold underline' : ''">
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}<span v-if="col === 'ValorTotal'" class="italic text-gray-500"> (ou será calculado automaticamente)</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li class="mt-2"><strong>Colunas secundárias (opcionais):</strong>
+              <ul class="ml-4 list-disc">
+                <li v-for="col in ['DataVenda', 'DataCompra', 'Data', 'NomeProduto', 'Categoria', 'Marca']" :key="col">
+                  <span :class="mappedColumns.includes(col) ? 'text-green-700 underline' : ''">
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}
+                  </span>
+                </li>
+              </ul>
+            </li>
           </ul>
         </li>
         <li v-else-if="fileType === 'clientes'">
           📄 <strong>clientes</strong>
           <ul class="ml-4 list-disc">
-            <li>ClienteID</li>
-            <li>DataCadastro</li>
-            <li>Regiao</li>
+            <li><strong>Colunas principais (obrigatórias):</strong>
+              <ul class="ml-4 list-disc">
+                <li v-for="col in ['ClienteID', 'Regiao']" :key="col">
+                  <span :class="mappedColumns.includes(col) ? 'text-green-700 font-semibold underline' : ''">
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li class="mt-2"><strong>Colunas secundárias (opcionais):</strong>
+              <ul class="ml-4 list-disc">
+                <li v-for="col in ['Nome', 'DataCadastro', 'UltimaCompra', 'TotalCompras', 'ValorTotalGasto', 'Distrito', 'Localidade']" :key="col">
+                  <span :class="mappedColumns.includes(col) ? 'text-green-700 underline' : ''">
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}
+                  </span>
+                </li>
+              </ul>
+            </li>
           </ul>
         </li>
         <li v-else-if="fileType === 'produtos'">
           📄 <strong>produtos</strong>
           <ul class="ml-4 list-disc">
-            <li>ProdutoID</li>
-            <li>NomeProduto</li>
-            <li>Categoria</li>
-            <li>Marca</li>
+            <li><strong>Colunas principais (obrigatórias):</strong>
+              <ul class="ml-4 list-disc">
+                <li v-for="col in ['ProdutoID']" :key="col">
+                  <span :class="mappedColumns.includes(col) ? 'text-green-700 font-semibold underline' : ''">
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li class="mt-2"><strong>Colunas secundárias (opcionais):</strong>
+              <ul class="ml-4 list-disc">
+                <li v-for="col in ['NomeProduto', 'Categoria', 'Marca']" :key="col">
+                  <span :class="mappedColumns.includes(col) ? 'text-green-700 underline' : ''">
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}
+                  </span>
+                </li>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>
-
     </div>
+
 
     <!-- Tabela de Mapeamento -->
     <div class="overflow-x-auto mb-4 mt-4">

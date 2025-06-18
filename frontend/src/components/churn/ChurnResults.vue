@@ -63,9 +63,9 @@
           </div>
         </div>
         <p class="text-sm text-gray-600 mb-2">
-          Total de clientes: {{ clientes.length }}
-          <span v-if="clientesFiltrados.length !== clientes.length"></span>
+          Total de clientes: {{ totalSegmentoFiltrado }}
         </p>
+
 
         <div class="overflow-x-auto">
           <table class="min-w-full table-auto border border-gray-200 text-sm">
@@ -127,6 +127,13 @@ const props = defineProps({
   nomeEmpresa: String,
   nomeCampanha: String
 })
+
+const totalSegmentoFiltrado = computed(() => {
+  return filtroRisco.value
+    ? clientes.value.filter(c => c.Classificacao === filtroRisco.value).length
+    : clientes.value.length
+})
+
 
 const mapaComponent = PortugalMapChurn
 const clientes = ref([])

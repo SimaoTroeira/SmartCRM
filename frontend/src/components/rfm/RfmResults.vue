@@ -199,7 +199,12 @@ const props = defineProps({
 })
 
 
-const totalClientes = computed(() => props.clientesSegmentados.length)
+const totalClientes = computed(() => {
+  return segmentoFiltro.value
+    ? props.clientesSegmentados.filter(c => c.Segmento === segmentoFiltro.value).length
+    : props.clientesSegmentados.length
+})
+
 
 const tituloVisualizacao = computed(() => {
   if (modoVisualizacao.value === 'clientes') {

@@ -54,7 +54,7 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:companies,name',
             'sector' => 'required|string|max:255',
-            'company_type' => 'required|in:Freelancer,Startup,ME,PE,Corporação',
+            'company_type' => 'required|in:Freelancer,Startup,ME,PE,GE',
             'website' => 'nullable|url|max:255',
             'nif' => 'nullable|string|max:20',
             'phone_contact' => 'nullable|string|max:20',
@@ -168,7 +168,7 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'name' => ['sometimes', 'required', 'string'],
             'sector' => ['sometimes', 'required', 'string'],
-            'company_type' => ['sometimes', 'required', Rule::in(['Freelancer', 'Startup', 'ME', 'PE', 'Corporação'])],
+            'company_type' => ['sometimes', 'required', Rule::in(['Freelancer', 'Startup', 'ME', 'PE', 'GE'])],
             'website' => ['nullable', 'url'],
             'nif' => ['nullable', 'string'],
             'phone_contact' => ['nullable', 'string'],

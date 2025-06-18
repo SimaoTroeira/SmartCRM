@@ -184,7 +184,7 @@
                 <option value="Startup">Startup</option>
                 <option value="ME">Média Empresa</option>
                 <option value="PE">Pequena Empresa</option>
-                <option value="Corporação">Corporação</option>
+                <option value="GE">Grande Empresa</option>
               </select>
 
             </div>

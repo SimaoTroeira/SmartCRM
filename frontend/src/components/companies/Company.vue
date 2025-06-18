@@ -148,7 +148,7 @@
                   <option value="Startup">Startup</option>
                   <option value="ME">Média Empresa</option>
                   <option value="PE">Pequena Empresa</option>
-                  <option value="Corporação">Corporação</option>
+                  <option value="Grande Empresa">Grande Empresa</option>
                 </select>
                 <p v-if="companyFormErrors.company_type" class="text-red-600 text-sm mt-1">
                   {{ companyFormErrors.company_type }}
