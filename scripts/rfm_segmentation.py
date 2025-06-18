@@ -14,53 +14,6 @@ from sklearn.decomposition import PCA
 warnings.filterwarnings("ignore", category=UserWarning, module="joblib")
 
 
-def detectar_info_ficheiro(nome_arquivo):
-    nome_base = Path(nome_arquivo).stem.lower()
-    meses = {
-        "jan": 1,
-        "fev": 2,
-        "mar": 3,
-        "abr": 4,
-        "mai": 5,
-        "jun": 6,
-        "jul": 7,
-        "ago": 8,
-        "set": 9,
-        "out": 10,
-        "nov": 11,
-        "dez": 12,
-    }
-
-    tipo = None
-    for t in ["vendas", "clientes", "produtos"]:
-        if t in nome_base:
-            tipo = t
-            break
-
-    atualizar = nome_base.endswith("_novo")
-
-    padrao = re.search(
-        r"(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)?(?:[-_]?)(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)?(\d{4})",
-        nome_base,
-    )
-
-    meses_intervalo, ano = None, None
-    if padrao:
-        m1, m2, a = padrao.groups()
-        ano = int(a)
-        if m1 and m2:
-            meses_intervalo = (meses[m1], meses[m2])
-        elif m1:
-            meses_intervalo = (meses[m1], meses[m1])
-
-    return {
-        "tipo": tipo or "desconhecido",
-        "meses": meses_intervalo,
-        "ano": ano,
-        "atualizacao": atualizar,
-    }
-
-
 def carregar_dados_vendas(dados_path):
     vendas_files = [f for f in dados_path.glob("*.json") if "vendas" in f.stem.lower()]
     df_list = []
