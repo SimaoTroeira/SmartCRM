@@ -7,12 +7,10 @@
     </div>
 
     <div v-else>
-      <!-- Título dinâmico -->
       <h2 class="text-xl font-semibold mb-4">
         {{ userRole === 'SA' ? 'Painel de Administração de Campanhas:' : 'Lista de Campanhas:' }}
       </h2>
 
-      <!-- Botão de criar campanha (só para não-SA) -->
       <div v-if="userRole !== 'SA'" class="mb-4">
         <button @click="showDialog = true" class="btn btn-primary" :disabled="!hasActiveCompanies"
           :class="{ 'opacity-50 cursor-not-allowed': !hasActiveCompanies }">
@@ -20,20 +18,12 @@
         </button>
       </div>
 
-      <!-- Mensagem caso não haja campanhas visíveis -->
       <div v-if="filteredCampaigns.length === 0" class="text-gray-500 mb-4">
-        <span v-if="userRole === 'SA'">
-          Ainda não há campanhas registadas.
-        </span>
-        <span v-else-if="!hasActiveCompanies">
-          Para criar campanhas, terá de ter uma empresa ativa.
-        </span>
-        <span v-else>
-          Ainda não há campanhas registadas.
-        </span>
+        <span v-if="userRole === 'SA'">Ainda não há campanhas registadas.</span>
+        <span v-else-if="!hasActiveCompanies">Para criar campanhas, terá de ter uma empresa ativa.</span>
+        <span v-else>Ainda não há campanhas registadas.</span>
       </div>
 
-      <!-- Tabela de campanhas -->
       <div v-if="filteredCampaigns.length > 0" class="overflow-x-auto">
         <table class="min-w-full table-auto border border-gray-200">
           <thead class="bg-gray-100">
@@ -41,6 +31,7 @@
               <th class="px-4 py-2 border">Título</th>
               <th class="px-4 py-2 border">Descrição</th>
               <th class="px-4 py-2 border">Empresa</th>
+              <th class="px-4 py-2 border">Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -53,16 +44,22 @@
               </td>
               <td class="px-4 py-2 border">{{ campaign.description }}</td>
               <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
+              <td class="px-4 py-2 border">
+                <span :class="{
+                  'text-green-600 font-semibold': campaign.status === 'Ativo',
+                  'text-gray-600 font-medium': campaign.status === 'Inativo',
+                  'text-blue-600 font-semibold': campaign.status === 'Concluída'
+                }">
+                  {{ campaign.status }}
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
 
-        <!-- Paginação -->
         <div class="pagination-controls mt-4 flex items-center gap-4">
           <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
-
           <span class="font-medium">Página {{ currentPage }} de {{ totalPages }}</span>
-
           <button @click="nextPage" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
 
           <div class="ml-6 flex items-center gap-2">
@@ -128,7 +125,6 @@ const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const campaignsLoaded = ref(false);
 
-
 const hasActiveCompanies = computed(() => {
   return companies.value.some(company => company.status === STATUS_ATIVO);
 });
@@ -141,20 +137,16 @@ const totalPages = computed(() => {
   return Math.ceil(filtered.length / itemsPerPage.value);
 });
 
-
 const paginatedCampaigns = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
-  const filtered = filteredCampaigns.value;
-  return filtered.slice(start, start + itemsPerPage.value);
+  return filteredCampaigns.value.slice(start, start + itemsPerPage.value);
 });
-
 
 const filteredCampaigns = computed(() => {
   return userRole.value === 'SA'
     ? campaigns.value.filter(c => c.company?.status === 'Ativo')
     : campaigns.value;
 });
-
 
 watch(itemsPerPage, () => {
   currentPage.value = 1;
@@ -190,7 +182,6 @@ const fetchCampaigns = async () => {
     const res = await axios.get('http://127.0.0.1:8000/api/campaigns');
     let allCampaigns = Array.isArray(res.data) ? res.data : [];
 
-    // Filtra campanhas visíveis ao SA: apenas empresas com status 'Ativo'
     if (userRole.value === 'SA') {
       allCampaigns = allCampaigns.filter(c => c.company?.status === 'Ativo');
     }
@@ -203,8 +194,6 @@ const fetchCampaigns = async () => {
     campaignsLoaded.value = true;
   }
 };
-
-
 
 const fetchCompanies = async () => {
   try {
@@ -235,14 +224,13 @@ const createCampaign = async () => {
   }
 };
 
-
 onMounted(async () => {
   await fetchCompanies();
   await fetchUserRole();
   await fetchCampaigns();
 });
-
 </script>
+
 
 <style scoped>
 .btn-primary {

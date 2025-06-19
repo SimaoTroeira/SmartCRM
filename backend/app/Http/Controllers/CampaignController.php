@@ -235,4 +235,25 @@ class CampaignController extends Controller
 
         return response()->json(['message' => 'Utilizador removido da campanha com sucesso.']);
     }
+
+    public function concludeCampaign($id)
+    {
+        try {
+            $campaign = Campaign::findOrFail($id);
+
+            // Verifica se já está concluída
+            if ($campaign->status === 'completed') {
+                return response()->json(['message' => 'A campanha já está concluída.'], 400);
+            }
+
+            $campaign->status = 'completed';
+            $campaign->end_date = now();
+            $campaign->save();
+
+            return response()->json(['message' => 'Campanha concluída com sucesso!', 'campaign' => $campaign]);
+        } catch (\Exception $e) {
+            \Log::error('Erro ao concluir campanha: ' . $e->getMessage());
+            return response()->json(['message' => 'Erro ao concluir campanha.'], 500);
+        }
+    }
 }

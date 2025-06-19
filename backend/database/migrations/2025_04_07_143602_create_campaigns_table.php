@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->enum('status', ['draft', 'active', 'completed'])->default('draft');
+            // $table->enum('status', ['draft', 'active', 'completed'])->default('draft');
+            $table->enum('status', ['draft', 'active', 'completed'])->default('active');
             $table->timestamps();
         });
         
