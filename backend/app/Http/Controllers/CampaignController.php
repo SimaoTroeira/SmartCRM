@@ -69,6 +69,8 @@ class CampaignController extends Controller
         try {
             // Criar campanha na base de dados
             $campaign = Campaign::create($validated);
+            // Associar automaticamente o utilizador autenticado à campanha
+            $campaign->users()->attach($user->id);
 
             // Criar estrutura de pastas
             $basePath = config('smartcrm.storage_path');
