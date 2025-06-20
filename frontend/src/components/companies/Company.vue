@@ -1,98 +1,106 @@
 <template>
   <div class="company-container">
     <div class="company-card">
-      <h2 class="company-title">
-        {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'Lista de Empresas:' }}
-      </h2>
-
-      <div v-if="userRole === 'SA' && companies.length > 0" class="filter-row">
-        <label class="filter-label">Filtrar por estado</label>
-        <select v-model="filterState" class="form-control">
-          <option value="Todos">Todos</option>
-          <option value="Ativo">Ativo</option>
-          <option value="Inativo">Inativo</option>
-        </select>
+      <div v-if="!roleLoaded || !companiesLoaded" class="mb-4">
+        <h3 class="text-xl font-semibold mb-4 text-gray-600">
+          A carregar empresas<span class="dot-anim"></span>
+        </h3>
       </div>
 
-      <div v-if="userRole !== 'SA'" class="mb-4 text-right">
-        <button @click="showDialog = true" class="btn btn-primary">
-          Registar nova empresa
-        </button>
-      </div>
+      <div v-else>
+        <h2 class="company-title">
+          {{ userRole === 'SA' ? 'Painel de Administração de Empresas:' : 'Lista de Empresas:' }}
+        </h2>
 
-      <div v-if="companies.length === 0" class="text-muted">Ainda não há empresas registadas.</div>
-      <div v-else-if="filteredCompanies.length === 0" class="text-muted">Nenhuma empresa corresponde aos filtros
-        aplicados.</div>
-
-      <div v-else class="table-wrapper">
-        <table class="company-table">
-          <thead>
-            <tr>
-              <th>Empresa</th>
-              <th>Setor</th>
-              <th>Estado Atual</th>
-              <th v-if="userRole !== 'SA'">Pedido</th>
-              <th v-if="userRole === 'SA'">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="company in paginatedCompanies" :key="company.id" @click="goToCompanyDetails(company.id)"
-              class="hover:bg-gray-50 transition cursor-pointer">
-              <td>{{ company.name }}</td>
-              <td>{{ company.sector }}</td>
-              <td>
-                <span :class="company.status === 'Ativo' ? 'status-active' : 'status-pending'">
-                  {{ company.status }}
-                </span>
-              </td>
-
-              <td v-if="userRole !== 'SA'">
-                <span v-if="company.status === 'Ativo'" class="status-active">Pedido aceite</span>
-
-                <button v-else-if="company.status === 'Inativo' && !company.submitted"
-                  @click.stop="openSubmitModal(company.id)" class="btn-sm btn-secondary">
-                  Pedir validação
-                </button>
-
-                <span v-else-if="company.status === 'Inativo' && company.submitted" class="status-info">
-                  Aguardando aprovação
-                </span>
-              </td>
-
-              <td v-if="userRole === 'SA'">
-                <button v-if="company.status === 'Inativo'" @click.stop="openAcceptModal(company.id)"
-                  class="btn-sm btn-success">
-                  Ativar
-                </button>
-
-                <button v-else @click.stop="openDeactivateModal(company.id)" class="btn-sm btn-danger">
-                  Desativar
-                </button>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-
-      <div class="pagination-controls" v-if="filteredCompanies.length > 0">
-        <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
-        <span>Página {{ currentPage }} de {{ totalPages }}</span>
-        <button @click="currentPage++" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
-
-        <div class="page-size-select">
-          <label>Ver por página:</label>
-          <select v-model="itemsPerPage" class="form-control">
-            <option :value="10">10</option>
-            <option :value="25">25</option>
-            <option :value="50">50</option>
-            <option :value="100">100</option>
+        <div v-if="userRole === 'SA' && companies.length > 0" class="filter-row">
+          <label class="filter-label">Filtrar por estado</label>
+          <select v-model="filterState" class="form-control">
+            <option value="Todos">Todos</option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
           </select>
+        </div>
+
+        <div v-if="userRole !== 'SA'" class="mb-4 text-right">
+          <button @click="showDialog = true" class="btn btn-primary">
+            Registar nova empresa
+          </button>
+        </div>
+
+        <div v-if="companies.length === 0" class="text-muted">Ainda não há empresas registadas.</div>
+        <div v-else-if="filteredCompanies.length === 0" class="text-muted">Nenhuma empresa corresponde aos filtros
+          aplicados.</div>
+
+        <div v-else class="table-wrapper">
+          <table class="company-table">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Setor</th>
+                <th>Estado Atual</th>
+                <th v-if="userRole !== 'SA'">Pedido</th>
+                <th v-if="userRole === 'SA'">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="company in paginatedCompanies" :key="company.id" @click="goToCompanyDetails(company.id)"
+                class="hover:bg-gray-50 transition cursor-pointer">
+                <td>{{ company.name }}</td>
+                <td>{{ company.sector }}</td>
+                <td>
+                  <span :class="company.status === 'Ativo' ? 'status-active' : 'status-pending'">
+                    {{ company.status }}
+                  </span>
+                </td>
+
+                <td v-if="userRole !== 'SA'">
+                  <span v-if="company.status === 'Ativo'" class="status-active">Pedido aceite</span>
+
+                  <button v-else-if="company.status === 'Inativo' && !company.submitted"
+                    @click.stop="openSubmitModal(company.id)" class="btn-sm btn-secondary">
+                    Pedir validação
+                  </button>
+
+                  <span v-else-if="company.status === 'Inativo' && company.submitted" class="status-info">
+                    Aguardando aprovação
+                  </span>
+                </td>
+
+                <td v-if="userRole === 'SA'">
+                  <button v-if="company.status === 'Inativo'" @click.stop="openAcceptModal(company.id)"
+                    class="btn-sm btn-success">
+                    Ativar
+                  </button>
+
+                  <button v-else @click.stop="openDeactivateModal(company.id)" class="btn-sm btn-danger">
+                    Desativar
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-controls" v-if="filteredCompanies.length > 0">
+          <button @click="currentPage--" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
+          <span>Página {{ currentPage }} de {{ totalPages }}</span>
+          <button @click="currentPage++" :disabled="currentPage >= totalPages"
+            class="btn btn-secondary">Próxima</button>
+
+          <div class="page-size-select">
+            <label>Ver por página:</label>
+            <select v-model="itemsPerPage" class="form-control">
+              <option :value="10">10</option>
+              <option :value="25">25</option>
+              <option :value="50">50</option>
+              <option :value="100">100</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
   <div v-if="showDialog && userRole !== 'SA'"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all duration-300 ease-in-out">
     <div class="modal-wrapper">
@@ -271,6 +279,8 @@ const filterState = ref(localStorage.getItem('filterState') || 'Todos');
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const companiesLoaded = ref(false);
+const dadosProntos = computed(() => companiesLoaded.value && roleLoaded.value)
+
 
 const companyForm = ref({
   name: '',
@@ -750,5 +760,28 @@ button {
 
 tr:hover {
   background-color: #f1f5f9;
+}
+
+.dot-anim::after {
+  content: ".";
+  animation: dots 1.2s steps(3, end) infinite;
+}
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+
+  33% {
+    content: ".";
+  }
+
+  66% {
+    content: "..";
+  }
+
+  100% {
+    content: "...";
+  }
 }
 </style>

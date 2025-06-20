@@ -1,69 +1,71 @@
 <template>
-  <div class="campaign p-4 relative">
-    <button @click="goBack" class="close-button text-gray-600 hover:text-red-600">×</button>
+  <div class="campaign-container">
+    <div class="bg-white shadow-md rounded-xl p-6 w-full max-w-3xl relative">
+      <h3 v-if="loading" class="text-2xl font-bold mb-4 text-left">
+        Detalhes da Campanha<span class="dot-anim ml-1"></span>
+      </h3>
 
-    <h3 v-if="loading" class="text-2xl font-bold mb-4 text-left">
-      Detalhes da Campanha<span class="dot-anim ml-1"></span>
-    </h3>
+      <div v-else>
+        <!-- Botão de fechar no canto superior direito do card -->
+        <button @click="goBack" class="close-button">&times;</button>
 
-    <div v-else>
-      <h2 class="text-2xl font-bold mb-4 text-left">{{ campaign.name }}</h2>
-      <p><strong>Descrição:</strong> {{ campaign.description }}</p>
-      <p><strong>Início:</strong> {{ formatDate(campaign.start_date || campaign.created_at) }}</p>
-      <p><strong>Fim:</strong> {{ formatDate(campaign.end_date) }}</p>
-      <p>
-        <strong>Status:</strong>
-        <span :class="{
-          'text-green-600 font-semibold': campaign.status === 'active',
-          'text-gray-600 font-medium': campaign.status === 'draft',
-          'text-blue-600 font-semibold': campaign.status === 'completed'
-        }">
-          {{ traduzirStatus(campaign.status) }}
-        </span>
-      </p>
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ campaign.name }}</h1>
+        <p><strong>Descrição:</strong> {{ campaign.description }}</p>
+        <p><strong>Início:</strong> {{ formatDate(campaign.start_date || campaign.created_at) }}</p>
+        <p><strong>Fim:</strong> {{ formatDate(campaign.end_date) }}</p>
+        <p>
+          <strong>Status:</strong>
+          <span :class="{
+            'text-green-600 font-semibold': campaign.status === 'active',
+            'text-gray-600 font-medium': campaign.status === 'draft',
+            'text-blue-600 font-semibold': campaign.status === 'completed'
+          }">
+            {{ traduzirStatus(campaign.status) }}
+          </span>
+        </p>
 
-      <div class="mb-4" v-if="campaign.company">
-        <strong>Empresa:</strong>
-        <router-link :to="{ name: 'CompanyDetails', params: { id: campaign.company.id } }"
-          class="text-blue-600 underline hover:text-blue-800">
-          {{ campaign.company.name }}
-        </router-link>
-      </div>
+        <div class="mb-4 mt-4" v-if="campaign.company">
+          <strong>Empresa:</strong>
+          <router-link :to="{ name: 'CompanyDetails', params: { id: campaign.company.id } }"
+            class="text-blue-600 underline hover:text-blue-800">
+            {{ campaign.company.name }}
+          </router-link>
+        </div>
 
-      <div class="flex gap-4" v-if="canEdit">
-        <button @click="openEditModal" class="btn-edit" :disabled="campaign.status === 'completed'">
-          Editar
-        </button>
-        <button @click="openDeleteModal" class="btn-remove">Apagar</button>
-        <button v-if="campaign.status === 'active'" @click="openConcludeModal" class="btn-conclude">
-          Concluir Campanha
-        </button>
-      </div>
+        <div class="flex gap-4 mt-4" v-if="canEdit">
+          <button @click="openEditModal" class="btn-edit" :disabled="campaign.status === 'completed'">
+            Editar
+          </button>
+          <button @click="openDeleteModal" class="btn-remove">Apagar</button>
+          <button v-if="campaign.status === 'active'" @click="openConcludeModal" class="btn-conclude">
+            Concluir Campanha
+          </button>
+        </div>
 
-      <div class="mt-6" v-if="canEdit">
-        <h3 class="text-lg font-semibold mb-2">Associar Utilizadores</h3>
-        <select v-model="selectedUsers" multiple class="form-control border p-2 w-full mb-2">
-          <option v-for="user in filteredCompanyUsers" :key="user.id" :value="user.id">
-            {{ user.name }}
-          </option>
-        </select>
-        <button @click="associateUsers" class="btn btn-success">Associar</button>
-      </div>
+        <div class="mt-6" v-if="canEdit">
+          <h3 class="text-lg font-semibold mb-2">Associar Utilizadores</h3>
+          <select v-model="selectedUsers" multiple class="form-control border p-2 w-full mb-2">
+            <option v-for="user in filteredCompanyUsers" :key="user.id" :value="user.id">
+              {{ user.name }}
+            </option>
+          </select>
+          <button @click="associateUsers" class="btn btn-success">Associar</button>
+        </div>
 
-      <div class="mt-6">
-        <h3 class="text-lg font-semibold mb-2">Utilizadores Associados</h3>
-        <ul>
-          <li v-for="user in campaignUsers" :key="user.id" class="flex justify-between items-center mb-2">
-            <span>{{ user.name }} – {{ user.role }}</span>
-            <button v-if="canRemoveUser(user)" @click="removeUser(user.id)"
-              class="text-red-600 hover:underline text-sm">
-              Remover
-            </button>
-          </li>
-        </ul>
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold mb-2">Utilizadores Associados</h3>
+          <ul>
+            <li v-for="user in campaignUsers" :key="user.id" class="flex justify-between items-center mb-2">
+              <span>{{ user.name }} – {{ user.role }}</span>
+              <button v-if="canRemoveUser(user)" @click="removeUser(user.id)"
+                class="text-red-600 hover:underline text-sm">
+                Remover
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-
     <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
       <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
       <form @submit.prevent="updateCampaign">
@@ -283,15 +285,35 @@ onMounted(fetchCampaign);
   margin-left: 0;
 }
 
+
+.campaign-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  margin: 2rem auto;
+  position: relative;
+}
+
+
 .close-button {
   position: absolute;
-  top: 2rem;
-  right: 15rem;
-  font-size: 4rem;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
   background: transparent;
   border: none;
   cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s;
 }
+
+.close-button:hover {
+  color: #dc2626;
+}
+
+
 
 .btn-edit,
 .btn-remove,
@@ -305,9 +327,11 @@ onMounted(fetchCampaign);
   background-color: #ffc107;
   color: white;
 }
+
 .btn-edit:hover {
   background-color: #e0a800;
 }
+
 .btn-edit:disabled {
   background-color: #ccc;
   cursor: not-allowed;
@@ -317,6 +341,7 @@ onMounted(fetchCampaign);
   background-color: #dc3545;
   color: white;
 }
+
 .btn-remove:hover {
   background-color: #c82333;
 }
@@ -325,6 +350,7 @@ onMounted(fetchCampaign);
   background-color: #007bff;
   color: white;
 }
+
 .btn-conclude:hover {
   background-color: #0056b3;
 }
@@ -333,17 +359,33 @@ dialog {
   border-radius: 12px;
   border: 8px solid #ffffff;
 }
+
 dialog::backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
 
 @keyframes dots {
-  0% { content: ''; }
-  25% { content: '.'; }
-  50% { content: '..'; }
-  75% { content: '...'; }
-  100% { content: ''; }
+  0% {
+    content: '';
+  }
+
+  25% {
+    content: '.';
+  }
+
+  50% {
+    content: '..';
+  }
+
+  75% {
+    content: '...';
+  }
+
+  100% {
+    content: '';
+  }
 }
+
 .dot-anim::after {
   display: inline-block;
   animation: dots 1.5s steps(4, end) infinite;

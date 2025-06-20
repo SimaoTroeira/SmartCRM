@@ -1,35 +1,38 @@
 <template>
-  <div class="company-container animate-fade-in">
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold text-gray-800">{{ company.name }}</h1>
-      <button @click="goBack" class="close-button">&times;</button>
-    </div>
+  <div class="company-container">
+    <h3 v-if="loading" class="text-2xl font-bold mb-4 text-left">
+      Detalhes da Empresa<span class="dot-anim ml-1"></span>
+    </h3>
+    <div v-else>
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">{{ company.name }}</h1>
+        <button @click="goBack" class="close-button">&times;</button>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <p><strong>Setor:</strong> {{ company.sector }}</p>
+        <p><strong>Tipo:</strong> {{ company.company_type }}</p>
+        <p><strong>NIF:</strong> {{ company.nif }}</p>
+        <p><strong>Telefone:</strong> {{ company.phone_contact }}</p>
+        <p><strong>Email:</strong> {{ company.email_contact }}</p>
+        <p><strong>País:</strong> {{ company.country }}</p>
+        <p><strong>Cidade:</strong> {{ company.city }}</p>
+        <p><strong>Website:</strong>
+          <a v-if="company.website" :href="company.website" target="_blank" class="text-blue-600 underline">
+            {{ company.website }}
+          </a>
+          <span v-else>—</span>
+        </p>
+        <p><strong>Fundação:</strong> {{ company.founded_year }}</p>
+        <p><strong>Colaboradores:</strong> {{ company.num_employees }}</p>
+        <p><strong>Faturação:</strong> {{ company.revenue_range }}</p>
+        <p><strong>Estado:</strong> {{ company.status }}</p>
+      </div>
 
-    <div class="grid grid-cols-2 gap-4">
-      <p><strong>Setor:</strong> {{ company.sector }}</p>
-      <p><strong>Tipo:</strong> {{ company.company_type }}</p>
-      <p><strong>NIF:</strong> {{ company.nif }}</p>
-      <p><strong>Telefone:</strong> {{ company.phone_contact }}</p>
-      <p><strong>Email:</strong> {{ company.email_contact }}</p>
-      <p><strong>País:</strong> {{ company.country }}</p>
-      <p><strong>Cidade:</strong> {{ company.city }}</p>
-      <p><strong>Website:</strong>
-        <a v-if="company.website" :href="company.website" target="_blank" class="text-blue-600 underline">
-          {{ company.website }}
-        </a>
-        <span v-else>—</span>
-      </p>
-      <p><strong>Fundação:</strong> {{ company.founded_year }}</p>
-      <p><strong>Colaboradores:</strong> {{ company.num_employees }}</p>
-      <p><strong>Faturação:</strong> {{ company.revenue_range }}</p>
-      <p><strong>Estado:</strong> {{ company.status }}</p>
-    </div>
+      <div v-if="company.notes" class="mt-4">
+        <p><strong>Notas:</strong> {{ company.notes }}</p>
+      </div>
 
-    <div v-if="company.notes" class="mt-4">
-      <p><strong>Notas:</strong> {{ company.notes }}</p>
-    </div>
-
-    <!-- Ações
+      <!-- Ações
     <div class="flex flex-wrap gap-4 mt-6">
       <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
         class="btn-edit">Editar</button>
@@ -45,109 +48,109 @@
         class="btn-remove">Desativar</button>
     </div> -->
 
-    <hr class="border-t border-gray-300 my-6" />
+      <hr class="border-t border-gray-300 my-6" />
 
-    <div>
-      <h4 class="text-lg font-semibold mb-2">Campanhas Associadas:</h4>
-      <ul>
-        <li v-for="camp in company.campaigns" :key="camp.id" class="mb-2">
-          <router-link :to="{ name: 'CampaignDetails', params: { id: camp.id } }"
-            class="text-blue-600 underline hover:text-blue-800">
-            <strong>{{ camp.name }}</strong>
-          </router-link>
-          ({{ camp.status }})
-          <p>{{ camp.description }}</p>
-          <p>
-            {{ camp.created_at ? new Date(camp.created_at).toLocaleDateString() : 'Sem data de início' }} –
-            {{ camp.end_date ? new Date(camp.end_date).toLocaleDateString() : 'Sem data de fim' }}
-          </p>
-        </li>
-      </ul>
-    </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Campanhas Associadas:</h4>
+        <ul>
+          <li v-for="camp in company.campaigns" :key="camp.id" class="mb-2">
+            <router-link :to="{ name: 'CampaignDetails', params: { id: camp.id } }"
+              class="text-blue-600 underline hover:text-blue-800">
+              <strong>{{ camp.name }}</strong>
+            </router-link>
+            ({{ camp.status }})
+            <p>{{ camp.description }}</p>
+            <p>
+              {{ camp.created_at ? new Date(camp.created_at).toLocaleDateString() : 'Sem data de início' }} –
+              {{ camp.end_date ? new Date(camp.end_date).toLocaleDateString() : 'Sem data de fim' }}
+            </p>
+          </li>
+        </ul>
+      </div>
 
-    <hr class="border-t border-gray-300 my-6" />
+      <hr class="border-t border-gray-300 my-6" />
 
-    <div>
-      <h4 class="text-lg font-semibold mb-2">Utilizadores:</h4>
-      <ul>
-        <li v-for="ucr in company.user_company_roles" :key="ucr.id">
-          {{ ucr.user.name }} – {{ ucr.role.code }}
-          <template v-if="userRole === 'CA' && ucr.role.code === 'CU'">
-            <button @click="openPromoteUserModal(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
-              Promover a CA
-            </button>
-            <button @click="openRemoveUserModal(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
-              Remover
-            </button>
-          </template>
-        </li>
-      </ul>
-    </div>
+      <div>
+        <h4 class="text-lg font-semibold mb-2">Utilizadores:</h4>
+        <ul>
+          <li v-for="ucr in company.user_company_roles" :key="ucr.id">
+            {{ ucr.user.name }} – {{ ucr.role.code }}
+            <template v-if="userRole === 'CA' && ucr.role.code === 'CU'">
+              <button @click="openPromoteUserModal(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
+                Promover a CA
+              </button>
+              <button @click="openRemoveUserModal(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
+                Remover
+              </button>
+            </template>
+          </li>
+        </ul>
+      </div>
 
-    <hr class="border-t border-gray-300 my-6" />
+      <hr class="border-t border-gray-300 my-6" />
 
-    <div v-if="userRole === 'CA'">
-      <h4 class="text-lg font-semibold mb-2">Convidar Utilizador</h4>
-      <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
-        <input v-model="inviteEmail" type="email" class="form-control w-full sm:w-auto"
-          placeholder="Email do utilizador" required />
-        <button type="submit" class="btn btn-success">Enviar Convite</button>
-      </form>
-    </div>
+      <div v-if="userRole === 'CA'">
+        <h4 class="text-lg font-semibold mb-2">Convidar Utilizador</h4>
+        <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
+          <input v-model="inviteEmail" type="email" class="form-control w-full sm:w-auto"
+            placeholder="Email do utilizador" required />
+          <button type="submit" class="btn btn-success">Enviar Convite</button>
+        </form>
+      </div>
 
-    <hr v-if="userRole === 'CA'" class="border-t border-gray-300 my-6" />
+      <hr v-if="userRole === 'CA'" class="border-t border-gray-300 my-6" />
 
-    <div v-if="company.invites?.length">
-      <h4 class="text-lg font-semibold mb-2">Convites Enviados</h4>
-      <ul>
-        <li v-for="invite in company.invites" :key="invite.id">
-          {{ invite.email }} –
-          <span v-if="invite.accepted_at">Aceite</span>
-          <span v-else-if="invite.cancelled_at">Cancelado</span>
-          <span v-else-if="new Date(invite.expires_at) < new Date()">Expirado</span>
-          <span v-else>Pendente</span>
+      <div v-if="company.invites?.length">
+        <h4 class="text-lg font-semibold mb-2">Convites Enviados</h4>
+        <ul>
+          <li v-for="invite in company.invites" :key="invite.id">
+            {{ invite.email }} –
+            <span v-if="invite.accepted_at">Aceite</span>
+            <span v-else-if="invite.cancelled_at">Cancelado</span>
+            <span v-else-if="new Date(invite.expires_at) < new Date()">Expirado</span>
+            <span v-else>Pendente</span>
 
-          <template
-            v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
-            <button @click="resendInvite(invite.id)" class="text-blue-600 ml-2 hover:underline text-sm">
-              Reenviar
-            </button>
-            <button @click="cancelInvite(invite.id)" class="text-red-600 ml-2 hover:underline text-sm">
-              Cancelar
-            </button>
-          </template>
-        </li>
-      </ul>
-    </div>
+            <template
+              v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
+              <button @click="resendInvite(invite.id)" class="text-blue-600 ml-2 hover:underline text-sm">
+                Reenviar
+              </button>
+              <button @click="cancelInvite(invite.id)" class="text-red-600 ml-2 hover:underline text-sm">
+                Cancelar
+              </button>
+            </template>
+          </li>
+        </ul>
+      </div>
 
-    <hr class="border-t border-gray-300 my-6" />
+      <hr class="border-t border-gray-300 my-6" />
 
-    <div class="flex gap-4 mt-4">
-      <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
-        class="btn-edit text-white px-4 py-2 rounded">Editar</button>
-      <!-- <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
+      <div class="flex gap-4 mt-4">
+        <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
+          class="btn-edit text-white px-4 py-2 rounded">Editar</button>
+        <!-- <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
           class="btn-remove text-white px-4 py-2 rounded">Apagar</button> -->
-      <!-- Botão de pedido de validação -->
-      <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
-        class="btn-submit text-white px-4 py-2 rounded">
-        Pedir validação
-      </button>
-      <span v-else-if="userRole === 'CA' && company.submitted && company.status === 'Inativo'"
-        class="text-blue-500 font-medium mt-2">
-        Aguardando aprovação
-      </span>
-      <span v-else-if="userRole === 'CA' && company.status === 'Ativo'" class="text-green-600 font-medium mt-2">
-        Pedido aceite
-      </span>
-      <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
-        class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
-      <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
-        class="btn-remove text-white px-4 py-2 rounded">
-        Desativar
-      </button>
+        <!-- Botão de pedido de validação -->
+        <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
+          class="btn-submit text-white px-4 py-2 rounded">
+          Pedir validação
+        </button>
+        <span v-else-if="userRole === 'CA' && company.submitted && company.status === 'Inativo'"
+          class="text-blue-500 font-medium mt-2">
+          Aguardando aprovação
+        </span>
+        <span v-else-if="userRole === 'CA' && company.status === 'Ativo'" class="text-green-600 font-medium mt-2">
+          Pedido aceite
+        </span>
+        <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
+          class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
+        <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
+          class="btn-remove text-white px-4 py-2 rounded">
+          Desativar
+        </button>
+      </div>
     </div>
   </div>
-
   <dialog ref="acceptDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Tem certeza que deseja aceitar o registo desta empresa?</h3>
     <div class="flex justify-end gap-2">
@@ -308,7 +311,7 @@ import { useToast } from 'vue-toastification';
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
-
+const loading = ref(true);
 const company = ref({});
 const companyName = ref('');
 const userRole = ref('');
@@ -586,8 +589,10 @@ const confirmRemoveUser = async () => {
 
 
 onMounted(async () => {
+  loading.value = true;
   await fetchUserRole();
   await fetchCompany();
+  loading.value = false;
 });
 </script>
 
@@ -695,6 +700,7 @@ dialog::backdrop {
   gap: 1rem;
   margin-top: 1rem;
 }
+
 
 @keyframes dots {
   0% {
