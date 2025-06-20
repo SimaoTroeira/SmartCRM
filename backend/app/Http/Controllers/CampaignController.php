@@ -252,7 +252,7 @@ class CampaignController extends Controller
 
             return response()->json(['message' => 'Campanha concluída com sucesso!', 'campaign' => $campaign]);
         } catch (\Exception $e) {
-            \Log::error('Erro ao concluir campanha: ' . $e->getMessage());
+            Log::error('Erro ao concluir campanha: ' . $e->getMessage());
             return response()->json(['message' => 'Erro ao concluir campanha.'], 500);
         }
     }
