@@ -1,312 +1,321 @@
 <template>
-  <div class="company relative">
-    <!-- Botão fechar -->
-    <button @click="goBack" class="close-button text-gray-600 hover:text-red-600">
-      ×
-    </button>
-
-    <!-- Enquanto carrega -->
-    <div v-if="!roleLoaded || !company.name">
-      <h3 class="text-2xl font-bold mb-4 text-left">
-        Detalhes da Empresa<span class="dot-anim ml-1"></span>
-      </h3>
+  <div class="company-container animate-fade-in">
+    <!-- Cabeçalho com nome e botão de voltar -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">{{ company.name }}</h1>
+      <button @click="goBack" class="close-button">&times;</button>
     </div>
 
-    <!-- Conteúdo principal -->
-    <div v-else>
-      <!-- Título -->
-      <h2 class="text-2xl font-bold mb-4 text-left">{{ company.name }}</h2>
-
-      <!-- Descrição -->
-      <!-- Detalhes -->
-      <div class="pb-4 grid grid-cols-2 gap-4">
-        <p><strong>Setor:</strong> {{ company.sector }}</p>
-        <p><strong>Estado Atual:</strong> {{ company.status }}</p>
-        <p><strong>Tipo de Empresa:</strong> {{ company.company_type || '—' }}</p>
-        <p><strong>Website:</strong>
-          <a v-if="company.website" :href="company.website" target="_blank"
-            class="text-blue-600 underline hover:text-blue-800">{{ company.website }}</a>
-          <span v-else>—</span>
-        </p>
-        <p><strong>NIF:</strong> {{ company.nif || '—' }}</p>
-        <p><strong>Telefone:</strong> {{ company.phone_contact || '—' }}</p>
-        <p><strong>Email:</strong> {{ company.email_contact || '—' }}</p>
-        <p><strong>País:</strong> {{ company.country || '—' }}</p>
-        <p><strong>Cidade:</strong> {{ company.city || '—' }}</p>
-        <p><strong>Ano da Fundação:</strong> {{ company.founded_year || '—' }}</p>
-        <p><strong>Número de colaboradores:</strong> {{ company.num_employees || '—' }}</p>
-        <p><strong>Intervalo de faturação:</strong> {{ company.revenue_range || '—' }}</p>
-        <p class="col-span-2"><strong>Notas Internas:</strong><br>{{ company.notes || '—' }}</p>
-      </div>
-
-
-      <hr class="border-t border-gray-300 my-6" />
-
-      <!-- Campanhas -->
-      <div>
-        <h4 class="text-lg font-semibold mb-2">Campanhas Associadas:</h4>
-        <ul>
-          <li v-for="camp in company.campaigns" :key="camp.id" class="mb-2">
-            <router-link :to="{ name: 'CampaignDetails', params: { id: camp.id } }"
-              class="text-blue-600 underline hover:text-blue-800">
-              <strong>{{ camp.name }}</strong>
-            </router-link>
-            ({{ camp.status }})
-            <p>{{ camp.description }}</p>
-            <p>
-              {{ camp.created_at ? new Date(camp.created_at).toLocaleDateString() : 'Sem data de início' }} –
-              {{ camp.end_date ? new Date(camp.end_date).toLocaleDateString() : 'Sem data de fim' }}
-            </p>
-          </li>
-        </ul>
-      </div>
-
-      <hr class="border-t border-gray-300 my-6" />
-
-      <!-- Utilizadores -->
-      <div>
-        <h4 class="text-lg font-semibold mb-2">Utilizadores:</h4>
-        <ul>
-          <li v-for="ucr in company.user_company_roles" :key="ucr.id">
-            {{ ucr.user.name }} – {{ ucr.role.code }}
-            <template v-if="userRole === 'CA' && ucr.role.code === 'CU'">
-              <button @click="openPromoteUserModal(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
-                Promover a CA
-              </button>
-              <button @click="openRemoveUserModal(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
-                Remover
-              </button>
-            </template>
-          </li>
-        </ul>
-      </div>
-
-      <hr class="border-t border-gray-300 my-6" />
-
-      <!-- Convidar Utilizador -->
-      <div v-if="userRole === 'CA'">
-        <h4 class="text-lg font-semibold mb-2">Convidar Utilizador</h4>
-        <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
-          <input v-model="inviteEmail" type="email" class="form-control w-full sm:w-auto"
-            placeholder="Email do utilizador" required />
-          <button type="submit" class="btn btn-success">Enviar Convite</button>
-        </form>
-      </div>
-
-      <hr v-if="userRole === 'CA'" class="border-t border-gray-300 my-6" />
-
-      <!-- Convites Enviados -->
-      <div v-if="company.invites?.length">
-        <h4 class="text-lg font-semibold mb-2">Convites Enviados</h4>
-        <ul>
-          <li v-for="invite in company.invites" :key="invite.id">
-            {{ invite.email }} –
-            <span v-if="invite.accepted_at">Aceite</span>
-            <span v-else-if="invite.cancelled_at">Cancelado</span>
-            <span v-else-if="new Date(invite.expires_at) < new Date()">Expirado</span>
-            <span v-else>Pendente</span>
-
-            <template
-              v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
-              <button @click="resendInvite(invite.id)" class="text-blue-600 ml-2 hover:underline text-sm">
-                Reenviar
-              </button>
-              <button @click="cancelInvite(invite.id)" class="text-red-600 ml-2 hover:underline text-sm">
-                Cancelar
-              </button>
-            </template>
-          </li>
-        </ul>
-      </div>
-
-      <hr class="border-t border-gray-300 my-6" />
-
-      <!-- Botões -->
-      <div class="flex gap-4 mt-4">
-        <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
-          class="btn-edit text-white px-4 py-2 rounded">Editar</button>
-        <!-- <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
-          class="btn-remove text-white px-4 py-2 rounded">Apagar</button> -->
-        <!-- Botão de pedido de validação -->
-        <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
-          class="btn-submit text-white px-4 py-2 rounded">
-          Pedir validação
-        </button>
-        <span v-else-if="userRole === 'CA' && company.submitted && company.status === 'Inativo'"
-          class="text-blue-500 font-medium mt-2">
-          Aguardando aprovação
-        </span>
-        <span v-else-if="userRole === 'CA' && company.status === 'Ativo'" class="text-green-600 font-medium mt-2">
-          Pedido aceite
-        </span>
-        <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
-          class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
-        <!-- botão apenas para SA -->
-        <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
-          class="btn-remove text-white px-4 py-2 rounded">
-          Desativar
-        </button>
-      </div>
+    <!-- Detalhes principais -->
+    <div class="grid grid-cols-2 gap-4">
+      <p><strong>Setor:</strong> {{ company.sector }}</p>
+      <p><strong>Tipo:</strong> {{ company.company_type }}</p>
+      <p><strong>NIF:</strong> {{ company.nif }}</p>
+      <p><strong>Telefone:</strong> {{ company.phone_contact }}</p>
+      <p><strong>Email:</strong> {{ company.email_contact }}</p>
+      <p><strong>País:</strong> {{ company.country }}</p>
+      <p><strong>Cidade:</strong> {{ company.city }}</p>
+      <p><strong>Website:</strong>
+        <a v-if="company.website" :href="company.website" target="_blank" class="text-blue-600 underline">
+          {{ company.website }}
+        </a>
+        <span v-else>—</span>
+      </p>
+      <p><strong>Fundação:</strong> {{ company.founded_year }}</p>
+      <p><strong>Colaboradores:</strong> {{ company.num_employees }}</p>
+      <p><strong>Faturação:</strong> {{ company.revenue_range }}</p>
+      <p><strong>Estado:</strong> {{ company.status }}</p>
     </div>
 
-    <!-- Modal de Aceitação -->
-    <dialog ref="acceptDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja aceitar o registo desta empresa?</h3>
-      <div class="flex justify-end gap-2">
-        <button type="button" @click="closeAcceptModal" class="btn btn-secondary">Cancelar</button>
-        <button type="button" @click="confirmAcceptCompany" class="btn btn-success">Aceitar</button>
-      </div>
-    </dialog>
+    <!-- Notas internas -->
+    <div v-if="company.notes" class="mt-4">
+      <p><strong>Notas:</strong> {{ company.notes }}</p>
+    </div>
 
-    <!-- Dialog de Edição -->
-    <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-[700px] max-w-[95vw]">
-      <h3 class="text-xl font-bold mb-4 text-center">Editar Empresa</h3>
-      <form @submit.prevent="updateCompany">
-        <fieldset class="mb-6">
-          <legend class="section-title mb-2">Informações Gerais</legend>
+    <!-- Ações
+    <div class="flex flex-wrap gap-4 mt-6">
+      <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
+        class="btn-edit">Editar</button>
+      <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
+        class="btn-submit">Pedir validação</button>
+      <span v-else-if="userRole === 'CA' && company.submitted && company.status === 'Inativo'"
+        class="text-blue-500 font-medium mt-2">Aguardando aprovação</span>
+      <span v-else-if="userRole === 'CA' && company.status === 'Ativo'" class="text-green-600 font-medium mt-2">Pedido
+        aceite</span>
+      <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
+        class="btn-accept">Ativar</button>
+      <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
+        class="btn-remove">Desativar</button>
+    </div> -->
 
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-6">
-              <label class="label">Nome da Empresa <span class="text-red-600">*</span></label>
-              <input v-model="editCompany.name" class="form-control" required />
-            </div>
+    <hr class="border-t border-gray-300 my-6" />
 
-            <div class="col-span-6">
-              <label class="label">Setor de atividade <span class="text-red-600">*</span></label>
-              <input v-model="editCompany.sector" class="form-control" required />
-            </div>
+    <!-- Campanhas -->
+    <div>
+      <h4 class="text-lg font-semibold mb-2">Campanhas Associadas:</h4>
+      <ul>
+        <li v-for="camp in company.campaigns" :key="camp.id" class="mb-2">
+          <router-link :to="{ name: 'CampaignDetails', params: { id: camp.id } }"
+            class="text-blue-600 underline hover:text-blue-800">
+            <strong>{{ camp.name }}</strong>
+          </router-link>
+          ({{ camp.status }})
+          <p>{{ camp.description }}</p>
+          <p>
+            {{ camp.created_at ? new Date(camp.created_at).toLocaleDateString() : 'Sem data de início' }} –
+            {{ camp.end_date ? new Date(camp.end_date).toLocaleDateString() : 'Sem data de fim' }}
+          </p>
+        </li>
+      </ul>
+    </div>
 
-            <div class="col-span-6">
-              <label class="label">Tipo de Empresa <span class="text-red-600">*</span></label>
-              <select v-model="editCompany.company_type" class="form-control" required>
-                <option disabled value="">Selecione…</option>
-                <option value="Freelancer">Freelancer</option>
-                <option value="Startup">Startup</option>
-                <option value="ME">Média Empresa</option>
-                <option value="PE">Pequena Empresa</option>
-                <option value="GE">Grande Empresa</option>
-              </select>
+    <hr class="border-t border-gray-300 my-6" />
 
-            </div>
+    <!-- Utilizadores -->
+    <div>
+      <h4 class="text-lg font-semibold mb-2">Utilizadores:</h4>
+      <ul>
+        <li v-for="ucr in company.user_company_roles" :key="ucr.id">
+          {{ ucr.user.name }} – {{ ucr.role.code }}
+          <template v-if="userRole === 'CA' && ucr.role.code === 'CU'">
+            <button @click="openPromoteUserModal(ucr.id)" class="text-blue-600 ml-2 hover:underline text-sm">
+              Promover a CA
+            </button>
+            <button @click="openRemoveUserModal(ucr.id)" class="text-red-600 ml-2 hover:underline text-sm">
+              Remover
+            </button>
+          </template>
+        </li>
+      </ul>
+    </div>
 
-            <div class="col-span-6">
-              <label class="label">Website</label>
-              <input v-model="editCompany.website" class="form-control" type="url" placeholder="https://…" />
-            </div>
-          </div>
-        </fieldset>
+    <hr class="border-t border-gray-300 my-6" />
 
-        <fieldset>
-          <legend class="section-title mb-2">Contactos e Outros Dados</legend>
-
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-6">
-              <label class="label">NIF</label>
-              <input v-model="editCompany.nif" class="form-control" />
-            </div>
-
-            <div class="col-span-6">
-              <label class="label">Telefone</label>
-              <input v-model="editCompany.phone_contact" class="form-control" />
-            </div>
-
-            <div class="col-span-6">
-              <label class="label">Email</label>
-              <input v-model="editCompany.email_contact" class="form-control" type="email" />
-            </div>
-
-            <div class="col-span-6">
-              <label class="label">País</label>
-              <input v-model="editCompany.country" class="form-control" />
-            </div>
-
-            <div class="col-span-6">
-              <label class="label">Cidade</label>
-              <input v-model="editCompany.city" class="form-control" />
-            </div>
-
-            <div class="col-span-6">
-              <label class="label">Ano da Fundação</label>
-              <input v-model="editCompany.founded_year" class="form-control" type="number" min="1800" max="2099" />
-            </div>
-
-            <div class="col-span-6">
-              <label class="label">Número de colaboradores</label>
-              <input v-model="editCompany.num_employees" class="form-control" type="number" min="1" />
-            </div>
-
-            <div class="col-span-12">
-              <label class="label">Intervalo de faturação</label>
-              <select v-model="editCompany.revenue_range" class="form-control">
-                <option disabled value="">Selecione…</option>
-                <option value="0-1M">0-1 M €</option>
-                <option value="1M-10M">1-10 M €</option>
-                <option value="10M-100M">10-100 M €</option>
-                <option value="100M+">+100 M €</option>
-              </select>
-            </div>
-
-            <div class="col-span-12">
-              <label class="label">Notas Internas</label>
-              <textarea v-model="editCompany.notes" class="form-control" rows="3"></textarea>
-            </div>
-          </div>
-        </fieldset>
-
-        <div class="flex justify-end gap-3 mt-6">
-          <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
-          <button type="submit" class="btn btn-success">Guardar alterações</button>
-        </div>
+    <!-- Convidar Utilizador -->
+    <div v-if="userRole === 'CA'">
+      <h4 class="text-lg font-semibold mb-2">Convidar Utilizador</h4>
+      <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
+        <input v-model="inviteEmail" type="email" class="form-control w-full sm:w-auto"
+          placeholder="Email do utilizador" required />
+        <button type="submit" class="btn btn-success">Enviar Convite</button>
       </form>
-    </dialog>
+    </div>
 
+    <hr v-if="userRole === 'CA'" class="border-t border-gray-300 my-6" />
 
-    <!-- Dialog de Apagar -->
-    <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta empresa?</h3>
-      <div class="flex justify-end gap-2">
-        <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
-        <button type="button" @click="confirmDelete" class="btn btn-danger">Apagar</button>
-      </div>
-    </dialog>
+    <!-- Convites Enviados -->
+    <div v-if="company.invites?.length">
+      <h4 class="text-lg font-semibold mb-2">Convites Enviados</h4>
+      <ul>
+        <li v-for="invite in company.invites" :key="invite.id">
+          {{ invite.email }} –
+          <span v-if="invite.accepted_at">Aceite</span>
+          <span v-else-if="invite.cancelled_at">Cancelado</span>
+          <span v-else-if="new Date(invite.expires_at) < new Date()">Expirado</span>
+          <span v-else>Pendente</span>
 
-    <!-- Modal de Confirmação de Pedido de Validação -->
-    <dialog ref="submitDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Deseja pedir a validação desta empresa?</h3>
-      <div class="flex justify-end gap-2">
-        <button type="button" @click="closeSubmitModal" class="btn btn-secondary">Cancelar</button>
-        <button type="button" @click="confirmSubmitCompany" class="btn btn-submit">Confirmar</button>
-      </div>
-    </dialog>
+          <template
+            v-if="userRole === 'CA' && !invite.accepted_at && !invite.cancelled_at && new Date(invite.expires_at) >= new Date()">
+            <button @click="resendInvite(invite.id)" class="text-blue-600 ml-2 hover:underline text-sm">
+              Reenviar
+            </button>
+            <button @click="cancelInvite(invite.id)" class="text-red-600 ml-2 hover:underline text-sm">
+              Cancelar
+            </button>
+          </template>
+        </li>
+      </ul>
+    </div>
 
-    <!-- Modal de Desativação (SA) -->
-    <dialog ref="deactivateDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja desativar esta empresa?</h3>
-      <div class="flex justify-end gap-2">
-        <button type="button" @click="closeDeactivateModal" class="btn btn-secondary">Cancelar</button>
-        <button type="button" @click="confirmDeactivateCompany" class="btn btn-danger">Desativar</button>
-      </div>
-    </dialog>
+    <hr class="border-t border-gray-300 my-6" />
 
-    <!-- Modal: Confirmar Promoção -->
-    <dialog ref="promoteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja promover este utilizador a Company Admin?</h3>
-      <div class="flex justify-end gap-2">
-        <button type="button" @click="closePromoteUserModal" class="btn btn-secondary">Cancelar</button>
-        <button type="button" @click="confirmPromoteUser" class="btn btn-success">Promover</button>
-      </div>
-    </dialog>
-
-    <!-- Modal: Confirmar Remoção -->
-    <dialog ref="removeUserDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
-      <h3 class="text-lg font-bold mb-4">Tem certeza que deseja remover este utilizador da empresa?</h3>
-      <div class="flex justify-end gap-2">
-        <button type="button" @click="closeRemoveUserModal" class="btn btn-secondary">Cancelar</button>
-        <button type="button" @click="confirmRemoveUser" class="btn btn-danger">Remover</button>
-      </div>
-    </dialog>
+    <!-- Botões -->
+    <div class="flex gap-4 mt-4">
+      <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
+        class="btn-edit text-white px-4 py-2 rounded">Editar</button>
+      <!-- <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openDeleteModal(company.id)"
+          class="btn-remove text-white px-4 py-2 rounded">Apagar</button> -->
+      <!-- Botão de pedido de validação -->
+      <button v-if="userRole === 'CA' && company.status === 'Inativo' && !company.submitted" @click="openSubmitModal"
+        class="btn-submit text-white px-4 py-2 rounded">
+        Pedir validação
+      </button>
+      <span v-else-if="userRole === 'CA' && company.submitted && company.status === 'Inativo'"
+        class="text-blue-500 font-medium mt-2">
+        Aguardando aprovação
+      </span>
+      <span v-else-if="userRole === 'CA' && company.status === 'Ativo'" class="text-green-600 font-medium mt-2">
+        Pedido aceite
+      </span>
+      <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
+        class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
+      <!-- botão apenas para SA -->
+      <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
+        class="btn-remove text-white px-4 py-2 rounded">
+        Desativar
+      </button>
+    </div>
   </div>
+
+  <!-- Modal de Aceitação -->
+  <dialog ref="acceptDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+    <h3 class="text-lg font-bold mb-4">Tem certeza que deseja aceitar o registo desta empresa?</h3>
+    <div class="flex justify-end gap-2">
+      <button type="button" @click="closeAcceptModal" class="btn btn-secondary">Cancelar</button>
+      <button type="button" @click="confirmAcceptCompany" class="btn btn-success">Aceitar</button>
+    </div>
+  </dialog>
+
+  <!-- Dialog de Edição -->
+  <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-[700px] max-w-[95vw]">
+    <h3 class="text-xl font-bold mb-4 text-center">Editar Empresa</h3>
+    <form @submit.prevent="updateCompany">
+      <fieldset class="mb-6">
+        <legend class="section-title mb-2">Informações Gerais</legend>
+
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-6">
+            <label class="label">Nome da Empresa <span class="text-red-600">*</span></label>
+            <input v-model="editCompany.name" class="form-control" required />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Setor de atividade <span class="text-red-600">*</span></label>
+            <input v-model="editCompany.sector" class="form-control" required />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Tipo de Empresa <span class="text-red-600">*</span></label>
+            <select v-model="editCompany.company_type" class="form-control" required>
+              <option disabled value="">Selecione…</option>
+              <option value="Freelancer">Freelancer</option>
+              <option value="Startup">Startup</option>
+              <option value="ME">Média Empresa</option>
+              <option value="PE">Pequena Empresa</option>
+              <option value="GE">Grande Empresa</option>
+            </select>
+
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Website</label>
+            <input v-model="editCompany.website" class="form-control" type="url" placeholder="https://…" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="section-title mb-2">Contactos e Outros Dados</legend>
+
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-6">
+            <label class="label">NIF</label>
+            <input v-model="editCompany.nif" class="form-control" />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Telefone</label>
+            <input v-model="editCompany.phone_contact" class="form-control" />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Email</label>
+            <input v-model="editCompany.email_contact" class="form-control" type="email" />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">País</label>
+            <input v-model="editCompany.country" class="form-control" />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Cidade</label>
+            <input v-model="editCompany.city" class="form-control" />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Ano da Fundação</label>
+            <input v-model="editCompany.founded_year" class="form-control" type="number" min="1800" max="2099" />
+          </div>
+
+          <div class="col-span-6">
+            <label class="label">Número de colaboradores</label>
+            <input v-model="editCompany.num_employees" class="form-control" type="number" min="1" />
+          </div>
+
+          <div class="col-span-12">
+            <label class="label">Intervalo de faturação</label>
+            <select v-model="editCompany.revenue_range" class="form-control">
+              <option disabled value="">Selecione…</option>
+              <option value="0-1M">0-1 M €</option>
+              <option value="1M-10M">1-10 M €</option>
+              <option value="10M-100M">10-100 M €</option>
+              <option value="100M+">+100 M €</option>
+            </select>
+          </div>
+
+          <div class="col-span-12">
+            <label class="label">Notas Internas</label>
+            <textarea v-model="editCompany.notes" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button type="button" @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
+        <button type="submit" class="btn btn-success">Guardar alterações</button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <!-- Dialog de Apagar -->
+  <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+    <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta empresa?</h3>
+    <div class="flex justify-end gap-2">
+      <button type="button" @click="closeDeleteModal" class="btn btn-secondary">Cancelar</button>
+      <button type="button" @click="confirmDelete" class="btn btn-danger">Apagar</button>
+    </div>
+  </dialog>
+
+  <!-- Modal de Confirmação de Pedido de Validação -->
+  <dialog ref="submitDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+    <h3 class="text-lg font-bold mb-4">Deseja pedir a validação desta empresa?</h3>
+    <div class="flex justify-end gap-2">
+      <button type="button" @click="closeSubmitModal" class="btn btn-secondary">Cancelar</button>
+      <button type="button" @click="confirmSubmitCompany" class="btn btn-submit">Confirmar</button>
+    </div>
+  </dialog>
+
+  <!-- Modal de Desativação (SA) -->
+  <dialog ref="deactivateDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+    <h3 class="text-lg font-bold mb-4">Tem certeza que deseja desativar esta empresa?</h3>
+    <div class="flex justify-end gap-2">
+      <button type="button" @click="closeDeactivateModal" class="btn btn-secondary">Cancelar</button>
+      <button type="button" @click="confirmDeactivateCompany" class="btn btn-danger">Desativar</button>
+    </div>
+  </dialog>
+
+  <!-- Modal: Confirmar Promoção -->
+  <dialog ref="promoteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+    <h3 class="text-lg font-bold mb-4">Tem certeza que deseja promover este utilizador a Company Admin?</h3>
+    <div class="flex justify-end gap-2">
+      <button type="button" @click="closePromoteUserModal" class="btn btn-secondary">Cancelar</button>
+      <button type="button" @click="confirmPromoteUser" class="btn btn-success">Promover</button>
+    </div>
+  </dialog>
+
+  <!-- Modal: Confirmar Remoção -->
+  <dialog ref="removeUserDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
+    <h3 class="text-lg font-bold mb-4">Tem certeza que deseja remover este utilizador da empresa?</h3>
+    <div class="flex justify-end gap-2">
+      <button type="button" @click="closeRemoveUserModal" class="btn btn-secondary">Cancelar</button>
+      <button type="button" @click="confirmRemoveUser" class="btn btn-danger">Remover</button>
+    </div>
+  </dialog>
+  <!-- </div> -->
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -614,88 +623,111 @@ onMounted(async () => {
 
 
 <style scoped>
-/* Mantém o estilo anterior */
-.company {
-  padding: 20px;
-  max-width: 800px;
-  margin-left: 0;
+.company-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  margin: 2rem auto;
+  position: relative;
 }
 
 .close-button {
   position: absolute;
   top: 1.5rem;
-  right: 1rem;
-  font-size: 2.5rem;
+  right: 1.5rem;
+  font-size: 2rem;
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 10;
+  color: #6b7280;
+  transition: color 0.2s;
 }
 
-@media (min-width: 1024px) {
-  .close-button {
-    right: 15rem;
-    font-size: 4rem;
-  }
+.close-button:hover {
+  color: #dc2626;
+}
+
+/* Botões */
+.btn-edit,
+.btn-accept,
+.btn-remove,
+.btn-submit {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  color: white;
+  border: none;
 }
 
 .btn-edit {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  background-color: #ffc107;
-  color: white;
+  background-color: #f59e0b;
 }
 
 .btn-edit:hover {
-  background-color: #e0a800;
+  background-color: #d97706;
 }
 
-.btn-accept {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  background-color: #4CAF50;
-  color: white;
+.btn-accept,
+.btn-submit {
+  background-color: #22c55e;
 }
 
-.btn-accept:hover {
-  background-color: #45a049;
+.btn-accept:hover,
+.btn-submit:hover {
+  background-color: #16a34a;
 }
 
 .btn-remove {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  background-color: #dc3545;
-  color: white;
+  background-color: #ef4444;
 }
 
 .btn-remove:hover {
-  background-color: #c82333;
+  background-color: #dc2626;
 }
 
-.btn-submit {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  background-color: #4CAF50;
-  color: white;
-}
-
-.btn-submit:hover {
-  background-color: #45a049;
-}
-
+/* Modal estilizado */
 dialog {
-  border-radius: 12px;
-  border: 8px solid #ffffff;
+  border-radius: 1rem;
+  border: none;
+  padding: 2rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  max-width: 95%;
 }
 
 dialog::backdrop {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
 }
 
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.modal-wrapper {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  overflow: hidden;
+  margin: auto;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Animação de loading */
 @keyframes dots {
   0% {
     content: '';
@@ -723,5 +755,36 @@ dialog::backdrop {
   animation: dots 1.5s steps(4, end) infinite;
   content: '';
   white-space: pre;
+}
+
+/* Inputs e campos */
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: white;
+}
+
+.label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #374151;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
 }
 </style>

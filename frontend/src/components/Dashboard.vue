@@ -8,7 +8,7 @@
         <h4>🏢 Empresas</h4>
         <p>
           Registe a sua empresa e visualize os detalhes associados.
-          Cada utilizador pode pertencer a diferentes empresas com permissões distintas.
+          Cada utilizador pode pertencer a diferentes empresas com permissões distintas (CU - Company User / CA - Company Admin).
         </p>
       </div>
 
