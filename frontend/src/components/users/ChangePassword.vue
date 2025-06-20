@@ -1,35 +1,61 @@
 <template>
-  <div class="change-password">
-    <h1>Alterar Password</h1>
-    <form @submit.prevent="changePassword">
-      <div class="mb-3">
-        <label for="currentPassword" class="form-label">Password Atual</label>
-        <input type="password" class="form-control" id="currentPassword" v-model="currentPassword" required>
-      </div>
-      <div class="mb-3">
-        <label for="newPassword" class="form-label">Nova Password</label>
-        <input type="password" class="form-control" id="newPassword" v-model="newPassword" required>
-      </div>
-      <div class="mb-3">
-        <label for="confirmNewPassword" class="form-label">Confirmar Nova Password</label>
-        <input type="password" class="form-control" id="confirmNewPassword" v-model="confirmNewPassword" required>
-      </div>
-      <div class="button-group">
-        <button type="submit" class="btn btn-primary">Registar Nova Password</button>
-        <button type="button" class="btn btn-secondary" @click="handleDiscardClick">
-          Descartar Alterações
-        </button>
-      </div>
-    </form>
+  <div class="password-container">
+    <div class="password-card">
+      <h2 class="password-title">Alterar Password</h2>
+      <p class="password-subtitle">Atualize a sua palavra-passe com segurança.</p>
 
-    <!-- Modal de confirmação -->
-    <div v-if="showConfirmationDialog" class="confirmation-dialog">
-      <div class="dialog-content">
-        <h2>Descartar Alterações</h2>
-        <p>Tem certeza de que deseja descartar as alterações?</p>
-        <div class="dialog-actions">
-          <button class="btn btn-secondary" @click="showConfirmationDialog = false">Cancelar</button>
-          <button class="btn btn-primary" @click="discardChanges">Descartar alterações</button>
+      <form @submit.prevent="changePassword">
+        <div class="form-group">
+          <label for="currentPassword">Password Atual</label>
+          <input
+            type="password"
+            id="currentPassword"
+            v-model="currentPassword"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="newPassword">Nova Password</label>
+          <input
+            type="password"
+            id="newPassword"
+            v-model="newPassword"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmNewPassword">Confirmar Nova Password</label>
+          <input
+            type="password"
+            id="confirmNewPassword"
+            v-model="confirmNewPassword"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">Registar Nova Password</button>
+
+        <div class="text-center mt-3">
+          <button type="button" class="btn btn-outline-secondary w-100" @click="handleDiscardClick">
+            Descartar Alterações
+          </button>
+        </div>
+      </form>
+
+      <!-- Modal -->
+      <div v-if="showConfirmationDialog" class="confirmation-dialog">
+        <div class="dialog-content">
+          <h3>Descartar Alterações</h3>
+          <p>Tem a certeza de que pretende descartar as alterações?</p>
+          <div class="dialog-actions">
+            <button class="btn btn-outline-secondary" @click="showConfirmationDialog = false">Cancelar</button>
+            <button class="btn btn-primary" @click="discardChanges">Confirmar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -44,33 +70,55 @@ import { useToast } from 'vue-toastification';
 
 const toast = useToast();
 const router = useRouter();
+
 const currentPassword = ref('');
 const newPassword = ref('');
 const confirmNewPassword = ref('');
 const showConfirmationDialog = ref(false);
 
+const validatePassword = (password) => {
+  const messages = [];
+
+  if (password.length < 8) {
+    messages.push('A password deve ter pelo menos 8 caracteres.');
+  }
+  if (!/[A-Z]/.test(password)) {
+    messages.push('A password deve conter pelo menos uma letra maiúscula.');
+  }
+  if (!/[0-9]/.test(password)) {
+    messages.push('A password deve conter pelo menos um número.');
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    messages.push('A password deve conter pelo menos um caractere especial.');
+  }
+
+  return messages;
+};
+
 const changePassword = async () => {
   if (newPassword.value !== confirmNewPassword.value) {
-    toast.error('As senhas não coincidem.');
+    toast.error('As passwords não coincidem.');
+    return;
+  }
+
+  const passwordErrors = validatePassword(newPassword.value);
+  if (passwordErrors.length > 0) {
+    passwordErrors.forEach((msg) => toast.error(msg));
     return;
   }
 
   try {
-    const response = await axios.post('/change-password', {
+    const res = await axios.post('/change-password', {
       current_password: currentPassword.value,
       new_password: newPassword.value,
       new_password_confirmation: confirmNewPassword.value,
     });
 
-    if (response.status === 200) {
-      toast.success(response.data.message || 'Senha alterada com sucesso!');
-      router.push({ name: 'Profile' });
-    } else {
-      toast.error('Erro ao alterar a senha. Verifique suas informações.');
-    }
-  } catch (error) {
-    console.error('Erro ao alterar a senha:', error);
-    toast.error('Erro ao alterar a senha. Verifique suas informações.');
+    toast.success(res.data.message || 'Senha alterada com sucesso!');
+    router.push({ name: 'Profile' });
+  } catch (err) {
+    toast.error('Erro ao alterar a senha. Verifique as informações.');
+    console.error(err);
   }
 };
 
@@ -84,36 +132,61 @@ const discardChanges = () => {
 };
 
 const handleDiscardClick = () => {
-  if (
-    currentPassword.value ||
-    newPassword.value ||
-    confirmNewPassword.value
-  ) {
-    // Se houver alguma alteração, mostrar a modal
+  if (currentPassword.value || newPassword.value || confirmNewPassword.value) {
     showConfirmationDialog.value = true;
   } else {
-    // Se nenhum campo tiver sido alterado, descartar direto
     discardChanges();
   }
 };
-
 </script>
 
 <style scoped>
-.change-password {
-  padding: 20px;
-}
-
-h1 {
-  color: #333;
-}
-
-.button-group {
+.password-container {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  height: 78vh;
+  background-color: #f1f5f9;
+  padding-top: 4%;
 }
 
-/* Modal de confirmação inline */
+.password-card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.password-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+.password-subtitle {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-control {
+  width: 100%;
+  height: 44px;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
 .confirmation-dialog {
   position: fixed;
   top: 0;

@@ -1,49 +1,46 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow">
+    <!-- Navbar -->
+    <nav v-if="!['Home', 'Login', 'Register'].includes($route.name)" class="navbar navbar-expand-md bg-dark shadow-sm">
       <div class="container-fluid">
-        <router-link class="navbar-brand col-md-3 col-lg-2 me-0 px-3" :to="{ name: 'Home' }">
-          <img src="@/assets/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-          Smart CRM
+        <router-link class="navbar-brand d-flex align-items-center gap-2" :to="{ name: 'Dashboard' }">
+          <img src="@/assets/logo.svg" alt="Logo" width="34" height="34" />
+          <span class="fw-bold fs-5">Smart CRM</span>
         </router-link>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav w-100 d-flex align-items-center">
-            <!-- "Empresas" à esquerda -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+          <ul class="navbar-nav d-flex align-items-center gap-2">
             <li v-if="isAuthenticated" class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToCompany">
-                <i class="bi bi-building me-2"></i> Empresas
+              <a class="nav-link" href="#" @click.prevent="redirectToCompany">
+                <i class="bi bi-building"></i> Empresas
               </a>
             </li>
             <li v-if="isAuthenticated" class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToCampaign">
-                <i class="bi bi-megaphone me-2"></i> Campanhas
+              <a class="nav-link" href="#" @click.prevent="redirectToCampaign">
+                <i class="bi bi-megaphone"></i> Campanhas
               </a>
             </li>
             <li v-if="isAuthenticated" class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#" @click.prevent="redirectToAlgorithms">
-                <i class="bi bi-diagram-3 me-2"></i> Algoritmos
+              <a class="nav-link" href="#" @click.prevent="redirectToAlgorithms">
+                <i class="bi bi-diagram-3"></i> Algoritmos
               </a>
             </li>
+          </ul>
 
-            <!-- Separador flexível entre esquerda e direita -->
-            <li class="flex-grow-1"></li>
-
-            <!-- Itens à direita -->
+          <ul class="navbar-nav d-flex align-items-center gap-3">
             <li v-if="!isAuthenticated" class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
-                <i class="bi bi-person-check-fill"></i>
-                Register
+              <router-link class="nav-link" :to="{ name: 'Register' }">
+                <i class="bi bi-person-plus"></i> Registar
               </router-link>
             </li>
             <li v-if="!isAuthenticated" class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Login' }" :to="{ name: 'Login' }">
-                <i class="bi bi-box-arrow-in-right"></i>
-                Login
+              <router-link class="nav-link" :to="{ name: 'Login' }">
+                <i class="bi bi-box-arrow-in-right"></i> Entrar
               </router-link>
             </li>
             <li v-if="isAuthenticated" class="nav-item">
@@ -56,22 +53,39 @@
                 aria-expanded="false">
                 <i class="bi bi-person-circle"></i> {{ user.name || 'Conta' }}
               </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="navbarDropdown">
                 <li><router-link class="dropdown-item" :to="{ name: 'Profile' }">Perfil</router-link></li>
-                <li><a class="dropdown-item" href="#" @click="handleLogout">Logout</a></li>
+                <li><a class="dropdown-item" href="#" @click.prevent="handleLogout">Logout</a></li>
               </ul>
             </li>
           </ul>
-
         </div>
       </div>
     </nav>
 
-    <div class="container-fluid">
-      <div class="row">
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-          <router-view></router-view>
-        </main>
+    <!-- Conteúdo principal -->
+    <main class="app-content">
+      <div class="content-wrapper">
+        <router-view></router-view>
+      </div>
+    </main>
+
+    <!-- Modal de confirmação de logout -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true" ref="logoutModalRef">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="logoutModalLabel">Confirmar Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            Tem a certeza de que pretende terminar a sessão?
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" @click="confirmLogout">Sair</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -81,21 +95,23 @@
 import { useAuthStore } from './stores/auth';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import axios from 'axios'
-import { ref, onMounted } from 'vue'
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { Modal } from 'bootstrap';
 
 const authStore = useAuthStore();
 const { isAuthenticated } = storeToRefs(authStore);
 const router = useRouter();
-
-const user = ref({})
+const user = ref({});
+const logoutModalRef = ref(null);
+let logoutModalInstance = null;
 
 const loadUser = async () => {
   if (!authStore.isAuthenticated) return;
 
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user');
-    user.value = response.data;
+    const res = await axios.get('http://127.0.0.1:8000/api/user');
+    user.value = res.data;
   } catch (error) {
     user.value = {};
     if (error.response?.status === 401) {
@@ -106,93 +122,91 @@ const loadUser = async () => {
 };
 
 onMounted(() => {
-  loadUser()
-})
-
-router.afterEach(() => {
-  if (authStore.isAuthenticated) {
-    loadUser();
-  } else {
-    user.value = {};
+  loadUser();
+  if (logoutModalRef.value) {
+    logoutModalInstance = new Modal(logoutModalRef.value);
   }
 });
 
+router.afterEach(() => {
+  authStore.isAuthenticated ? loadUser() : user.value = {};
+});
+
 const handleLogout = () => {
+  if (logoutModalInstance) {
+    logoutModalInstance.show();
+  }
+};
+
+const confirmLogout = () => {
   authStore.logout();
   router.push({ name: 'Home' });
+  if (logoutModalInstance) {
+    logoutModalInstance.hide();
+  }
 };
 
-const redirectToImport = () => {
-  router.push({ name: 'ImportData' });
-};
-const redirectToCompany = () => {
-  router.push({ name: 'Companies' });
-};
-const redirectToCampaign = () => {
-  router.push({ name: 'Campaigns' });
-};
-const redirectToAlgorithms = () => {
-  router.push({ name: 'Algorithms' });
-};
-
+const redirectToImport = () => router.push({ name: 'ImportData' });
+const redirectToCompany = () => router.push({ name: 'Companies' });
+const redirectToCampaign = () => router.push({ name: 'Campaigns' });
+const redirectToAlgorithms = () => router.push({ name: 'Algorithms' });
 </script>
 
 <style>
-@import "./assets/dashboard.css";
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f7f9fc;
-  color: #333;
+  background-color: #f1f5f9;
+  color: #1e293b;
 }
 
 .navbar {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #0f172a;
+  padding: 1rem 2rem;
+  background-color: #1e293b !important;
+  border-bottom: 2px solid #334155;
 }
 
 .navbar-brand {
-  font-weight: 200;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  color: #f1f5f9 !important;
-}
-
-.navbar-brand img {
-  margin-right: 8px;
+  font-size: 1.25rem;
+  color: white !important;
 }
 
 .nav-link {
+  font-size: 1rem;
   color: #cbd5e1 !important;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
+  transition: 0.3s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: #ffffff !important;
-  background-color: rgba(0, 0, 0, 0);
-  border-radius: 6px;
+.nav-link:hover {
+  color: white !important;
 }
 
 .dropdown-menu {
-  background-color: #0f172a;
-  border: none;
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 0.5rem 0;
 }
 
 .dropdown-item {
-  color: #ffffff;
-  transition: background-color 0.3s ease;
+  color: #f8fafc;
+  padding: 0.5rem 1rem;
 }
 
 .dropdown-item:hover {
-  background-color: #ffffff;
+  background-color: #334155;
+  color: white;
 }
 
-main {
-  padding-top: 1rem;
+.app-content {
+  padding-top: 2rem;
   padding-bottom: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -203,10 +217,9 @@ main {
   .nav-link {
     padding: 0.75rem 0;
   }
-}
 
-.form-control {
-  width: auto !important;
-  max-width: 100%;
+  .content-wrapper {
+    padding: 0 1rem;
+  }
 }
 </style>

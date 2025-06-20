@@ -26,8 +26,21 @@ class UserController extends Controller
         // Validar a entrada
         $validator = Validator::make($request->all(), [
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed',
+            'new_password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                'confirmed',
+            ],
         ]);
+
+        // Mensagem mais amigável (opcional)
+        $validator->after(function ($validator) use ($request) {
+            if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/', $request->new_password)) {
+                $validator->errors()->add('new_password', 'A nova password deve conter pelo menos uma letra maiúscula, uma minúscula e um número.');
+            }
+        });
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -45,5 +58,20 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['message' => 'Senha alterada com sucesso'], 200);
+    }
+
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $user->name = $request->input('name');
+        $user->save();
+
+        return response()->json(['message' => 'Nome atualizado com sucesso.'], 200);
     }
 }

@@ -171,11 +171,6 @@ import AlgorithmWizard from './AlgorithmWizard.vue';
 
 const toast = useToast();
 
-const monthMap = [
-  'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
-];
-
 export default {
   components: { AlgorithmWizard },
   props: {
