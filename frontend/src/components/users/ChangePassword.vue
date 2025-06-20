@@ -46,8 +46,6 @@
           </button>
         </div>
       </form>
-
-      <!-- Modal -->
       <div v-if="showConfirmationDialog" class="confirmation-dialog">
         <div class="dialog-content">
           <h3>Descartar Alterações</h3>

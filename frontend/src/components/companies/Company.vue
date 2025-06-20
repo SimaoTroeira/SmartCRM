@@ -103,7 +103,6 @@
           <legend class="section-title">Informações Gerais</legend>
 
           <div class="grid grid-cols-12 gap-4">
-            <!-- Nome -->
             <div class="col-span-6">
               <label class="label">Nome da Empresa <span class="text-red-600">*</span></label>
               <input v-model="companyForm.name" class="form-control" />
@@ -112,7 +111,6 @@
               </p>
             </div>
 
-            <!-- Setor -->
             <div class="col-span-6">
               <label class="label">Setor de atividade <span class="text-red-600">*</span></label>
               <input v-model="companyForm.sector" class="form-control" />
@@ -121,7 +119,6 @@
               </p>
             </div>
 
-            <!-- Tipo de Empresa -->
             <div class="col-span-6">
               <label class="label">Tipo de Empresa <span class="text-red-600">*</span></label>
               <select v-model="companyForm.company_type" class="form-control">
@@ -312,12 +309,12 @@ const refreshAll = async () => {
 
 const fetchUserRole = async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/user');
+    const res = await axios.get('/user');
     const email = res.data.email;
     if (email === 'admin@admin.com') {
       userRole.value = 'SA';
     } else {
-      const companiesRes = await axios.get('http://127.0.0.1:8000/api/companies');
+      const companiesRes = await axios.get('/companies');
       const myCompanies = companiesRes.data;
       userRole.value = myCompanies.length > 0 ? 'CA' : '';
     }
@@ -330,7 +327,7 @@ const fetchUserRole = async () => {
 
 const fetchCompanies = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/companies');
+    const response = await axios.get('/companies');
     companies.value = Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     toast.error('Erro ao carregar empresas.');
@@ -365,7 +362,7 @@ const registerCompany = async () => {
   if (!valid) return;
 
   try {
-    await axios.post('http://127.0.0.1:8000/api/companies', companyForm.value);
+    await axios.post('/companies', companyForm.value);
     toast.success('Empresa registrada com sucesso!');
     showDialog.value = false;
     companyForm.value = {
@@ -391,7 +388,7 @@ const registerCompany = async () => {
 
 const acceptCompany = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/companies/${companyToAccept.value}/approve`);
+    await axios.post(`/companies/${companyToAccept.value}/approve`);
     toast.success('Empresa aceite com sucesso!');
     await refreshAll();
     closeAcceptModal();
@@ -402,7 +399,7 @@ const acceptCompany = async () => {
 
 const requestValidation = async (companyId) => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/companies/${companyId}/submit`);
+    await axios.post(`/companies/${companyId}/submit`);
     toast.success('Pedido de validação enviado.');
     await fetchCompanies();
   } catch (error) {
@@ -421,7 +418,7 @@ const confirmRequestValidation = async () => {
 
 const deactivateCompany = async () => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/companies/${companyToDeactivate.value}/deactivate`);
+    await axios.put(`/companies/${companyToDeactivate.value}/deactivate`);
     toast.success('Empresa desativada com sucesso!');
     await refreshAll();
     closeDeactivateModal();

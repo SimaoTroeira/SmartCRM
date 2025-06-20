@@ -1,8 +1,6 @@
 <template>
   <div v-if="dadosProntos" class="space-y-6">
-    <!-- Card: Gráficos -->
     <div class="card-resultados mb-6">
-      <!-- Título e Descrição -->
       <div class="mb-2">
         <h3 class="text-2xl font-semibold text-blue-700">
           {{ tituloVisualizacao }}
@@ -12,7 +10,6 @@
         </p>
       </div>
 
-      <!-- Dropdown -->
       <div class="flex items-center gap-4 mb-4">
         <label class="font-medium text-sm">Visualizar:</label>
         <select v-model="graficoSelecionado" class="form-control border px-2 py-1 text-sm rounded w-48">
@@ -22,7 +19,6 @@
         </select>
       </div>
 
-      <!-- Gráficos -->
       <div v-if="graficoSelecionado === 'pizza' && dadosPizza.length">
         <PieChart :data="dadosPizza" />
       </div>
@@ -35,7 +31,6 @@
       <div v-else class="text-gray-500 italic">Sem dados suficientes para gráfico.</div>
     </div>
 
-    <!-- Lista de Clientes -->
     <div class="card-resultados">
       <div class="cabecalho-clientes mb-4">
         <h3 class="text-xl font-semibold mb-3 text-blue-700">Risco de cancelamento por cliente</h3>
@@ -96,10 +91,8 @@
       </div>
     </div>
 
-    <!-- Sugestões de Ação -->
     <ChurnSuggestions :clientes="clientes" :nomeEmpresa="nomeEmpresa" :nomeCampanha="nomeCampanha" />
 
-    <!-- Botão de exportação no fundo da página -->
     <div class="card-resultados card-pequeno text-center mt-10">
       <h3 class="text-base font-medium text-gray-700 mb-2">Exportar Relatório PDF</h3>
       <ExportPdfChurn :nome-empresa="props.nomeEmpresa" :nome-campanha="props.nomeCampanha" :dados-pizza="dadosPizza"
@@ -227,7 +220,7 @@ watch(
     if (!campanhaId) return
 
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${campanhaId}?algoritmo=churn&tipo=clientes`)
+      const res = await axios.get(`/algoritmos/resultados_complementares/${campanhaId}?algoritmo=churn&tipo=clientes`)
       const data = res.data
 
       if (Array.isArray(data)) {
@@ -278,11 +271,10 @@ async function exportarParaExcel() {
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Risco de Cancelamento')
 
-  // Usar props ou valores disponíveis
   const nomeEmpresaLimpo = (props.nomeEmpresa || 'Empresa')
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remover acentos
-    .replace(/\s+/g, '') // remover espaços
-    .replace(/[^a-zA-Z0-9]/g, '') // remover outros símbolos
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
 
   const nomeCampanhaLimpo = (props.nomeCampanha || 'Campanha')
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")

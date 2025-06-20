@@ -21,7 +21,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend)
 const props = defineProps({
     data: Array,
     xKey: String,
-    yKeys: Array // Ex: ['Baixo Risco', 'Médio Risco', 'Alto Risco']
+    yKeys: Array
 })
 
 const cores = ['#f87171', '#facc15', '#4ade80'] // Vermelho, amarelo, verde
@@ -32,10 +32,8 @@ const chartData = computed(() => {
     const xKey = props.xKey
     const yKeys = props.yKeys
 
-    // Usar o primeiro yKey como critério de ordenação
     const keyPrincipal = yKeys[0]
 
-    // Ordenar os dados com base no valor do primeiro yKey (decrescente)
     const dataOrdenada = [...props.data].sort((a, b) => {
         return (b[keyPrincipal] || 0) - (a[keyPrincipal] || 0)
     })

@@ -1,12 +1,10 @@
 <template>
   <div class="company-container animate-fade-in">
-    <!-- Cabeçalho com nome e botão de voltar -->
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-gray-800">{{ company.name }}</h1>
       <button @click="goBack" class="close-button">&times;</button>
     </div>
 
-    <!-- Detalhes principais -->
     <div class="grid grid-cols-2 gap-4">
       <p><strong>Setor:</strong> {{ company.sector }}</p>
       <p><strong>Tipo:</strong> {{ company.company_type }}</p>
@@ -27,7 +25,6 @@
       <p><strong>Estado:</strong> {{ company.status }}</p>
     </div>
 
-    <!-- Notas internas -->
     <div v-if="company.notes" class="mt-4">
       <p><strong>Notas:</strong> {{ company.notes }}</p>
     </div>
@@ -50,7 +47,6 @@
 
     <hr class="border-t border-gray-300 my-6" />
 
-    <!-- Campanhas -->
     <div>
       <h4 class="text-lg font-semibold mb-2">Campanhas Associadas:</h4>
       <ul>
@@ -71,7 +67,6 @@
 
     <hr class="border-t border-gray-300 my-6" />
 
-    <!-- Utilizadores -->
     <div>
       <h4 class="text-lg font-semibold mb-2">Utilizadores:</h4>
       <ul>
@@ -91,7 +86,6 @@
 
     <hr class="border-t border-gray-300 my-6" />
 
-    <!-- Convidar Utilizador -->
     <div v-if="userRole === 'CA'">
       <h4 class="text-lg font-semibold mb-2">Convidar Utilizador</h4>
       <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-2 items-start">
@@ -103,7 +97,6 @@
 
     <hr v-if="userRole === 'CA'" class="border-t border-gray-300 my-6" />
 
-    <!-- Convites Enviados -->
     <div v-if="company.invites?.length">
       <h4 class="text-lg font-semibold mb-2">Convites Enviados</h4>
       <ul>
@@ -129,7 +122,6 @@
 
     <hr class="border-t border-gray-300 my-6" />
 
-    <!-- Botões -->
     <div class="flex gap-4 mt-4">
       <button v-if="userRole === 'CA' || userRole === 'SA'" @click="openEditModal(company)"
         class="btn-edit text-white px-4 py-2 rounded">Editar</button>
@@ -149,7 +141,6 @@
       </span>
       <button v-if="userRole === 'SA' && company.status === 'Inativo'" @click="openAcceptModal"
         class="btn-accept text-white px-4 py-2 rounded">Ativar</button>
-      <!-- botão apenas para SA -->
       <button v-if="userRole === 'SA' && company.status === 'Ativo'" @click="openDeactivateModal"
         class="btn-remove text-white px-4 py-2 rounded">
         Desativar
@@ -157,7 +148,6 @@
     </div>
   </div>
 
-  <!-- Modal de Aceitação -->
   <dialog ref="acceptDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Tem certeza que deseja aceitar o registo desta empresa?</h3>
     <div class="flex justify-end gap-2">
@@ -166,7 +156,6 @@
     </div>
   </dialog>
 
-  <!-- Dialog de Edição -->
   <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-[700px] max-w-[95vw]">
     <h3 class="text-xl font-bold mb-4 text-center">Editar Empresa</h3>
     <form @submit.prevent="updateCompany">
@@ -268,8 +257,6 @@
     </form>
   </dialog>
 
-
-  <!-- Dialog de Apagar -->
   <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta empresa?</h3>
     <div class="flex justify-end gap-2">
@@ -278,7 +265,6 @@
     </div>
   </dialog>
 
-  <!-- Modal de Confirmação de Pedido de Validação -->
   <dialog ref="submitDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Deseja pedir a validação desta empresa?</h3>
     <div class="flex justify-end gap-2">
@@ -287,7 +273,6 @@
     </div>
   </dialog>
 
-  <!-- Modal de Desativação (SA) -->
   <dialog ref="deactivateDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Tem certeza que deseja desativar esta empresa?</h3>
     <div class="flex justify-end gap-2">
@@ -296,7 +281,6 @@
     </div>
   </dialog>
 
-  <!-- Modal: Confirmar Promoção -->
   <dialog ref="promoteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Tem certeza que deseja promover este utilizador a Company Admin?</h3>
     <div class="flex justify-end gap-2">
@@ -305,7 +289,6 @@
     </div>
   </dialog>
 
-  <!-- Modal: Confirmar Remoção -->
   <dialog ref="removeUserDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
     <h3 class="text-lg font-bold mb-4">Tem certeza que deseja remover este utilizador da empresa?</h3>
     <div class="flex justify-end gap-2">
@@ -313,7 +296,6 @@
       <button type="button" @click="confirmRemoveUser" class="btn btn-danger">Remover</button>
     </div>
   </dialog>
-  <!-- </div> -->
 </template>
 
 
@@ -345,14 +327,13 @@ const goBack = () => {
   router.back();
 };
 
-// Obter role do utilizador (CA, CU ou SA)
 const fetchUserRole = async () => {
   try {
-    const { data: user } = await axios.get('http://127.0.0.1:8000/api/user');
+    const { data: user } = await axios.get('/user');
     if (user.email === 'admin@admin.com') {
       userRole.value = 'SA';
     } else {
-      const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/${route.params.id}/user-role`);
+      const { data } = await axios.get(`/companies/${route.params.id}/user-role`);
       userRole.value = data.role;
     }
   } catch {
@@ -362,10 +343,9 @@ const fetchUserRole = async () => {
   }
 };
 
-// Obter dados da empresa
 const fetchCompany = async () => {
   try {
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/${route.params.id}`);
+    const { data } = await axios.get(`/companies/${route.params.id}`);
     company.value = data;
     companyName.value = data.name;
   } catch {
@@ -373,7 +353,6 @@ const fetchCompany = async () => {
   }
 };
 
-// Modal editar
 const openEditModal = (c) => {
   if (c.status === 'Ativo' && userRole.value !== 'SA') {
     toast.warning('Estado Ativo não permite. Contacte o administrador.');
@@ -418,10 +397,9 @@ const closeSubmitModal = () => {
   submitDialog.value?.close();
 };
 
-// Guardar alterações da empresa
 const updateCompany = async () => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/companies/${editCompany.value.id}`, {
+    await axios.put(`/companies/${editCompany.value.id}`, {
       name: editCompany.value.name,
       sector: editCompany.value.sector,
       company_type: editCompany.value.company_type,
@@ -439,14 +417,13 @@ const updateCompany = async () => {
 
     toast.success('Empresa atualizada com sucesso!');
     closeEditModal();
-    await fetchCompany(); // Atualiza os dados
+    await fetchCompany();
   } catch (error) {
     toast.error('Erro ao atualizar empresa.');
     console.error(error);
   }
 };
 
-// Modal apagar
 const openDeleteModal = (id) => {
   if (company.value.status === 'Ativo' && userRole.value !== 'SA') {
     toast.warning('Estado Ativo não permite. Contacte o administrador.');
@@ -460,10 +437,9 @@ const closeDeleteModal = () => {
   deleteDialog.value?.close();
 };
 
-// Confirmar apagamento
 const confirmDelete = async () => {
   try {
-    await axios.delete(`http://127.0.0.1:8000/api/companies/${companyToDelete.value}`);
+    await axios.delete(`/companies/${companyToDelete.value}`);
     toast.success('Empresa excluída com sucesso!');
     closeDeleteModal();
     router.push('/companies');
@@ -472,10 +448,9 @@ const confirmDelete = async () => {
   }
 };
 
-// Aceitar empresa (SA)
 const confirmAcceptCompany = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/approve`);
+    await axios.post(`/companies/${company.value.id}/approve`);
     toast.success('Empresa aceite com sucesso!');
     closeAcceptModal();
     await fetchCompany();
@@ -486,7 +461,7 @@ const confirmAcceptCompany = async () => {
 
 const confirmSubmitCompany = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/submit`);
+    await axios.post(`/companies/${company.value.id}/submit`);
     toast.success('Pedido de validação enviado com sucesso!');
     closeSubmitModal();
     await fetchCompany();
@@ -495,10 +470,9 @@ const confirmSubmitCompany = async () => {
   }
 };
 
-// Enviar convite
 const sendInvite = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/companies/${company.value.id}/invite`, {
+    await axios.post(`/companies/${company.value.id}/invite`, {
       email: inviteEmail.value
     });
     toast.success('Convite enviado para o email com sucesso!');
@@ -510,10 +484,9 @@ const sendInvite = async () => {
   }
 };
 
-// Reenviar convite
 const resendInvite = async (inviteId) => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/invites/${inviteId}/resend`);
+    await axios.put(`/invites/${inviteId}/resend`);
     toast.success('Convite reenviado com sucesso para o email!');
     await fetchCompany();
   } catch {
@@ -521,10 +494,9 @@ const resendInvite = async (inviteId) => {
   }
 };
 
-// Cancelar convite
 const cancelInvite = async (inviteId) => {
   try {
-    await axios.delete(`http://127.0.0.1:8000/api/invites/${inviteId}/cancel`);
+    await axios.delete(`/invites/${inviteId}/cancel`);
     toast.success('Convite cancelado com sucesso!');
     await fetchCompany();
   } catch {
@@ -532,10 +504,9 @@ const cancelInvite = async (inviteId) => {
   }
 };
 
-// Promover utilizador (CU -> CA)
 const promoteUser = async (ucrId) => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/user-company-roles/${ucrId}/promote`);
+    await axios.put(`/user-company-roles/${ucrId}/promote`);
     toast.success('Utilizador promovido com sucesso!');
     await fetchCompany();
   } catch (error) {
@@ -546,7 +517,7 @@ const promoteUser = async (ucrId) => {
 
 const removeUserFromCompany = async (ucrId) => {
   try {
-    await axios.delete(`http://127.0.0.1:8000/api/user-company-roles/${ucrId}`);
+    await axios.delete(`/user-company-roles/${ucrId}`);
     toast.success('Utilizador removido com sucesso!');
     await fetchCompany();
   } catch (error) {
@@ -567,7 +538,7 @@ const closeDeactivateModal = () => {
 
 const confirmDeactivateCompany = async () => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/companies/${company.value.id}/deactivate`);
+    await axios.put(`/companies/${company.value.id}/deactivate`);
     toast.success('Empresa desativada com sucesso!');
     closeDeactivateModal();
     await fetchCompany();
@@ -649,7 +620,6 @@ onMounted(async () => {
   color: #dc2626;
 }
 
-/* Botões */
 .btn-edit,
 .btn-accept,
 .btn-remove,
@@ -689,7 +659,6 @@ onMounted(async () => {
   background-color: #dc2626;
 }
 
-/* Modal estilizado */
 dialog {
   border-radius: 1rem;
   border: none;
@@ -727,7 +696,6 @@ dialog::backdrop {
   margin-top: 1rem;
 }
 
-/* Animação de loading */
 @keyframes dots {
   0% {
     content: '';
@@ -757,7 +725,6 @@ dialog::backdrop {
   white-space: pre;
 }
 
-/* Inputs e campos */
 .form-control {
   width: 100%;
   padding: 0.5rem;

@@ -1,13 +1,11 @@
 <template>
     <div class="portugal-map-container">
-        <!-- Botões topo -->
         <div class="map-toolbar">
             <button class="btn-toggle-modo" @click="alternarModoValorTotal">
-                {{ modoValorTotal ? '📌 Modo Clusters' : '📊 Modo Valor Total' }}
+                {{ modoValorTotal ? 'Modo Clusters' : 'Modo Valor Total' }}
             </button>
         </div>
 
-        <!-- Checkboxes por segmento -->
         <div class="map-clusters">
             <label v-for="segmento in todosSegmentos" :key="segmento"
                 :style="{ backgroundColor: coresPorSegmento[segmento] || '#ccc' }">
@@ -16,13 +14,10 @@
             </label>
         </div>
 
-        <!-- Mapa principal (Continente) -->
         <v-chart ref="vChartRef" class="echart-map" :option="chartOptions" autoresize @ready="onChartReady" />
 
-        <!-- Mini-mapa: Açores -->
         <v-chart class="mini-map mini-acores" :option="acoresOptions" autoresize />
 
-        <!-- Mini-mapa: Madeira -->
         <v-chart class="mini-map mini-madeira" :option="madeiraOptions" autoresize />
 
 
@@ -106,7 +101,7 @@ const acoresOptions = computed(() => {
                 right: 5,
                 top: 10,
                 calculable: false,
-                show: false, // escondido no mini-mapa
+                show: false,
                 inRange: {
                     color: ['#aec7e8', '#084594']
                 }
@@ -117,7 +112,7 @@ const acoresOptions = computed(() => {
             map: 'portugal',
             roam: false,
             zoom: 4.5,
-            center: [-28, 38], // foca nos Açores
+            center: [-28, 38],
             label: {
                 show: true,
                 fontSize: 10
@@ -164,7 +159,7 @@ const madeiraOptions = computed(() => {
                 right: 5,
                 top: 10,
                 calculable: false,
-                show: false, // escondido no mini-mapa
+                show: false,
                 inRange: {
                     color: ['#aec7e8', '#084594']
                 }
@@ -175,7 +170,7 @@ const madeiraOptions = computed(() => {
             map: 'portugal',
             roam: false,
             zoom: 6,
-            center: [-17, 32.7], // foca na Madeira
+            center: [-17, 32.7],
             label: {
                 show: true,
                 fontSize: 10
@@ -343,10 +338,9 @@ onMounted(() => {
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     background-color: white;
-    position: relative; /* mantém para os mini-mapas */
+    position: relative;
 }
 
-/* Botões em linha horizontal */
 .map-toolbar {
     display: flex;
     justify-content: space-between;
@@ -354,7 +348,6 @@ onMounted(() => {
     margin-bottom: 12px;
 }
 
-/* Checkboxes por segmento abaixo dos botões */
 .map-clusters {
     display: flex;
     flex-wrap: wrap;
@@ -374,7 +367,6 @@ onMounted(() => {
     font-size: 0.85rem;
 }
 
-/* Botões */
 .btn-reset-zoom,
 .btn-toggle-modo {
     background-color: white;

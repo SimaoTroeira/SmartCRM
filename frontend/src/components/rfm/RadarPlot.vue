@@ -9,11 +9,10 @@
 
         </div>
 
-        <!-- Gráfico com moldura -->
         <div class="radar-box">
             <Radar :data="radarData" :options="radarOptions" />
         </div>
-        <!-- Tooltip explicativa abaixo do gráfico -->
+
         <div class="legend-info">
             <p><strong>Valores próximos ou iguais a 100%</strong>: Indicam que os clientes do segmento têm uma
                 distribuição dos valores equilibrada na respetiva métrica.</p>
@@ -57,7 +56,6 @@ const coresFixas = {
 
 const clustersVisiveis = ref({})
 
-// Agrupamento por segmento
 const segmentosRaw = computed(() => {
     const grupos = {}
     props.scatterClientes.forEach(cliente => {
@@ -122,7 +120,7 @@ const radarOptions = {
         padding: {
             top: 10,
             right: 0,
-            bottom: 0, // <- isto remove o espaço inferior
+            bottom: 0,
             left: 0
         }
     },
@@ -159,7 +157,6 @@ const radarOptions = {
 <style scoped>
 .radar-container {
     max-width: 900px;
-    /* mesmo valor dos outros gráficos */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -197,7 +194,7 @@ const radarOptions = {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0px; /* estava 100px — reduzido! */
+  margin-bottom: 0px;
 }
 
 .radar-box canvas {
@@ -216,8 +213,8 @@ const radarOptions = {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   width: 90%;
   max-width: 900px;
-  margin-top: 8px; /* mais perto do radar-box */
-  margin-bottom: 16px; /* afasta do fundo */
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 

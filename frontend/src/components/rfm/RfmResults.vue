@@ -1,7 +1,6 @@
 <template>
   <div v-if="dadosProntos" class="space-y-10">
 
-    <!-- Controlo de visualização -->
     <div class="card-resultados mb-6">
       <div class="mb-2">
         <h3 class="text-2xl font-semibold text-blue-700">
@@ -19,7 +18,6 @@
           <option value="regioes">Regiões</option>
         </select>
 
-        <!-- Submodo para clientes -->
         <div v-if="modoVisualizacao === 'clientes'" class="flex items-center gap-2">
           <label class="font-medium text-sm">Tipo de gráfico:</label>
           <select v-model="submodoClientes" class="form-control border px-2 py-1 text-sm rounded w-48">
@@ -29,7 +27,6 @@
           </select>
         </div>
 
-        <!-- Submodo para regiões -->
         <div v-else-if="modoVisualizacao === 'regioes'" class="flex items-center gap-2">
           <label class="font-medium text-sm">Tipo de gráfico:</label>
           <select v-model="submodoRegioes" class="form-control border px-2 py-1 text-sm rounded w-48">
@@ -51,7 +48,6 @@
       <PortugalMap v-if="modoVisualizacao === 'regioes' && submodoRegioes === 'mapa'" :dados-regioes="scatterRegioes" />
     </div>
 
-    <!-- Clientes Segmentados -->
     <div class="card-resultados">
       <div class="cabecalho-clientes mb-4">
         <h3 class="text-xl font-semibold mb-3 text-blue-700">Segmentação RFM dos Clientes </h3>
@@ -60,8 +56,6 @@
         </button>
       </div>
 
-
-      <!-- ENVOLVER tudo abaixo num container centralizado -->
       <div class="conteudo-centrado">
         <div class="controles-tabela-clientes mb-4">
           <button @click="resetarOrdenacao" class="btn-reset-custom">
@@ -110,7 +104,6 @@
       </div>
     </div>
 
-    <!-- Tabela Resumo -->
     <div class="card-resultados no-min-height">
       <div class="cabecalho-clientes mb-4">
         <h3 class="text-xl font-semibold text-blue-700">Tabela de Segmentos</h3>
@@ -145,11 +138,8 @@
       </div>
     </div>
 
-    <!-- Sugestões de Ação -->
     <RfmSuggestions ref="sugestoesVisiveis" :clientes-segmentados="clientesSegmentados" />
 
-
-    <!-- Botão de exportação no fundo da página -->
     <div class="card-resultados card-pequeno text-center mt-10">
       <h3 class="text-base font-medium text-gray-700 mb-2">Exportar Relatório PDF</h3>
       <ExportPdfRfm :nome-empresa="nomeEmpresa" :nome-campanha="nomeCampanha" :scatter-clientes="scatterClientes"
@@ -305,7 +295,6 @@ const dadosProntos = computed(() => {
 function exportarParaExcel() {
   const data = props.clientesSegmentados.map(cliente => {
     const clone = { ...cliente }
-    //delete clone.ClienteID
     return clone
   })
 
@@ -323,7 +312,6 @@ function exportarParaExcel() {
 function exportarSegmentosParaExcel() {
   if (!props.results || !props.results.length) return
 
-  // Remapeia o nome das colunas
   const dados = props.results.map(row => {
     const linha = {}
     for (const [key, val] of Object.entries(row)) {
@@ -349,10 +337,10 @@ function normalizarNome(nome) {
   if (!nome) return 'desconhecido'
 
   return nome
-    .normalize('NFD')                         // separa acentos das letras
-    .replace(/[\u0300-\u036f]/g, '')          // remove os acentos
-    .replace(/ç/g, 'c')                       // substitui ç manualmente
-    .replace(/[^a-zA-Z0-9]/g, '')             // remove tudo que não for letra ou número
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ç/g, 'c')
+    .replace(/[^a-zA-Z0-9]/g, '')
 }
 
 
@@ -375,7 +363,6 @@ function normalizarNome(nome) {
   gap: 0.5rem;
 }
 
-/* Botão personalizado */
 .btn-reset-custom {
   background-color: white;
   border: 2px solid #2563eb;
@@ -395,7 +382,6 @@ function normalizarNome(nome) {
 .card-resultados {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
-  /* gray-200 */
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   padding: 24px;
@@ -455,7 +441,6 @@ function normalizarNome(nome) {
   box-shadow: none;
   border-radius: 8px;
   background-color: #f9fafb;
-  /* cinza claro */
 }
 
 .card-pequeno h3 {

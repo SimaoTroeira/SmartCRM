@@ -100,10 +100,9 @@ const register = async () => {
   }
 
   try {
-    // Registo
+
     await axios.post('/register', user.value);
 
-    // Login automático
     const loginRes = await axios.post('/login', {
       email: user.value.email,
       password: user.value.password
@@ -111,7 +110,6 @@ const register = async () => {
 
     const token = loginRes.data.token;
 
-    // Login na store
     authStore.login(token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 

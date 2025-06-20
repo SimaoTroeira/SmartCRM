@@ -110,7 +110,7 @@ const loadUser = async () => {
   if (!authStore.isAuthenticated) return;
 
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/user');
+    const res = await axios.get('/user');
     user.value = res.data;
   } catch (error) {
     user.value = {};

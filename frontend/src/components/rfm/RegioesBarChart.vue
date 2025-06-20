@@ -1,6 +1,5 @@
 <template>
   <div class="bar-chart-container">
-    <!-- Checkboxes por segmento -->
     <div class="checkboxes">
       <label v-for="segmento in todosSegmentos" :key="segmento"
         :style="{ backgroundColor: coresPorSegmento[segmento] || '#ccc' }">
@@ -8,8 +7,6 @@
         {{ segmento }}
       </label>
     </div>
-
-    <!-- Gráfico -->
     <Bar :data="chartData" :options="chartOptions" />
   </div>
 </template>
@@ -57,7 +54,6 @@ const todosSegmentos = computed(() =>
 
 const segmentosVisiveis = ref({})
 
-// Inicializa os checkboxes quando os segmentos forem detectados
 watchEffect(() => {
   todosSegmentos.value.forEach(s => {
     if (!(s in segmentosVisiveis.value)) {
@@ -66,7 +62,6 @@ watchEffect(() => {
   })
 })
 
-// 1. Ordenar regiões por valor total dos segmentos visíveis
 const regioesOrdenadas = computed(() => {
   return [...props.scatterRegioes]
     .map(regiao => {
@@ -80,7 +75,6 @@ const regioesOrdenadas = computed(() => {
     .sort((a, b) => b.totalVisivel - a.totalVisivel)
 })
 
-// 2. Gerar datasets com base na ordem nova
 const filteredDatasets = computed(() =>
   todosSegmentos.value
     .filter(seg => segmentosVisiveis.value[seg])
@@ -97,7 +91,6 @@ const filteredDatasets = computed(() =>
     }))
 )
 
-// 3. Atualizar os labels
 const chartData = computed(() => ({
   labels: regioesOrdenadas.value.map(r => r.Regiao),
   datasets: filteredDatasets.value

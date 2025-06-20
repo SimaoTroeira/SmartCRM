@@ -40,7 +40,6 @@
         </button>
       </div>
 
-      <!-- Associar utilizadores -->
       <div class="mt-6" v-if="canEdit">
         <h3 class="text-lg font-semibold mb-2">Associar Utilizadores</h3>
         <select v-model="selectedUsers" multiple class="form-control border p-2 w-full mb-2">
@@ -51,7 +50,6 @@
         <button @click="associateUsers" class="btn btn-success">Associar</button>
       </div>
 
-      <!-- Listar utilizadores já associados -->
       <div class="mt-6">
         <h3 class="text-lg font-semibold mb-2">Utilizadores Associados</h3>
         <ul>
@@ -66,7 +64,6 @@
       </div>
     </div>
 
-    <!-- Modal Editar -->
     <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
       <h3 class="text-lg font-bold mb-4">Editar Campanha</h3>
       <form @submit.prevent="updateCampaign">
@@ -85,7 +82,6 @@
       </form>
     </dialog>
 
-    <!-- Modal Apagar -->
     <dialog ref="deleteDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
       <h3 class="text-lg font-bold mb-4">Tem certeza que deseja apagar esta campanha?</h3>
       <div class="flex justify-end gap-2">
@@ -94,7 +90,6 @@
       </div>
     </dialog>
 
-    <!-- Modal Concluir -->
     <dialog ref="concludeDialog" class="bg-white p-6 rounded-lg shadow-md w-96">
       <h3 class="text-lg font-bold mb-4">Tem certeza que deseja concluir esta campanha?</h3>
       <div class="flex justify-end gap-2">
@@ -145,7 +140,7 @@ const traduzirStatus = (status) => {
 const fetchCampaign = async () => {
   loading.value = true;
   try {
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/campaigns/${route.params.id}`);
+    const { data } = await axios.get(`/campaigns/${route.params.id}`);
     campaign.value = data;
     form.value = { name: data.name, description: data.description };
 
@@ -163,14 +158,14 @@ const fetchCampaign = async () => {
 
 const fetchUserDataAndPermissions = async (companyId) => {
   try {
-    const { data: user } = await axios.get(`http://127.0.0.1:8000/api/user`);
+    const { data: user } = await axios.get(`/user`);
     userId.value = user.id;
 
     if (user.email === 'admin@admin.com') {
       userRole.value = 'SA';
       canEdit.value = true;
     } else {
-      const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/${companyId}/user-role`);
+      const { data } = await axios.get(`/companies/${companyId}/user-role`);
       userRole.value = data.role;
       canEdit.value = data.role === 'CA';
     }
@@ -181,7 +176,7 @@ const fetchUserDataAndPermissions = async (companyId) => {
 
 const fetchCompanyUsers = async (companyId) => {
   try {
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/companies/${companyId}`);
+    const { data } = await axios.get(`/companies/${companyId}`);
     companyUsers.value = data.user_company_roles.map(ucr => ({
       id: ucr.user.id,
       name: ucr.user.name,
@@ -194,7 +189,7 @@ const fetchCompanyUsers = async (companyId) => {
 
 const fetchCampaignUsers = async (campaignId) => {
   try {
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/campaigns/${campaignId}/users`);
+    const { data } = await axios.get(`/campaigns/${campaignId}/users`);
     campaignUsers.value = data;
   } catch {
     toast.error('Erro ao obter utilizadores da campanha.');
@@ -208,7 +203,7 @@ const filteredCompanyUsers = computed(() => {
 
 const associateUsers = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}/users`, {
+    await axios.post(`/campaigns/${campaign.value.id}/users`, {
       user_ids: selectedUsers.value
     });
     toast.success('Utilizadores associados com sucesso!');
@@ -227,7 +222,7 @@ const canRemoveUser = (user) => {
 
 const removeUser = async (userIdToRemove) => {
   try {
-    await axios.delete(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}/users/${userIdToRemove}`);
+    await axios.delete(`/campaigns/${campaign.value.id}/users/${userIdToRemove}`);
     toast.success('Utilizador removido da campanha!');
     await fetchCampaignUsers(campaign.value.id);
   } catch {
@@ -246,7 +241,7 @@ const closeConcludeModal = () => concludeDialog.value.close();
 
 const updateCampaign = async () => {
   try {
-    await axios.put(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}`, form.value);
+    await axios.put(`/campaigns/${campaign.value.id}`, form.value);
     toast.success('Campanha atualizada com sucesso!');
     closeEditModal();
     await fetchCampaign();
@@ -257,7 +252,7 @@ const updateCampaign = async () => {
 
 const confirmDelete = async () => {
   try {
-    await axios.delete(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}`);
+    await axios.delete(`/campaigns/${campaign.value.id}`);
     toast.success('Campanha excluída com sucesso!');
     closeDeleteModal();
     router.push('/campaigns');
@@ -268,7 +263,7 @@ const confirmDelete = async () => {
 
 const confirmConclude = async () => {
   try {
-    await axios.post(`http://127.0.0.1:8000/api/campaigns/${campaign.value.id}/concluir`);
+    await axios.post(`/campaigns/${campaign.value.id}/concluir`);
     toast.success('Campanha concluída com sucesso!');
     closeConcludeModal();
     await fetchCampaign();

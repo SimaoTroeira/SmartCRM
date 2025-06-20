@@ -99,7 +99,7 @@ router.beforeEach(async (to, from, next) => {
   if (authStore.isAuthenticated) {
     try {
       // Verifica se o utilizador ainda existe na BD
-      await axios.get('/api/user'); // ou '/user' se for essa a tua rota
+      await axios.get('/user'); // ou '/user' se for essa a tua rota
     } catch (error) {
       // Se for 401, 403, ou 404, é porque o token está inválido ou o user foi apagado
       if ([401, 403, 404].includes(error.response?.status)) {

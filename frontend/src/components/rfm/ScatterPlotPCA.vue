@@ -1,6 +1,5 @@
 <template>
   <div class="radar-container">
-    <!-- Top bar com botão e checkboxes -->
     <div class="top-bar">
       <div class="toolbar-row">
         <button @click="resetZoom" class="btn-reset">Repor Zoom</button>
@@ -15,10 +14,8 @@
       </div>
     </div>
 
-    <!-- Gráfico -->
     <Scatter ref="chartComponent" :data="chartData" :options="chartOptions" />
 
-    <!-- Legenda abaixo do gráfico -->
     <div class="legend-info">
       <p><strong>PCA 1</strong>: Representa a direção com maior variância explicada entre as variáveis analisadas.</p>
       <p><strong>PCA 2</strong>: Representa uma direção ortogonal à primeira, capturando a segunda maior variação nos
@@ -181,11 +178,8 @@ function resetZoom() {
   text-align: left;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   width: 90%;
-  /* ocupa a largura do gráfico */
   max-width: 900px;
-  /* mesmo valor que o radar-container */
   margin-top: 14px;
-  /* espaço entre gráfico e legenda */
 }
 
 

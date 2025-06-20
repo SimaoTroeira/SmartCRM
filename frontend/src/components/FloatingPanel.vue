@@ -7,8 +7,6 @@
           <p class="text-sm text-gray-600 font-semibold">Campanha: {{ campanhaSelecionada?.name || 'N/D' }}</p>
           <p class="text-sm text-gray-600 font-semibold">Algoritmo: {{ algoritmoLabel }}</p>
         </div>
-
-        <!-- Botão "Alterar" no canto inferior esquerdo -->
         <button @click="scrollToTop" title="Voltar ao topo" class="scroll-top-button">
           Alterar 
         </button>

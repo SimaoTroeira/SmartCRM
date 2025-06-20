@@ -26,10 +26,8 @@ const props = defineProps({
   nomeCampanha: String
 })
 
-// Criar sugestoes como ref para poder expor
 const sugestoes = ref([])
 
-// Atualizar dinamicamente as sugestões sempre que os clientes mudarem
 watchEffect(() => {
   const clientes = props.clientes || []
 
@@ -68,7 +66,6 @@ watchEffect(() => {
   ]
 })
 
-// Expor para uso externo (ex: exportação PDF)
 defineExpose({ sugestoes })
 </script>
 

@@ -34,7 +34,6 @@
       </div>
     </dialog>
 
-    <!-- Conteúdo invisível -->
     <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
       <div v-if="graficosSelecionados.includes('pca')">
         <div ref="pcaRef">
@@ -210,8 +209,7 @@ async function gerarPdf() {
       useCORS: true
     })
     const imgData = canvasImagem.toDataURL('image/png')
-
-    // 🔧 Ajuste de tamanho personalizado para o mapa
+    
     const imgWidth = grafico === 'mapa' ? 520 : 500
     const imgHeight = (canvasImagem.height * imgWidth) / canvasImagem.width
 

@@ -32,7 +32,6 @@
       </div>
     </dialog>
 
-    <!-- Conteúdo invisível -->
     <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
       <div v-show="graficosSelecionados.includes('pizza')">
         <div ref="pizzaRef">
@@ -46,13 +45,12 @@
           <BarChart :data="dadosBarras" :x-key="'Regiao'" :y-keys="['Alto Risco', 'Médio Risco', 'Baixo Risco']" />
         </div>
       </div>
-      <!-- Mapa: renderizado dentro do viewport com opacity 0 -->
+
       <div v-show="graficosSelecionados.includes('mapa')"
         style="position: fixed; top: 0; left: 0; opacity: 0; pointer-events: none; z-index: -1;">
         <div ref="mapaRef" style="width: 1000px; height: 600px;">
           <h4>Risco no Mapa</h4>
 
-          <!-- Legenda manual antes do mapa -->
           <div style="display: flex; gap: 10px; margin-bottom: 10px; font-size: 12px;">
             <div><span
                 style="background-color: #f87171; width: 12px; height: 12px; display: inline-block; margin-right: 4px;"></span>
@@ -69,7 +67,6 @@
         </div>
       </div>
 
-      <!-- Sugestões invisíveis mas renderizadas corretamente -->
       <div style="position: absolute; top: -9999px; left: -9999px; width: 1000px;">
         <ChurnSuggestions ref="churnSuggestionsRef" :clientes="clientes" :nomeEmpresa="nomeEmpresa"
           :nomeCampanha="nomeCampanha" />
@@ -210,7 +207,6 @@ async function gerarPdf() {
       doc.addImage(imgData, 'PNG', 40, y, imgWidth, imgHeight)
 
       if (grafico === 'mapa') {
-        // Legenda sobre a imagem do mapa
         const legendaX = 50
         let legendaY = y + 20
         const legendaItens = [

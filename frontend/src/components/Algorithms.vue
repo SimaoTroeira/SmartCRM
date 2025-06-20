@@ -14,7 +14,6 @@
             </div>
 
             <div v-else class="space-y-4">
-                <!-- Dropdowns -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div>
                         <label class="block mb-1 font-medium">Selecione uma empresa:</label>
@@ -55,8 +54,6 @@
                 <AlgorithmWizard v-if="mostrarWizard && selectedCampaignId && selectedAlgorithm"
                     :campanha-id="selectedCampaignId" :algoritmo="selectedAlgorithm" @valido="handleValid"
                     class="mt-10 mb-6" />
-
-                <!-- Botões -->
                 <div class="mt-10 mb-6 flex flex-wrap gap-4 border-b border-gray-300 pb-4">
                     <button class="executar-btn"
                         :disabled="!selectedCampaignId || !selectedAlgorithm || loading || empresaInativa"
@@ -69,7 +66,6 @@
                     </button>
                 </div>
 
-                <!-- Descrição -->
                 <div class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl">
                     <p v-if="selectedAlgorithm === 'rfm'" class="text-sm text-gray-700">
                         A segmentação <strong>RFM</strong> (Recência, Frequência e Valor Monetário) é uma técnica usada
@@ -90,8 +86,6 @@
                 <div v-if="errorMessage" class="text-red-600 font-medium mt-4">
                     {{ errorMessage }}
                 </div>
-
-                <!-- Visualizações por componente -->
                 <div v-if="showResults">
 
                     <RfmResults v-if="selectedAlgorithm === 'rfm'" :results="results" :descricao="descricao"
@@ -127,6 +121,7 @@ import ChurnResults from '@/components/churn/ChurnResults.vue'
 import RecommendResults from '@/components/recommendation/RecommendResults.vue'
 
 
+
 const companies = ref([])
 const selectedCompanyId = ref('')
 
@@ -147,8 +142,6 @@ const clientesSegmentados = ref([])
 const scatterClientes = ref([])
 const scatterRegioes = ref([])
 
-
-// Computed para obter company_id da campanha selecionada
 const empresaId = computed(() => {
     const camp = campaigns.value.find(c => c.id === selectedCampaignId.value)
     return camp ? camp.company_id : null
@@ -156,7 +149,7 @@ const empresaId = computed(() => {
 
 const fetchCompanies = async () => {
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/companies') // endpoint deve devolver apenas companies associadas ao user
+        const res = await axios.get('/companies')
         companies.value = res.data || []
     } catch (error) {
         toast.error('Erro ao carregar empresas.')
@@ -166,7 +159,7 @@ const fetchCompanies = async () => {
 
 const fetchCampaigns = async () => {
     try {
-        const res = await axios.get('http://127.0.0.1:8000/api/campaigns')
+        const res = await axios.get('/campaigns')
         campaigns.value = res.data || []
     } catch {
         toast.error('Erro ao carregar campanhas.')
@@ -182,7 +175,7 @@ onMounted(() => {
     fetchCampaigns().then(() => {
         const algorithmStored = localStorage.getItem('selectedAlgorithm')
         const companyStored = localStorage.getItem('selectedCompanyId')
-        campaignStoredTemp = localStorage.getItem('selectedCampaignId') // guardar temporariamente
+        campaignStoredTemp = localStorage.getItem('selectedCampaignId')
 
         if (companyStored && companies.value.find(c => c.id === parseInt(companyStored))) {
             selectedCompanyId.value = parseInt(companyStored)
@@ -246,7 +239,7 @@ const runAlgorithm = async () => {
     showResults.value = false
 
     try {
-        await axios.post(`http://127.0.0.1:8000/api/algoritmos/gerar`, {
+        await axios.post(`/algoritmos/gerar`, {
             campanha_id: selectedCampaignId.value,
             algoritmo: selectedAlgorithm.value
         })
@@ -264,7 +257,7 @@ const esperarResultados = async (tentativas = 0) => {
 
     try {
         if (selectedAlgorithm.value === 'churn') {
-            const churnRes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
+            const churnRes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
             if (Array.isArray(churnRes.data) && churnRes.data.length > 0) {
                 results.value = churnRes.data
                 descricao.value = 'Previsão de churn baseada em recência, frequência, valor e tempo como cliente.'
@@ -274,7 +267,7 @@ const esperarResultados = async (tentativas = 0) => {
                 return
             }
         } else {
-            const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
+            const res = await axios.get(`/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
 
             const isRfmOk = selectedAlgorithm.value === 'rfm' && res.data?.dados?.length
             const isRecOk = selectedAlgorithm.value === 'recommendation' && Array.isArray(res.data)
@@ -286,13 +279,13 @@ const esperarResultados = async (tentativas = 0) => {
 
                     const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
                     if (empresaId) {
-                        const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
+                        const resClientes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
                         clientesSegmentados.value = resClientes.data || []
 
-                        const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
+                        const resScatterClientes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
                         scatterClientes.value = resScatterClientes.data || []
 
-                        const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+                        const resScatterRegioes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
                         scatterRegioes.value = resScatterRegioes.data || []
                     }
                 } else if (selectedAlgorithm.value === 'recommendation') {
@@ -335,7 +328,7 @@ const fetchResults = async () => {
 
     try {
         if (selectedAlgorithm.value === 'churn') {
-            const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
+            const res = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=churn&tipo=clientes`)
 
             if (!Array.isArray(res.data) || res.data.length === 0) {
                 toast.error('O algoritmo ainda não foi executado para esta campanha.')
@@ -351,7 +344,7 @@ const fetchResults = async () => {
         }
 
 
-        const res = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
+        const res = await axios.get(`/algoritmos/resultados/${selectedCampaignId.value}?algoritmo=${selectedAlgorithm.value}`)
 
         if (selectedAlgorithm.value === 'rfm') {
             if (!res.data?.dados || res.data.dados.length === 0) {
@@ -375,13 +368,13 @@ const fetchResults = async () => {
 
         const empresaId = campaigns.value.find(c => c.id === selectedCampaignId.value)?.company_id
         if (empresaId && selectedAlgorithm.value === 'rfm') {
-            const resClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
+            const resClientes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=clientes`)
             clientesSegmentados.value = resClientes.data || []
 
-            const resScatterClientes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
+            const resScatterClientes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_clientes`)
             scatterClientes.value = resScatterClientes.data || []
 
-            const resScatterRegioes = await axios.get(`http://127.0.0.1:8000/api/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
+            const resScatterRegioes = await axios.get(`/algoritmos/resultados_complementares/${selectedCampaignId.value}?algoritmo=rfm&tipo=scatter_regioes`)
             scatterRegioes.value = resScatterRegioes.data || []
         }
 

@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-8">
-    <!-- Regras Produto → Produto -->
     <div v-if="regrasOrdenadasProd.length" class="card-resultados">
       <div class="cabecalho-clientes mb-4">
         <div class="titulo-reset">
@@ -61,7 +60,6 @@
       </div>
     </div>
 
-    <!-- Regras por Atributo -->
     <div v-for="(regras, atributo) in regrasOrdenadasAttr" :key="atributo" class="card-resultados">
       <div class="cabecalho-clientes mb-4">
         <div class="titulo-reset">
@@ -130,7 +128,7 @@ const props = defineProps({
 
 const prodRulesRaw = ref([])
 const attrRules = reactive({})
-const produtosMap = ref({}) // ProdutoID -> NomeProduto
+const produtosMap = ref({})
 
 const colunaOrdenadaProd = ref('')
 const ordemCrescenteProd = ref(false)
@@ -150,8 +148,8 @@ function traduzir(lista) {
 function normalizarNome(nome) {
   return (nome || '')
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-    .replace(/[^a-zA-Z0-9]/g, '') // Remove tudo menos letras e números
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
 }
 
 const regrasOrdenadasProd = computed(() => {
@@ -201,11 +199,9 @@ function ordenarPorAttr(attr, col) {
 
 async function carregarTudo() {
   try {
-    // Regras Produto
     const pd = await axios.get(`/algoritmos/resultados_complementares/${props.campanhaId}?algoritmo=recommendation&tipo=produto`)
     prodRulesRaw.value = Array.isArray(pd.data) ? pd.data : []
 
-    // Regras Atributos
     const ar = await axios.get(`/algoritmos/resultados_complementares/${props.campanhaId}?algoritmo=recommendation&tipo=atributos`)
     Object.assign(attrRules, ar.data)
     Object.keys(ar.data).forEach(key => {
@@ -214,7 +210,6 @@ async function carregarTudo() {
       limiteLinhasAttr[key] = 10
     })
 
-    // Preencher produtosMap a partir dos dados das regras de produto
     const nomeMap = {}
     for (const regra of prodRulesRaw.value) {
       const todosIDs = [...(regra.antecedents || []), ...(regra.consequents || [])]

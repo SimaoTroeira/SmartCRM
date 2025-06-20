@@ -30,7 +30,7 @@ const chartData = {
     labels: props.data.map(d => d.name),
     datasets: [{
         data: props.data.map(d => d.value),
-        backgroundColor: props.data.map(d => corPorRisco[d.name] || '#d1d5db') // cinza como fallback
+        backgroundColor: props.data.map(d => corPorRisco[d.name] || '#d1d5db')
     }]
 }
 

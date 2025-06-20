@@ -1,6 +1,5 @@
 <template>
   <div class="radar-container">
-    <!-- Botão + Checkboxes juntos em linha compacta -->
     <div class="top-bar">
       <div class="toolbar-row">
         <button @click="resetZoom" class="btn-reset">Repor Zoom</button>
@@ -15,10 +14,7 @@
       </div>
     </div>
 
-
-    <!-- Gráfico -->
     <Scatter ref="chartComponent" v-if="modo === 'clientes'" :data="chartData" :options="chartOptions" />
-    <!-- Tooltip abaixo do gráfico -->
     <div class="legend-info">
       <p><strong>Recência</strong>: Mede quantos dias passaram desde a última compra do cliente. Valores mais baixos
         indicam clientes mais recentes.</p>

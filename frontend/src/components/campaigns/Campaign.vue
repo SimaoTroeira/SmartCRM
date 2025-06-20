@@ -74,7 +74,6 @@
     </div>
   </div>
 
-  <!-- Modal de criar campanha -->
   <div v-if="showDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="modal-wrapper">
       <h3 class="text-lg font-bold mb-4">Criar nova campanha</h3>
@@ -165,7 +164,7 @@ const prevPage = () => {
 
 async function fetchUserRole() {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/user');
+    const res = await axios.get('/user');
     userRole.value = res.data.email === 'admin@admin.com' ? 'SA' : 'CA';
   } catch {
     toast.error('Erro ao obter papel do usuário.');
@@ -182,7 +181,7 @@ const fetchCampaigns = async () => {
   }
 
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/campaigns');
+    const res = await axios.get('/campaigns');
     let allCampaigns = Array.isArray(res.data) ? res.data : [];
 
     if (userRole.value === 'SA') {
@@ -200,7 +199,7 @@ const fetchCampaigns = async () => {
 
 const fetchCompanies = async () => {
   try {
-    const res = await axios.get('http://127.0.0.1:8000/api/companies');
+    const res = await axios.get('/companies');
     companies.value = Array.isArray(res.data) ? res.data : [];
   } catch (error) {
     toast.error('Erro ao carregar empresas.');
@@ -216,7 +215,7 @@ const createCampaign = async () => {
       return;
     }
 
-    await axios.post('http://127.0.0.1:8000/api/campaigns', form.value);
+    await axios.post('/campaigns', form.value);
     toast.success('Campanha criada com sucesso!');
     showDialog.value = false;
     form.value = { name: '', description: '', company_id: '' };

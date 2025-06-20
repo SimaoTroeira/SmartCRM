@@ -31,7 +31,6 @@
         <p>
           Analise os dados com algoritmos de <strong>segmentação RFM</strong>, <strong>previsão de churn</strong> e
           <strong>recomendações de produtos</strong>.
-          <!-- Os resultados podem ser visualizados em PDF ou diretamente na aplicação. -->
         </p>
       </div>
 
@@ -48,7 +47,7 @@
   min-height: calc(100vh - 100px);
   padding: 4vh 2rem 6vh;
   background-color: #f1f5f9;
-  overflow: hidden; /* elimina scroll vertical */
+  overflow: hidden;
 }
 
 .dashboard-card {

@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col px-4 pt-0">
-    <!-- Nome da Tabela (readonly) -->
     <div class="inline-flex items-center gap-4 mt-4">
       <div class="flex flex-col">
         <label class="font-bold mb-1">Quer importar a tabela </label>
@@ -8,7 +7,6 @@
       </div>
     </div>
 
-    <!-- Tipo de Ficheiro -->
     <div class="inline-flex items-center gap-4 mt-4">
       <div class="flex flex-col">
         <label class="font-bold mb-1">Qual destes ficheiros corresponde ao que importou? </label>
@@ -21,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Empresa e Nome Final -->
     <div class="inline-flex items-center gap-4 mt-6">
       <div class="flex flex-col">
         <label class="font-bold mb-1">Empresa:</label>
@@ -33,7 +30,6 @@
       </div>
     </div>
 
-    <!-- Bloco condicional: mostra as colunas esperadas por tipo de ficheiro -->
     <div v-if="fileType" class="bg-white p-4 rounded-md shadow-sm border border-gray-200 mb-6 max-w-3xl mt-4">
       <h5 class="text-lg font-semibold mb-2">Tabelas e colunas esperadas:</h5>
       <ul class="ml-4 list-disc text-gray-600 text-sm">
@@ -109,8 +105,6 @@
       </ul>
     </div>
 
-
-    <!-- Tabela de Mapeamento -->
     <div class="overflow-x-auto mb-4 mt-4">
       <table class="min-w-full border-collapse border border-gray-300">
         <thead class="bg-gray-100">
@@ -153,7 +147,6 @@
       </table>
     </div>
 
-    <!-- Ações -->
     <div class="mt-10 flex justify-end gap-2">
       <button @click="cancel" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancelar</button>
       <button @click="applyMapping" class="px-4 py-2 bg-green-600 text-black rounded hover:bg-green-700">

@@ -37,7 +37,7 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   max-width: 480px;
   text-align: center;
-  margin-top: -40px; /* 👈 Subida suave sem cortar */
+  margin-top: -40px;
 }
 
 .animate-fade-in {

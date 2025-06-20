@@ -32,7 +32,6 @@ const errorMessage = ref('');
 
 onMounted(async () => {
   try {
-    // const response = await axios.get(`/invites/accept/${token}`);
     const response = await axios.post(`/invites/accept/${token}`);
     successMessage.value = response.data.message;
     toast.success(response.data.message);
