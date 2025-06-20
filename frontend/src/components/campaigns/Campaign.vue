@@ -1,70 +1,68 @@
 <template>
-  <div class="campaign">
-    <div v-if="!roleLoaded || (!campaignsLoaded && campaigns.length === 0)" class="mb-4">
-      <h3 class="text-xl font-semibold mb-4 text-gray-600">
-        A carregar campanhas<span class="dot-anim"></span>
-      </h3>
-    </div>
-
-    <div v-else>
-      <h2 class="text-xl font-semibold mb-4">
-        {{ userRole === 'SA' ? 'Painel de Administração de Campanhas:' : 'Lista de Campanhas:' }}
-      </h2>
-
-      <div v-if="userRole !== 'SA'" class="mb-4">
-        <button @click="showDialog = true" class="btn btn-primary" :disabled="!hasActiveCompanies"
-          :class="{ 'opacity-50 cursor-not-allowed': !hasActiveCompanies }">
-          Criar nova campanha
-        </button>
+  <div class="campaign-container">
+    <div class="campaign-card">
+      <div v-if="!roleLoaded || (!campaignsLoaded && campaigns.length === 0)" class="mb-4">
+        <h3 class="text-xl font-semibold mb-4 text-gray-600">
+          A carregar campanhas<span class="dot-anim"></span>
+        </h3>
       </div>
 
-      <div v-if="filteredCampaigns.length === 0" class="text-gray-500 mb-4">
-        <span v-if="userRole === 'SA'">Ainda não há campanhas registadas.</span>
-        <span v-else-if="!hasActiveCompanies">Para criar campanhas, terá de ter uma empresa ativa.</span>
-        <span v-else>Ainda não há campanhas registadas.</span>
-      </div>
+      <div v-else>
+        <h2 class="campaign-title">
+          {{ userRole === 'SA' ? 'Painel de Administração de Campanhas:' : 'Lista de Campanhas:' }}
+        </h2>
 
-      <div v-if="filteredCampaigns.length > 0" class="overflow-x-auto">
-        <table class="min-w-full table-auto border border-gray-200">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-2 border">Título</th>
-              <th class="px-4 py-2 border">Descrição</th>
-              <th class="px-4 py-2 border">Empresa</th>
-              <th class="px-4 py-2 border">Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="campaign in paginatedCampaigns" :key="campaign.id" class="hover:bg-gray-50">
-              <td class="px-4 py-2 border">
-                <router-link :to="{ name: 'CampaignDetails', params: { id: campaign.id } }"
-                  class="text-blue-600 underline hover:text-blue-800 cursor-pointer">
-                  {{ campaign.name }}
-                </router-link>
-              </td>
-              <td class="px-4 py-2 border">{{ campaign.description }}</td>
-              <td class="px-4 py-2 border">{{ campaign.company.name }}</td>
-              <td class="px-4 py-2 border">
-                <span :class="{
-                  'text-green-600 font-semibold': campaign.status === 'Ativo',
-                  'text-gray-600 font-medium': campaign.status === 'Inativo',
-                  'text-blue-600 font-semibold': campaign.status === 'Concluída'
-                }">
-                  {{ campaign.status }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="userRole !== 'SA'" class="mb-4 text-right">
+          <button @click="showDialog = true" class="btn btn-primary" :disabled="!hasActiveCompanies"
+            :class="{ 'opacity-50 cursor-not-allowed': !hasActiveCompanies }">
+            Criar nova campanha
+          </button>
+        </div>
 
-        <div class="pagination-controls mt-4 flex items-center gap-4">
+        <div v-if="filteredCampaigns.length === 0" class="text-muted">
+          <span v-if="userRole === 'SA'">Ainda não há campanhas registadas.</span>
+          <span v-else-if="!hasActiveCompanies">Para criar campanhas, terá de ter uma empresa ativa.</span>
+          <span v-else>Ainda não há campanhas registadas.</span>
+        </div>
+
+        <div v-else class="table-wrapper">
+          <table class="campaign-table">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Empresa</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="campaign in paginatedCampaigns" :key="campaign.id" @click="goToCampaignDetails(campaign.id)"
+                class="cursor-pointer hover:bg-gray-100 transition">
+                <td>{{ campaign.name }}</td>
+                <td>{{ campaign.description }}</td>
+                <td>{{ campaign.company.name }}</td>
+                <td>
+                  <span :class="{
+                    'status-active': campaign.status === 'Ativo',
+                    'status-pending': campaign.status === 'Inativo',
+                    'status-info': campaign.status === 'Concluída'
+                  }">
+                    {{ campaign.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-controls" v-if="filteredCampaigns.length > 0">
           <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-secondary">Anterior</button>
-          <span class="font-medium">Página {{ currentPage }} de {{ totalPages }}</span>
+          <span>Página {{ currentPage }} de {{ totalPages }}</span>
           <button @click="nextPage" :disabled="currentPage >= totalPages" class="btn btn-secondary">Próxima</button>
 
-          <div class="ml-6 flex items-center gap-2">
-            <label for="perPageSelect" class="font-medium">Ver por página:</label>
-            <select id="perPageSelect" v-model="itemsPerPage" class="form-control w-24">
+          <div class="page-size-select">
+            <label>Ver por página:</label>
+            <select v-model="itemsPerPage" class="form-control">
               <option :value="10">10</option>
               <option :value="25">25</option>
               <option :value="50">50</option>
@@ -73,37 +71,37 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Modal de criar campanha -->
-      <div v-if="showDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-          <h3 class="text-lg font-bold mb-4">Criar nova campanha</h3>
-          <form @submit.prevent="createCampaign">
-            <div class="mb-3">
-              <label class="block font-medium">Título</label>
-              <input v-model="form.name" class="form-control" required />
-            </div>
-            <div class="mb-3">
-              <label class="block font-medium">Descrição</label>
-              <textarea v-model="form.description" class="form-control" required></textarea>
-            </div>
-            <div class="mb-3">
-              <label class="block font-medium">Empresa</label>
-              <select v-model="form.company_id" class="form-control" required>
-                <option disabled value="">Selecione uma empresa válida</option>
-                <option v-for="company in companies.filter(c => c.status === 'Ativo')" :key="company.id"
-                  :value="company.id">
-                  {{ company.name }}
-                </option>
-              </select>
-            </div>
-            <div class="flex justify-end gap-2">
-              <button type="button" @click="showDialog = false" class="btn btn-secondary">Cancelar</button>
-              <button type="submit" class="btn btn-success">Criar</button>
-            </div>
-          </form>
+  <!-- Modal de criar campanha -->
+  <div v-if="showDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="modal-wrapper">
+      <h3 class="text-lg font-bold mb-4">Criar nova campanha</h3>
+      <form @submit.prevent="createCampaign">
+        <div class="mb-3">
+          <label class="block font-medium">Título</label>
+          <input v-model="form.name" class="form-control" required />
         </div>
-      </div>
+        <div class="mb-3">
+          <label class="block font-medium">Descrição</label>
+          <textarea v-model="form.description" class="form-control" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="block font-medium">Empresa</label>
+          <select v-model="form.company_id" class="form-control" required>
+            <option disabled value="">Selecione uma empresa válida</option>
+            <option v-for="company in companies.filter(c => c.status === 'Ativo')" :key="company.id"
+              :value="company.id">
+              {{ company.name }}
+            </option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" @click="showDialog = false" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-success">Criar</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -112,6 +110,8 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const toast = useToast();
 const showDialog = ref(false);
@@ -147,6 +147,9 @@ const filteredCampaigns = computed(() => {
     ? campaigns.value.filter(c => c.company?.status === 'Ativo')
     : campaigns.value;
 });
+const goToCampaignDetails = (id) => {
+  router.push({ name: 'CampaignDetails', params: { id } });
+};
 
 watch(itemsPerPage, () => {
   currentPage.value = 1;
@@ -233,31 +236,114 @@ onMounted(async () => {
 
 
 <style scoped>
+.campaign-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f1f5f9;
+  min-height: 90vh;
+  padding: 2rem;
+}
+
+.campaign-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 1100px;
+}
+
+.campaign-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.campaign-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.campaign-table th,
+.campaign-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.campaign-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}
+
+.link {
+  color: #3b82f6;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.status-active {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #ca8a04;
+  font-weight: 600;
+}
+
+.status-info {
+  color: #0ea5e9;
+  font-weight: 500;
+}
+
 .btn-primary {
-  background-color: #1470ea;
+  background-color: #3b82f6;
   color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: #004add;
+  background-color: #2563eb;
 }
 
 .btn-success {
-  background-color: #28a745;
+  background-color: #22c55e;
   color: white;
+  transition: background-color 0.2s ease;
 }
 
 .btn-success:hover {
-  background-color: #218838;
+  background-color: #15803d;
 }
 
 .btn-secondary {
-  background-color: #3659f4;
+  background-color: #3b82f6;
   color: white;
+  transition: background-color 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background-color: #357be5;
+  background-color: #2563eb;
 }
 
 .form-control {
@@ -266,6 +352,21 @@ onMounted(async () => {
   margin-top: 4px;
   border-radius: 4px;
   border: 1px solid #ddd;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-size-select {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .fixed {
@@ -279,62 +380,34 @@ onMounted(async () => {
   bottom: 0;
 }
 
-.bg-black {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.flex {
-  display: flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
 .z-50 {
   z-index: 50;
+}
+
+.modal-wrapper {
+  background: white;
+  padding: 1rem 2rem 1.5rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .transition-all {
   transition: all 0.3s ease-in-out;
 }
 
-.duration-300 {
-  transition-duration: 300ms;
-}
-
-.ease-in-out {
-  transition-timing-function: ease-in-out;
-}
-
-.max-w-lg {
-  max-width: 32rem;
-}
-
-.bg-white {
-  border-radius: 12px;
-  border: 30px solid rgb(255, 255, 255);
-}
-
-.campaign {
-  padding: 20px;
-}
-
-.pagination-container {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1rem;
-}
-
-.pagination-controls {
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+.dot-anim::after {
+  content: ".";
+  animation: dots 1.2s steps(3, end) infinite;
 }
 
 @keyframes dots {
@@ -355,8 +428,12 @@ onMounted(async () => {
   }
 }
 
-.dot-anim::after {
-  content: ".";
-  animation: dots 1.2s steps(3, end) infinite;
+.campaign-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.campaign-table tbody tr:hover {
+  background-color: #f1f5f9;
 }
 </style>
