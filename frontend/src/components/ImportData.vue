@@ -371,7 +371,7 @@ export default {
 
 .p-6 {
   padding: 1.5rem;
-  width: 80%;
+  width: 100%;
 }
 
 table {
@@ -382,6 +382,7 @@ table {
 .overflow-x-auto {
   overflow-x: auto;
   max-width: 100%;
+  
 }
 
 button {
