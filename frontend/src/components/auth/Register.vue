@@ -74,7 +74,7 @@ const validatePassword = (password) => {
     messages.push('A password deve conter pelo menos um número.');
   }
   if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-    messages.push('A password deve conter pelo menos um caractere especial.');
+    messages.push('A password deve conter pelo menos um caracter especial.');
   }
 
   return messages;

@@ -51,17 +51,19 @@ class CompanyController extends Controller
             return response()->json(['error' => 'Super Admin não pode criar empresas.'], 403);
         }
 
+        $currentYear = date('Y');
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:companies,name',
             'sector' => 'required|string|max:255',
             'company_type' => 'required|in:Freelancer,Startup,ME,PE,GE',
             'website' => 'nullable|url|max:255',
-            'nif' => 'nullable|string|max:20',
-            'phone_contact' => 'nullable|string|max:20',
+            'nif' => 'nullable|digits:9',
+            'phone_contact' => ['nullable', 'regex:/^\+?[0-9\s\-]{6,20}$/'],
             'email_contact' => 'nullable|email|max:255',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
-            'founded_year' => 'nullable|integer|min:1800|max:2099',
+            'founded_year' => "nullable|integer|min:1800|max:$currentYear",
             'num_employees' => 'nullable|integer|min:1',
             'revenue_range' => 'nullable|string|max:50',
             'notes' => 'nullable|string',
@@ -165,17 +167,19 @@ class CompanyController extends Controller
             }
         }
 
+        $currentYear = date('Y');
+
         $validated = $request->validate([
             'name' => ['sometimes', 'required', 'string'],
             'sector' => ['sometimes', 'required', 'string'],
             'company_type' => ['sometimes', 'required', Rule::in(['Freelancer', 'Startup', 'ME', 'PE', 'GE'])],
-            'website' => ['nullable', 'url'],
-            'nif' => ['nullable', 'string'],
-            'phone_contact' => ['nullable', 'string'],
-            'email_contact' => ['nullable', 'email'],
-            'country' => ['nullable', 'string'],
-            'city' => ['nullable', 'string'],
-            'founded_year' => ['nullable', 'integer'],
+            'website' => ['nullable', 'url', 'max:255'],
+            'nif' => ['nullable', 'digits:9'],
+            'phone_contact' => ['nullable', 'regex:/^\+?[0-9\s\-]{6,20}$/'],
+            'email_contact' => ['nullable', 'email', 'max:255'],
+            'country' => ['nullable', 'string', 'max:100'],
+            'city' => ['nullable', 'string', 'max:100'],
+            'founded_year' => ['nullable', 'integer', "min:1800", "max:$currentYear"],
             'num_employees' => ['nullable', 'integer'],
             'revenue_range' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],

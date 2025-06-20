@@ -5,10 +5,17 @@
       <p class="lead">Esta é a sua área principal. Aqui pode gerir tudo o que precisa.</p>
 
       <div class="dashboard-section">
+        <p>
+          <strong>Alguma dúvida, contacte o administrador, via mail, através de projetosmartcrm@outlook.pt</strong>.
+        </p>
+      </div>
+
+      <div class="dashboard-section">
         <h4>🏢 Empresas</h4>
         <p>
           Registe a sua empresa e visualize os detalhes associados.
-          Cada utilizador pode pertencer a diferentes empresas com permissões distintas (CU - Company User / CA - Company Admin).
+          Cada utilizador pode pertencer a diferentes empresas com permissões distintas (CU - Company User / CA -
+          Company Admin).
         </p>
       </div>
 
@@ -22,7 +29,8 @@
       <div class="dashboard-section">
         <h4>📂 Importar Dados</h4>
         <p>
-          Importe dados de clientes, produtos ou vendas. Estes dados serão utilizados nos algoritmos inteligentes integrados.
+          Importe dados de clientes, produtos ou vendas. Estes dados serão utilizados nos algoritmos inteligentes
+          integrados.
         </p>
       </div>
 
@@ -112,6 +120,7 @@ h2 {
     opacity: 0;
     transform: translateY(16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
