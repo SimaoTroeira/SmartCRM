@@ -1,19 +1,37 @@
 <template>
   <teleport to="body">
     <transition name="slide-left">
-      <div v-if="showFloatingPanel" class="floating-panel">
-        <div class="painel-conteudo">
-          <p class="text-sm text-gray-600 font-semibold">Empresa: {{ empresaSelecionada?.name || 'N/D' }}</p>
-          <p class="text-sm text-gray-600 font-semibold">Campanha: {{ campanhaSelecionada?.name || 'N/D' }}</p>
-          <p class="text-sm text-gray-600 font-semibold">Algoritmo: {{ algoritmoLabel }}</p>
-        </div>
-        <button @click="scrollToTop" title="Voltar ao topo" class="scroll-top-button">
-          Alterar 
+      <div v-if="showFloatingPanel" class="floating-panel" :class="{ collapsed: !painelVisivel }">
+        <template v-if="painelVisivel">
+          <div class="painel-conteudo">
+            <div class="info-item">
+              <p class="label">Empresa:</p>
+              <p class="value">{{ empresaSelecionada?.name || 'N/D' }}</p>
+            </div>
+            <div class="info-item">
+              <p class="label">Campanha:</p>
+              <p class="value">{{ campanhaSelecionada?.name || 'N/D' }}</p>
+            </div>
+            <div class="info-item">
+              <p class="label">Algoritmo:</p>
+              <p class="value">{{ algoritmoLabel }}</p>
+            </div>
+          </div>
+          <button @click="scrollToTop" title="Voltar ao topo" class="scroll-top-button">
+            Alterar
+          </button>
+        </template>
+
+        <!-- Botão lateral para esconder/mostrar -->
+        <button class="toggle-button-inside" @click="painelVisivel = !painelVisivel">
+          {{ painelVisivel ? '«' : '»' }}
         </button>
       </div>
     </transition>
   </teleport>
 </template>
+
+
 
 <script setup>
 import { onMounted, ref, computed, watch } from 'vue'
@@ -27,6 +45,7 @@ const props = defineProps({
   selectedAlgorithm: String,
 })
 
+const painelVisivel = ref(true)
 const showFloatingPanel = ref(false)
 const { y } = useScroll(window)
 
@@ -76,7 +95,7 @@ const scrollToTop = () => {
   position: fixed;
   top: 120px;
   left: 16px;
-  width: 260px;
+  width: 180px;
   max-width: 90vw;
   background-color: white;
   border: 1px solid #d1d5db;
@@ -90,6 +109,14 @@ const scrollToTop = () => {
   flex-direction: column;
   justify-content: space-between;
   min-height: 130px;
+  position: fixed;
+}
+
+.floating-panel.collapsed {
+  width: 42px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
 }
 
 .painel-conteudo {
@@ -109,6 +136,40 @@ const scrollToTop = () => {
 
 .scroll-top-button:hover {
   color: #1d4ed8;
+}
+
+.info-item {
+  margin-bottom: 10px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.value {
+  font-size: 0.875rem;
+  color: #1f2937;
+  margin-top: 2px;
+}
+
+.toggle-button-inside {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 2px;
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+
+.toggle-button-inside:hover {
+  color: #374151;
 }
 
 </style>
