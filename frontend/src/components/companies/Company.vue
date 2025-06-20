@@ -141,10 +141,17 @@
                 {{ companyFormErrors.company_type }}
               </p>
             </div>
-
+          </div>
+        </fieldset>
+        <!-- Apenas a parte do formulário atualizada com validações para campos opcionais -->
+        <fieldset class="mb-6">
+          <legend class="section-title">Informações Gerais</legend>
+          <div class="grid grid-cols-12 gap-4">
             <div class="col-span-6">
               <label class="label">Website</label>
               <input v-model="companyForm.website" class="form-control" type="url" placeholder="https://…" />
+              <p v-if="companyFormErrors.website" class="text-red-600 text-sm mt-1">{{ companyFormErrors.website }}</p>
+              <p v-else-if="companyForm.website" class="text-green-600 text-sm mt-1">Website válido</p>
             </div>
           </div>
         </fieldset>
@@ -156,14 +163,22 @@
             <div class="col-span-6">
               <label class="label">NIF</label>
               <input v-model="companyForm.nif" class="form-control" />
+              <p v-if="companyFormErrors.nif" class="text-red-600 text-sm mt-1">{{ companyFormErrors.nif }}</p>
+              <p v-else-if="companyForm.nif" class="text-green-600 text-sm mt-1">NIF válido</p>
             </div>
             <div class="col-span-6">
               <label class="label">Telefone</label>
               <input v-model="companyForm.phone_contact" class="form-control" />
+              <p v-if="companyFormErrors.phone_contact" class="text-red-600 text-sm mt-1">{{
+                companyFormErrors.phone_contact }}</p>
+              <p v-else-if="companyForm.phone_contact" class="text-green-600 text-sm mt-1">Telefone válido</p>
             </div>
             <div class="col-span-6">
               <label class="label">Email</label>
               <input v-model="companyForm.email_contact" class="form-control" type="email" />
+              <p v-if="companyFormErrors.email_contact" class="text-red-600 text-sm mt-1">{{
+                companyFormErrors.email_contact }}</p>
+              <p v-else-if="companyForm.email_contact" class="text-green-600 text-sm mt-1">Email válido</p>
             </div>
 
             <div class="col-span-6">
@@ -179,6 +194,9 @@
             <div class="col-span-6">
               <label class="label">Ano da Fundação</label>
               <input v-model="companyForm.founded_year" class="form-control" type="number" min="1800" max="2099" />
+              <p v-if="companyFormErrors.founded_year" class="text-red-600 text-sm mt-1">{{
+                companyFormErrors.founded_year }}</p>
+              <p v-else-if="companyForm.founded_year" class="text-green-600 text-sm mt-1">Ano válido</p>
             </div>
 
             <div class="col-span-6">
@@ -187,7 +205,7 @@
             </div>
 
             <div class="col-span-12">
-              <label class="label">Intervalo de faturação</label>
+              <label class="label">Intervalo de faturacão</label>
               <select v-model="companyForm.revenue_range" class="form-control">
                 <option disabled value="">Selecione…</option>
                 <option value="0-1M">0-1 M €</option>
@@ -311,6 +329,36 @@ watch(filterState, (newVal) => {
 watch(itemsPerPage, () => {
   currentPage.value = 1;
 });
+
+watch(() => companyForm.value.website, (val) => {
+  if (!val) return companyFormErrors.value.website = '';
+  const pattern = /^https?:\/\/[\w\-\.]+\.[a-z]{2,}.*$/i;
+  companyFormErrors.value.website = pattern.test(val.trim()) ? '' : 'URL inválido.';
+});
+
+watch(() => companyForm.value.email_contact, (val) => {
+  if (!val) return companyFormErrors.value.email_contact = '';
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  companyFormErrors.value.email_contact = pattern.test(val.trim()) ? '' : 'Email inválido.';
+});
+
+watch(() => companyForm.value.phone_contact, (val) => {
+  if (!val) return companyFormErrors.value.phone_contact = '';
+  const pattern = /^\+?[0-9]{9,15}$/;
+  companyFormErrors.value.phone_contact = pattern.test(val.trim()) ? '' : 'Telefone inválido.';
+});
+
+watch(() => companyForm.value.nif, (val) => {
+  if (!val) return companyFormErrors.value.nif = '';
+  const pattern = /^[0-9]{9}$/;
+  companyFormErrors.value.nif = pattern.test(val.trim()) ? '' : 'NIF inválido (9 dígitos).';
+});
+
+watch(() => companyForm.value.founded_year, (val) => {
+  if (!val) return companyFormErrors.value.founded_year = '';
+  companyFormErrors.value.founded_year = val >= 1800 && val <= 2099 ? '' : 'Ano inválido.';
+});
+
 
 const refreshAll = async () => {
   await fetchCompanies();

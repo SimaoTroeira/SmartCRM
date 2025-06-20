@@ -159,7 +159,7 @@
     </div>
   </dialog>
 
-  <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-[700px] max-w-[95vw]">
+ <dialog ref="editDialog" class="bg-white p-6 rounded-lg shadow-md w-[700px] max-w-[95vw]">
     <h3 class="text-xl font-bold mb-4 text-center">Editar Empresa</h3>
     <form @submit.prevent="updateCompany">
       <fieldset class="mb-6">
@@ -169,11 +169,13 @@
           <div class="col-span-6">
             <label class="label">Nome da Empresa <span class="text-red-600">*</span></label>
             <input v-model="editCompany.name" class="form-control" required />
+            <p v-if="!editCompany.name" class="text-red-500 text-sm mt-1">Campo obrigatório</p>
           </div>
 
           <div class="col-span-6">
             <label class="label">Setor de atividade <span class="text-red-600">*</span></label>
             <input v-model="editCompany.sector" class="form-control" required />
+            <p v-if="!editCompany.sector" class="text-red-500 text-sm mt-1">Campo obrigatório</p>
           </div>
 
           <div class="col-span-6">
@@ -186,12 +188,13 @@
               <option value="PE">Pequena Empresa</option>
               <option value="GE">Grande Empresa</option>
             </select>
-
+            <p v-if="!editCompany.company_type" class="text-red-500 text-sm mt-1">Campo obrigatório</p>
           </div>
 
           <div class="col-span-6">
             <label class="label">Website</label>
             <input v-model="editCompany.website" class="form-control" type="url" placeholder="https://…" />
+            <p v-if="editCompany.website && !editCompany.website.startsWith('http')" class="text-red-500 text-sm mt-1">URL inválido</p>
           </div>
         </div>
       </fieldset>
@@ -203,16 +206,19 @@
           <div class="col-span-6">
             <label class="label">NIF</label>
             <input v-model="editCompany.nif" class="form-control" />
+            <p v-if="editCompany.nif && editCompany.nif.length !== 9" class="text-red-500 text-sm mt-1">NIF deve ter 9 dígitos</p>
           </div>
 
           <div class="col-span-6">
             <label class="label">Telefone</label>
             <input v-model="editCompany.phone_contact" class="form-control" />
+            <p v-if="editCompany.phone_contact && !/^\d{9}$/.test(editCompany.phone_contact)" class="text-red-500 text-sm mt-1">Telefone deve ter 9 dígitos</p>
           </div>
 
           <div class="col-span-6">
             <label class="label">Email</label>
             <input v-model="editCompany.email_contact" class="form-control" type="email" />
+            <p v-if="editCompany.email_contact && !/^[^@]+@[^@]+\.[^@]+$/.test(editCompany.email_contact)" class="text-red-500 text-sm mt-1">Email inválido</p>
           </div>
 
           <div class="col-span-6">
