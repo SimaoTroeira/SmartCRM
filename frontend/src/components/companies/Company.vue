@@ -36,35 +36,41 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="company in paginatedCompanies" :key="company.id" class="hover:bg-gray-50 transition"
-              @click="goToCompanyDetails(company.id)">
-              <td @click.stop>{{ company.name }}</td>
-              <td @click.stop>{{ company.sector }}</td>
-              <td @click.stop>
+            <tr v-for="company in paginatedCompanies" :key="company.id" @click="goToCompanyDetails(company.id)"
+              class="hover:bg-gray-50 transition cursor-pointer">
+              <td>{{ company.name }}</td>
+              <td>{{ company.sector }}</td>
+              <td>
                 <span :class="company.status === 'Ativo' ? 'status-active' : 'status-pending'">
                   {{ company.status }}
                 </span>
               </td>
-              <td v-if="userRole !== 'SA'" @click.stop>
+
+              <td v-if="userRole !== 'SA'">
                 <span v-if="company.status === 'Ativo'" class="status-active">Pedido aceite</span>
+
                 <button v-else-if="company.status === 'Inativo' && !company.submitted"
-                  @click="openSubmitModal(company.id)" class="btn-sm btn-secondary">
+                  @click.stop="openSubmitModal(company.id)" class="btn-sm btn-secondary">
                   Pedir validação
                 </button>
+
                 <span v-else-if="company.status === 'Inativo' && company.submitted" class="status-info">
                   Aguardando aprovação
                 </span>
               </td>
-              <td v-if="userRole === 'SA'" @click.stop>
-                <button v-if="company.status === 'Inativo'" @click="openAcceptModal(company.id)"
+
+              <td v-if="userRole === 'SA'">
+                <button v-if="company.status === 'Inativo'" @click.stop="openAcceptModal(company.id)"
                   class="btn-sm btn-success">
                   Ativar
                 </button>
-                <button v-else @click="openDeactivateModal(company.id)" class="btn-sm btn-danger">
+
+                <button v-else @click.stop="openDeactivateModal(company.id)" class="btn-sm btn-danger">
                   Desativar
                 </button>
               </td>
             </tr>
+
           </tbody>
         </table>
       </div>
@@ -743,5 +749,9 @@ button {
 
 .company-table tbody tr button {
   cursor: pointer;
+}
+
+tr:hover {
+  background-color: #f1f5f9;
 }
 </style>
