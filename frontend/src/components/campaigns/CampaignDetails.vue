@@ -14,7 +14,7 @@
         <p><strong>Início:</strong> {{ formatDate(campaign.start_date || campaign.created_at) }}</p>
         <p><strong>Fim:</strong> {{ formatDate(campaign.end_date) }}</p>
         <p>
-          <strong>Status:</strong>
+          <strong>Estado:</strong>
           <span :class="{
             'text-green-600 font-semibold': campaign.status === 'active',
             'text-gray-600 font-medium': campaign.status === 'draft',

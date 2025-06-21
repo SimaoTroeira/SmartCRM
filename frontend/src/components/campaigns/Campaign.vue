@@ -43,11 +43,11 @@
                 <td>{{ campaign.company.name }}</td>
                 <td>
                   <span :class="{
-                    'status-active': campaign.status === 'Ativo',
-                    'status-pending': campaign.status === 'Inativo',
-                    'status-info': campaign.status === 'Concluída'
+                    'status-active': campaign.status === 'active',
+                    'status-pending': campaign.status === 'drafted',
+                    'status-info': campaign.status === 'completed'
                   }">
-                    {{ campaign.status }}
+                    {{ traduzirStatus(campaign.status) }}
                   </span>
                 </td>
               </tr>
@@ -223,6 +223,15 @@ const createCampaign = async () => {
   } catch (error) {
     toast.error('Erro ao criar campanha.');
     console.error(error);
+  }
+};
+
+const traduzirStatus = (status) => {
+  switch (status) {
+    case 'draft': return 'Rascunho';
+    case 'active': return 'Ativo';
+    case 'completed': return 'Concluída';
+    default: return status;
   }
 };
 
