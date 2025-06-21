@@ -2,11 +2,11 @@
   <div class="dashboard-wrapper animate">
     <div class="dashboard-card">
       <h2 class="mb-3">👋 Bem-vindo ao Smart CRM</h2>
-      <p class="lead">Esta é a sua área principal. Aqui pode gerir tudo o que precisa.</p>
+      <!-- <p class="lead">Esta é a sua área principal. Aqui pode gerir tudo o que precisa.</p> -->
 
       <div class="dashboard-section">
         <p>
-          <strong>Alguma dúvida, contacte o administrador, via mail, através de projetosmartcrm@outlook.pt</strong>.
+          Alguma dúvida, contacte o administrador, via mail, através de <strong>projetosmartcrm@outlook.pt</strong>.
         </p>
       </div>
 
