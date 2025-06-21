@@ -203,7 +203,7 @@ const campanhaSelecionada = computed(() => {
 
 const campanhasDaCompany = computed(() => {
     return campaigns.value.filter(c => {
-        return c.company_id === parseInt(selectedCompanyId.value) && c.status !== 'Inativo'
+        return c.company_id === parseInt(selectedCompanyId.value) && c.status !== 'completed'
     })
 })
 
