@@ -36,8 +36,8 @@ class CompanyInviteController extends Controller
             'expires_at' => Carbon::now()->addMinutes(10),
         ]);
 
-        $link = 'http://staging-smartcrm.172.22.21.149.sslip.io' . '/accept-invite/' . $token;
-        // $link = 'http://localhost:5173' . '/accept-invite/' . $token;
+        //$link = 'http://staging-smartcrm.172.22.21.149.sslip.io' . '/accept-invite/' . $token;
+        $link = 'http://localhost:5173' . '/accept-invite/' . $token;
         // $link = env('FRONTEND_URL') . '/accept-invite/' . $token;
         // $link = config('services.frontend.url') . '/accept-invite/' . $token;
 
