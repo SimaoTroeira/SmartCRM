@@ -238,24 +238,30 @@ class CampaignController extends Controller
         return response()->json(['message' => 'Utilizador removido da campanha com sucesso.']);
     }
 
-    public function concludeCampaign($id)
-    {
-        try {
-            $campaign = Campaign::findOrFail($id);
+public function concludeCampaign($id)
+{
+    try {
+        $campaign = Campaign::with('company')->findOrFail($id);
 
-            // Verifica se já está concluída
-            if ($campaign->status === 'completed') {
-                return response()->json(['message' => 'A campanha já está concluída.'], 400);
-            }
-
-            $campaign->status = 'completed';
-            $campaign->end_date = now();
-            $campaign->save();
-
-            return response()->json(['message' => 'Campanha concluída com sucesso!', 'campaign' => $campaign]);
-        } catch (\Exception $e) {
-            Log::error('Erro ao concluir campanha: ' . $e->getMessage());
-            return response()->json(['message' => 'Erro ao concluir campanha.'], 500);
+        // Verifica se a campanha já está concluída
+        if ($campaign->status === 'completed') {
+            return response()->json(['message' => 'A campanha já está concluída.'], 400);
         }
+
+        // Verifica se a empresa está inativa
+        if ($campaign->company && $campaign->company->status === 'Inativo') {
+            return response()->json(['message' => 'Não é possível concluir a campanha porque a empresa está inativa.'], 400);
+        }
+
+        $campaign->status = 'completed';
+        $campaign->end_date = now();
+        $campaign->save();
+
+        return response()->json(['message' => 'Campanha concluída com sucesso!', 'campaign' => $campaign]);
+    } catch (\Exception $e) {
+        Log::error('Erro ao concluir campanha: ' . $e->getMessage());
+        return response()->json(['message' => 'Erro ao concluir campanha.'], 500);
     }
+}
+
 }
