@@ -20,8 +20,8 @@
       </div>
       <div v-if="tableData.length > 0 && !isLoading"
         class="alert alert-success p-3 border border-green-500 rounded bg-green-100 text-green-700">
-        <p>O ficheiro "{{ fileName }}" foi importado!</p>
-        <p>A tabela "{{ tableName }}" foi importada!</p>
+        <p>Ficheiro "{{ fileName }}" pronto a importar!</p> <!-- foi importado  -->
+        <p>Tabela "{{ tableName }}" pronta a importar!</p>
         <p>Esta tabela contém {{ rowCount }} linhas e {{ columnCount }} colunas.</p>
       </div>
       <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-between items-center gap-4">
