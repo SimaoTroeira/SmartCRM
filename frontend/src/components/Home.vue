@@ -1,7 +1,7 @@
 <template>
   <div class="home-container d-flex justify-content-center align-items-center">
     <div class="welcome-card text-center shadow-lg p-5 animate-fade-in">
-      <h1 class="fw-bold display-5 mb-3">Bem-vindo ao <br />Smart CRM</h1>
+      <h1 class="fw-bold display-8 mb-3">Bem-vindo ao <br />Smart CRM</h1>
       <p class="text-muted fs-5 mb-4">
         Por favor, faça login ou registe-se para aceder às funcionalidades da plataforma.
       </p>
