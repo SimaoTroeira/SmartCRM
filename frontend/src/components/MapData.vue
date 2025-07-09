@@ -40,7 +40,8 @@
               <ul class="ml-4 list-disc">
                 <li v-for="col in ['ClienteID', 'ProdutoID', 'Quantidade', 'PreçoUnitário', 'ValorTotal']" :key="col">
                   <span :class="mappedColumns.includes(col) ? 'text-green-700 font-semibold underline' : ''">
-                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}<span v-if="col === 'ValorTotal'" class="italic text-gray-500"> (ou será calculado automaticamente)</span>
+                    {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}<span v-if="col === 'ValorTotal'"
+                      class="italic text-gray-500"> (ou será calculado automaticamente)</span>
                   </span>
                 </li>
               </ul>
@@ -70,7 +71,9 @@
             </li>
             <li class="mt-2"><strong>Colunas secundárias (opcionais):</strong>
               <ul class="ml-4 list-disc">
-                <li v-for="col in ['Nome', 'DataCadastro', 'UltimaCompra', 'TotalCompras', 'ValorTotalGasto', 'Distrito', 'Localidade']" :key="col">
+                <li
+                  v-for="col in ['Nome', 'DataCadastro', 'UltimaCompra', 'TotalCompras', 'ValorTotalGasto', 'Distrito', 'Localidade']"
+                  :key="col">
                   <span :class="mappedColumns.includes(col) ? 'text-green-700 underline' : ''">
                     {{ mappedColumns.includes(col) ? '✅ ' : '' }}{{ col }}
                   </span>
@@ -258,6 +261,7 @@ export default {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
 
+        this.$emit('save');
         this.$emit('close');
       } catch (err) {
         alert('Erro ao guardar: ' + err.message);

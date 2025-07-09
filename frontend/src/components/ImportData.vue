@@ -20,21 +20,24 @@
       </div>
       <div v-if="tableData.length > 0 && !isLoading"
         class="alert alert-success p-3 border border-green-500 rounded bg-green-100 text-green-700">
-        <p>Ficheiro "{{ fileName }}" pronto a importar!</p> <!-- foi importado  -->
-        <p>Tabela "{{ tableName }}" pronta a importar!</p>
+        <p>O ficheiro "{{ fileName }}" está pronto a importar!</p> <!-- foi importado  -->
+        <p>A tabela "{{ tableName }}" está pronta a importar!</p>
         <p>Esta tabela contém {{ rowCount }} linhas e {{ columnCount }} colunas.</p>
       </div>
       <div v-if="tableData.length && !isLoading" class="mt-4 mb-4 flex justify-between items-center gap-4">
-        <div class="flex gap-2">
-          <button @click="resetSorting"
-            class="px-2 py-1 bg-red-600 rounded-lg text-black font-semibold hover:bg-red-700 text-sm">
-            Repor Ordem
-          </button>
+        <div class="flex justify-between items-center w-full mb-4">
           <button @click="openMapDialog"
-            class="px-2 py-1 bg-blue-600 rounded-lg text-black font-semibold hover:bg-blue-700 text-sm">
+            class="btn btn-success px-5 py-2 bg-green-600 text-white rounded-xl font-semibold shadow hover:bg-green-700 transition-all duration-200 text-base flex items-center gap-2">
             Importar esta Tabela
           </button>
+
+
+          <button @click="resetSorting"
+            class="btn btn-warning ml-auto px-3 py-2 bg-red-600 rounded-xl text-white font-semibold hover:bg-red-700 text-sm shadow-md">
+            Repor Ordem
+          </button>
         </div>
+
         <div v-if="sheetNames.length" class="flex items-center gap-2">
           <label for="sheetSelect" class="font-medium">Folha:</label>
           <select id="sheetSelect" v-model="selectedSheet" @change="loadSelectedSheet"
@@ -68,25 +71,28 @@
         </table>
       </div>
       <div v-if="tableData.length && !isLoading"
-        class="mt-4 flex justify-center gap-4 fixed bottom-0 left-0 right-0 bg-white z-10 p-4">
+        class="mt-6 mb-4 flex justify-center gap-4 sticky bottom-0 left-0 right-0 bg-white z-20 p-4 shadow border-t border-gray-200">
         <button :disabled="currentPage === 1" @click="currentPage = 1"
-          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Primeira
         </button>
         <button :disabled="currentPage === 1" @click="currentPage--"
-          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Anterior
         </button>
-        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+
+        <span class="px-2 font-semibold text-gray-700">Página {{ currentPage }} de {{ totalPages }}</span>
+
         <button :disabled="currentPage === totalPages" @click="currentPage++"
-          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Próxima
         </button>
         <button :disabled="currentPage === totalPages" @click="currentPage = totalPages"
-          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400">
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
           Última
         </button>
       </div>
+
       <div v-if="showMapDialog" class="map-dialog-overlay">
         <div class="map-dialog-wrapper">
           <div class="map-dialog">
@@ -108,11 +114,16 @@
 import * as XLSX from "xlsx";
 import JSZip from "jszip";
 import MapData from './MapData.vue';
+import { useToast } from 'vue-toastification';
 
 
 export default {
   components: {
     MapData
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   data() {
     return {
@@ -350,9 +361,21 @@ export default {
     closeMapDialog() {
       this.showMapDialog = false;
     },
-    handleMapSave(mappedData) {
-      console.log("Dados mapeados:", mappedData);
-      this.closeMapDialog();
+
+    handleMapSave() {
+      this.showMapDialog = false;
+      this.tableData = [];
+      this.originalData = [];
+      this.headers = [];
+      this.rowCount = 0;
+      this.columnCount = 0;
+      this.fileName = "";
+      this.tableName = "";
+      this.sheetNames = [];
+      this.selectedSheet = "";
+
+      this.toast.success('Tabela importada com sucesso!');
+      //setTimeout(() => window.location.reload(), 1000);
     },
   },
 };
@@ -382,7 +405,7 @@ table {
 .overflow-x-auto {
   overflow-x: auto;
   max-width: 100%;
-  
+
 }
 
 button {
@@ -472,5 +495,41 @@ tbody tr:nth-child(odd) {
 
 .fixed {
   z-index: 100;
+}
+
+.sticky {
+  position: sticky;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.4s ease-out forwards;
+}
+
+.animate-toast-out {
+  animation: toast-out 0.4s ease-in forwards;
 }
 </style>
