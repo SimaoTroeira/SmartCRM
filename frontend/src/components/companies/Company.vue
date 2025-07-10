@@ -419,7 +419,8 @@ const registerCompany = async () => {
 
   try {
     await axios.post('/companies', companyForm.value);
-    toast.success('Empresa registrada com sucesso!');
+    toast.success('Empresa registada com sucesso!');
+    toast.info('Peça a validação da empresa para ativá-la.');
     showDialog.value = false;
     companyForm.value = {
       name: '',
